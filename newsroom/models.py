@@ -161,6 +161,8 @@ class Article(models.Model):
     include_in_rss = models.BooleanField(default=True)
     comments_on = models.BooleanField(default=True)
     exclude_from_list_views = models.BooleanField(default=False)
+    # Neccessary for importing old Drupal articles
+    disqus_id = models.CharField(blank=True, max_length=20)
 
     stickiness = models.IntegerField(
         default=0,
@@ -287,7 +289,6 @@ class Article(models.Model):
         return self.cached_summary_text
 
     def save(self, *args, **kwargs):
-        print(self.title)
         self.cached_byline = self.calc_byline(True)
         self.cached_byline_no_links = self.calc_byline(False)
         try:
