@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+Author: {{author}}{{block.super}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-7">
+      <h1>{{author}}</h1>
+      {% for article in articles %}
+      <p>
+      <a href="{% url 'article.detail' article.slug %}">{{article.title}}</a>
+      </p>
+      <p>{{article.published|date:"j F Y"}}</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+#s2id_id_region, #s2id_id_topics {
+    width: 758px !important;
+}
+
+#s2id_id_region .select2-display-none {
+    width: 758px !important
+}

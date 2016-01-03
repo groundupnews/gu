@@ -1,0 +1,18 @@
+<div class="thumbnail">
+  <h2 class="
+	     {% if forloop.first %}
+	     large-summary-title
+	     {% else %}
+	     summary-title
+	     {% endif %}">
+    <a href="{{article.get_absolute_url}}">
+      {{article.title }}
+    </a>
+  </h2>
+  <p class="summary-text">
+    {{article.cached_summary_text_no_html}}
+  </p>
+  <p class="summary-dateline">
+    {{article.published|date:"d F Y"}}
+  </p>
+</div>

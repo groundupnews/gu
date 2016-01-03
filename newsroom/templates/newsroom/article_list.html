@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home Page {{block.super}}
+{% endblock %}
+
+{% block content %}
+
+<div id="article-list">
+  <div class="container">
+    {{block.super}}
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-8">
+	{% if heading %}
+	<h1>{{heading|capfirst}}</h1>
+	{% endif %}
+	{% if image %}
+	<div>
+	<img src="{{MEDIA_URL}}{{image}}" />
+	</div>
+	{% endif %}
+	{% if description %}
+	<p>{{description}}</p>
+	{% endif %}
+
+
+	<div class="row">
+
+	  {% for article in article_list %}
+	  <div class="col-sm-12 col-md-12">
+	    {% include article.summary_template %}
+	  </div>
+	  {% empty %}
+	  <p>No articles found.</p>
+	  {% endfor %}
+
+
+	  <div id="paginator">
+	  <nav>
+	    <ul class="pagination">
+	      {% if page_obj.has_previous %}
+	      <li>
+		<a href="?page=1">first</a>
+	      </li>
+	      <li>
+		<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+	      </li>
+	      {% endif %}
+
+	      <li class="active">
+		<a href="#">
+		  {{page_obj.number}} of
+		  {{page_obj.paginator.num_pages}}
+		</a>
+	      </li>
+
+	      {% if page_obj.has_next %}
+	      <li>
+		<a href="?page={{ page_obj.next_page_number }}">next</a>
+	      </li>
+	      <li>
+		<a href="?page=last">last</a>
+	      </li>
+	      {% endif %}
+	    </ul>
+	  </nav>
+	  </div>
+	</div>
+      </div>
+
+      <div class="col-md-3">
+      {% block sidebar-right %}
+
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

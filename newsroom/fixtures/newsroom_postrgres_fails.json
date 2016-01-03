@@ -1,0 +1,47 @@
+[
+{
+    "model": "newsroom.article",
+    "pk": 2053,
+    "fields": {
+        "summary_image_size": "big",
+        "created": "2016-01-01T19:15:56.851Z",
+        "modified": "2016-01-01T19:15:58.035Z",
+        "primary_image_size": "LEAVE",
+        "cached_primary_image": "http://groundup.org.za/sites/default/files/styles/article_image/public/field/image/dungbeetle-in-cap.jpg?itok=A-z7b09w",
+        "summary_image": null,
+        "published": "2013-09-18T10:00:00Z",
+        "comments_on": true,
+        "external_primary_image": "http://groundup.org.za/sites/default/files/styles/article_image/public/field/image/dungbeetle-in-cap.jpg?itok=A-z7b09w",
+        "slug": "caps-boots-beetles-earns-scientists-ig-nobel_1234",
+        "author_04": null,
+        "cached_summary_image": "http://groundup.org.za/sites/default/files/styles/article_image/public/field/image/dungbeetle-in-cap.jpg?itok=A-z7b09w",
+        "author_05": null,
+        "stickiness": 0,
+        "byline": "Kerry Gordon",
+        "cached_summary_text": "<p class=\"intro\">The Ig Nobel prizes are the cheeky kid brother of the illustrious Nobel Prizes like the Razzies are to the Oscars.</p>",
+        "body": "<p class=\"intro\">The Ig Nobel prizes are the cheeky kid brother of the illustrious Nobel Prizes like the Razzies are to the Oscars.</p><div class=\"field-item even\" property=\"content:encoded\"><p>Unlike the <a href=\"http://www.razzies.com/\">Razzies</a>, which give prizes to the worst movies and actors in Hollywood, the <a href=\"http://www.improbable.com/ig/\">Ig Nobel prizes</a> don't celebrate the worst research. It awards \"achievements that first make people laugh, then make them think\", which embodies its mission to highlight weird and wonderful discoveries, but also make people question what research is important and how to seek out facts. The Ig Nobel awards also highlight studies that are driven by curious questions that don't always make a big impact.</p>\n<p>The research by South African scientists at Wits University and their colleagues at Lund University in Sweden with dung beetles perfectly captures the spirit of the Ig Nobel awards. While putting caps and boots on dung beetles might seem like something more fit for a children's tea party, it turns out the research behind it is very interesting.</p>\n<p>Dung beetles eat the droppings of large grazing mammals like buffalo, elephant and rhino. A fresh pile of dung is a sought after commodity in the dung beetle community and there is a scramble to get a piece. Beetles roll the dung into balls, which they push with their back legs as far away from any rivals as they can, using the sun during the day or the moon at night to guide them. To work out where they are going, the beetles do a little dance on top of their dung.</p>\n<p>By watching this little dance, a group headed by Professor Marcus Byrne at Wits University and his Swedish collaborators noticed that the beetles spent more time on top of their dung balls in the midday heat. They wondered whether the beetles were climbing on top of the moist balls to <a href=\"http://www.cell.com/current-biology/abstract/S0960-9822(12)01061-5\">cool off from the hot ground</a>. To test whether the beetle was using the ball as a refuge from the hot sand, they put little silicone boots on the beetles' front legs to protect them from the heat. The booted beetles spent less time on their dung balls than their barefooted friends.</p>\n<p>They then wondered how dung beetles work out where they're going on moonless nights. They showed that dung beetles <a href=\"http://www.sciencedirect.com.ezproxy.uct.ac.za/science/article/pii/S0960982212015072\">use the Milky Way</a> - the band of stars so prominent in our night sky to orientate themselves and stay in a single direction rather than circling back to their competitors. \u201cThe dung beetles don\u2019t care which direction they\u2019re going in; they just need to get away from the bunfight at the poo pile,\u201d <a href=\"http://www.wits.ac.za/newsroom/newsitems/201301/18900/news_item_18900.html\">said Prof. Byrne</a>. By making little caps to cover the eyes of the beetles and hide their view of the night sky, they watched how long it took the beetles to move from one point to another. With the caps on, the beetles took longer than those without caps suggesting that they use the night sky. By putting them in a planetarium and projecting different star patterns, they worked out that the Milky Way was the road sign for dung beetles.</p>\n<p>With these elegant experiments, Prof Byrne and his colleagues have scooped up a joint Ig Nobel prize for Astronomy and Biology.</p>\n<p>Previous Ig Nobel prizes have been <a href=\"http://www.improbable.com/ig/winners/\">awarded to:</a>\n- A study to work out how many steps a person can take before spilling a cup of coffee</p>\n<ul><li><p>Scientists who showed that bacteria stick to the beards of scientists working in laboratories</p></li>\n<li><p>For the invention of a bra that can be adjusted to be used as a face mask in an emergency - one cup for the wearer and one for someone nearby</p></li>\n<li><p>Figuring out why pregnant women don't tip over</p></li>\n<li><p>Donald L. Unger, USA, for trying to prove that cracking your knuckles doesn't cause arthritis by cracking the knuckles of his left hand - but never cracking the knuckles of his right hand - every day for more than 60 years.</p></li>\n</ul></div>",
+        "title": "Caps and boots for dung beetles earns Wits scientists an Ig Nobel  Prize.",
+        "cached_byline": "Kerry Gordon",
+        "exclude_from_list_views": false,
+        "copyright": "&copy; 2016 GroundUp. <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nd/4.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by-nd/4.0/80x15.png\" /></a><br />This article is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nd/4.0/\">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.",
+        "primary_image": null,
+        "author_02": null,
+        "category": "News",
+        "summary_text": "<p class=\"intro\">The Ig Nobel prizes are the cheeky kid brother of the illustrious Nobel Prizes like the Razzies are to the Oscars.</p>",
+        "primary_image_caption": "Dung beetle wearing cap. Photo courtesy of Wits University.",
+        "topics": [
+            "Ig Nobel; dung beetle; Milky way; navigation; refuge seeking",
+            "Science"
+        ],
+        "author_03": null,
+        "cached_summary_text_no_html": "The Ig Nobel prizes are the cheeky kid brother of the illustrious Nobel Prizes like the Razzies are to the Oscars.",
+        "summary_template": "newsroom/article_summary.html",
+        "template": "newsroom/article_detail.html",
+        "author_01": null,
+        "cached_byline_no_links": "Kerry Gordon",
+        "include_in_rss": true,
+        "subtitle": "",
+        "region": "None"
+    }
+}
+]

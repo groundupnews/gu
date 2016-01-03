@@ -1,0 +1,88 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %}{% endblock %} | GroundUp
+
+    </title>
+    <link rel="shortcut icon"
+	  href="{% static  'newsroom/images/favicon.ico' %}" />
+
+    {% block seo_fields %}
+    <meta property="og:description"
+      content="GroundUp publishes original public interest news. We mainly cover
+    education, health, sanitation, immigration and human rights stories."/>
+    {% endblock %}
+    {% block facebook-identifier %}
+    <meta property="fb:admins" content="618135707" />
+    {% endblock %}
+
+    {% block analytics %}
+
+    {% include "google_analytics.html" %}
+
+    {% endblock %}
+
+    {% block bootstrap-css %}
+
+    {% include "bootstrap_css.html" %}
+
+    {% endblock %}
+
+    {% block additional_head %}
+
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'newsroom/css/newsroom_styles.css' %}" />
+
+  </head>
+
+  <body>
+
+    {% block banner %}
+
+    {% include 'banner.html' %}
+
+    {% endblock %}
+
+
+    {% block content %}
+
+    {% block messages %}
+    {% for message in messages %}
+    <div class="alert
+		{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}alert-success
+		{% endif %}
+		">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endblock %}
+
+    {% endblock %}
+
+
+    {% block footer %}
+
+    {% include 'footer.html' %}
+
+    {% endblock %}
+
+
+    {% block javascript-includes %}
+
+    {% include 'javascripts.html' %}
+
+    {% endblock %}
+
+
+  </body>
+
+</html>

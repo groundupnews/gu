@@ -1,0 +1,12 @@
+#!/bin/sh
+
+rm ~/workspace/gu2/groundup/db.sqlite3
+cd ~/workspace/gu2/groundup
+rm -rf ~/workspace/gu2/groundup/newsroom/migrations
+./manage.py makemigrations newsroom
+./manage.py migrate
+# ./manage.py initial_tags
+./manage.py loaddata flatpages.json sites.json auth.json newsroom.json
+
+
+

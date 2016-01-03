@@ -1,0 +1,11 @@
+@import "/static/newsroom/css/newsroom_styles.css";
+
+
+#tinymce {
+    background-color: #fff2ff;
+}
+
+
+p.article-iframe {
+    border: solid;
+}

@@ -1,0 +1,15 @@
+{% if article.pk %}
+<li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
+       class="admin-menu-item">Edit</a></li>
+{% endif %}
+
+{% if flatpage.url %}
+<li><a href="
+   {% url 'admin:flatpages_flatpage_change' flatpage.pk %}"
+       class="admin-menu-item">Edit</a></li>
+{% endif %}
+
+
+<li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin</a></li>
+<li><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
+<li><a href="{% url 'admin:logout' %}" class="admin-menu-item">Logout</a></li>
