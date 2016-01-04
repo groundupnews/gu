@@ -275,6 +275,13 @@ p.intro {
     font-size: 110%;
 }
 
+#article-list p.intro {
+    font-weight: normal;
+    font-size: 130%;
+}
+
+
+
 p.author-description, p.disclaimer, p.correction {
     font-style: italic;
 }
