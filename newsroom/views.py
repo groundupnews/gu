@@ -11,6 +11,8 @@ from . import models
 from . import settings
 from . import utils
 
+from blocks.models import Group
+
 logger = logging.getLogger(__name__)
 
 class ArticleList(generic.ListView):
@@ -27,6 +29,11 @@ class HomePage(ArticleList):
       context = super(HomePage, self).get_context_data(**kwargs)
       # Add extra context for the home page here
       # ...
+      try:
+         blocks = Group.objects.get(name="Home").get_blocks()
+      except:
+         blocks = []
+      context["blocks"] = blocks
       return context
 
    def get(self, request, *args, **kwargs):

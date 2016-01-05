@@ -68,10 +68,10 @@ class ArticleAdmin(admin.ModelAdmin):
             '/static/newsroom/js/tinymce_setup.js',
         ]
 
-tagulous.admin.register(models.Article, ArticleAdmin)
-tagulous.admin.register(models.Article.category)
+admin.site.register(models.Article, ArticleAdmin)
+tagulous.admin.register(models.Category)
 tagulous.admin.register(models.Region)
-tagulous.admin.register(models.Article.topics)
+tagulous.admin.register(models.Topic)
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_names', 'created', 'modified',

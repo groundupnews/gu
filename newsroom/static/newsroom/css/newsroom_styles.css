@@ -102,7 +102,7 @@ ul.icons li {
 
 .icons a {
     display: inline-block;
-    width: 20px;
+    width: 25px;
     height: 20px;
     margin: 12px;
     vertical-align: middle;
@@ -281,6 +281,10 @@ p.intro {
 }
 
 
+div.right-sidebar-block h1 {
+    margin-top:3px;
+    font-size: 130%;
+}
 
 p.author-description, p.disclaimer, p.correction {
     font-style: italic;

@@ -61,6 +61,7 @@ INSTALLED_APPS = (
 
     'newsroom',
     'clearcache',
+    'blocks',
 )
 
 MIDDLEWARE_CLASSES = (

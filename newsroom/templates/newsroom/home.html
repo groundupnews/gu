@@ -1,1 +1,13 @@
 {% extends 'newsroom/article_list.html' %}
+
+{% block sidebar-right %}
+
+
+{% for block in blocks %}
+
+<div class="thumbnail right-sidebar-block">
+{{block.html|safe}}
+</div>
+{% endfor %}
+
+{% endblock %}
