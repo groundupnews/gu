@@ -44,9 +44,10 @@ class HomePage(ArticleList):
       return request
 
 class OpinionAnalysisList(ArticleList):
-   queryset = models.Article.objects.list_view().filter(
-      Q(category__name="Opinion") |
-      Q(category__name="Analysis"))
+   def get_queryset(self):
+      return models.Article.objects.list_view().filter(
+         Q(category__name="Opinion") |
+         Q(category__name="Analysis"))
 
    def get_context_data(self, **kwargs):
       context = super(OpinionAnalysisList, self).get_context_data(**kwargs)
