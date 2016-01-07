@@ -22,7 +22,7 @@
 
 <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
 <meta property="og:description"
-      content="{{ article.cached_summary_text }}"/>
+      content="{{ article.cached_summary_text_no_html|safe }}"/>
 
 
 {% endblock %}
