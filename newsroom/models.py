@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.utils.html import strip_tags
 
 import tagulous
 from filebrowser.fields import FileBrowseField
@@ -279,14 +280,14 @@ class Article(models.Model):
 
         if end_para[1] == None or end_para[0] == None:
             return ""
-        return end_para[0]
+        return strip_tags(end_para[0])
 
 
     '''Legacy code from when more complex processing was done. But too
     time-consuming and server times out.
     '''
     def calc_summary_text_no_html(self):
-        return self.cached_summary_text
+        return strip_tags(self.cached_summary_text)
 
     def save(self, *args, **kwargs):
         self.cached_byline = self.calc_byline(True)
