@@ -5,11 +5,14 @@ from django.views.generic import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 import logging
 
 from . import models
 from . import settings
 from . import utils
+from .forms import ArticleListForm
+
 
 from blocks.models import Group
 
@@ -143,6 +146,38 @@ class RedirectHandConstructedFeatures(View):
       url = "/media/features/" + path
       return redirect(url)
 
+'''Newsletter generator form
+'''
+
+@staff_member_required
+def generate_article_list(request):
+   output = []
+   articles = []
+   if request.method == "POST":
+      form = ArticleListForm(request.POST)
+      if form.is_valid():
+         date_from = form.cleaned_data["date_from"]
+         date_to = form.cleaned_data["date_to"]
+         if date_to:
+            articles = models.Article.objects.published(). \
+                       filter(published__gte=date_from). \
+                       filter(published__lte=date_to)
+         else:
+            articles = models.Article.objects.published(). \
+                       filter(published__gte=date_from)
+         from django.utils.html import strip_tags
+         for article in articles:
+            output.append("<h3><a href='" + article.get_absolute_url() + \
+               "'>" + article.title +"</a></h3>")
+            output.append("<p>" + strip_tags(article.cached_summary_text) + "</p>")
+            output.append("<p style='font-style:italic;'>" + article.cached_byline_no_links + "</p>\n")
+   else:
+      form = ArticleListForm()
+
+   return render(request, "newsroom/article_list_form.html",
+                 {'form':form,
+                  'output': output,
+                  'len_articles': len(articles)})
 
 ''' Used to test logging
 '''

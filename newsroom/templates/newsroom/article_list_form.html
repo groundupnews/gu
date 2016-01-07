@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Generate newsletter {{block.super}}
+{% endblock %}
+
+{% block additional_head %}
+
+{{block.super}}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"></link>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+      <h1>Generate a list of articles</h1>
+      <form role="form" action="{% url 'generate_article_list' %}" method="post">
+	{% csrf_token %}
+
+	{{ form.non_field_errors }}
+
+
+        <div class="form-group">
+
+	  <label for="id_date_from">Date from (required):</label>
+	  {% for error in form.date_from.errors %}
+	  <p class="alert alert-danger">{{ error }}</p>
+	  {% endfor %}
+          <div class='input-group date' id='datetimepicker1'>
+            <input id="id_date_from" name="date_from"
+		   type='text' class="form-control" />
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+	  </div>
+        </div>
+
+
+        <div class="form-group">
+	  <label for="id_date_to">Date to:</label>
+	  {% for error in form.date_to.errors %}
+	  <p class="alert alert-danger">{{ error }}</p>
+	  {% endfor %}
+          <div class='input-group date' id='datetimepicker2'>
+            <input id="id_date_to" name="date_to"
+		   type='text' class="form-control" />
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </div>
+
+	<div class="form-group">
+	  <input type="submit" value="Generate" class="btn btn-default">
+	</div>
+
+
+      </form>
+    </div>
+  </div>
+
+  {% if output %}
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="text-align: center; margin:10px; padding:10px;">
+      <p class="alert alert-info">{{len_articles}} articles.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+	<textarea class="form-control" rows="25" style="margin-top:15px;">{% for	  line in output %}{{line}}
+{% endfor %}</textarea>
+      </div>
+    </div>
+    <div class="col-md-6" style="border: 2px solid; margin-top: 15px;">
+      {% for line in output %}
+      {{line|safe}}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+
+{% block javascript-includes %}
+{{block.super}}
+<script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.0/moment.min.js">
+</script>
+<script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+</script>
+<script type="text/javascript">
+  $(function () {
+  $('#datetimepicker1').datetimepicker({
+  format:'YYYY-M-D HH:mm'
+  });
+  });
+</script>
+<script type="text/javascript">
+  $(function () {
+  $('#datetimepicker2').datetimepicker({
+  format:'YYYY-M-D HH:mm'
+  });
+  });
+</script>
+{% endblock %}

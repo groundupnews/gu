@@ -29,6 +29,13 @@ urlpatterns = [
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.TopicDetail.as_view()), name='topic.detail'),
 
+
+    ###############################
+    # Article list generate
+
+    url(r'^generate_article_list/$',
+        views.generate_article_list, name='generate_article_list'),
+
     ###############################
     # Old feature article redirects
     url(r'^article/redhills-ruins-cape-towns-forgotten-district-six_2043/$',
