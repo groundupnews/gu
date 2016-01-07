@@ -22,7 +22,7 @@
 
 <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
 <meta property="og:description"
-      content="{{ article.cached_summary_text_no_html|safe }}"/>
+      content="{{ article.cached_summary_text_no_html }}"/>
 
 
 {% endblock %}
@@ -46,9 +46,7 @@
 
 
       <p class="article-category">
-	<a href="{% url 'category.detail' article.category.name %}"
-	   >{{article.category|upper}}
-	</a>
+	<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
 
 	{% if display_region %}
 	|
