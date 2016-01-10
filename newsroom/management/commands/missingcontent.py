@@ -54,7 +54,7 @@ def process(start, finish, html_file):
             with urllib.request.urlopen(old_link) as response:
                 html = response.read()
         except:
-            print("CRITICAL: Can't find old link")
+            print("CRITICAL: Can't find old link", old_link)
             continue
         html = str(html)
         pos = html.find('<div class="field field-name-field-where field-type-text field-label-above"><div class="field-label">Where is the event:&nbsp;</div>')
@@ -188,13 +188,14 @@ def process(start, finish, html_file):
         # Disqus
         newarticle.disqus_id = "node/"
         id = html.partition("/node/")[2][0:4]
-        if id[0] in [0-9]:
+        digits = [str(x) for x in list(range(10))]
+        if id[0] in digits:
             newarticle.disqus_id = newarticle.disqus_id + id[0]
-        if id[1] in [0-9]:
+        if id[1] in digits:
             newarticle.disqus_id = newarticle.disqus_id + id[1]
-        if id[2] in [0-9]:
+        if id[2] in digits:
             newarticle.disqus_id = newarticle.disqus_id + id[2]
-        if id[3] in [0-9]:
+        if id[3] in digits:
             newarticle.disqus_id = newarticle.disqus_id + id[3]
 
 
