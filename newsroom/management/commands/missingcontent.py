@@ -42,24 +42,6 @@ def process(start, finish, html_file):
         old_link = "http://gutest.nathangeffen.webfactional.com" + link
 
         html = ""
-        try:
-            with urllib.request.urlopen(new_link) as response:
-                html = response.read()
-            print("Already on site: ", slug)
-            continue
-        except:
-            new_link2 = new_link.replace("%E2%80%99", "")
-            if new_link2 != new_link:
-                try:
-                    with urllib.request.urlopen(new_link) as response:
-                        html = response.read()
-                        print("Already on site: ", slug)
-                    continue
-                except:
-                    print("Processing (b):", line)
-            else:
-                print("Processing (a):", line)
-
 
         newarticle = Article()
         newarticle.title = title
