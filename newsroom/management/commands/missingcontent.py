@@ -56,9 +56,9 @@ def process(start, finish, html_file):
                         print("Already on site: ", slug)
                     continue
                 except:
-                    print("Processing (b):", slug)
+                    print("Processing (b):", line)
             else:
-                print("Processing (a):", slug)
+                print("Processing (a):", line)
 
 
         newarticle = Article()
