@@ -34,6 +34,8 @@ def process(start, finish, html_file):
     for idx,line in enumerate(articles):
         link = line.partition(" @ ")[0]
         title = line.partition(" @ ")[2].partition(" | ")[0].strip()
+        if len(title) > 200:
+            title = title[0:200]
         date_time = line.partition(" | ")[2].strip() + " +0200"
         slug = slugify(link.rpartition("/")[2])
         new_link = "http://groundup.org.za/article/" + slug
