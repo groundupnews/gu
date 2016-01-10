@@ -146,6 +146,15 @@ class RedirectHandConstructedFeatures(View):
       url = "/media/features/" + path
       return redirect(url)
 
+'''Redirect old /content/ articles to new /article/
+
+'''
+class RedirectContentToArticle(View):
+   def get(self, request, path):
+      url = "/article/" + path
+      return redirect(url)
+
+
 '''Newsletter generator form
 '''
 

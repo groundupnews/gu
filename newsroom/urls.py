@@ -190,6 +190,21 @@ urlpatterns = [
     url(r'^features/(?P<path>.*)$',
         views.RedirectHandConstructedFeatures.as_view(), name='features.redirect'),
 
+    ####################################
+    # Redirect /content/ to /article
+
+    url(r'^content/(?P<path>.*)$',
+        views.RedirectContentToArticle.as_view(), name='content.redirect'),
+
+    url(r'^photoessay/(?P<path>.*)$',
+        views.RedirectContentToArticle.as_view(), name='content.redirect'),
+
+    url(r'^gallery/(?P<path>.*)$',
+        views.RedirectContentToArticle.as_view(), name='content.redirect'),
+
+
+    ####################################
+
     url(r'^sitenews/rss/$', feeds.LatestArticlesRssFeed()),
     url(r'^sitenews/atom/$', feeds.LatestArticlesAtomFeed()),
 ]
