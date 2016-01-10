@@ -40,12 +40,8 @@ def process(start, finish, html_file):
         slug = slugify(link.rpartition("/")[2])
         new_link = "http://groundup.org.za/article/" + slug
         old_link = "http://gutest.nathangeffen.webfactional.com" + link
-        # print("Title:", title)
-        # print("Date:", date_time)
-        # print("Slug:", slug)
-        # print("Old link:", old_link)
-        # print("New link:", new_link)
 
+        html = ""
         try:
             with urllib.request.urlopen(new_link) as response:
                 html = response.read()
@@ -71,6 +67,7 @@ def process(start, finish, html_file):
         import datetime
         newarticle.published = datetime.datetime.strptime(date_time,
                                                     "%d/%m/%Y - %H:%M %z")
+        html = ""
         try:
             with urllib.request.urlopen(old_link) as response:
                 html = response.read()
@@ -79,6 +76,7 @@ def process(start, finish, html_file):
             continue
         html = str(html)
         pos = html.find('<div class="field field-name-field-where field-type-text field-label-above"><div class="field-label">Where is the event:&nbsp;</div>')
+
         if pos == -1:
             print("PROCESSING:", str(idx + start) + " " + link)
         else:
@@ -96,6 +94,7 @@ def process(start, finish, html_file):
             print("Byline not found")
 
         # Intro
+        intro = ""
         try:
             intro = soup.find("div", {"class" : "article-intro"})
             intro = intro.find("p")
@@ -105,6 +104,7 @@ def process(start, finish, html_file):
             intro = ""
             print("Intro not found")
 
+        primary_image = ""
         try:
             primary_image = soup.find("div", {"class" : "article-image"}). \
                             find("img")
@@ -136,11 +136,11 @@ def process(start, finish, html_file):
             print("Swapping caption and intro")
 
         try:
-            text = soup.find("div", {"class":"content"}). \
+            text = soup.find("div", {"class":"article-body"}). \
                    find("div", {"class":"field-item"})
         except:
             try:
-                text = soup.find("div", {"class":"article-body"}). \
+                text = soup.find("div", {"class":"content"}). \
                        find("div", {"class":"field-item"})
             except:
                 print("No text")
@@ -204,7 +204,17 @@ def process(start, finish, html_file):
         # newarticle.topics = topics
 
         # Disqus
-        newarticle.disqus_id = "node/" + html.partition("/node/")[2][0:4]
+        newarticle.disqus_id = "node/"
+        id = html.partition("/node/")[2][0:4]
+        if id[0] in [0-9]:
+            newarticle.disqus_id = newarticle.disqus_id + id[0]
+        if id[1] in [0-9]:
+            newarticle.disqus_id = newarticle.disqus_id + id[1]
+        if id[2] in [0-9]:
+            newarticle.disqus_id = newarticle.disqus_id + id[2]
+        if id[3] in [0-9]:
+            newarticle.disqus_id = newarticle.disqus_id + id[3]
+
 
         newarticle.include_in_rss = False
         newarticle.exclude_from_list_views = True
