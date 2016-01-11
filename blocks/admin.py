@@ -18,6 +18,7 @@ class GroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'block_list', 'modified', )
     ordering = ['-modified',]
     search_fields = ['name', 'blocks',]
+    fields = ('name',)
     inlines = [BlockGroupInline,]
 
 admin.site.register(models.Block, BlockAdmin)
