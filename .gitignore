@@ -16,6 +16,7 @@ parts
 src/*.egg-info
 media/
 *-journal
+output.txt
 
 # C extensions
 *.so
