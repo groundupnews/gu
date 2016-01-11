@@ -138,7 +138,8 @@ class Article(models.Model):
         default=settings.ARTICLE_PRIMARY_IMAGE_SIZE,
         max_length=20,
         help_text="Choose 'LEAVE' if image size should not be changed.")
-    external_primary_image = models.URLField(blank=True, max_length=500)
+    external_primary_image = models.URLField(blank=True, max_length=500,
+            help_text="If the primary image has a value, it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
     body = models.TextField(blank=True)
     published = models.DateTimeField(blank=True, null=True,

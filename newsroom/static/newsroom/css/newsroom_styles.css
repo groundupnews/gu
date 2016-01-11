@@ -367,3 +367,10 @@ a.admin-menu-item {
 	margin-right: auto;
     }
 }
+
+div.editor-summary {
+    background-color: black;
+    color: orange;
+    margin: 10px;
+    padding: 10px;
+}

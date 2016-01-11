@@ -57,8 +57,6 @@ class OpinionAnalysisList(ArticleList):
       context['heading'] = "Opinion and Analysis"
       return context
 
-
-
 class AuthorDetail(ArticleList):
 
    def get_queryset(self):
@@ -155,7 +153,7 @@ class RedirectContentToArticle(View):
       return redirect(url)
 
 
-'''Newsletter generator form
+'''newsletter generator form
 '''
 
 @staff_member_required

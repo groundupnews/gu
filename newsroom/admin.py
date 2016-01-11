@@ -36,26 +36,35 @@ class ArticleAdmin(admin.ModelAdmin):
             'classes': ('wide grp-collapse grp-closed',),
             'fields': ('author_02', 'author_03', 'author_04', 'author_05',)
         }),
-        ('Content', {
+        ('Primary Image', {
             'classes': ('wide',),
             'fields': ( ('primary_image', 'primary_image_size',),
-                        'primary_image_caption', 'body', )
+                        'primary_image_caption', )
+        }),
+        ('External URL for primary image', {
+            'classes': ('grp-collapse grp-closed',),
+            'fields':('external_primary_image',)
+        }),
+        ('Content', {
+            'classes': ('wide',),
+            'fields': ( 'body', )
+        }),
+        ('Publish', {
+            'fields': ('category', 'topics', 'region', 'slug', 'published', ),
         }),
         ('Summary', {
             'classes': ('grp-collapse grp-closed',),
             'fields': ( ('summary_image', 'summary_image_size',),
-                       'cached_summary_text', 'summary_text'),
+                        'cached_summary_text', 'summary_text',
+                        'summary_template',),
         }),
         ('Advanced', {
             'classes': ('grp-collapse grp-closed',),
             'fields':('copyright', 'include_in_rss', 'comments_on',
                       'stickiness', 'exclude_from_list_views',
-                      'byline', 'external_primary_image',
-                      'template','summary_template',)
+                      'byline',
+                      'template', 'disqus_id',)
         }),
-        ('Publish', {
-            'fields': ('category', 'topics', 'region', 'slug', 'published', ),
-        })
     )
 
     def get_changeform_initial_data(self, request):
