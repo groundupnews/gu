@@ -27,13 +27,6 @@
 
 {% endblock %}
 
-{% block additional_head %}
-
-{% comment %}Share This {% endcomment %}
-<script type="text/javascript">var switchTo5x=true;</script>
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-{% endblock %}
 
 {% block content %}
 
@@ -66,15 +59,12 @@
 	    {{ article.cached_byline|safe }}
 	  </p>
 
-	  <p class="article-dateline">{{ article.published|date:"j F Y"}}
+	  <p class="article-dateline">{{ article.published|date:"j F Y"}}&nbsp;
+          &nbsp;&nbsp;{% include 'newsroom/sharebuttons.html' %}
 	  </p>
 
-	  <p class="article-share">
-	    <span class='st_facebook_large' ></span>
-	    <span class='st_twitter_large' ></span>
-	    <span class='st_email_large' ></span>
-	    <span class='st_sharethis_large' ></span>
-	  </p>
+
+
 	  {% if article.cached_primary_image %}
 	  <div id="article-primary-image">
 	    {% if article.primary_image %}
@@ -153,5 +143,42 @@
   </div>
 </div>
 
+
+{% endblock %}
+
+{% block javascript-includes %}
+
+{{block.super}}
+
+<!-- Sharing buttons -->
+<script type="text/javascript">
+jQuery(document).ready(function ($) {
+    $('#twitter-share').click(function(){
+       var article_title = encodeURI('{{article.title}}').substring(0, 113);
+       var url = encodeURI('{{ request.build_absolute_uri }}');
+       var twitter_url = "https://twitter.com/intent/tweet?text=" +
+            article_title + "&url=" + url;
+       var win = window.open(twitter_url, '_blank');
+       win.focus();
+       return false;
+    });
+    $('#facebook-share').click(function(){
+       var url = encodeURI('{{ request.build_absolute_uri }}');
+       var facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+       var win = window.open(facebook_url, '_blank');
+       win.focus();
+       return false;
+    });
+    $('#email-share').click(function(){
+       var subject = encodeURI('{{article.title}}');
+       var body = encodeURI('{{article.title}}' + ' ' +
+                            '{{ request.build_absolute_uri }}');
+       var mail_url = "mailto:?subject=" + subject + "&body=" + body;
+       var win = window.open(mail_url, '_self');
+       win.focus();
+       return false;
+    });
+});
+</script>
 
 {% endblock %}
