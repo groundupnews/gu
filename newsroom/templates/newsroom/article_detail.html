@@ -13,10 +13,11 @@
 <meta property="og:title" content="{{article.title}}"/>
 <meta property="og:type" content="article"/>
 
+
 {% with image_url=article.cached_primary_image %}
 {% if image_url %}
     <meta property="og:image"
-	  content="{% if image_url == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
+	  content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
 {% endif %}
 {% endwith %}
 
@@ -154,7 +155,8 @@
 <script type="text/javascript">
 jQuery(document).ready(function ($) {
     $('#twitter-share').click(function(){
-       var article_title = encodeURI('{{article.title}}').substring(0, 113);
+       var article_title = encodeURI('{{article.title|addslashes|safe}}').
+                                 substring(0, 115);
        var url = encodeURI('{{ request.build_absolute_uri }}');
        var twitter_url = "https://twitter.com/intent/tweet?text=" +
             article_title + "&url=" + url;
@@ -170,8 +172,8 @@ jQuery(document).ready(function ($) {
        return false;
     });
     $('#email-share').click(function(){
-       var subject = encodeURI('{{article.title}}');
-       var body = encodeURI('{{article.title}}' + ' ' +
+       var subject = encodeURI('{{article.title|addslashes|safe}}');
+       var body = encodeURI('{{article.cached_summary_text|addslashes|striptags|truncatewords:100|safe}}' + ' ' +
                             '{{ request.build_absolute_uri }}');
        var mail_url = "mailto:?subject=" + subject + "&body=" + body;
        var win = window.open(mail_url, '_self');
