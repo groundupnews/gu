@@ -97,7 +97,7 @@
       <div id="article-topics">
 	<p class="article-topics">
 	  <span id="article-topics-name">Topics:</span>
-	  {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a href="{% url 'topic.detail' topic.name %}"
+	  {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a href="{% url 'topic.detail' topic.slug %}"
 										      >{{ topic.name }}</a>{% endfor %}
 	</p>
       </div>

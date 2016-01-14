@@ -5,8 +5,9 @@
     <div class="container">
       <div class="navbar-header" >
 	<span class="logo">
-	  <a href="/" title="Home page">
-	    <img src="{% static 'newsroom/images/GroundUpLogo.png' %}" />
+	  <a href="/" title="Click to go to home page">
+	    <img src="{% static 'newsroom/images/GroundUpLogo.png' %}"
+                 alt="GroundUp Logo" />
 	  </a>
 	</span>
 	<button type="button" class=" navbar-toggle
@@ -34,37 +35,55 @@
 	  </button>
 	</form>
 
-	<!--	    Thanks to azmind.com for the sprites.
-		    http://azmind.com/2012/11/06/social-icons-sprites-35-ready-to-use-icons-psd-png-html-css/
-	  -->
-	<ul class="navbar-nav navbar-right icons">
-	  <li class="icons"><a class="facebook" href=
-			       "http://www.facebook.com/GroundUpNews"></a></li>
-	  <li class="icons"><a class="twitter" href=
-			       "http://twitter.com/GroundUp_News"></a></li>
-	  <li class="icons"><a class="rss" href=
-			       "/feeds/"></a></li>
-	</ul>
-
 
 	<ul class="nav navbar-nav">
 	  {% with path=request.get_full_path %}
 	  <li  {% if path == '/about/' %} class='active' {% endif %} >
 	    <a href="/about/">About</a>
 	  </li>
-	  <li><a href="/publish/">Publish</a></li>
-	  <li><a href="http://eepurl.com/Or2a9">Newsletter</a></li>
-	  <li><a href="/funders/">Funders</a></li>
-	  <li><a href="/donate/">Donate</a></li>
+	  <li {% if path == '/donate/' %} class='active' {% endif %}>
+	    <a href="/donate/"><span class="glyphicon glyphicon-heart"
+	    aria-hidden="true" style="padding-right:2px;"></span>Donate</a>
+	  </li>
 	  {% endwith %}
 	  <li class="Dropdown">
-	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Articles<span class="caret"></span></a>
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+	    role="button" aria-haspopup="true"
+	    aria-expanded="false"><i
+                     class="fa fa-twitter fa-lg"
+                     style="padding-right:2px;"></i>Follow<span
+                            class="caret"></span>
+	    </a>
 	    <ul class="dropdown-menu">
-	      {% if request.user.is_staff %}
-   	          {% include 'newsroom/staff_menu.html' %}
-	      {% endif %}
+	      <li><a href="http://www.facebook.com/GroundUpNews"
+		     target="_blank">Facebook<i
+                           style="position: absolute;left: 110px;"
+                           class="fa fa-facebook
+		     fa-lg" ></i></a></li>
+	      <li><a href="http://twitter.com/GroundUp_News"
+		     target="_blank">Twitter<i
+                           style="position: absolute;left: 110px;"
+                           class="fa fa-twitter fa-lg"></i></a></li>
+	      <li role="separator" class="divider"></li>
+	      <li><a href="/feeds/">RSS<i
+                           style="position: absolute;left: 110px;"
+                           class="fa fa-rss fa-lg" ></i></a></li>
+	      <li><a href="http://eepurl.com/Or2a9"
+		     target="_blank">Newsletter<i
+                           style="position: absolute;left: 110px;"
+                           class="fa fa-envelope fa-lg" ></i></a></li>
+	    </ul>
+	  </li>
+	  <li class="Dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics<span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	      <li><a href="/silicosis-court-case/">Silicosis Case</a></li>
+	      <li><a href="/local-elections-coverage/">2016 Elections</a></li>
+	      <li><a href="/spotlight-social-grants/">Social Grants</a></li>
+	      <li><a href="/topic/coi">Inquiry into Policing</a></li>
+	      <li role="separator" class="divider"></li>
 	      <li><a href="/category/News">News</a></li>
-	      <li><a href="/category/opinion_and_analysis">Opinion</a></li>
+	      <li><a href="/category/opinion_and_analysis">Opinion &amp; Analysis</a></li>
 	      <li><a href="/topic/Health">Health</a></li>
 	      <li><a href="/topic/Education">Education</a></li>
 	      <li><a href="/topic/Housing">Housing</a></li>
@@ -72,6 +91,15 @@
 	      <li><a href="/topic/Labour">Labour</a></li>
 	    </ul>
 	  </li>
+
+          {% if request.user.is_staff %}
+	  <li class="Dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+            {% include 'newsroom/staff_menu.html' %}
+	    </ul>
+	  </li>
+	  {% endif %}
 	</ul>
       </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->

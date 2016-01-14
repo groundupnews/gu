@@ -25,7 +25,6 @@ header{
 }
 
 
-
 .navbar-default .navbar-nav > li > a:hover {
     color: #555;
     background-color: #E7E7FF
@@ -138,6 +137,10 @@ article {
     background-color: #DDDDDD;
     padding-top: 10px;
     padding-bottom: 20px;
+}
+
+.footer-text {
+    padding-left: 50px;
 }
 
 .subtitle {
@@ -336,9 +339,9 @@ img.very-large, div.very-large img {
     margin-bottom: 10px;
 }
 
-a.admin-menu-item {
+/*a.admin-menu-item {
     color: red !important;
-}
+}*/
 
 #footer {
     margin-top: 15px;
@@ -375,4 +378,25 @@ div.editor-summary {
     color: orange;
     margin: 10px;
     padding: 10px;
+}
+
+
+/**************************/
+/* Collapse menu earlier. */
+/* Source:                */
+/* http://stackoverflow.com/questions/21076922/bootstrap-how-to-collapse-navbar-earlier */
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+    .navbar-collapse.collapse.in {
+        display: block !important;
+    }
+    .navbar-header .collapse, .navbar-toggle {
+        display:block !important;
+    }
+    .navbar-header {
+        float:none;
+    }
 }

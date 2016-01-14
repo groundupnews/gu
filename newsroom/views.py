@@ -102,12 +102,13 @@ class RegionDetail(ArticleList):
 
 class TopicDetail(ArticleList):
    def get_queryset(self):
-      self.topic = self.args[0]
-      return models.Article.objects.published().filter(topics=self.topic)
+      self.topic = get_object_or_404(models.Topic, slug=self.args[0])
+      return models.Article.objects.published(). \
+         filter(topics=self.topic)
 
    def get_context_data(self, **kwargs):
       context = super(TopicDetail, self).get_context_data(**kwargs)
-      context['heading'] = "Topic: " + self.topic
+      context['heading'] = "Topic: " + self.topic.name
       return context
 
 
