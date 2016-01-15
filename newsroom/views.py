@@ -111,7 +111,11 @@ class TopicDetail(ArticleList):
    def get_context_data(self, **kwargs):
       context = super(TopicDetail, self).get_context_data(**kwargs)
       context['heading'] = "Topic: " + self.topic.name
+      context['topic'] = self.topic
       return context
+
+   def get_template_names(self):
+      return (self.topic.template,)
 
 
 class ArticleDetail(View):

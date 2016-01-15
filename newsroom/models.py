@@ -55,6 +55,16 @@ class Region(tagulous.models.TagTreeModel):
         case_sensitive = False
 
 class Topic(tagulous.models.TagModel):
+    introduction = models.TextField(blank=True,
+                                    help_text="Use unfiltered HTML. "
+                                    "If this is not blank, "
+                                    "the default template does not render any "
+                                    "other fields before the article list.")
+    icon = FileBrowseField("Image", max_length=200, directory="images/",
+                                    blank=True, null=True)
+    template = models.CharField(max_length=200,
+                                default="newsroom/topic_detail.html")
+
     def get_absolute_url(self):
         return reverse('topic.detail', args=[self.slug,])
 

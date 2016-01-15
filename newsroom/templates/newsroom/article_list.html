@@ -12,6 +12,7 @@ Home Page {{block.super}}
     <div class="row">
       <div class="col-md-1"></div>
       <div class="col-md-8">
+	{% block content-intro %}
 	{% if heading %}
 	<h1>{{heading|capfirst}}</h1>
 	{% endif %}
@@ -24,6 +25,7 @@ Home Page {{block.super}}
 	<p>{{description}}</p>
 	{% endif %}
 
+	{% endblock %}
 
 	<div class="row">
 

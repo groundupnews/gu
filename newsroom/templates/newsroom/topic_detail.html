@@ -1,0 +1,15 @@
+{% extends 'newsroom/article_list.html' %}
+
+{% block content-intro %}
+
+<div class="topic-intro">
+
+{% if topic.introduction %}
+{{topic.introduction|safe}}
+{% else %}
+<h1 class="topic-heading">{{ topic.name }}</h1>
+{% endif %}
+
+</div>
+
+{% endblock %}
