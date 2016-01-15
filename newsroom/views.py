@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.sites.models import Site
+from django.utils.html import strip_tags
 import logging
 
 from . import models
@@ -173,9 +175,10 @@ def generate_article_list(request):
          else:
             articles = models.Article.objects.published(). \
                        filter(published__gte=date_from)
-         from django.utils.html import strip_tags
+         site_url = 'http://' + Site.objects.get_current().domain
          for article in articles:
-            output.append("<h3><a href='" + article.get_absolute_url() + \
+            output.append("<h3><a href='" + site_url + \
+                          article.get_absolute_url() + \
                "'>" + article.title +"</a></h3>")
             output.append("<p>" + strip_tags(article.cached_summary_text) + "</p>")
             output.append("<p style='font-style:italic;'>" + article.cached_byline_no_links + "</p>\n")
