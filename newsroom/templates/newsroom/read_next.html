@@ -1,0 +1,10 @@
+<div class="col-xs-12 col-md-12">
+    {% if read_next.cached_primary_image %}
+    <a href="{{read_next.get_absolute_url}}" >
+	<img src="{{read_next.cached_primary_image}}"
+	     alt="{{read_next.title}}" >
+    </a>
+    {% endif %}
+    <h2><a href="{{read_next.get_absolute_url}}">{{read_next.title}}</a></h2>
+
+</div>

@@ -89,10 +89,6 @@ class Category(tagulous.models.TagModel):
             "Analysis, Opinion, Photo"
 
 
-# Used to select sizes of images
-IMAGE_SIZE_CHOICES = [(item,item,) for item in VERSIONS]
-IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
-
 # Used to prevent disaster on the template fields
 DETAIL_TEMPLATE_CHOICES = (
     ("newsroom/article_detail.html", "Standard"),
@@ -117,7 +113,6 @@ class Article(models.Model):
     summary_image = FileBrowseField("Image", max_length=200, directory="images/",
                                     blank=True, null=True)
     summary_image_size = models.CharField(
-        choices=IMAGE_SIZE_CHOICES,
         default=settings.ARTICLE_SUMMARY_IMAGE_SIZE,
         max_length=20,
         help_text="Choose 'LEAVE' if image size should not be changed.")
@@ -144,7 +139,6 @@ class Article(models.Model):
     primary_image = FileBrowseField(max_length=200, directory="images/",
                                    blank=True, null=True)
     primary_image_size = models.CharField(
-        choices=IMAGE_SIZE_CHOICES,
         default=settings.ARTICLE_PRIMARY_IMAGE_SIZE,
         max_length=20,
         help_text="Choose 'LEAVE' if image size should not be changed.")
@@ -154,15 +148,20 @@ class Article(models.Model):
     body = models.TextField(blank=True)
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
+    recommended = models.BooleanField(default=True)
     category = tagulous.models.SingleTagField(
         to=Category,
         default=4 # News
     )
-    region = tagulous.models.SingleTagField(to=Region, blank=True)
+    region = tagulous.models.SingleTagField(to=Region, blank=True, null=True)
     topics = tagulous.models.TagField(
         to=Topic,
         blank=True
     )
+    main_topic = tagulous.models.SingleTagField(
+        to=Topic, blank=True, null=True,
+        related_name="main",
+        help_text="Used for generating 'See also' list of articles.")
     copyright = models.TextField(blank=True, default=settings.ARTICLE_COPYRIGHT)
     template = models.CharField(max_length=200,
                                 choices=DETAIL_TEMPLATE_CHOICES,

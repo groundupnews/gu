@@ -1,13 +1,29 @@
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% load staticfiles %}
 
-<a id="facebook-share" href="#" title="Share on Facebook">
-<i class="fa fa-facebook fa-lg"></i></a>
+<a id="facebook-share" href="#"
+   title="Share on Facebook"><img
+	src="{% static 'newsroom/images/icons/facebook.png' %}" />
+</a>
 
-&nbsp;
+<a id="twitter-share" href="#" title="Share on Twitter">
+    <img
+	src="{% static 'newsroom/images/icons/twitter.png' %}" />
+</a>
 
-<a id="twitter-share" href="#" title="Share on Twitter"><i class="fa fa-twitter fa-lg"></i></a>
+
+<a id="whatsapp-share" href="#"
+   data-action="share/whatsapp/share"
+   title="Share via WhatsApp">
+    <img src="{% static 'newsroom/images/icons/whatsapp.png' %}" />
+</a>
 
 
-&nbsp;
+<a id="email-share" href="{{request.build_absolute_uri}}"
+   style="color:#391061"
+   title="Email"><i class="fa fa-envelope fa-2x"></i>
+</a>
 
-<a id="email-share" href="#" title="Email"><i class="fa fa-envelope fa-lg"></i></a>
+<a id="print-article" href="#"
+   style="color:green"
+   title="Print"><i class="fa fa-print fa-2x"></i>
+</a>

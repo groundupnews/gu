@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
@@ -7,8 +8,34 @@ from django.forms import ModelForm, Textarea
 from . import models
 
 import tagulous
+from filebrowser.settings import VERSIONS
+
+
+# Used to select sizes of images
+IMAGE_SIZE_CHOICES = [(item,item,) for item in VERSIONS]
+IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
+
+
+class ArticleForm(forms.ModelForm):
+
+    summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
+    primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
+
+    def clean_main_topic(self):
+        if self.cleaned_data["main_topic"] == "(None)":
+            self.cleaned_data["main_topic"] = None
+        return self.cleaned_data["main_topic"]
+
+    def clean(self, *args, **kwargs):
+        if self.cleaned_data["main_topic"]:
+            topic = self.cleaned_data["main_topic"]
+            if topic not in self.cleaned_data["topics"]:
+                self.cleaned_data["topics"].append(topic)
+        super(ArticleForm, self).clean(*args, **kwargs)
+
 
 class ArticleAdmin(admin.ModelAdmin):
+    form = ArticleForm
     list_display = ('title', 'created', 'modified', 'published',
                     'is_published', 'cached_byline_no_links', 'category',)
     prepopulated_fields = {"slug": ("title",) }
@@ -50,7 +77,8 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ( 'body', )
         }),
         ('Publish', {
-            'fields': ('category', 'topics', 'region', 'slug', 'published', ),
+            'fields': ('category', 'topics', 'main_topic',
+                       'region', 'slug', 'published', ),
         }),
         ('Summary', {
             'classes': ('grp-collapse grp-closed',),
@@ -62,7 +90,7 @@ class ArticleAdmin(admin.ModelAdmin):
             'classes': ('grp-collapse grp-closed',),
             'fields':('copyright', 'include_in_rss', 'comments_on',
                       'stickiness', 'exclude_from_list_views',
-                      'byline',
+                      'recommended', 'byline',
                       'template', 'disqus_id',)
         }),
     )

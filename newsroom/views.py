@@ -8,7 +8,9 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
 from django.utils.html import strip_tags
+
 import logging
+from random import randint
 
 from . import models
 from . import settings
@@ -125,13 +127,39 @@ class ArticleDetail(View):
          if request.user.is_staff and not article.is_published():
             messages.add_message(request, messages.INFO,
                             "This article is not published.")
-         if article.region and article.region.name not in ["None", ""]:
+         if article.region and (article.region.name not in \
+            ["None", "", "(None)",]):
             display_region = article.region.name.rpartition("/")[2]
          else:
             display_region = ""
+
+         try:
+            read_next = models.Article.objects.published().\
+                        exclude(pk=article.pk). \
+                        exclude(recommended=False)[randint(0,9)]
+            read_next_pk = read_next.pk
+         except IndexError:
+            read_next  = None
+            read_next_pk = article.pk
+
+         if article.main_topic:
+            see_also = models.Article.objects.published(). \
+                       filter(topics=article.main_topic). \
+                       exclude(pk=article.pk).exclude(pk=read_next_pk).\
+                      distinct()[0:4]
+         elif article.topics:
+            see_also = models.Article.objects.published(). \
+                       filter(topics=article.topics.all()). \
+                       exclude(pk=article.pk).exclude(pk=read_next_pk). \
+                       distinct()[0:4]
+         else:
+            see_also = None
+
          return render(request, article.template,
                        {'article': article,
-                        'display_region': display_region})
+                        'display_region': display_region,
+                        'see_also': see_also,
+                        'read_next': read_next})
       else:
          raise Http404
 

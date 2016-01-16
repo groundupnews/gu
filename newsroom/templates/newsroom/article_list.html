@@ -11,7 +11,7 @@ Home Page {{block.super}}
     {{block.super}}
     <div class="row">
       <div class="col-md-1"></div>
-      <div class="col-md-8">
+      <div class="col-md-8 page-content" >
 	{% block content-intro %}
 	{% if heading %}
 	<h1>{{heading|capfirst}}</h1>
@@ -71,7 +71,7 @@ Home Page {{block.super}}
 	</div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-3 page-content">
       {% block sidebar-right %}
 
       {% endblock %}

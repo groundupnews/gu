@@ -16,8 +16,8 @@
 
 {% with image_url=article.cached_primary_image %}
 {% if image_url %}
-    <meta property="og:image"
-	  content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
+<meta property="og:image"
+      content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
 {% endif %}
 {% endwith %}
 
@@ -33,115 +33,140 @@
 
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-7">
-      {{block.super}}
+    <div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-7 page-content" >
+	    {{block.super}}
 
 
-      <p class="article-category">
-	<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
+	    <p class="article-category">
+		<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
 
-	{% if display_region %}
-	|
-	<a href="{% url 'region.detail' article.region.path %}"
-	       >{{display_region|upper}}</a>&nbsp;
-	{% endif %}
-      </p>
+		{% if display_region %}
+		|
+		<a href="{% url 'region.detail' article.region.path %}"
+		>{{display_region|upper}}</a>&nbsp;
+		{% endif %}
+	    </p>
 
-      <article>
+	    <article>
 
-	  <h1 id="article-title">{{ article.title}}</h1>
-	  {% if article.subtitle %}
-	  <h2 id="article-subtitle">{{ article.subtitle|safe }}</h2>
-	  {% endif %}
+		<h1 id="article-title">{{ article.title}}</h1>
+		{% if article.subtitle %}
+		<h2 id="article-subtitle">{{ article.subtitle|safe }}</h2>
+		{% endif %}
 
-	  <p class="article-byline">
-	    {{ article.cached_byline|safe }}
-	  </p>
+		<p class="article-byline">
+		    {{ article.cached_byline|safe }}
+		</p>
 
-	  <p class="article-dateline">{{ article.published|date:"j F Y"}}&nbsp;
-          &nbsp;&nbsp;{% include 'newsroom/sharebuttons.html' %}
-	  </p>
+		<p class="article-dateline">{{ article.published|date:"j F Y"}}</p>
 
+		{% if article.cached_primary_image %}
+		<div id="article-primary-image">
+		    {% if article.primary_image %}
+		    <a href="{{MEDIA_URL}}{{article.primary_image}}">
+			<img class="article-primary-image"
+			     src="{{article.cached_primary_image}}" />
+		    </a>
+		    {% else %}
+		    <img class="article-primary-image"
+			 src="{{article.cached_primary_image}}" />
+		    {% endif %}
+		</div>
+		{% endif %}
 
+		{% if article.primary_image_caption %}
+		<p class="article-primary-image-caption">
+		    {{article.primary_image_caption}}
+		</p>
+		{% endif %}
 
-	  {% if article.cached_primary_image %}
-	  <div id="article-primary-image">
-	    {% if article.primary_image %}
-	    <a href="{{MEDIA_URL}}{{article.primary_image}}">
-	      <img class="article-primary-image"
-		   src="{{article.cached_primary_image}}" />
-	    </a>
-	    {% else %}
-	      <img class="article-primary-image"
-		   src="{{article.cached_primary_image}}" />
+		<div id="article-body">
+		    {{ article.body|safe }}
+		</div>
+
+	    </article>
+
+	    <div id="sharing">
+		<p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+	    </div>
+
+	    {% with topics_all=article.topics.all %}
+	    {% if topics_all|length  %}
+	    <div id="article-topics">
+		<p class="article-topics">
+		    <span id="article-topics-name">Topics:</span>
+		    {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
+												 href="{% url 'topic.detail' topic.slug %}"
+											     >{{ topic.name }}</a>{% endfor %}
+		</p>
+	    </div>
 	    {% endif %}
-	  </div>
-	  {% endif %}
+	    {% endwith %}
 
-	  {% if article.primary_image_caption %}
-	  <p class="article-primary-image-caption">
-	    {{article.primary_image_caption}}
-	  </p>
-	  {% endif %}
+	    {% if see_also %}
+	    <div id="see-also">
+		<h2>Related articles</h2>
+		<div class="row">
+		    {% for item in see_also %}
+		    {% include 'newsroom/see_also.html' %}
+		    {% endfor %}
+		</div>
+	    </div>
+	    {% endif %}
 
-	  <div id="article-body">
-	    {{ article.body|safe }}
-	  </div>
+	    {% if read_next %}
+	    <div id="read-next">
+		<h2>We recommend</h2>
+		<div class="row">
+		{% include 'newsroom/read_next.html' %}
+		</div>
+	    </div>
+	    {% endif %}
 
-      </article>
 
-      {% with topics_all=article.topics.all %}
-      {% if topics_all|length  %}
-      <div id="article-topics">
-	<p class="article-topics">
-	  <span id="article-topics-name">Topics:</span>
-	  {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a href="{% url 'topic.detail' topic.slug %}"
-										      >{{ topic.name }}</a>{% endfor %}
-	</p>
-      </div>
-      {% endif %}
-      {% endwith %}
-      <div id="newsletter-signup">
-	<p><a href="http://eepurl.com/Or2a9">Sign up for the GroundUp
-	    weekly newsletter.</a></p>
-      </div>
+	    <div id="newsletter-signup">
+		<a href="http://eepurl.com/Or2a9"
+		   class="btn btn-info"
+		   role="button">Get the free GroundUp
+		    weekly newsletter</a>
+	    </div>
 
-      {% if article.copyright %}
-      <div id="article-copyright">
-	{{article.copyright|safe}}
-      </div>
-      {% endif %}
+	    {% if article.copyright %}
+	    <div id="article-copyright">
+		{{article.copyright|safe}}
+	    </div>
+	    {% endif %}
 
-      {% if article.comments_on %}
+	    {% if article.comments_on %}
 
-      <div id="comment-policy">
-	You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
-      </div>
+	    <div id="comment-policy">
+		You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
+	    </div>
 
-      <div id="disqus_thread">
-	<script type="text/javascript">
-	  var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
-	  var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{%endif%}';
-	  var disqus_url = '{{ request.build_absolute_uri }}';
+	    <div id="disqus_thread">
+		<script type="text/javascript">
+		 var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
+		 var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
+		 var disqus_url = '{{ request.build_absolute_uri }}';
 
-	  /* * * DON'T EDIT BELOW THIS LINE * * */
-	  (function() {
-	  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	  })();
-	</script> <noscript>Please enable JavaScript to view the <a href=
-								    "http://disqus.com/?ref_noscript">comments powered by
-	    Disqus.</a></noscript> <a class="dsq-brlink" href=
-				      "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
-      </div>
+		 /* * * DON'T EDIT BELOW THIS LINE * * */
+		 (function() {
+		     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		 })();
+		</script> <noscript>Please enable JavaScript to view the <a href=
+									    "http://disqus.com/?ref_noscript">comments powered by
+		    Disqus.</a></noscript> <a class="dsq-brlink" href=
+					      "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
+	    </div>
 
-      {% endif %}
+	    {% endif %}
 
+	</div>
     </div>
-  </div>
 </div>
 
 
@@ -153,34 +178,52 @@
 
 <!-- Sharing buttons -->
 <script type="text/javascript">
-jQuery(document).ready(function ($) {
-    $('#twitter-share').click(function(){
-       var article_title = encodeURI('{{article.title|addslashes|safe}}').
-                                 substring(0, 115);
-       var url = encodeURI('{{ request.build_absolute_uri }}');
-       var twitter_url = "https://twitter.com/intent/tweet?text=" +
-            article_title + "&url=" + url;
-       var win = window.open(twitter_url, '_blank');
-       win.focus();
-       return false;
-    });
-    $('#facebook-share').click(function(){
-       var url = encodeURI('{{ request.build_absolute_uri }}');
-       var facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" + url;
-       var win = window.open(facebook_url, '_blank');
-       win.focus();
-       return false;
-    });
-    $('#email-share').click(function(){
-       var subject = encodeURI('{{article.title|addslashes|safe}}');
-       var body = encodeURI('{{article.cached_summary_text|addslashes|striptags|truncatewords:100|safe}}' + ' ' +
-                            '{{ request.build_absolute_uri }}');
-       var mail_url = "mailto:?subject=" + subject + "&body=" + body;
-       var win = window.open(mail_url, '_self');
-       win.focus();
-       return false;
-    });
-});
+ jQuery(document).ready(function ($) {
+     $('#twitter-share').click(function(){
+	 var article_title = encodeURI('{{article.title|addslashes|safe}}').
+						  substring(0, 115);
+	 var url = encodeURI('{{ request.build_absolute_uri }}');
+	 var twitter_url = "https://twitter.com/intent/tweet?text=" +
+			   article_title + "&url=" + url;
+	 var win = window.open(twitter_url, "_blank", "toolbar=no, scrollbars=yes, resizable=yes, top=20%, left=340, width=400, height=400");
+	 win.focus();
+	 return false;
+     });
+     $('#facebook-share').click(function(){
+	 var url = encodeURI('{{ request.build_absolute_uri }}');
+	 var facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+	 var win = window.open(facebook_url, "_blank", "toolbar=no, scrollbars=yes, resizable=yes, top=20%, left=340, width=550, height=400");
+	 win.focus();
+	 return false;
+     });
+     $('#whatsapp-share').click(function(){
+	 var message = encodeURI('{{article.title}} {{ request.build_absolute_uri }}');
+	 var whatsapp_url = 'whatsapp://send?text="' + message + '"';
+
+	 var win = window.open(whatsapp_url, '_blank');
+	 win.focus();
+	 return false;
+     });
+     $('#email-share').click(function(){
+	 var subject = encodeURI('{{article.title|addslashes|safe}}');
+	 var body = encodeURI('{{article.cached_summary_text|addslashes|striptags|truncatewords:100|safe}}' + ' ' +
+                              '{{ request.build_absolute_uri }}');
+	 var mail_url = "mailto:?subject=" + subject + "&body=" + body;
+	 var win = window.open(mail_url, '_self');
+	 win.focus();
+	 return false;
+     });
+
+     $('#print-article').click(function(){
+	 var print_contents = document.getElementsByTagName(
+	     "article")[0].innerHTML;
+         return_button = "<p><a href='{{request.build_absolute_uri}}'>Back</a></p>";
+         document.body.innerHTML = print_contents;
+	 window.print();
+         document.body.innerHTML = return_button + print_contents;
+     });
+ });
+
 </script>
 
 {% endblock %}
