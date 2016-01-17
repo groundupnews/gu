@@ -197,7 +197,7 @@
 	 return false;
      });
      $('#whatsapp-share').click(function(){
-	 var message = encodeURI('{{article.title|addslashes}} {{ request.build_absolute_uri }}');
+	 var message = encodeURI('{{article.title|addslashes|safe}} {{ request.build_absolute_uri }}');
 	 var whatsapp_url = 'whatsapp://send?text=' + message;
 
 	 var win = window.open(whatsapp_url, '_blank');
