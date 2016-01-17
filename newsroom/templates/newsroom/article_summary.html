@@ -1,7 +1,7 @@
 <div class="thumbnail">
     <div class="row">
 
-	<div class="{% if forloop.first %}col-md-7{% else %}col-md-4{% endif %}">
+	<div class="{% if forloop.first %}col-md-6{% else %}col-md-4{% endif %}">
 	    <a href="{{article.get_absolute_url}}">
 		<img class="summary-image"
 		     src="{{ article.cached_summary_image }}" />
@@ -9,7 +9,7 @@
 	</div>
 
 
-	<div class="{% if forloop.first %}col-md-5{% else %}col-md-8{% endif %}">
+	<div class="{% if forloop.first %}col-md-6{% else %}col-md-8{% endif %}">
 	    <h2 class="
 		       {% if forloop.first %}
 		       large-summary-title
