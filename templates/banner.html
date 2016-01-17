@@ -38,6 +38,9 @@
 
 	<ul class="nav navbar-nav">
 	  {% with path=request.get_full_path %}
+	      <li  {% if path == '/' %} class='active' {% endif %} >
+		  <a href="/">Home</a>
+	      </li>
 	  <li  {% if path == '/about/' %} class='active' {% endif %} >
 	    <a href="/about/">About</a>
 	  </li>
@@ -93,7 +96,11 @@
 
           {% if request.user.is_staff %}
 	  <li class="Dropdown">
-	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+	      <a href="#" class="dropdown-toggle admin-menu-item"
+		 data-toggle="dropdown"
+		 role="button"
+		 aria-haspopup="true"
+		 aria-expanded="false">Admin<span class="caret"></span></a>
 	    <ul class="dropdown-menu">
             {% include 'newsroom/staff_menu.html' %}
 	    </ul>
