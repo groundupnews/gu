@@ -16,9 +16,9 @@ header {
     text-align: center;
     background: #ccc;
     display:block;
-    margin-bottom: 60px;
+    margin-bottom: 55px;
 }
-
+/*
 @media (max-width: 991px) {
   header {
     margin-bottom: 100px;
@@ -31,7 +31,7 @@ header {
     margin-bottom: 60px;
   }
 }
-
+*/
 
 @media (min-width: 769px) {
     #whatsapp-share, .whatsapp-share {
@@ -210,6 +210,7 @@ div.featured-photo {
 
 img.summary-image {
     margin-bottom: 5px;
+    width: 100%;
 }
 
 h2.summary-title, h2.large-summary-title {
