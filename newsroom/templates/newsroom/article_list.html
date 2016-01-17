@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Home Page {{block.super}}
+{% if heading %}{{heading|capfirst}}{% endif %} {{block.super}}
 {% endblock %}
 
 {% block content %}

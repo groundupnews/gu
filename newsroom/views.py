@@ -100,7 +100,7 @@ class RegionDetail(ArticleList):
 
    def get_context_data(self, **kwargs):
       context = super(RegionDetail, self).get_context_data(**kwargs)
-      context['heading'] = "Region: " + str(self.region)
+      context['heading'] = str(self.region)
       return context
 
 
@@ -112,7 +112,7 @@ class TopicDetail(ArticleList):
 
    def get_context_data(self, **kwargs):
       context = super(TopicDetail, self).get_context_data(**kwargs)
-      context['heading'] = "Topic: " + self.topic.name
+      context['heading'] = self.topic.name
       context['topic'] = self.topic
       return context
 
