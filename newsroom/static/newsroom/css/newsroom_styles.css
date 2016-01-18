@@ -397,6 +397,17 @@ a.admin-menu-item {
     }
 }
 
+
+div.see-also-image {
+    height:140px;
+    overflow: hidden;
+}
+
+#see-also p, #read-next p {
+    margin-top: 6px;
+    font-size: 16px;
+}
+
 @media (min-width: 1050px) {
     img.very-large, div.very-large img {
 	width: 130%;
@@ -421,6 +432,8 @@ div.editor-summary {
     margin: 10px;
     padding: 10px;
 }
+
+
 
 
 /**************************/
