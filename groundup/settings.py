@@ -190,7 +190,7 @@ FILEBROWSER_VERSIONS = {
     'thumbnail': {'verbose_name': 'Thumbnail (1 col crop)',
                   'width': 60, 'height': 60, 'opts': 'crop'},
     'small': {'verbose_name': 'Small (2 col crop)',
-              'width': 140, 'height': 140, 'opts': 'crop'},
+              'width': 140, 'height': 100, 'opts': 'crop'},
     'medium': {'verbose_name': 'Medium (4 col)',
                'width': 300, 'height': '', 'opts': ''},
     'big': {'verbose_name': 'Big (6 col)',
