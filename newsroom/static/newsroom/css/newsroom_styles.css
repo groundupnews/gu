@@ -398,9 +398,11 @@ a.admin-menu-item {
 }
 
 
-div.see-also-image {
-    height:140px;
-    overflow: hidden;
+@media (min-width: 992px) {
+    div.see-also-image {
+	height:140px;
+	overflow: hidden;
+    }
 }
 
 #see-also p, #read-next p {
