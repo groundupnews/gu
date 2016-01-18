@@ -398,12 +398,13 @@ a.admin-menu-item {
 }
 
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {*/
     div.see-also-image {
 	height:140px;
 	overflow: hidden;
     }
-}
+/* }*/
+
 
 #see-also p, #read-next p {
     margin-top: 6px;
