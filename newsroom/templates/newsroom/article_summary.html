@@ -8,7 +8,8 @@
 		    {% endif %}">
 	    <a href="{{article.get_absolute_url}}">
 		<img class="summary-image"
-		     src="{{ article.cached_summary_image }}" />
+		     src="{{ article.cached_summary_image }}"
+		     alt="{{ article.summary_image_alt }}"/>
 	    </a>
 	</div>
 

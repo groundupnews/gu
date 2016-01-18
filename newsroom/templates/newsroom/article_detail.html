@@ -60,26 +60,36 @@
 		    {{ article.cached_byline|safe }}
 		</p>
 
-		<p class="article-dateline">{{ article.published|date:"j F Y"}}</p>
+		<p class="article-dateline">
+		    <time
+			datetime='{{ article.published|date:"Y-m-d" }}'>
+			{{ article.published|date:"j F Y"}}
+		    </time>
+		</p>
 
 		{% if article.cached_primary_image %}
 		<div id="article-primary-image">
-		    {% if article.primary_image %}
-		    <a href="{{MEDIA_URL}}{{article.primary_image}}">
-			<img class="article-primary-image"
-			     src="{{article.cached_primary_image}}" />
-		    </a>
-		    {% else %}
-		    <img class="article-primary-image"
-			 src="{{article.cached_primary_image}}" />
-		    {% endif %}
-		</div>
-		{% endif %}
+		    <figure>
+			{% if article.primary_image %}
+			    <a href="{{MEDIA_URL}}{{article.primary_image}}">
+				<img class="article-primary-image"
+				     src="{{article.cached_primary_image}}"
+				     alt="{{article.primary_image_alt|addslashes}}" />
+			    </a>
+			{% else %}
+			    <img class="article-primary-image"
+				 src="{{article.cached_primary_image}}"
+		    		 alt="{{article.primary_image_alt|addslashes}}"
+			    />
+			{% endif %}
 
-		{% if article.primary_image_caption %}
-		<p class="article-primary-image-caption">
-		    {{article.primary_image_caption}}
-		</p>
+			{% if article.primary_image_caption %}
+			    <figcaption class="article-primary-image-caption">
+				{{article.primary_image_caption}}
+			    </figcaption>
+			{% endif %}
+		    </figure>
+		</div>
 		{% endif %}
 
 		<div id="article-body">

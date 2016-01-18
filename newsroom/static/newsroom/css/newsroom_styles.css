@@ -75,6 +75,12 @@ ul.nav {
     margin-bottom: 5px;
 }
 
+@media (max-width: 980px) {
+    .logo img {
+	margin-bottom: 0px;
+    }
+}
+
 .second{
     .nav-left{
 	float: left;
@@ -274,6 +280,11 @@ div.thumbnail {
     text-align: center;
 }
 
+figure {
+    margin-bottom:10px;
+}
+
+.caption, .article-primary-image-caption,
 p.article-primary-image-caption, p.caption {
     font-style: italic;
     font-size: 13px;
@@ -305,6 +316,10 @@ span#article-topics-name { font-weight: bold; }
 
 p.intro {
     font-weight: bold;
+    font-size: 17px;
+}
+
+blockquote {
     font-size: 16px;
 }
 

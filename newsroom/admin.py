@@ -8,18 +8,21 @@ from django.forms import ModelForm, Textarea
 from . import models
 
 import tagulous
-from filebrowser.settings import VERSIONS
+from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 
 
 # Used to select sizes of images
-IMAGE_SIZE_CHOICES = [(item,item,) for item in VERSIONS]
+IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)  \
+                      for item in ADMIN_VERSIONS]
 IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
 
 
 class ArticleForm(forms.ModelForm):
 
-    summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
-    primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
+    summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
+                                           initial="medium")
+    primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
+                                           initial="large")
 
     def clean_main_topic(self):
         if self.cleaned_data["main_topic"] == "(None)":
@@ -66,7 +69,7 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Primary Image', {
             'classes': ('wide',),
             'fields': ( ('primary_image', 'primary_image_size',),
-                        'primary_image_caption', )
+                        'primary_image_caption', 'primary_image_alt',)
         }),
         ('External URL for primary image', {
             'classes': ('grp-collapse grp-closed',),
@@ -83,8 +86,8 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Summary', {
             'classes': ('grp-collapse grp-closed',),
             'fields': ( ('summary_image', 'summary_image_size',),
-                        'cached_summary_text', 'summary_text',
-                        'summary_template',),
+                        'summary_image_alt', 'cached_summary_text',
+                        'summary_text', 'summary_template',),
         }),
         ('Advanced', {
             'classes': ('grp-collapse grp-closed',),

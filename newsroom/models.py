@@ -116,6 +116,10 @@ class Article(models.Model):
         default=settings.ARTICLE_SUMMARY_IMAGE_SIZE,
         max_length=20,
         help_text="Choose 'LEAVE' if image size should not be changed.")
+    summary_image_alt = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text = "Description of image for assisted technology.")
     summary_text = models.TextField(blank=True)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_01",
@@ -142,10 +146,15 @@ class Article(models.Model):
         default=settings.ARTICLE_PRIMARY_IMAGE_SIZE,
         max_length=20,
         help_text="Choose 'LEAVE' if image size should not be changed.")
+    primary_image_alt = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text = "Description of image for assisted technology.")
     external_primary_image = models.URLField(blank=True, max_length=500,
             help_text="If the primary image has a value, it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
     body = models.TextField(blank=True)
+    use_editor = models.BooleanField(default=True)
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
     recommended = models.BooleanField(default=True)
@@ -190,6 +199,8 @@ class Article(models.Model):
     cached_summary_image = models.URLField(blank=True, max_length=500)
     cached_summary_text = models.TextField(blank=True)
     cached_summary_text_no_html = models.TextField(blank=True)
+
+    cached_small_image = models.URLField(blank=True, max_length=500)
 
     objects = ArticleQuerySet.as_manager()
 
@@ -255,6 +266,9 @@ class Article(models.Model):
             else:
                 return self.summary_image.version_generate(image_size).url
 
+        if self.summary_image_alt == "":
+            self.summary_image_alt = self.primary_image_alt
+
         if self.primary_image:
             if self.summary_image_size == 'LEAVE':
                 return self.primary_image.url
@@ -265,6 +279,22 @@ class Article(models.Model):
             return self.external_primary_image
 
         return ""
+
+    '''Used to generate the cached small image upon model save, so
+    there's less processing for website user requests.
+    '''
+    def calc_small_image(self):
+        if self.summary_image:
+            return self.summary_image.version_generate("small").url
+
+        if self.primary_image:
+            return self.primary_image.version_generate("small").url
+
+        if self.external_primary_image:
+            return self.external_primary_image
+
+        return ""
+
 
 
     '''Used to generate the cached summary text upon model save, so
@@ -318,6 +348,10 @@ class Article(models.Model):
              self.cached_summary_image = self.calc_summary_image()
         except:
              self.cached_summary_image = ""
+        try:
+            self.cached_small_image = self.calc_small_image()
+        except:
+            self.cached_small_image = ""
         super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

@@ -2,7 +2,7 @@
     {% if read_next.cached_primary_image %}
     <a href="{{read_next.get_absolute_url}}" >
 	<img src="{{read_next.cached_summary_image}}"
-	     alt="{{read_next.title}}" >
+	     alt="{{read_next.summary_image_alt}}" >
     </a>
     {% endif %}
     <h2><a href="{{read_next.get_absolute_url}}">{{read_next.title}}</a></h2>

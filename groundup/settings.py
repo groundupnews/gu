@@ -184,6 +184,22 @@ FILEBROWSER_CONVERT_FILENAME = False
 
 FILEBROWSER_OVERWRITE_EXISTING = False
 
+FILEBROWSER_VERSIONS = {
+    'admin_thumbnail': {'verbose_name': 'Admin Thumbnail',
+                        'width': 60, 'height': 60, 'opts': 'crop'},
+    'thumbnail': {'verbose_name': 'Thumbnail (1 col crop)',
+                  'width': 60, 'height': 60, 'opts': 'crop'},
+    'small': {'verbose_name': 'Small (2 col crop)',
+              'width': 140, 'height': 140, 'opts': 'crop'},
+    'medium': {'verbose_name': 'Medium (4 col)',
+               'width': 300, 'height': '', 'opts': ''},
+    'big': {'verbose_name': 'Big (6 col)',
+            'width': 460, 'height': '', 'opts': ''},
+    'large': {'verbose_name': 'Large (8 col)',
+              'width': 680, 'height': '', 'opts': ''},
+}
+
+
 GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 
 GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
@@ -222,6 +238,5 @@ LOGGING = {
         },
     }
 }
-
 
 from .local_settings import *
