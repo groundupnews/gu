@@ -415,8 +415,16 @@ a.admin-menu-item {
 
 #see-also p, #read-next p {
     margin-top: 6px;
-    font-size: 16px;
 }
+
+#read-next p {
+    font-size: 17px;
+}
+
+#see-also p {
+    font-size: 15px;
+}
+
 
 @media (min-width: 1050px) {
     img.very-large, div.very-large img {
