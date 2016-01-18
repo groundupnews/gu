@@ -398,17 +398,19 @@ a.admin-menu-item {
 }
 
 
-/* @media (min-width: 992px) {*/
-    #see-also-image {
-	height:140px;
-	overflow: hidden;
-    }
-    #see-also p {
-	height: 80px;
-	overflow:hidden;
-    }
-/* }*/
 
+#see-also-image {
+    height:140px;
+    overflow: hidden;
+}
+#see-also p {
+    height: 80px;
+    overflow:hidden;
+}
+
+#see-also img {
+    max-height: 140px;
+}
 
 
 #see-also p, #read-next p {
