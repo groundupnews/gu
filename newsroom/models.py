@@ -119,7 +119,7 @@ class Article(models.Model):
     summary_image_alt = models.CharField(
         max_length=200,
         blank=True,
-        help_text = "Description of image for assisted technology.")
+        help_text = "Description of image for assistive technology.")
     summary_text = models.TextField(blank=True)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_01",
@@ -149,7 +149,7 @@ class Article(models.Model):
     primary_image_alt = models.CharField(
         max_length=200,
         blank=True,
-        help_text = "Description of image for assisted technology.")
+        help_text = "Description of image for assistive technology.")
     external_primary_image = models.URLField(blank=True, max_length=500,
             help_text="If the primary image has a value, it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
