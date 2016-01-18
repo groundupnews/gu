@@ -403,7 +403,12 @@ a.admin-menu-item {
 	height:140px;
 	overflow: hidden;
     }
+    div.see-also p {
+	height: 80px;
+	overflow:hidden;
+    }
 /* }*/
+
 
 
 #see-also p, #read-next p {
