@@ -229,10 +229,11 @@ h2.summary-title a:hover, h2.large-summary-title a:hover {
 }
 
 #sharing img {
-    width: 29px;
-    height: 29px;
+    width: 27px;
+    height: 26px;
     margin-right: 5px;
     margin-left: 5px;
+    vertical-align: middle;
 }
 
 #sharing i {
