@@ -438,6 +438,11 @@ a.admin-menu-item {
     font-size: 15px;
 }
 
+#see-also .large img {
+    width:100%;
+    height:100%;
+}
+
 
 @media (min-width: 1050px) {
     img.very-large, div.very-large img {
