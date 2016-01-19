@@ -352,10 +352,11 @@ p.author-description, p.disclaimer, p.correction {
     margin-bottom: 15px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 22px;
+    font-size: 23px;
     font-style: italic;
     border-top: 1px solid;
     border-bottom: 1px solid;
+    line-height: 200%;
     color: #26abe2;
 }
 
