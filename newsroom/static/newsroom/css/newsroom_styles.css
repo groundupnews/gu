@@ -409,10 +409,12 @@ a.admin-menu-item {
     }
 }
 
-#see-also img {
+#see-also img, #read-next img {
     width:100%;
     height:100%;
 }
+
+
 
 @media (max-width: 767px) {
 	#see-also img {
