@@ -93,7 +93,7 @@ class ArticleAdmin(admin.ModelAdmin):
             'classes': ('grp-collapse grp-closed',),
             'fields':('copyright', 'include_in_rss', 'comments_on',
                       'stickiness', 'exclude_from_list_views',
-                      'recommended', 'byline',
+                      'recommended', 'byline', 'use_editor',
                       'template', 'disqus_id',)
         }),
     )
@@ -106,6 +106,7 @@ class ArticleAdmin(admin.ModelAdmin):
         js = [
             '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
             '/static/newsroom/js/tinymce_setup.js',
+            '/static/newsroom/js/admin_enhance.js',
         ]
 
 admin.site.register(models.Article, ArticleAdmin)

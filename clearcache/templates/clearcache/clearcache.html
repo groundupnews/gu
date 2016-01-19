@@ -6,10 +6,6 @@ Clear Cache {{block.super}}
 
 {% block content %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-7">
       {{block.super}}
 
       {% if form %}
@@ -25,8 +21,5 @@ Clear Cache {{block.super}}
       <p>
 	<a href="{% url 'admin:index' %}">Site Administration</a>
       </p>
-    </div>
-  </div>
-</div>
 
 {% endblock %}

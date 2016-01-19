@@ -22,12 +22,44 @@ function CustomFileBrowser(field_name, url, type, win) {
     return false;
 }
 
-tinyMCE.init({
+var mode_val;
 
+var $ = django.jQuery;
+
+$(document).ready(function() {
+
+    function tinymce_switch() {
+	if($("#id_use_editor").prop('checked')) {
+	    tinyMCE.execCommand("mceAddControl", true, 'id_body');
+	    tinyMCE.execCommand("mceAddControl", true, 'id_summary_text');
+	    tinyMCE.execCommand("mceAddControl", true, 'id_copyright');
+	} else {
+            for (var i = tinymce.editors.length - 1 ; i > -1 ; i--) {
+		var ed_id = tinymce.editors[i].id;
+		tinyMCE.execCommand("mceRemoveControl", true, ed_id);
+            }
+	};
+    }
+
+    $( "#id_use_editor").change( function() {
+	tinymce_switch();
+    });
+
+    if ($("#id_use_editor").length) {
+	if($("#id_use_editor").prop('checked') == false) {
+	    mode_val = "none";
+	} else {
+	    mode_val = "textareas";
+	}
+    }
+    tinymce_switch();
+});
+
+tinyMCE.init({
     // see http://www.tinymce.com/wiki.php/Configuration
 
     // Init
-    mode: 'textareas',
+    mode: mode_val,
     theme: 'advanced',
     skin: 'grappelli',
 
