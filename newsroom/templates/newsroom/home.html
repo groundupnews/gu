@@ -3,16 +3,3 @@
 {% block title %}
     Home {{block.super}}
 {% endblock %}
-
-
-{% block sidebar-right %}
-
-
-{% for block in blocks %}
-
-<div class="thumbnail right-sidebar-block">
-{{block.html|safe}}
-</div>
-{% endfor %}
-
-{% endblock %}

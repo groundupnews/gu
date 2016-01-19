@@ -52,22 +52,59 @@
     {% endblock %}
 
 
-    {% block content %}
+    <div class="container">
+	<div class="row">
 
-    {% block messages %}
-    {% for message in messages %}
-    <div class="alert
-		{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger
-		{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}alert-success
-		{% endif %}
-		">
-      {{message}}
+	    <div class="col-md-1">
+		{% block sidebar-left %}
+		{% endblock %}
+	    </div>
+
+	    <div class="col-md-8 page-content">
+		{% block content %}
+
+		    {% block messages %}
+			{% for message in messages %}
+			    <div class="alert
+					{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger
+					{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}alert-success
+					{% endif %}
+					">
+				{{message}}
+			    </div>
+			{% endfor %}
+		    {% endblock %}
+
+		{% endblock %}
+	    </div>
+
+	    <div class="col-md-3 page-content">
+		{% block sidebar-right %}
+		    {% for b in blocks %}
+			<div class="thumbnail right-sidebar-block">
+			    {{b.html|safe}}
+			</div>
+		    {% endfor %}
+		{% endblock %}
+	    </div>
+
+	</div>
+
+	<div class="row">
+	    <div class="col-md-1">
+		{% block sidebar-left-extra %}
+		{% endblock %}
+	    </div>
+	    <div class="col-md-8 page-content">
+		{% block content-extra %}
+		{% endblock %}
+	    </div>
+	    <div class="col-md-2 page-content">
+		{% block sidebar-right-extra %}
+		{% endblock %}
+	    </div>
+	</div>
     </div>
-    {% endfor %}
-    {% endblock %}
-
-    {% endblock %}
-
 
     {% block footer %}
 

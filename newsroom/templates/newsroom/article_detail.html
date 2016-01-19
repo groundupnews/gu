@@ -31,79 +31,74 @@
 
 {% block content %}
 
-
-<div class="container">
-    <div class="row">
-	<div class="col-md-2"></div>
-	<div class="col-md-7 page-content" >
-	    {{block.super}}
+    {{block.super}}
 
 
-	    <p class="article-category">
-		<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
+    <p class="article-category">
+	<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
 
-		{% if display_region %}
+	{% if display_region %}
 		|
-		<a href="{% url 'region.detail' article.region.path %}"
-		>{{display_region|upper}}</a>&nbsp;
-		{% endif %}
-	    </p>
+	    <a href="{% url 'region.detail' article.region.path %}"
+	    >{{display_region|upper}}</a>&nbsp;
+	{% endif %}
+    </p>
 
-	    <article>
+    <article>
 
-		<h1 id="article-title">{{ article.title}}</h1>
-		{% if article.subtitle %}
-		<h2 id="article-subtitle">{{ article.subtitle|safe }}</h2>
-		{% endif %}
+	<h1 id="article-title">{{ article.title}}</h1>
+	{% if article.subtitle %}
+	    <h2 id="article-subtitle">{{ article.subtitle|safe }}</h2>
+	{% endif %}
 
-		<p class="article-byline">
-		    {{ article.cached_byline|safe }}
-		</p>
+	<p class="article-byline">
+	    {{ article.cached_byline|safe }}
+	</p>
 
-		<p class="article-dateline">
-		    <time
-			datetime='{{ article.published|date:"Y-m-d" }}'>
-			{{ article.published|date:"j F Y"}}
-		    </time>
-		</p>
+	<p class="article-dateline">
+	    <time
+		datetime='{{ article.published|date:"Y-m-d" }}'>
+		{{ article.published|date:"j F Y"}}
+	    </time>
+	</p>
 
-		{% if article.cached_primary_image %}
-		<div id="article-primary-image">
-		    <figure>
-			{% if article.primary_image %}
-			    <a href="{{MEDIA_URL}}{{article.primary_image}}">
-				<img class="article-primary-image"
-				     src="{{article.cached_primary_image}}"
-				     alt="{{article.primary_image_alt|addslashes}}" />
-			    </a>
-			{% else %}
+	{% if article.cached_primary_image %}
+	    <div id="article-primary-image">
+		<figure>
+		    {% if article.primary_image %}
+			<a href="{{MEDIA_URL}}{{article.primary_image}}">
 			    <img class="article-primary-image"
 				 src="{{article.cached_primary_image}}"
-		    		 alt="{{article.primary_image_alt|addslashes}}"
-			    />
-			{% endif %}
+				 alt="{{article.primary_image_alt|addslashes}}" />
+			</a>
+		    {% else %}
+			<img class="article-primary-image"
+			     src="{{article.cached_primary_image}}"
+		    	     alt="{{article.primary_image_alt|addslashes}}"
+			/>
+		    {% endif %}
 
-			{% if article.primary_image_caption %}
-			    <figcaption class="article-primary-image-caption">
-				{{article.primary_image_caption}}
-			    </figcaption>
-			{% endif %}
-		    </figure>
-		</div>
-		{% endif %}
-
-		<div id="article-body">
-		    {{ article.body|safe }}
-		</div>
-
-	    </article>
-
-	    <div id="sharing">
-		<p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+		    {% if article.primary_image_caption %}
+			<figcaption class="article-primary-image-caption">
+			    {{article.primary_image_caption}}
+			</figcaption>
+		    {% endif %}
+		</figure>
 	    </div>
+	{% endif %}
 
-	    {% with topics_all=article.topics.all %}
-	    {% if topics_all|length  %}
+	<div id="article-body">
+	    {{ article.body|safe }}
+	</div>
+
+    </article>
+
+    <div id="sharing">
+	<p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+    </div>
+
+    {% with topics_all=article.topics.all %}
+	{% if topics_all|length  %}
 	    <div id="article-topics">
 		<p class="article-topics">
 		    <span id="article-topics-name">Topics:</span>
@@ -112,73 +107,81 @@
 											     >{{ topic.name }}</a>{% endfor %}
 		</p>
 	    </div>
-	    {% endif %}
-	    {% endwith %}
+	{% endif %}
+    {% endwith %}
 
-	    {% if see_also %}
-	    <div id="see-also">
-		<h2>Related articles</h2>
-		<div class="row">
-		    {% for item in see_also %}
+
+{% endblock %}
+
+{% block sidebar-right %}
+
+    {% if see_also %}
+	<div id="see-also">
+	    <h2>Related articles</h2>
+	    <div class="row">
+		{% for item in see_also %}
 		    {% include 'newsroom/see_also.html' %}
-		    {% endfor %}
-		</div>
+		{% endfor %}
 	    </div>
-	    {% endif %}
-
-	    {% if read_next %}
-	    <div id="read-next">
-		<h2>We recommend</h2>
-		<div class="row">
-		{% include 'newsroom/read_next.html' %}
-		</div>
-	    </div>
-	    {% endif %}
-
-
-	    <div id="newsletter-signup">
-		<a href="http://eepurl.com/Or2a9"
-		   class="btn btn-info"
-		   role="button">Get the free GroundUp
-		    weekly newsletter</a>
-	    </div>
-
-	    {% if article.copyright %}
-	    <div id="article-copyright">
-		{{article.copyright|safe}}
-	    </div>
-	    {% endif %}
-
-	    {% if article.comments_on %}
-
-	    <div id="comment-policy">
-		You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
-	    </div>
-
-	    <div id="disqus_thread">
-		<script type="text/javascript">
-		 var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
-		 var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
-		 var disqus_url = '{{ request.build_absolute_uri }}';
-
-		 /* * * DON'T EDIT BELOW THIS LINE * * */
-		 (function() {
-		     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-		     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-		     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-		 })();
-		</script> <noscript>Please enable JavaScript to view the <a href=
-									    "http://disqus.com/?ref_noscript">comments powered by
-		    Disqus.</a></noscript> <a class="dsq-brlink" href=
-					      "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
-	    </div>
-
-	    {% endif %}
-
 	</div>
-    </div>
-</div>
+    {% endif %}
 
+    {% if read_next %}
+	<div id="read-next">
+	    <h2>We recommend</h2>
+	    <div class="row">
+		{% include 'newsroom/read_next.html' %}
+	    </div>
+	</div>
+    {% endif %}
+
+    {{block.super}}
+
+{% endblock %}
+
+{% block content-extra %}
+
+    <div id="newsletter-signup">
+	<a href="http://eepurl.com/Or2a9"
+	   class="btn btn-info"
+	   role="button">Get the free GroundUp
+	    weekly newsletter</a>
+    </div>
+
+    {% if article.copyright %}
+	<div id="article-copyright">
+	    {{article.copyright|safe}}
+	</div>
+    {% endif %}
+
+    {% if article.comments_on %}
+
+	<div id="comment-policy">
+	    You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
+	</div>
+
+	<div id="disqus_thread">
+	    <script type="text/javascript">
+	     var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
+	     var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
+	     var disqus_url = '{{ request.build_absolute_uri }}';
+
+	     /* * * DON'T EDIT BELOW THIS LINE * * */
+	     (function() {
+		 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	     })();
+	    </script> <noscript>Please enable JavaScript to view the <a href=
+									"http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript> <a class="dsq-brlink" href=
+					  "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
+	</div>
+
+    {% endif %}
+
+
+    {{block.super}}
 
 {% endblock %}
 

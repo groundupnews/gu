@@ -1,7 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu);
 
 body {
+
     background-color: #f5f5f0;
+/*    background-image: url("http://www.transparenttextures.com/patterns/cream-pixels.png");
+    background-attachment: fixed;*/
     font-family: 'Ubuntu-1', 'Ubuntu-2', sans-serif;
 }
 
@@ -9,6 +12,7 @@ body {
     background-color: white;
     border-left: 1px solid #d6d6d6;
     border-right: 1px solid #d6d6d6;
+    /*border-bottom: 1px solid #d6d6d6;*/
 }
 
 header {
@@ -143,6 +147,12 @@ article {
 
 article p {
     margin-bottom: 18px;
+}
+
+@media (min-width: 980px) {
+    article p {
+	padding-right: 150px;
+    }
 }
 
 #footer {

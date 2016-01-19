@@ -22,6 +22,17 @@ from blocks.models import Group
 
 logger = logging.getLogger(__name__)
 
+def get_blocks(group_name="Home"):
+      try:
+         return Group.objects.get(name=group_name).get_blocks()
+      except:
+         return []
+
+def get_blocks_in_context(context, group_name="Home"):
+   context["blocks"] = get_blocks(group_name)
+   return context
+
+
 class ArticleList(generic.ListView):
    context_object_name = 'article_list'
    template_name = "newsroom/article_list.html"
@@ -30,25 +41,29 @@ class ArticleList(generic.ListView):
    def get_queryset(self):
       return models.Article.objects.list_view()
 
-class HomePage(ArticleList):
-   template_name = "newsroom/home.html"
    def get_context_data(self, **kwargs):
-      context = super(HomePage, self).get_context_data(**kwargs)
-      # Add extra context for the home page here
-      # ...
-      try:
-         blocks = Group.objects.get(name="Home").get_blocks()
-      except:
-         blocks = []
-      context["blocks"] = blocks
+      context = super(ArticleList, self).get_context_data(**kwargs)
+      context = get_blocks_in_context(context)
       return context
 
-   def get(self, request, *args, **kwargs):
-      # Add messages here. E.g.
-      #messages.add_message(request, messages.INFO,
-      #                     "We are closed until 5 January.")
-      request = super(HomePage, self).get(request, args, kwargs)
-      return request
+class HomePage(ArticleList):
+   template_name = "newsroom/home.html"
+
+   # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
+   # WHICH CODE NEEDS TO CHANGE URGENTLY.
+
+   # def get_context_data(self, **kwargs):
+   #    context = super(HomePage, self).get_context_data(**kwargs)
+   #    # Add extra context for the home page here
+   #    #
+   #    return context
+
+   # def get(self, request, *args, **kwargs):
+   #    # Add messages here. E.g.
+   #    #messages.add_message(request, messages.INFO,
+   #    #                     "We are closed until 5 January.")
+   #    request = super(HomePage, self).get(request, args, kwargs)
+   #    return request
 
 class OpinionAnalysisList(ArticleList):
    def get_queryset(self):
@@ -121,7 +136,9 @@ class TopicDetail(ArticleList):
 
 
 class ArticleDetail(View):
+
    def get(self, request, slug):
+      print ("Here 2")
       article = get_object_or_404(models.Article, slug=slug)
       if article.is_published() or request.user.is_staff:
          if request.user.is_staff and not article.is_published():
@@ -159,7 +176,8 @@ class ArticleDetail(View):
                        {'article': article,
                         'display_region': display_region,
                         'see_also': see_also,
-                        'read_next': read_next})
+                        'read_next': read_next,
+                        'blocks': get_blocks()})
       else:
          raise Http404
 
