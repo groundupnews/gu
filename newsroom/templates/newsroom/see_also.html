@@ -3,10 +3,10 @@
     {% if item.cached_primary_image %}
 	<a href="{{item.get_absolute_url}}" >
 	    <div class="see-also-image">
-		<img class="summary"
+		<img class=".hidden-xs"
 		     src="{{item.cached_summary_image}}"
 		     alt="{{item.summary_image_alt}}" />
-		<img class="small"
+		<img class=".hidden-sm .hidden-md"
 		     src="{{item.cached_small_image}}"
 		     alt="{{item.summary_image_alt}}" />
 	    </div>
