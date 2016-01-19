@@ -415,6 +415,25 @@ a.admin-menu-item {
     height:140px;
     overflow: hidden;
 }
+
+.col-xs-6 .see-also-image img.summary {
+    display: none;
+}
+
+.col-sm-12 .see-also-image img.small {
+    display: none;
+}
+
+.col-md-12 .see-also-image img.small {
+    display: none;
+}
+
+.col-lg-12 .see-also-image img.small {
+    display: none;
+}
+
+
+
 #see-also p {
     height: 80px;
     overflow:hidden;
