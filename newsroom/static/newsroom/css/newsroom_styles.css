@@ -416,13 +416,14 @@ a.admin-menu-item {
     overflow: hidden;
 }
 
-#see-also p {
-    height: 80px;
-    overflow:hidden;
-}
-
-#see-also img {
-    height: 140px;
+@media (max-width: 768px) {
+	#see-also img {
+	    height: 140px;
+	}
+	#see-also p {
+	    height: 80px;
+	    overflow:hidden;
+	}
 }
 
 
@@ -438,10 +439,6 @@ a.admin-menu-item {
     font-size: 15px;
 }
 
-#see-also .large img {
-    width:100%;
-    height:100%;
-}
 
 
 @media (min-width: 1050px) {
