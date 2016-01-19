@@ -410,12 +410,6 @@ a.admin-menu-item {
 }
 
 
-
-#see-also-image {
-    height:140px;
-    overflow: hidden;
-}
-
 @media (max-width: 768px) {
 	#see-also img {
 	    height: 140px;
@@ -425,7 +419,6 @@ a.admin-menu-item {
 	    overflow:hidden;
 	}
 }
-
 
 #see-also p, #read-next p {
     margin-top: 6px;
