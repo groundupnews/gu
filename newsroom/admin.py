@@ -5,6 +5,8 @@ from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm, Textarea
 
+import re
+
 from . import models
 
 import tagulous
@@ -17,6 +19,14 @@ IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)  \
 IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
 
 
+# Regular expression to replace TinyMCE's pesky insertion of width
+# and height attributes into images.
+
+img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)')
+
+figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (class="caption")(.*?)>(.*?)(</p>)')
+
+
 class ArticleForm(forms.ModelForm):
 
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
@@ -24,16 +34,36 @@ class ArticleForm(forms.ModelForm):
     primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="large")
 
+    '''Remove height and width from TinyMCE image insertions.
+    '''
+
+    def remove_bad_img_attributes(self, html):
+        return img_regex.sub(r'\1 class="full-width" \8\9',
+                             html)
+
+    def replace_p_with_figure(self, html):
+        return figure_regex.sub(r'<figure>\3\4\5\8<figcaption \10>\11\12</figcaption></figure>',html )
+
     def clean_main_topic(self):
         if self.cleaned_data["main_topic"] == "(None)":
             self.cleaned_data["main_topic"] = None
         return self.cleaned_data["main_topic"]
 
     def clean(self, *args, **kwargs):
+
         if self.cleaned_data["main_topic"]:
             topic = self.cleaned_data["main_topic"]
             if topic not in self.cleaned_data["topics"]:
                 self.cleaned_data["topics"].append(topic)
+
+        # Transform the body to fix TinyMCE's obscurities.
+
+        if self.cleaned_data["use_editor"]:
+            body = self.cleaned_data["body"]
+            body = self.remove_bad_img_attributes(body)
+            body = self.replace_p_with_figure(body)
+            self.cleaned_data["body"] = body
+
         super(ArticleForm, self).clean(*args, **kwargs)
 
 

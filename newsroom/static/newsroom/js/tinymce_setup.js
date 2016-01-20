@@ -82,15 +82,16 @@ tinyMCE.init({
     fix_list_elements: true,
     forced_root_block: 'p',
     valid_elements : '*[*]',
+
     //extended_valid_elements : 'iframe[class|id|src|border|alt|title|hspace|vspace|frameborder|allowfullscreen|width|height|align|name],aside[class|id]',
     // style formsts overrides theme_advanced_styles
     // see http://www.tinymce.com/wiki.php/Configuration:style_formats
     style_formats: [
         {title: 'Pullout quote', block : 'aside', classes: 'pquote'},
         {title: 'Introduction', block : 'p', classes: 'intro'},
+        {title: 'Image caption', block : 'p', classes: 'caption'},
         {title: 'Full width image', block : 'div', classes: 'full-width'},
         {title: 'Very large image', block : 'div', classes: 'very-large'},
-        {title: 'Image caption', block : 'p', classes: 'caption'},
         {title: 'Subheading', block : 'h3', classes: 'subheading'},
         {title: 'Author description', block : 'p', classes:'author-description'},
         {title: 'Disclaimer', block : 'p', classes: 'disclaimer'},
@@ -121,7 +122,7 @@ tinyMCE.init({
     theme_advanced_buttons2: 'search,|,pasteword,charmap,|,codemagic,|,table,cleanup,grappelli_documentstructure',
     theme_advanced_buttons3: '',
     theme_advanced_path: false,
-    theme_advanced_blockformats: 'p,h1,h2,h3,h4,blockquote,aside,pre',
+    theme_advanced_blockformats: 'p,h1,h2,h3,h4,blockquote,pre',
     theme_advanced_resizing: true,
     theme_advanced_resize_horizontal: true,
     theme_advanced_resizing_use_cookie: true,
