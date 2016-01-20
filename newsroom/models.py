@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
 
+import re
+
 import tagulous
 from filebrowser.fields import FileBrowseField
 from filebrowser.settings import VERSIONS
@@ -12,6 +14,10 @@ from . import settings
 from .utils import visible_text_in_html
 
 import logging
+
+# Regular expression to replace TinyMCE's pesky insertion of width
+# and height attributes into images.
+img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)')
 
 logger = logging.getLogger("django")
 
@@ -213,6 +219,14 @@ class Article(models.Model):
 
     # Methods that calculate cache fields
 
+    '''Remove height and width from TinyMCE image insertions.
+    '''
+
+    def remove_bad_img_attributes(self, html):
+        return img_regex.sub(r'\1 \8 class="full-width" \8\9',
+                             html)
+
+
     '''Used to generate the cached byline upon model save, so
     there's less processing for website user requests.
     '''
@@ -332,6 +346,13 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         self.cached_byline = self.calc_byline(True)
         self.cached_byline_no_links = self.calc_byline(False)
+
+        if self.use_editor:
+            self.body = self.remove_bad_img_attributes(self.body)
+            if self.summary_text:
+                self.summary_text = \
+                        self.remove_bad_img_attributes(self.summary_text)
+
         try:
              self.cached_primary_image = self.calc_primary_image()
         except:
