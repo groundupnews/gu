@@ -392,14 +392,36 @@ a.admin-menu-item {
     height:100%;
 }
 
+#see-also h2 {
+    padding-bottom: 15px;
+}
+
+#sidebar-right {
+    padding-top: 40px;
+}
+
+@media (max-width: 345px) {
+    #newsletter-signup a {
+	font-size: 12px;
+    }
+}
 
 @media (max-width: 767px) {
-	#see-also img {
-	    height: 140px;
+    #see-also img {
+	height: 140px;
+    }
+    #see-also p {
+	height: 80px;
+	overflow:hidden;
+    }
+}
+
+@media (max-width: 991px) {
+	#sidebar-right {
+	    margin-top: -30px;
 	}
-	#see-also p {
-	    height: 80px;
-	    overflow:hidden;
+	#content-extra {
+	    padding-top: 6px;
 	}
 }
 

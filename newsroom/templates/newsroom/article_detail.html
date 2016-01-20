@@ -235,6 +235,30 @@
 	 window.print();
          document.body.innerHTML = return_button + print_contents;
      });
+     var bottom_div_changed = false;
+     var bottom_div;
+     function fix_bottom_div() {
+	 if (window.innerWidth > 991) {
+	     var $el = $('#content-main');
+	     var bottom = $el.position().top + $el.outerHeight(true);
+	     var $el = $('#content-extra');
+	     var top = $el.position().top;
+	     var diff = top - bottom - 5;
+	     if (diff > 3) {
+		 $el.css("margin-top", -diff);
+		 bottom_div_changed = true;
+	     };
+	 } else if (bottom_div_changed == true) {
+	     var $el = $('#content-extra');
+	     $el.css("margin-top", 0);
+	 }
+     };
+     $(window).resize(function () {
+	 fix_bottom_div();
+     });
+     $(window).load(function() {
+	 fix_bottom_div();
+     });
  });
 
 </script>
