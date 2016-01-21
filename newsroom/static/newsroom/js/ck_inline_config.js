@@ -8,11 +8,7 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
     { name: 'Image Caption', element: 'figcaption',
       attributes: { 'class': 'caption' } },
     { name: 'Pullout Quote' , element: 'aside',
-      attributes: { 'class': 'pquote' } },
-
-    // Inline styles
-    { name: 'CSS Style', element: 'span', attributes: { 'class': 'my_style' } },
-    { name: 'Marker: Yellow', element: 'span', styles: { 'background-color': 'Yellow' } }
+      attributes: { 'class': 'pquote' } }
 ] );
 
 CKEDITOR.plugins.addExternal( 'codemirror', '/static/newsroom/js/ckeditor/plugins/codemirror/', 'plugin.js' );
