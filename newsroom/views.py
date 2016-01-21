@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
 from django.utils.html import strip_tags
+from django.core.exceptions import PermissionDenied
+from django.views.generic.edit import UpdateView
 
 import logging
 from random import randint
@@ -15,7 +17,7 @@ from random import randint
 from . import models
 from . import settings
 from . import utils
-from .forms import ArticleListForm
+from .forms import ArticleListForm, ArticleForm
 
 
 from blocks.models import Group
@@ -118,7 +120,6 @@ class RegionDetail(ArticleList):
       context['heading'] = str(self.region)
       return context
 
-
 class TopicDetail(ArticleList):
    def get_queryset(self):
       self.topic = get_object_or_404(models.Topic, slug=self.args[0])
@@ -135,51 +136,75 @@ class TopicDetail(ArticleList):
       return (self.topic.template,)
 
 
+class ArticleSave(UpdateView):
+      model = models.Article
+      fields = ['body']
+
+      # Some paranoid security checking
+      def form_valid(self, form):
+            if self.request.user.has_perm("newsroom.change_article"):
+                  messages.add_message(self.request, messages.INFO,
+                                       "Changes saved.")
+                  return super(ArticleSave, self).form_valid(form)
+            else:
+                  raise PermissionDenied
+
+
 class ArticleDetail(View):
 
-   def get(self, request, slug):
-      print ("Here 2")
-      article = get_object_or_404(models.Article, slug=slug)
-      if article.is_published() or request.user.is_staff:
-         if request.user.is_staff and not article.is_published():
-            messages.add_message(request, messages.INFO,
-                            "This article is not published.")
-         if article.region and (article.region.name not in \
-            ["None", "", "(None)",]):
-            display_region = article.region.name.rpartition("/")[2]
-         else:
-            display_region = ""
+      def get(self, request, slug):
+            article = get_object_or_404(models.Article, slug=slug)
+            if request.user.has_perm('newsroom.change_article'):
+                  data = {'body': article.body,}
+                  form = ArticleForm(data)
+                  can_edit = True
+            else:
+                  form = None
+                  can_edit = False
 
-         try:
-            read_next = models.Article.objects.published().\
-                        exclude(pk=article.pk). \
-                        exclude(recommended=False)[randint(0,9)]
-            read_next_pk = read_next.pk
-         except IndexError:
-            read_next  = None
-            read_next_pk = article.pk
+            if article.is_published() or request.user.is_staff:
+                  if request.user.is_staff and not article.is_published():
+                        messages.add_message(request, messages.INFO,
+                                          "This article is not published.")
 
-         if article.main_topic:
-            see_also = models.Article.objects.published(). \
-                       filter(topics=article.main_topic). \
-                       exclude(pk=article.pk).exclude(pk=read_next_pk).\
-                      distinct()[0:4]
-         elif article.topics:
-            see_also = models.Article.objects.published(). \
-                       filter(topics=article.topics.all()). \
-                       exclude(pk=article.pk).exclude(pk=read_next_pk). \
-                       distinct()[0:4]
-         else:
-            see_also = None
+                  if article.region and (article.region.name not in \
+                                            ["None", "", "(None)",]):
+                        display_region = article.region.name.rpartition("/")[2]
+                  else:
+                        display_region = ""
 
-         return render(request, article.template,
-                       {'article': article,
-                        'display_region': display_region,
-                        'see_also': see_also,
-                        'read_next': read_next,
-                        'blocks': get_blocks()})
-      else:
-         raise Http404
+                  try:
+                        read_next = models.Article.objects.published().\
+                                    exclude(pk=article.pk). \
+                                    exclude(recommended=False)[randint(0,9)]
+                        read_next_pk = read_next.pk
+                  except IndexError:
+                        read_next  = None
+                        read_next_pk = article.pk
+
+                  if article.main_topic:
+                        see_also = models.Article.objects.published(). \
+                              filter(topics=article.main_topic). \
+                              exclude(pk=article.pk).exclude(pk=read_next_pk).\
+                              distinct()[0:4]
+                  elif article.topics:
+                        see_also = models.Article.objects.published(). \
+                              filter(topics=article.topics.all()). \
+                              exclude(pk=article.pk).exclude(pk=read_next_pk). \
+                              distinct()[0:4]
+                  else:
+                        see_also = None
+
+                  return render(request, article.template,
+                                {'article': article,
+                                 'display_region': display_region,
+                                 'see_also': see_also,
+                                 'read_next': read_next,
+                                 'blocks': get_blocks(),
+                                 'can_edit': can_edit,
+                                 'form':form})
+            else:
+                  raise Http404
 
 
 ''' Redirect images on old Drupal site

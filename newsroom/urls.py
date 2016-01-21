@@ -180,6 +180,10 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.ArticleDetail.as_view()), name='article.detail'),
 
+    url(r'^editing/article/(?P<pk>[0-9]+)/$',
+        (views.ArticleSave.as_view()), name='article.save'),
+
+
     url(r'^author/([0-9]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.AuthorDetail.as_view()), name='author.detail'),

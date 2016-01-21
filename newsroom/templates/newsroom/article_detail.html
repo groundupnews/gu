@@ -29,6 +29,21 @@
 {% endblock %}
 
 
+{% block additional_head %}
+    {{block.super}}
+    {% if can_edit %}
+	<script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
+	<script>
+         CKEDITOR.on( 'instanceCreated', function( event ) {
+             var editor = event.editor;
+	     editor.config.customConfig =
+	     "{% static 'newsroom/js/ck_inline_config.js' %}";
+         });
+	</script>
+
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 
     {{block.super}}
@@ -38,7 +53,7 @@
 	<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
 
 	{% if display_region %}
-		|
+	    |
 	    <a href="{% url 'region.detail' article.region.path %}"
 	    >{{display_region|upper}}</a>&nbsp;
 	{% endif %}
@@ -88,7 +103,20 @@
 	{% endif %}
 
 	<div id="article-body">
-	    {{ article.body|safe }}
+	    {% if can_edit %}
+		<div id="editor_body" contenteditable="true">
+		    {{ article.body|safe }}
+		</div>
+		<form action="{% url 'article.save' article.pk %}"
+		      method="post">{% csrf_token %}
+		    <div style="display:none;">
+			{{form.body}}
+			<input id="saveedits" type="submit" value="Save">
+		    </div>
+		</form>
+	    {% else %}
+		{{ article.body|safe }}
+	    {% endif %}
 	</div>
 
     </article>
@@ -109,7 +137,6 @@
 	    </div>
 	{% endif %}
     {% endwith %}
-
 
 {% endblock %}
 
@@ -259,8 +286,18 @@
      $(window).load(function() {
 	 fix_bottom_div();
      });
- });
 
+    {% if can_edit %}
+
+     CKEDITOR.instances.editor_body.on('change', function()
+	 {
+	     document.getElementById("id_body").value =
+	     CKEDITOR.instances.editor_body.getData();
+	 });
+
+     {% endif %}
+
+ });
 </script>
 
 {% endblock %}
