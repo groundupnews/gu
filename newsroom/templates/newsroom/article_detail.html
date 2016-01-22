@@ -31,7 +31,7 @@
 
 {% block additional_head %}
     {{block.super}}
-    {% if can_edit %}
+    {% if perms.newsroom.change_article %}
 	<script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
 	<script>
          CKEDITOR.on( 'instanceCreated', function( event ) {
@@ -103,7 +103,7 @@
 	{% endif %}
 
 	<div id="article-body">
-	    {% if can_edit %}
+	    {% if perms.newsroom.change_article %}
 		<div id="editor_body" contenteditable="true">
 		    {{ article.body|safe }}
 		</div>
@@ -287,7 +287,7 @@
 	 fix_bottom_div();
      });
 
-    {% if can_edit %}
+    {% if perms.newsroom.change_article %}
 
      CKEDITOR.instances.editor_body.on('change', function()
 	 {

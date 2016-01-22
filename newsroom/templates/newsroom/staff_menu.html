@@ -1,16 +1,18 @@
-{% if article.pk %}
+{% if article.pk and perms.newsroom.change_article %}
 <li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
        class="admin-menu-item">Edit</a></li>
 {% endif %}
 
-{% if flatpage.url %}
+{% if flatpage.url and perms.flatpages.flatpage_change %}
 <li><a href="
    {% url 'admin:flatpages_flatpage_change' flatpage.pk %}"
        class="admin-menu-item">Edit</a></li>
 {% endif %}
 
 
+{% if perms.newsroom.add_article %}
 <li><a href="{% url 'admin:newsroom_article_add' %}" class="admin-menu-item">New article</a></li>
+{% endif %}
 <li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin</a></li>
 <li><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
     files</a></li>

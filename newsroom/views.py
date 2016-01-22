@@ -157,10 +157,8 @@ class ArticleDetail(View):
             if request.user.has_perm('newsroom.change_article'):
                   data = {'body': article.body,}
                   form = ArticleForm(data)
-                  can_edit = True
             else:
                   form = None
-                  can_edit = False
 
             if article.is_published() or request.user.is_staff:
                   if request.user.is_staff and not article.is_published():
@@ -201,7 +199,6 @@ class ArticleDetail(View):
                                  'see_also': see_also,
                                  'read_next': read_next,
                                  'blocks': get_blocks(),
-                                 'can_edit': can_edit,
                                  'form':form})
             else:
                   raise Http404
