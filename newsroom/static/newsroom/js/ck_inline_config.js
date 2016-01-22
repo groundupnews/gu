@@ -11,6 +11,7 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
       attributes: { 'class': 'pquote' } }
 ] );
 
+
 CKEDITOR.plugins.addExternal( 'codemirror', '/static/newsroom/js/ckeditor/plugins/codemirror/', 'plugin.js' );
 
 CKEDITOR.plugins.addExternal( 'saveedits', '/static/newsroom/js/ckeditor/plugins/saveedits/', 'plugin.js' );
@@ -39,4 +40,5 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.stylesSet = 'gu_styles';
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
+    config.allowedContent = true;
 };
