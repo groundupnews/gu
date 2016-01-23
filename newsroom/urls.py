@@ -181,7 +181,7 @@ urlpatterns = [
         (views.ArticleDetail.as_view()), name='article.detail'),
 
     url(r'^editing/article/(?P<pk>[0-9]+)/$',
-        (views.ArticleSave.as_view()), name='article.save'),
+        (views.ArticleUpdate.as_view()), name='article.update'),
 
 
     url(r'^author/([0-9]+)/$',

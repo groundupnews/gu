@@ -136,16 +136,16 @@ class TopicDetail(ArticleList):
       return (self.topic.template,)
 
 
-class ArticleSave(UpdateView):
+class ArticleUpdate(UpdateView):
       model = models.Article
-      fields = ['body']
+      form_class = ArticleForm
 
       # Some paranoid security checking
       def form_valid(self, form):
             if self.request.user.has_perm("newsroom.change_article"):
                   messages.add_message(self.request, messages.INFO,
                                        "Changes saved.")
-                  return super(ArticleSave, self).form_valid(form)
+                  return super(ArticleUpdate, self).form_valid(form)
             else:
                   raise PermissionDenied
 
@@ -155,8 +155,7 @@ class ArticleDetail(View):
       def get(self, request, slug):
             article = get_object_or_404(models.Article, slug=slug)
             if request.user.has_perm('newsroom.change_article'):
-                  data = {'body': article.body,}
-                  form = ArticleForm(data)
+                  form = ArticleForm(instance=article)
             else:
                   form = None
 

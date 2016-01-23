@@ -1,10 +1,13 @@
 from django import forms
-from django.forms import widgets
+from . import models
 
 class ArticleListForm(forms.Form):
     date_from = forms.DateTimeField()
     date_to = forms.DateTimeField(required=False)
 
 
-class ArticleForm(forms.Form):
-    body = forms.CharField(widget=forms.Textarea)
+class ArticleForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Article
+        fields = ['title', 'subtitle', 'primary_image_caption', 'body',]

@@ -118,7 +118,7 @@ ul.icons li {
 
 .icons a:hover { background-position: left -34px; }
 
-h2#article-subtitle, #article-subtitle {
+#article_subtitle {
     font-weight: normal;
     font-size: 18px;
     line-height: 135%;
@@ -286,7 +286,7 @@ figure {
     margin-bottom:10px;
 }
 
-.caption, .article-primary-image-caption,
+.caption, #article_primary_image_caption,
 p.article-primary-image-caption, p.caption {
     font-style: italic;
     font-size: 13px;

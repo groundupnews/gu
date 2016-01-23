@@ -33,14 +33,7 @@
     {{block.super}}
     {% if perms.newsroom.change_article %}
 	<script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
-	<script>
-         CKEDITOR.on( 'instanceCreated', function( event ) {
-             var editor = event.editor;
-	     editor.config.customConfig =
-	     "{% static 'newsroom/js/ck_inline_config.js' %}";
-         });
-	</script>
-
+	<script>CKEDITOR.disableAutoInline = true;</script>
     {% endif %}
 {% endblock %}
 
@@ -61,9 +54,22 @@
 
     <article>
 
-	<h1 id="article-title">{{ article.title}}</h1>
+	<h1 id="article_title"
+	    {% if perms.newsroom.change_article %}
+	    contenteditable="true"
+	    {% endif %} >{{ article.title}}</h1>
 	{% if article.subtitle %}
-	    <h2 id="article-subtitle">{{ article.subtitle|safe }}</h2>
+	    <h2 id="article_subtitle"
+	    	{% if perms.newsroom.change_article %}
+		contenteditable="true"
+		{% endif %} >{{ article.subtitle|safe }}</h2>
+	{% else %}
+	    {% comment %}Subtitle must always be visible for editors
+	    {% endcomment %}
+	    {% if perms.newsroom.change_article %}
+		<h2 id="article_subtitle"
+		    contenteditable="true">{{ article.subtitle|safe }}</h2>
+	    {% endif %}
 	{% endif %}
 
 	<p class="article-byline">
@@ -94,31 +100,44 @@
 		    {% endif %}
 
 		    {% if article.primary_image_caption %}
-			<figcaption class="article-primary-image-caption">
-			    {{article.primary_image_caption}}
+			<figcaption id="article_primary_image_caption"
+			    {% if perms.newsroom.change_article %}
+				contenteditable="true"
+			    {% endif %} >
+			    {{article.primary_image_caption|safe}}
 			</figcaption>
+		    {% else %}
+			{% comment %}Editors must have empty caption to edit
+			{% endcomment %}
+			{% if perms.newsroom.change_article %}
+			    <figcaption id="article_primary_image_caption"
+					contenteditable="true">
+				{{article.primary_image_caption|safe}}
+			    </figcaption>
+			{% endif %}
 		    {% endif %}
 		</figure>
 	    </div>
 	{% endif %}
 
-	<div id="article-body">
+
+	<div
 	    {% if perms.newsroom.change_article %}
-		<div id="editor_body" contenteditable="true">
-		    {{ article.body|safe }}
-		</div>
-		<form action="{% url 'article.save' article.pk %}"
-		      method="post">{% csrf_token %}
-		    <div style="display:none;">
-			{{form.body}}
-			<input id="saveedits" type="submit" value="Save">
-		    </div>
-		</form>
-	    {% else %}
-		{{ article.body|safe }}
-	    {% endif %}
+	    id="article_body"
+	    contenteditable="true"
+	    {% endif %}>
+	    {{article.body|safe}}
 	</div>
 
+	{% if perms.newsroom.change_article %}
+	    <div style="display:none;">
+		<form action="{% url 'article.update' article.pk %}"
+		      method="post">{% csrf_token %}
+		    {{form.as_p}}
+		    <input id="saveedits" type="submit" value="Save">
+		</form>
+	    </div>
+	{% endif %}
     </article>
 
     <div id="sharing">
@@ -270,7 +289,7 @@
 	     var bottom = $el.position().top + $el.outerHeight(true);
 	     var $el = $('#content-extra');
 	     var top = $el.position().top;
-	     var diff = top - bottom - 5;
+	     var diff = top - bottom;
 	     if (diff > 3) {
 		 $el.css("margin-top", -diff);
 		 bottom_div_changed = true;
@@ -289,10 +308,55 @@
 
     {% if perms.newsroom.change_article %}
 
-     CKEDITOR.instances.editor_body.on('change', function()
+     var content_div = $('#content-main');
+     var saved_height = content_div.outerHeight(true);
+
+     function update_form(editor, field) {
+	 document.getElementById(field).value =
+	 CKEDITOR.instances[editor].getData();
+	 if (content_div.outerHeight(true) != saved_height) {
+	     fix_bottom_div();
+	     saved_height = content_div.outerHeight(true);
+	 }
+     }
+
+     CKEDITOR.inline( 'article_title', {
+	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+     });
+     CKEDITOR.inline( 'article_subtitle', {
+	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+     });
+     CKEDITOR.inline( 'article_primary_image_caption', {
+	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+     });
+     CKEDITOR.inline( 'article_body', {
+	 customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
+     });
+
+     CKEDITOR.instances.article_title.on('change', function()
 	 {
-	     document.getElementById("id_body").value =
-	     CKEDITOR.instances.editor_body.getData();
+	     update_form("article_title",
+			 "id_title");
+	 });
+
+     CKEDITOR.instances.article_subtitle.on('change', function()
+	 {
+	     update_form("article_subtitle",
+			 "id_subtitle");
+	 });
+
+
+     CKEDITOR.instances.article_primary_image_caption.on('change', function()
+	 {
+	     update_form("article_primary_image_caption",
+			 "id_primary_image_caption");
+	 });
+
+
+     CKEDITOR.instances.article_body.on('change', function()
+	 {
+	     update_form("article_body",
+			 "id_body");
 	 });
 
      {% endif %}
