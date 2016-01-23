@@ -41,6 +41,8 @@ CKEDITOR.editorConfig = function( config ) {
     config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,Undo,Redo,Anchor,HorizontalRule,SpecialChar,Table,Maximize,Strike,Outdent,Indent,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 
     config.stylesSet = 'gu_styles';
+    config.scayt_sLang = 'en_GB';
+    config.scayt_autoStartup = true;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
     config.allowedContent = true;
 };
