@@ -284,7 +284,7 @@
      var bottom_div_changed = false;
      var bottom_div;
      function fix_bottom_div() {
-	 if (window.innerWidth > 991) {
+	 if (window.innerWidth > 767) {
 	     var $el = $('#content-main');
 	     var bottom = $el.position().top + $el.outerHeight(true);
 	     var $el = $('#content-extra');
@@ -321,7 +321,7 @@
      }
 
      CKEDITOR.inline( 'article_title', {
-	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+	 customConfig: "{% static 'newsroom/js/ck_inline_plaintext_config.js' %}"
      });
      CKEDITOR.inline( 'article_subtitle', {
 	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
@@ -329,9 +329,11 @@
      CKEDITOR.inline( 'article_primary_image_caption', {
 	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
      });
+
      CKEDITOR.inline( 'article_body', {
 	 customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
      });
+
 
      CKEDITOR.instances.article_title.on('change', function()
 	 {

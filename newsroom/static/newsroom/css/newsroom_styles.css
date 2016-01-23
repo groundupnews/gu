@@ -416,14 +416,16 @@ a.admin-menu-item {
     }
 }
 
-@media (max-width: 991px) {
-	#sidebar-right {
+
+@media (max-width: 768px) {
+	/*#sidebar-right {
 	    margin-top: -30px;
-	}
+	}*/
 	#content-extra {
 	    padding-top: 6px;
 	}
 }
+
 
 #see-also p, #read-next p {
     margin-top: 6px;
@@ -453,6 +455,7 @@ div.editor-summary {
 /* Collapse menu earlier. */
 /* Source:                */
 /* http://stackoverflow.com/questions/21076922/bootstrap-how-to-collapse-navbar-earlier */
+
 
 @media (min-width: 768px) and (max-width: 991px) {
     .navbar-collapse.collapse {

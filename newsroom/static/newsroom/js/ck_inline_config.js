@@ -30,13 +30,14 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'others', groups: [ 'others' ] },
 	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+
 	{ name: 'styles', groups: [ 'styles' ] },
 	{ name: 'colors', groups: [ 'colors' ] },
 	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 	{ name: 'about', groups: [ 'about' ] }
     ];
 
-    config.extraPlugins = 'sourcedialog,codemirror,saveedits';
+    config.extraPlugins = 'sourcedialog,saveedits';
 
     config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,Undo,Redo,Anchor,HorizontalRule,SpecialChar,Table,Maximize,Strike,Outdent,Indent,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 

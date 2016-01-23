@@ -56,12 +56,12 @@
     <div class="container">
 	<div class="row">
 
-	    <div id="sidebar-left" class="col-md-1">
+	    <div id="sidebar-left" class="col-sm-1">
 		{% block sidebar-left %}
 		{% endblock %}
 	    </div>
 
-	    <div id="content-main" class="col-md-8 page-content">
+	    <div id="content-main" class="col-sm-8 page-content">
 		{% block content %}
 
 		    {% block messages %}
@@ -79,7 +79,7 @@
 		{% endblock %}
 	    </div>
 
-	    <div id="sidebar-right" class="col-md-3 page-content">
+	    <div id="sidebar-right" class="col-sm-3 page-content">
 		{% block sidebar-right %}
 		    {% for b in blocks %}
 			<div class="thumbnail right-sidebar-block">
@@ -92,15 +92,15 @@
 	</div>
 
 	<div class="row">
-	    <div id="sidebar-left-extra" class="col-md-1">
+	    <div id="sidebar-left-extra" class="col-sm-1">
 		{% block sidebar-left-extra %}
 		{% endblock %}
 	    </div>
-	    <div id="content-extra" class="col-md-8 page-content">
+	    <div id="content-extra" class="col-sm-8 page-content">
 		{% block content-extra %}
 		{% endblock %}
 	    </div>
-	    <div id="sidebar-right-extra" class="col-md-2 page-content">
+	    <div id="sidebar-right-extra" class="col-sm-2 page-content">
 		{% block sidebar-right-extra %}
 		{% endblock %}
 	    </div>
