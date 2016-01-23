@@ -107,6 +107,9 @@ class ArticleQuerySet(models.QuerySet):
     def list_view(self):
         return self.published().filter(exclude_from_list_views=False)
 
+def latest_article(request):
+    return Entry.objects.published().latest("modified").modified
+
 class Article(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200, blank=True)
@@ -208,8 +211,10 @@ class Article(models.Model):
         return (self.published is not None) and \
             (self.published <= timezone.now())
 
+
     is_published.boolean = True
     is_published.short_description = 'published'
+
 
     # Methods that calculate cache fields
 

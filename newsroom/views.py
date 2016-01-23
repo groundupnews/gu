@@ -10,6 +10,7 @@ from django.contrib.sites.models import Site
 from django.utils.html import strip_tags
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import UpdateView
+from django.views.decorators.http import last_modified
 
 import logging
 from random import randint
@@ -48,24 +49,30 @@ class ArticleList(generic.ListView):
       context = get_blocks_in_context(context)
       return context
 
+def last_article_modified(request):
+      return models.Article.objects.published().latest("modified").modified
+
 class HomePage(ArticleList):
-   template_name = "newsroom/home.html"
+      template_name = "newsroom/home.html"
 
-   # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
-   # WHICH CODE NEEDS TO CHANGE URGENTLY.
+      # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
+      # WHICH CODE NEEDS TO CHANGE URGENTLY.
 
-   # def get_context_data(self, **kwargs):
-   #    context = super(HomePage, self).get_context_data(**kwargs)
-   #    # Add extra context for the home page here
-   #    #
-   #    return context
+      # def get_context_data(self, **kwargs):
+      #    context = super(HomePage, self).get_context_data(**kwargs)
+      #    # Add extra context for the home page here
+      #    #
+      #    return context
 
-   # def get(self, request, *args, **kwargs):
-   #    # Add messages here. E.g.
-   #    #messages.add_message(request, messages.INFO,
-   #    #                     "We are closed until 5 January.")
-   #    request = super(HomePage, self).get(request, args, kwargs)
-   #    return request
+      # def get(self, request, *args, **kwargs):
+      #       # Add messages here. E.g.
+      #       #messages.add_message(request, messages.INFO,
+      #       #                     "We are closed until 5 January.")
+      #       request = super(HomePage, self).get(request, args, kwargs)
+      #       return request
+
+home_page_view = HomePage.as_view()
+home_page_view = last_modified(last_article_modified)(home_page_view)
 
 class OpinionAnalysisList(ArticleList):
    def get_queryset(self):
@@ -77,6 +84,7 @@ class OpinionAnalysisList(ArticleList):
       context = super(OpinionAnalysisList, self).get_context_data(**kwargs)
       context['heading'] = "Opinion and Analysis"
       return context
+
 
 class AuthorDetail(ArticleList):
 
@@ -148,7 +156,6 @@ class ArticleUpdate(UpdateView):
                   return super(ArticleUpdate, self).form_valid(form)
             else:
                   raise PermissionDenied
-
 
 class ArticleDetail(View):
 

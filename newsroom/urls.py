@@ -10,7 +10,7 @@ from . import settings
 urlpatterns = [
     url(r'^$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
-        (views.HomePage.as_view()),
+        (views.home_page_view),
         name='home'),
 
     url(r'^category/opinion_and_analysis/$',
