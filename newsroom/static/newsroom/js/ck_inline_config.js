@@ -7,7 +7,7 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
       attributes: { 'class': 'very-large' } },
     { name: 'Image Caption', element: 'figcaption',
       attributes: { 'class': 'caption' } },
-    { name: 'Paragraph', element: 'p',
+    { name: 'Introduction', element: 'p',
       attributes: { 'class': 'intro' } },
     { name: 'Pullout Quote' , element: 'aside',
       attributes: { 'class': 'pquote' } }
