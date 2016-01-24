@@ -1,9 +1,4 @@
 
-CKEDITOR.plugins.addExternal( 'codemirror', '/static/newsroom/js/ckeditor/plugins/codemirror/', 'plugin.js' );
-
-CKEDITOR.plugins.addExternal( 'saveedits', '/static/newsroom/js/ckeditor/plugins/saveedits/', 'plugin.js' );
-
-
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -22,7 +17,7 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'about', groups: [ 'about' ] }
     ];
 
-    config.extraPlugins = 'sourcedialog,codemirror,saveedits';
+    config.extraPlugins = 'sourcedialog,saveedits';
 
     config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Link,Unlink,Anchor,Image,Table,HorizontalRule,SpecialChar,Maximize,Bold,Italic,Strike,RemoveFormat,NumberedList,BulletedList,Indent,Outdent,Blockquote,Styles,Format,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
     config.scayt_sLang = 'en_GB';

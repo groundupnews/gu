@@ -1,7 +1,3 @@
-CKEDITOR.plugins.addExternal( 'codemirror', '/static/newsroom/js/ckeditor/plugins/codemirror/', 'plugin.js' );
-
-CKEDITOR.plugins.addExternal( 'saveedits', '/static/newsroom/js/ckeditor/plugins/saveedits/', 'plugin.js' );
-
 
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
