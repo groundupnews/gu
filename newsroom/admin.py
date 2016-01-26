@@ -8,6 +8,8 @@ from django.forms import ModelForm, Textarea
 import re
 
 from . import models
+from socialmedia.models import Tweet
+from socialmedia.admin import TweetInline
 
 import tagulous
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
@@ -128,6 +130,9 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
     )
 
+    inlines = [
+        TweetInline,
+    ]
     def get_changeform_initial_data(self, request):
         return {'category': 'News'}
 
@@ -137,6 +142,7 @@ class ArticleAdmin(admin.ModelAdmin):
             '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
             '/static/newsroom/js/tinymce_setup.js',
             '/static/newsroom/js/admin_enhance.js',
+            '/static/socialmedia/js/tweets.js',
         ]
 
 admin.site.register(models.Article, ArticleAdmin)

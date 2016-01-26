@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'tagulous',
 
     'newsroom',
+    'socialmedia',
     'clearcache',
     'blocks',
 )
