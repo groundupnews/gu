@@ -180,8 +180,12 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.ArticleDetail.as_view()), name='article.detail'),
 
+    url(r'^editing/publishing/article/(?P<pk>[0-9]+)/$',
+        views.article_publish, name='article.publish'),
+
+
     url(r'^editing/article/(?P<pk>[0-9]+)/$',
-        (views.ArticleUpdate.as_view()), name='article.update'),
+        views.ArticleUpdate.as_view(), name='article.update'),
 
 
     url(r'^author/([0-9]+)/$',

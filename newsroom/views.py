@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.core.urlresolvers import reverse
 from django.http import Http404
+from django.http import HttpResponseRedirect
 from django.views import generic
 from django.views.generic import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -144,6 +146,17 @@ class TopicDetail(ArticleList):
       return (self.topic.template,)
 
 
+def article_publish(request, pk):
+      if request.user.has_perm("newsroom.change_article"):
+            article = get_object_or_404(models.Article, pk=pk)
+            article.publish_now()
+            messages.add_message(request, messages.INFO,
+                                 "Article published.")
+            return HttpResponseRedirect(reverse('article.detail',
+                                                args=[article.slug]))
+      else:
+            raise PermissionDenied
+
 class ArticleUpdate(UpdateView):
       model = models.Article
       form_class = ArticleForm
@@ -156,6 +169,7 @@ class ArticleUpdate(UpdateView):
                   return super(ArticleUpdate, self).form_valid(form)
             else:
                   raise PermissionDenied
+
 
 class ArticleDetail(View):
 

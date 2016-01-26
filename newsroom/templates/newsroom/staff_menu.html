@@ -1,6 +1,10 @@
 {% if article.pk and perms.newsroom.change_article %}
-<li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
-       class="admin-menu-item">Edit</a></li>
+    <li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
+	   class="admin-menu-item">Edit</a></li>
+    {% if not article.is_published %}
+	<li><a href="{% url 'article.publish' article.pk %}"
+	       class="admin-menu-item">Publish now</a></li>
+    {% endif %}
 {% endif %}
 
 {% if flatpage.url and perms.flatpages.flatpage_change %}

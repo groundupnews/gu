@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
+from django.utils import timezone
 
 import tagulous
 from filebrowser.fields import FileBrowseField
@@ -211,6 +212,10 @@ class Article(models.Model):
         return (self.published is not None) and \
             (self.published <= timezone.now())
 
+    def publish_now(self):
+        if self.is_published() == False:
+            self.published = timezone.now()
+            self.save()
 
     is_published.boolean = True
     is_published.short_description = 'published'

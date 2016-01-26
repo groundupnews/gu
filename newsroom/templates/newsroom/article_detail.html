@@ -42,7 +42,6 @@
 
     {{block.super}}
 
-
     <p class="article-category">
 	<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
 
@@ -327,9 +326,11 @@
      CKEDITOR.inline( 'article_subtitle', {
 	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
      });
+     {% if article.cached_primary_image %}
      CKEDITOR.inline( 'article_primary_image_caption', {
 	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
      });
+     {% endif %}
 
      CKEDITOR.inline( 'article_body', {
 	 customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
@@ -349,12 +350,13 @@
 	 });
 
 
+     {% if article.cached_primary_image %}
      CKEDITOR.instances.article_primary_image_caption.on('change', function()
 	 {
 	     update_form("article_primary_image_caption",
 			 "id_primary_image_caption");
 	 });
-
+     {% endif %}
 
      CKEDITOR.instances.article_body.on('change', function()
 	 {
