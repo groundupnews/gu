@@ -73,11 +73,13 @@ def process(days, max_tweets):
 
 
 class Command(BaseCommand):
-    help = 'Hack to fix disqus ids for articles imported from Drupal'
+    help = 'Sends scheduled article tweets to Twitter'
 
     def add_arguments(self, parser):
-        parser.add_argument('days', type=int)
-        parser.add_argument('maxtweets', type=int)
+        parser.add_argument('days', type=int,
+                            help="Number of days back in time to look for tweets.")
+        parser.add_argument('maxtweets', type=int,
+                            help="Maximum number of tweets to send.")
 
     def handle(self, *args, **options):
         days = options["days"]
