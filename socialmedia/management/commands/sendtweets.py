@@ -23,6 +23,12 @@ def process(days, max_tweets):
         "access_token"        : settings.TWITTER_ACCESS_TOKEN,
         "access_token_secret" : settings.TWITTER_TOKEN_SECRET
     }
+    try:
+        api = get_api(cfg)
+    except:
+        print("Accessing Twitter failed.")
+        print("Error: ", sys.exc_info()[0])
+        return
 
     date_from = timezone.now() - datetime.timedelta(days=days)
     articles = Article.objects.published().filter(published__gte=date_from)
@@ -45,7 +51,6 @@ def process(days, max_tweets):
                 for handle in tweet.tag_accounts.all():
                     text += " @" + str(handle.name)
                 try:
-                    api = get_api(cfg)
                     if tweet.image:
                         image_file = settings.MEDIA_ROOT + str(tweet.image)
                         api.update_with_media(filename=image_file, status=text)
