@@ -59,12 +59,13 @@ def process(days, max_tweets):
                         status = api.update_status(status=text)
                         print("Sending tweet: {}".format(text))
                     tweet.status = "sent"
+                    tweet.save()
                     break # Maximum of one successful tweet per article
                 except:
                     tweet.status = "failed"
                     print("Error: ", sys.exc_info()[0])
                     print("Failed tweet: {}".format(text))
-                tweet.save()
+                    tweet.save()
 
         if tweet_count > max_tweets:
             break
