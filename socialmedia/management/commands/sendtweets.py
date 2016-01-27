@@ -10,7 +10,6 @@ import tweepy
 import pytz
 from newsroom.models import Article
 
-
 def get_api(cfg):
     auth = tweepy.OAuthHandler(cfg['consumer_key'], cfg['consumer_secret'])
     auth.set_access_token(cfg['access_token'], cfg['access_token_secret'])
@@ -23,6 +22,8 @@ def process(days, max_tweets):
         "access_token"        : settings.TWITTER_ACCESS_TOKEN,
         "access_token_secret" : settings.TWITTER_TOKEN_SECRET
     }
+    successes = 0
+    failures = 0
     try:
         api = get_api(cfg)
     except:
@@ -60,8 +61,10 @@ def process(days, max_tweets):
                         print("Sending tweet: {}".format(text))
                     tweet.status = "sent"
                     tweet.save()
+                    successes = successes + 1
                     break # Maximum of one successful tweet per article
                 except:
+                    failures = failures + 1
                     tweet.status = "failed"
                     print("Error: ", sys.exc_info()[0])
                     print("Failed tweet: {}".format(text))
@@ -69,7 +72,7 @@ def process(days, max_tweets):
 
         if tweet_count > max_tweets:
             break
-
+    return {"successes" : successes, "failures" : failures}
 
 
 class Command(BaseCommand):
@@ -84,6 +87,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         days = options["days"]
         max_tweets = options["maxtweets"]
-        print("Processing {0} days with a maximum of {1} tweets.". \
-              format(days, max_tweets))
-        process(days, max_tweets)
+        print("{0}: Processing {1} days with a maximum of {2} tweets.". \
+              format(str(timezone.now()), days, max_tweets))
+        success_dict = process(days, max_tweets)
+        print("Successful: {0}. Failed: {1}".\
+              format(success_dict["successes"], success_dict["failures"]))
