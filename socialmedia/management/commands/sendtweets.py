@@ -27,8 +27,8 @@ def process(days, max_tweets):
     try:
         api = get_api(cfg)
     except:
-        print("Accessing Twitter failed.")
-        print("Error: ", sys.exc_info()[0])
+        print("Sendtweets: Accessing Twitter failed.")
+        print("Sendtweets: Error: ", sys.exc_info()[0])
         return
 
     date_from = timezone.now() - datetime.timedelta(days=days)
@@ -55,10 +55,10 @@ def process(days, max_tweets):
                     if tweet.image:
                         image_file = settings.MEDIA_ROOT + str(tweet.image)
                         api.update_with_media(filename=image_file, status=text)
-                        print("Sending tweet with image: {}".format(text))
+                        print("Sendtweets: Sending tweet with image: {}".format(text))
                     else:
                         status = api.update_status(status=text)
-                        print("Sending tweet: {}".format(text))
+                        print("Sendtweets: Sending tweet: {}".format(text))
                     tweet.status = "sent"
                     tweet.save()
                     successes = successes + 1
@@ -66,8 +66,8 @@ def process(days, max_tweets):
                 except:
                     failures = failures + 1
                     tweet.status = "failed"
-                    print("Error: ", sys.exc_info()[0])
-                    print("Failed tweet: {}".format(text))
+                    print("Sendtweets: Error: ", sys.exc_info()[0])
+                    print("Sendtweets: Failed tweet: {}".format(text))
                     tweet.save()
 
         if tweet_count > max_tweets:
@@ -87,8 +87,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         days = options["days"]
         max_tweets = options["maxtweets"]
-        print("{0}: Processing {1} days with a maximum of {2} tweets.". \
+        print("Sendtweets: {0}: Processing {1} days with a maximum of {2} tweets.". \
               format(str(timezone.now()), days, max_tweets))
         success_dict = process(days, max_tweets)
-        print("Successful: {0}. Failed: {1}".\
+        print("Sendtweets: Successful: {0}. Failed: {1}".\
               format(success_dict["successes"], success_dict["failures"]))

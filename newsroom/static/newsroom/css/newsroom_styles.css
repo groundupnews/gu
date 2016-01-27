@@ -138,7 +138,8 @@ article p {
 }
 
 @media (min-width: 980px) {
-    article p, article figure img.full-width, article figure.full-width img {
+    article p, article figure img.full-width,
+    article figure.full-width img, figcaption {
 	padding-right: 150px;
     }
     img.full-width {
@@ -286,7 +287,7 @@ figure {
     margin-bottom:10px;
 }
 
-.caption, #article_primary_image_caption,
+figcaption, .caption, #article_primary_image_caption,
 p.article-primary-image-caption, p.caption {
     font-style: italic;
     font-size: 13px;
