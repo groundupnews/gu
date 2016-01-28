@@ -4,7 +4,7 @@
 {% load fb_versions %}
 
 {% block title %}
-{{article.title }}
+{{article.title|safe}}
 {% endblock %}
 
 {% block seo_fields %}
@@ -237,7 +237,7 @@
 <script type="text/javascript">
  jQuery(document).ready(function ($) {
      $('#twitter-share').click(function(){
-	 var article_title = encodeURI('{{article.title|addslashes|safe}}').
+	 var article_title = encodeURI('{{article.title|addslashes|linebreaksbr|safe}}').
 						  substring(0, 115);
 	 var url = encodeURI('{{ request.build_absolute_uri }}');
 	 var twitter_url = "https://twitter.com/intent/tweet?text=" +
@@ -254,7 +254,7 @@
 	 return false;
      });
      $('#whatsapp-share').click(function(){
-	 var message = encodeURI('{{article.title|addslashes|safe}} {{ request.build_absolute_uri }}');
+	 var message = encodeURI('{{article.title|addslashes|linebreaksbr|safe}} {{ request.build_absolute_uri }}');
 	 var whatsapp_url = 'whatsapp://send?text=' + message;
 
 	 var win = window.open(whatsapp_url, '_blank');
@@ -262,7 +262,7 @@
 	 return false;
      });
      $('#email-share').click(function(){
-	 var subject = encodeURI('{{article.title|addslashes|safe}}');
+	 var subject = encodeURI('{{article.title|addslashes|linebreaksbr|safe}}');
 	 var body = encodeURI('{{article.cached_summary_text|addslashes|striptags|truncatewords:100|safe}}' + ' ' +
                               '{{ request.build_absolute_uri }}');
 	 var mail_url = "mailto:?subject=" + subject + "&body=" + body;
