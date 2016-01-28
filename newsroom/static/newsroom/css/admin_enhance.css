@@ -17,3 +17,8 @@
 #title-length {
     padding-left: 10px;
 }
+
+# To make CKEDitor bearable
+.cke_editable img {
+    max-width: 500px !important;
+}

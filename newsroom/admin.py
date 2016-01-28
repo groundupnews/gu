@@ -131,10 +131,11 @@ class ArticleAdmin(admin.ModelAdmin):
         return {'category': 'News'}
 
     class Media:
-        css = { 'all' : ('/static/newsroom/css/admin_enhance.css',) }
+        css = { 'all' : ('/static/newsroom/css/admin_enhance.css',)}
         js = [
-            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-            '/static/newsroom/js/tinymce_setup.js',
+            '//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js',
+            '/static/newsroom/js/ck_styles.js',
+            '/static/newsroom/js/ck_init_admin.js',
             '/static/newsroom/js/admin_enhance.js',
             '/static/socialmedia/js/tweets.js',
         ]
@@ -167,8 +168,9 @@ class FlatPageAdmin(FlatPageAdmin):
     class Media:
         css = { 'all' : ('/static/newsroom/css/admin_enhance.css',) }
         js = [
-            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-            '/static/newsroom/js/tinymce_setup.js',
+            '//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js',
+            '/static/newsroom/js/ck_styles.js',
+            '/static/newsroom/js/ck_init_admin.js',
         ]
 
 

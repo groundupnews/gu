@@ -33,8 +33,8 @@
     {{block.super}}
     {% if perms.newsroom.change_article %}
 	<script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
+	<script src="{% static 'newsroom/js/ck_styles.js' %}"></script>
 	<script src="{% static 'newsroom/js/ck_init.js' %}"></script>
-
     {% endif %}
 {% endblock %}
 

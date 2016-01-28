@@ -1,0 +1,11 @@
+@import "/static/newsroom/css/newsroom_styles.css";
+
+
+img {
+    max-width: 500px !important;
+}
+
+
+.very-large img {
+    max-width: 800px !important;
+}
