@@ -57,7 +57,7 @@
 	<h1 id="article_title"
 	    {% if perms.newsroom.change_article %}
 	    contenteditable="true"
-	    {% endif %} >{{ article.title}}</h1>
+	    {% endif %} >{{ article.title|safe}}</h1>
 	{% if article.subtitle %}
 	    <h2 id="article_subtitle"
 	    	{% if perms.newsroom.change_article %}
@@ -84,17 +84,15 @@
 	</p>
 
 	{% if article.cached_primary_image %}
-	    <div id="article-primary-image">
-		<figure>
+
+		<figure id="article-primary-image">
 		    {% if article.primary_image %}
 			<a href="{{MEDIA_URL}}{{article.primary_image}}">
-			    <img class="article-primary-image"
-				 src="{{article.cached_primary_image}}"
+			    <img src="{{article.cached_primary_image}}"
 				 alt="{{article.primary_image_alt|addslashes}}" />
 			</a>
 		    {% else %}
-			<img class="article-primary-image"
-			     src="{{article.cached_primary_image}}"
+			<img src="{{article.cached_primary_image}}"
 		    	     alt="{{article.primary_image_alt|addslashes}}"
 			/>
 		    {% endif %}
@@ -117,7 +115,7 @@
 			{% endif %}
 		    {% endif %}
 		</figure>
-	    </div>
+
 	{% endif %}
 
 
@@ -305,6 +303,13 @@
      $(window).load(function() {
 	 fix_bottom_div();
      });
+
+     // START HERE!!!!
+     // Hook change in content div to #content-main
+     $("#content-main").on('input propertychange paste', function() {
+	 fix_bottom_div();
+     });
+
 
     {% if perms.newsroom.change_article %}
 

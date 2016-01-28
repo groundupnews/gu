@@ -16,7 +16,7 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'about', groups: [ 'about' ] }
     ];
 
-    config.extraPlugins = 'sourcedialog,saveedits';
+    config.extraPlugins = 'find,sourcedialog,saveedits';
 
     config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,Undo,Redo,Anchor,HorizontalRule,SpecialChar,Table,Maximize,Strike,Outdent,Indent,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 

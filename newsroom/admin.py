@@ -8,6 +8,7 @@ from django.forms import ModelForm, Textarea
 import re
 
 from . import models
+from . import utils
 from socialmedia.models import Tweet
 from socialmedia.admin import TweetInline
 
@@ -24,6 +25,8 @@ IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
 # Regular expression to replace TinyMCE's pesky insertion of width
 # and height attributes into images.
 
+blankpara_regex = re.compile(r'<p[^>]*?>\s*?</p>|<p[^>]*?>\s*?&nbsp;\s*?</p>')
+
 img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)')
 
 figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (class="caption")(.*?)>(.*?)(</p>)')
@@ -39,13 +42,6 @@ class ArticleForm(forms.ModelForm):
     '''Remove height and width from TinyMCE image insertions.
     '''
 
-    def remove_bad_img_attributes(self, html):
-        return img_regex.sub(r'\1 class="full-width" \8\9',
-                             html)
-
-    def replace_p_with_figure(self, html):
-        return figure_regex.sub(r'<figure>\3\4\5\8<figcaption \10>\11\12</figcaption></figure>',html )
-
     def clean_main_topic(self):
         if self.cleaned_data["main_topic"] == "(None)":
             self.cleaned_data["main_topic"] = None
@@ -58,13 +54,11 @@ class ArticleForm(forms.ModelForm):
             if topic not in self.cleaned_data["topics"]:
                 self.cleaned_data["topics"].append(topic)
 
-        # Transform the body to fix TinyMCE's obscurities.
+        # Transform the body to fix Wysiwyg editor limitations
 
         if self.cleaned_data["use_editor"]:
             body = self.cleaned_data["body"]
-            body = self.remove_bad_img_attributes(body)
-            body = self.replace_p_with_figure(body)
-            self.cleaned_data["body"] = body
+            self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
 
         super(ArticleForm, self).clean(*args, **kwargs)
 

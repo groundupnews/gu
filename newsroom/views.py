@@ -166,6 +166,7 @@ class ArticleUpdate(UpdateView):
             if self.request.user.has_perm("newsroom.change_article"):
                   messages.add_message(self.request, messages.INFO,
                                        "Changes saved.")
+
                   return super(ArticleUpdate, self).form_valid(form)
             else:
                   raise PermissionDenied
