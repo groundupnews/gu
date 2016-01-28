@@ -15,6 +15,6 @@
 	</a>
     {% endif %}
     <div>
-	<p><a href="{{item.get_absolute_url}}">{{item.title}}</a></p>
+	<p><a href="{{item.get_absolute_url}}">{{item.title|safe}}</a></p>
     </div>
 </div>
