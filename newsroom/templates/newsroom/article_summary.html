@@ -27,7 +27,7 @@
 		       summary-title
 		       {% endif %}">
 		<a href="{{article.get_absolute_url}}">
-		    {{article.title }}
+		    {{article.title|safe }}
 		</a>
 	    </h2>
 	    <p class="summary-text">

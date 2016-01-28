@@ -6,11 +6,11 @@
 	     summary-title
 	     {% endif %}">
     <a href="{{article.get_absolute_url}}">
-      {{article.title }}
+      {{article.title|safe}}
     </a>
   </h2>
   <p class="summary-text">
-    {{article.cached_summary_text_no_html}}
+    {{article.cached_summary_text_no_html|safe}}
   </p>
   <p class="summary-dateline">
     {{article.published|date:"d F Y"}}
