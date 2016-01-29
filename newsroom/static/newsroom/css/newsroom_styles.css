@@ -152,7 +152,7 @@ article figure.very-large
 
 figcaption, p.caption {
     font-size: 13px;
-    background-color: Beige;
+    background-color: #efefef;
     line-height: 125%;
     margin-top: 0px;
     margin-bottom: 3px;
@@ -267,6 +267,11 @@ h2.summary-title a:hover, h2.large-summary-title a:hover {
 #newsletter-signup {
     margin-top: 20px;
     margin-bottom: 25px;
+}
+
+#newsletter-signup .btn-info {
+    color: black;
+    font-weight: bold;
 }
 
 
