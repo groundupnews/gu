@@ -122,6 +122,14 @@ class ArticleAdmin(admin.ModelAdmin):
                       'recommended', 'byline', 'use_editor',
                       'template', 'disqus_id',)
         }),
+        ('Facebook', {
+            'classes': ('grp-collapse grp-closed',),
+            'fields':(
+                'facebook_wait_time', 'facebook_image', 'facebook_image_caption',
+                'facebook_description', 'facebook_message',
+                'facebook_send_status',
+            ),
+        })
     )
 
     inlines = [

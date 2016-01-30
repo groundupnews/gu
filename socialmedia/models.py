@@ -2,14 +2,10 @@ from django.db import models
 from newsroom.models import Article
 from filebrowser.fields import FileBrowseField
 import tagulous
+from .common import SCHEDULE_RESULTS
 
 # Create your models here.
 
-TWEET_RESULTS = (
-    ("scheduled", "Scheduled"),
-    ("sent", "Sent"),
-    ("failed", "Failed"),
-)
 
 class TwitterHandle(tagulous.models.TagModel):
 
@@ -37,7 +33,7 @@ class Tweet(models.Model):
                                             "after publication "
                                             "till tweet.")
     status = models.CharField(max_length=20,
-                              choices=TWEET_RESULTS,
+                              choices=SCHEDULE_RESULTS,
                               default="scheduled")
     tweet_text = models.CharField(max_length=117, blank=True)
     image = FileBrowseField(max_length=200, directory="images/",

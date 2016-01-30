@@ -17,6 +17,7 @@ src/*.egg-info
 media/
 *-journal
 output.txt
+fbtest.py
 
 # C extensions
 *.so

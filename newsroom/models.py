@@ -9,6 +9,7 @@ from filebrowser.fields import FileBrowseField
 from filebrowser.settings import VERSIONS
 
 from . import settings
+from socialmedia.common import SCHEDULE_RESULTS
 
 from .utils import visible_text_in_html
 
@@ -192,6 +193,38 @@ class Article(models.Model):
         default=0,
         help_text="The higher the value, the stickier the article.")
     slug = models.SlugField(max_length=200, unique=True)
+
+    # Facebook
+    facebook_wait_time = models.PositiveIntegerField(
+        default = 0,
+        help_text = \
+        "Minimum number of minutes "
+        "after publication "
+        "till post.")
+    facebook_image = FileBrowseField(max_length=200, directory="images/",
+                                     blank=True, null=True,
+                                     verbose_name="image",
+                                     help_text= \
+                                     "Leave blank to use primary image.")
+    facebook_image_caption = models.CharField(max_length=200,
+                                              verbose_name="caption",
+                                              help_text= \
+                                              "Leave blank to use primary "
+                                              "image caption.",
+                                              blank=True)
+    facebook_description = models.CharField(max_length=200,
+        blank=True, help_text= "Leave blank to use same text as summary.")
+    facebook_message = models.TextField(blank=True,
+                                        verbose_name="message",
+                                        help_text=
+                                        "Longer status update that appears "
+                                        "above the image in Facebook. ")
+    facebook_send_status = models.CharField(max_length=20,
+                                           choices=SCHEDULE_RESULTS,
+                                           verbose_name="sent status",
+                                           default="paused")
+
+    # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
