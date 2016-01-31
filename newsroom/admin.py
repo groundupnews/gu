@@ -11,6 +11,7 @@ from . import models
 from . import utils
 from socialmedia.models import Tweet
 from socialmedia.admin import TweetInline
+from republisher.admin import RepublisherInline
 
 import tagulous
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
@@ -133,7 +134,7 @@ class ArticleAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        TweetInline,
+        TweetInline, RepublisherInline
     ]
     def get_changeform_initial_data(self, request):
         return {'category': 'News'}

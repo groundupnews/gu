@@ -11,7 +11,7 @@ class TwitterHandle(tagulous.models.TagModel):
 
     class TagMeta:
         case_sensitive = False
-        max_count=8
+        max_count = 8
         space_delimiter = True
         protect_all = True
 

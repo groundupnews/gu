@@ -62,6 +62,7 @@ INSTALLED_APPS = (
 
     'newsroom',
     'socialmedia',
+    'republisher',
     'clearcache',
     'blocks',
 )
