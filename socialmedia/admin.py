@@ -4,7 +4,13 @@ from django import forms
 from . import models
 import tagulous
 
-admin.site.register(models.Tweet)
+class TweetAdmin(admin.ModelAdmin):
+    list_display = ['article','tweet_text','characters_left','status',]
+    list_filter = ['status',]
+    search_fields = ['article__title', 'tweet_text',]
+    ordering = ['status', 'article__modified']
+
+admin.site.register(models.Tweet, TweetAdmin)
 tagulous.admin.register(models.TwitterHandle)
 
 class TweetForm(forms.ModelForm):

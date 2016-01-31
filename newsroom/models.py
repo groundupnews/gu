@@ -408,3 +408,41 @@ class Article(models.Model):
 
     class Meta:
         ordering = ["-stickiness", "-published",]
+
+class MostPopular(models.Model):
+    '''This table's records each contain a list of the
+    most popular articles as returned by the management command
+    mostpopular.
+    The latest (or only) record in this table can be obtained
+    by views that display the most popular articles.
+    The most popular articles are stored as a comma-delimited list
+    in the article_list field.
+    '''
+    article_list = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return self.article_list[0:100]
+
+    @staticmethod
+    def get_most_popular_list():
+        mostpopular = MostPopular.objects.latest("modified")
+        article_list = mostpopular.article_list.split("\n")
+        article_list = [item.split("|") for item in article_list]
+        return article_list
+
+    @staticmethod
+    def get_most_popular_html():
+        article_list = MostPopular.get_most_popular_list()
+        html = "<ul class='most-popular'>"
+        for article in article_list:
+            entry = "<li><a href='" + reverse('article.detail',  \
+                                              args=[article[0]]) + \
+                    "'>" + article[1] + "</a></li>"
+            html = html + entry
+        html = html + "</ul>"
+        return html
+
+    class Meta:
+        verbose_name_plural = "most popular"

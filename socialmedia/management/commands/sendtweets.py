@@ -1,11 +1,9 @@
 import datetime
 import logging
-from random import shuffle
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.sites.models import Site
-from django.conf import settings
 import sys
 import tweepy
 import pytz

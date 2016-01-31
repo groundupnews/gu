@@ -3,6 +3,8 @@
 *~
 *.sqlite3
 *.backup
+*.p12
+*.pem
 local_settings.py
 groundup/media/*
 groundup/static/*

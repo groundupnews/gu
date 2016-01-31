@@ -160,6 +160,7 @@ class AuthorAdmin(admin.ModelAdmin):
     search_fields = ['last_name', 'first_names',]
 
 admin.site.register(models.Author, AuthorAdmin)
+admin.site.register(models.MostPopular)
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
@@ -181,7 +182,6 @@ class FlatPageAdmin(FlatPageAdmin):
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
         ]
-
 
 
 # Re-register FlatPageAdmin
