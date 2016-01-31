@@ -20,6 +20,12 @@ def process():
     republisherarticles = RepublisherArticle.objects.filter(status="scheduled")
 
     for republisherarticle in republisherarticles:
+
+        # Only notify once article is published
+        if not republisher.article.is_published():
+            continue
+
+        # Check that sufficient time has passed since publishing
         dont_send_before = republisherarticle.article.published + \
                                datetime.timedelta(minutes=republisherarticle.wait_time)
         if timezone.now() >= dont_send_before:
@@ -36,9 +42,9 @@ def process():
             if republisherarticle.article.subtitle:
                 message = message + "<h3>" + \
                           republisherarticle.article.subtitle + "</h3>"
-            message = message + "<p>Byline:</p>"
-            message = message + "<p>" + \
-                      republisherarticle.article.cached_byline_no_links + "</p>"
+            message = message + "<p>Byline: "
+            message = message + republisherarticle.article.cached_byline_no_links \
+                      + "</p>"
             if republisherarticle.article.cached_primary_image:
                 message = message + "<p>Primary Image:</p>"
                 message = message + "<p>"
@@ -47,15 +53,15 @@ def process():
                           republisherarticle.article.cached_primary_image + \
                           "'style='width:70%' /></p>"
                 if republisherarticle.article.primary_image_caption:
-                    message = message + "<p>Primary Image Caption:</p>"
-                    message = message + "<p>" + \
+                    message = message + "<p>Primary Image Caption: "
+                    message = message + \
                               republisherarticle.article.primary_image_caption
                     message = message + "</p>"
-            message = message + "<p>Body of the article " \
-                      "(images might not appear in email):</p>"
+            message = message + "<h3>Body of the article " \
+                      "(images might not appear in email):</h3>"
             message = message + "<div>" + republisherarticle.article.body + \
                       "</div>"
-            message = message + "<p>Originally published on " + \
+            message = message + "<hr/><p>Originally published on " + \
                       "<a href='" + url + "'>GroundUp</a>. " \
                       "Copyright (C) GroundUp "  + str(timezone.now().year) + \
                       ". All rights reserved.</p>"
