@@ -34,7 +34,7 @@ def process(days, max_tweets):
 
     date_from = timezone.now() - datetime.timedelta(days=days)
     articles = Article.objects.published().filter(published__gte=date_from). \
-               order_by("-modified")
+               order_by("modified")
     tweet_count = 0
 
     for article in articles:
