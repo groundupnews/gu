@@ -43,6 +43,5 @@ class RepublisherArticle(models.Model):
         return str(self.article) + " - " + str(self.republisher)
 
     class Meta:
-        verbose_name = "republisher"
         ordering = ["article__published","republisher",]
         unique_together = (("article", "republisher"),)

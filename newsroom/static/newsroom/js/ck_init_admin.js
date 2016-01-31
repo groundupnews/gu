@@ -2,6 +2,9 @@ CKEDITOR.plugins.addExternal( 'codemirror', '/static/newsroom/js/ckeditor/plugin
 
 CKEDITOR.plugins.addExternal( 'find', '/static/newsroom/js/ckeditor/plugins/find/', 'plugin.js' );
 
+CKEDITOR.plugins.addExternal( 'wordcount', '/static/newsroom/js/ckeditor/plugins/wordcount/', 'plugin.js' );
+
+
 var $ = django.jQuery;
 
 $(document).ready(function() {
