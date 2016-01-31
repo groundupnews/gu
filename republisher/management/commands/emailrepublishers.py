@@ -22,7 +22,7 @@ def process():
     for republisherarticle in republisherarticles:
 
         # Only notify once article is published
-        if not republisher.article.is_published():
+        if not republisherarticle.article.is_published():
             continue
 
         # Check that sufficient time has passed since publishing
