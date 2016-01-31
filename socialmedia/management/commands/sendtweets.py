@@ -1,5 +1,6 @@
 import datetime
 import logging
+from random import shuffle
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.utils import timezone
@@ -32,9 +33,10 @@ def process(days, max_tweets):
         return
 
     date_from = timezone.now() - datetime.timedelta(days=days)
-    articles = Article.objects.published().filter(published__gte=date_from)
-
+    articles = Article.objects.published().filter(published__gte=date_from). \
+               order_by("-modified")
     tweet_count = 0
+
     for article in articles:
         tweets = article.tweet_set.filter(status="scheduled").order_by("wait_time")
         for tweet in tweets:
