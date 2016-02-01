@@ -1,7 +1,7 @@
 function calc_tweet_chars(item) {
     var num_chars = $("#id_tweet_set-" + item + "-tweet_text").val().length;
     if ($("#id_tweet_set-" + item + "-image").val().length > 0) {
-	num_chars += 23;
+	num_chars += 24;
     }
     // Now for all the tags
     var tag_length = 0;
@@ -12,7 +12,7 @@ function calc_tweet_chars(item) {
 			    tag_length += s.length + 2;
 			}
 		    });
-    num_chars = 140 - num_chars - tag_length - 23;
+    num_chars = 140 - num_chars - tag_length - 24;
 
     $("#tweet_set" + item + " .characters_left div").text(num_chars.toString());
     if (num_chars < 0) {

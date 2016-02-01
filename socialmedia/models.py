@@ -19,9 +19,9 @@ class TwitterHandle(tagulous.models.TagModel):
         return self.name
 
 def calc_chars_left(tweet_text, image, tags):
-    chars_left = 117 - len(tweet_text.strip())
+    chars_left = 116 - len(tweet_text.strip())
     if image:
-        chars_left = chars_left - 23
+        chars_left = chars_left - 24
         for account in tags:
             chars_left = chars_left - len(account.strip()) - 2
     return chars_left
@@ -43,7 +43,7 @@ class Tweet(models.Model):
         blank=True,
         help_text=""
     )
-    characters_left = models.IntegerField(default=117)
+    characters_left = models.IntegerField(default=116)
 
     class Meta:
         ordering = ["article__published", "wait_time",]

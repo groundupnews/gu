@@ -138,6 +138,32 @@ article p {
 
 
 
+@media (min-width: 980px) {
+    article p {
+	padding-right: 150px;
+	width: 100%;
+    }
+    article figure, .pquote {
+	margin-right: 150px;
+    }
+    #article-primary-image figcaption,
+    article figure.very-large figcaption {
+	padding-right: 150px;
+    }
+    /* For legacy. */
+    p.full-width img, p img.full-width {
+	padding-right: 150px;
+	width: 100%;
+    }
+    p.very-large img, p img.very-large {
+	width: 100%;
+    }
+}
+
+article figure img, article p img {
+    width: 100%;
+}
+
 figure {
     margin-bottom:10px;
 }

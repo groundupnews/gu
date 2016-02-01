@@ -46,7 +46,7 @@ def process(days, max_tweets):
                 if tweet_count > max_tweets:
                     break
 
-                text = tweet.tweet_text
+                text = tweet.tweet_text.strip()
                 text += " " + "http://" + \
                         Site.objects.all()[0].domain + article.get_absolute_url()
                 for handle in tweet.tag_accounts.all():
