@@ -11,6 +11,7 @@ from . import models
 from . import utils
 from socialmedia.models import Tweet
 from socialmedia.admin import TweetInline
+from socialmedia.common import SCHEDULE_RESULTS
 from republisher.admin import RepublisherInline
 
 import tagulous
@@ -39,7 +40,8 @@ class ArticleForm(forms.ModelForm):
                                            initial="medium")
     primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="large")
-
+    facebook_send_status = forms.ChoiceField(choices=SCHEDULE_RESULTS,
+                                             initial="scheduled")
     '''Remove height and width from TinyMCE image insertions.
     '''
 
