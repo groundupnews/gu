@@ -4,6 +4,7 @@ from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm, Textarea
+from django.core.exceptions import ValidationError
 
 import re
 
@@ -52,6 +53,16 @@ class ArticleForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
 
+        if self.instance.pk:
+            if self.instance.version > self.cleaned_data["version"]:
+                raise ValidationError("Changes not saved. "
+                                      "User {} edited the article "
+                                      "after you opened this page. "
+                                      "Copy and paste your changes somewhere "
+                                      "safe (like an editor). "
+                                      "Then open this page again.".\
+                                      format(self.instance.user))
+
         if self.cleaned_data["main_topic"]:
             topic = self.cleaned_data["main_topic"]
             if topic not in self.cleaned_data["topics"]:
@@ -83,7 +94,7 @@ class ArticleAdmin(admin.ModelAdmin):
     }
 
     readonly_fields=('cached_byline_no_links',
-                     'cached_summary_text',)
+                     'cached_summary_text', 'user', 'modified',)
 
     fieldsets = (
         ('Identifying Information', {
@@ -123,7 +134,8 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields':('copyright', 'include_in_rss', 'comments_on',
                       'stickiness', 'exclude_from_list_views',
                       'recommended', 'byline', 'use_editor',
-                      'template', 'disqus_id',)
+                      'template', 'disqus_id',
+                      ('user', 'modified', 'version'),)
         }),
         ('Facebook', {
             'classes': ('grp-collapse grp-closed',),
@@ -140,6 +152,10 @@ class ArticleAdmin(admin.ModelAdmin):
     ]
     def get_changeform_initial_data(self, request):
         return {'category': 'News'}
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        obj.save()
 
     class Media:
         css = { 'all' : ('/static/newsroom/css/admin_enhance.css',)}

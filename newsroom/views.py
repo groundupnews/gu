@@ -172,6 +172,7 @@ class ArticleUpdate(UpdateView):
                   raise PermissionDenied
 
 
+
 class ArticleDetail(View):
 
       def get(self, request, slug):

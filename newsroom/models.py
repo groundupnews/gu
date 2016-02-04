@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 import tagulous
 from filebrowser.fields import FileBrowseField
@@ -227,6 +228,8 @@ class Article(models.Model):
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+    user = models.ForeignKey(User, default=1)
+    version = models.PositiveIntegerField(default=0)
 
     # Cached fields
     cached_byline = models.CharField(max_length=500, blank=True)
@@ -397,6 +400,7 @@ class Article(models.Model):
             self.cached_small_image = self.calc_small_image()
         except:
             self.cached_small_image = ""
+        self.version = self.version + 1
         super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
