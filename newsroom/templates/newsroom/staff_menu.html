@@ -1,9 +1,14 @@
 {% if article.pk and perms.newsroom.change_article %}
     <li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
-	   class="admin-menu-item">Edit</a></li>
+	   class="admin-menu-item">Edit in admin</a></li>
     {% if not article.is_published %}
 	<li><a href="{% url 'article.publish' article.pk %}"
 	       class="admin-menu-item">Publish now</a></li>
+    {% endif %}
+    {% if request.GET.edit != "no" %}
+	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}?edit=no">Edit off</a></li>
+    {% else %}
+	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}">Edit on</a></li>
     {% endif %}
 {% endif %}
 
@@ -16,10 +21,11 @@
 
 {% if perms.newsroom.add_article %}
 <li><a href="{% url 'admin:newsroom_article_add' %}" class="admin-menu-item">New article</a></li>
+<li><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Admin article list</a></li>
 {% endif %}
-<li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin</a></li>
+<li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
 <li><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
     files</a></li>
-<li><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Article list</a></li>
+<li><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Generate article list</a></li>
 <li><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
 <li><a href="{% url 'admin:logout' %}" class="admin-menu-item">Logout {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}</a></li>
