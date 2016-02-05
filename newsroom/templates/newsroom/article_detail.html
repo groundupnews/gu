@@ -371,6 +371,32 @@
 
      {% endif %}
 
+     timerCheckConcurrency =
+     window.setInterval(function(){
+	 $.ajax({
+	     url: "{% url "article.concurrent_check" article.pk article.version %}",
+	     type:"GET",
+	     success: function(user){
+		 if (user != "(None)") {
+		     clearTimeout(timerCheckConcurrency);
+		     msg = "User " + user +
+			   " has edited the article. This is no longer " +
+			   "the latest version. Editing disabled."
+		     alert(msg);
+		     for(name in CKEDITOR.instances) {
+			 CKEDITOR.instances[name].destroy(true);
+		     }
+		     $("[id^=article_]").removeAttr('contenteditable').blur();
+		     var $msg = $( "<div class='alert alert-danger' >" + msg +
+				   "</div>");
+		     $("#content-main").prepend($msg);
+		 }
+	     },
+	     error: function(data){
+		 console.log("Error: ", data);
+	     }
+	 });
+     }, 15000);
  });
 </script>
 

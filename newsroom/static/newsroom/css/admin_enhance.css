@@ -22,3 +22,9 @@
 .cke_editable img {
     max-width: 500px !important;
 }
+
+
+.alert-danger {
+    color: white;
+    background-color: red;
+}

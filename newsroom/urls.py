@@ -180,8 +180,12 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.article_detail), name='article.detail'),
 
-    url(r'^editing/publishing/article/(?P<pk>[0-9]+)/$',
+    url(r'^article/publish/(?P<pk>[0-9]+)$',
         views.article_publish, name='article.publish'),
+
+
+    url(r'^article/concurrent/(?P<pk>[0-9]+)/(?P<version>[0-9]+)$',
+        views.check_concurrent_edit, name='article.concurrent_check'),
 
 
     #url(r'^article/(?P<pk>[0-9]+)/edit/$',

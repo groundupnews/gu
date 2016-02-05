@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.views import generic
 from django.views.generic import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -157,6 +158,15 @@ def article_publish(request, pk):
                                                 args=[article.slug]))
       else:
             return HttpResponseForbidden()
+
+def check_concurrent_edit(request, pk, version):
+      article = get_object_or_404(models.Article, pk=pk)
+      if article.version > int(version):
+            response = article.user
+      else:
+            response = "(None)"
+      return HttpResponse(response)
+
 
 # This was originally two generic Django class views (DetailView and
 # UpdateView). But the logic was hidden behind Django's opaque and not
