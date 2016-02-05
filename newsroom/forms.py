@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from . import models
 from . import utils
 
@@ -14,12 +15,6 @@ class ArticleForm(forms.ModelForm):
             body = self.cleaned_data["body"]
             self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
             super(ArticleForm, self).clean(*args, **kwargs)
-
-    # def form_valid(self, form):
-    #     candidate = form.save(commit=False)
-    #     candidate.user = UserProfile.objects.get(user=self.request.user)  # use your own profile here
-    #     candidate.save()
-    #     return HttpResponseRedirect(self.get_success_url())
 
     class Meta:
         model = models.Article

@@ -178,14 +178,14 @@ urlpatterns = [
         cache_except_staff(
             decorator=cache_page(settings.CACHE_PERIOD,
                                  key_prefix='article'))
-        (views.ArticleDetail.as_view()), name='article.detail'),
+        (views.article_detail), name='article.detail'),
 
-    url(r'^editing/publishing/article/(?P<pk>[0-9]+)/$',
-        views.article_publish, name='article.publish'),
+    #url(r'^editing/publishing/article/(?P<pk>[0-9]+)/$',
+    #    views.article_publish, name='article.publish'),
 
 
-    url(r'^editing/article/(?P<pk>[0-9]+)/$',
-        views.ArticleUpdate.as_view(), name='article.update'),
+    #url(r'^article/(?P<pk>[0-9]+)/edit/$',
+    #    views.ArticleUpdate.as_view(), name='article.update'),
 
 
     url(r'^author/([0-9]+)/$',

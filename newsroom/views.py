@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
 from django.utils.html import strip_tags
+from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import UpdateView
 from django.views.decorators.http import last_modified
@@ -155,33 +156,56 @@ def article_publish(request, pk):
             return HttpResponseRedirect(reverse('article.detail',
                                                 args=[article.slug]))
       else:
-            raise PermissionDenied
+            return HttpResponseForbidden()
 
-class ArticleUpdate(UpdateView):
-      model = models.Article
-      form_class = ArticleForm
+# This was originally two generic Django class views (DetailView and
+# UpdateView). But the logic was hidden behind Django's opaque and not
+# very well documented system. This might seem complex with lots of coding
+# that Django could take care of, but at least I can understand what's going
+# on here without having to search reams of documentation and StackOverview
+# questions.
 
-      # Some paranoid security checking
-      def form_valid(self, form):
-            if self.request.user.has_perm("newsroom.change_article"):
-                  messages.add_message(self.request, messages.INFO,
-                                       "Changes saved.")
-
-                  return super(ArticleUpdate, self).form_valid(form)
+def article_detail(request, slug):
+      if request.method == 'POST':
+            form = ArticleForm(request.POST)
+            if form.is_valid():
+                  if request.user.has_perm("newsroom.change_article"):
+                        article = get_object_or_404(models.Article, slug=slug)
+                        if article.version > form.cleaned_data["version"]:
+                              messages.add_message(request, messages.ERROR,
+                                    utils.get_edit_lock_msg(article.user))
+                              for field in form.changed_data:
+                                    setattr(article, field,
+                                            form.cleaned_data[field])
+                              return render(request, article.template,
+                                            {'article': article,
+                                             'display_region': None,
+                                             'see_also': None,
+                                             'read_next': None,
+                                             'blocks': get_blocks(),
+                                             'can_edit': False,
+                                             'form':form})
+                        for field in form.changed_data:
+                              setattr(article, field, form.cleaned_data[field])
+                        article.user = request.user
+                        article.save()
+                        messages.add_message(request, messages.INFO,
+                                             "Changes saved.")
+                        return HttpResponseRedirect(reverse('article.detail',
+                                                            args=(slug,)))
+                  else:
+                        return HttpResponseForbidden()
             else:
-                  raise PermissionDenied
-
-
-
-class ArticleDetail(View):
-
-      def get(self, request, slug):
+                  messages.add_message(request, messages.ERROR,
+                                             "Something went wrong.")
+                  return HttpResponseRedirect(reverse('article_detail',
+                                                      args=(slug,)))
+      else: # GET
             article = get_object_or_404(models.Article, slug=slug)
             if request.user.has_perm('newsroom.change_article'):
                   form = ArticleForm(instance=article)
             else:
                   form = None
-
             if article.is_published() or request.user.is_staff:
                   if request.user.is_staff and not article.is_published():
                         messages.add_message(request, messages.INFO,
@@ -215,15 +239,25 @@ class ArticleDetail(View):
                   else:
                         see_also = None
 
+                  can_edit = False
+                  if request.user.is_staff and \
+                     request.user.has_perm("newsroom.change_article"):
+                        can_edit = True
+                        query_edit = request.GET.get('edit', "true")
+                        if query_edit.lower() == "no" or \
+                           query_edit.lower() == "false":
+                              can_edit = False
                   return render(request, article.template,
                                 {'article': article,
                                  'display_region': display_region,
                                  'see_also': see_also,
                                  'read_next': read_next,
                                  'blocks': get_blocks(),
+                                 'can_edit': can_edit,
                                  'form':form})
             else:
                   raise Http404
+
 
 
 ''' Redirect images on old Drupal site

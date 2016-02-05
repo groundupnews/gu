@@ -31,7 +31,7 @@
 
 {% block additional_head %}
     {{block.super}}
-    {% if perms.newsroom.change_article %}
+    {% if can_edit %}
 	<script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
 	<script src="{% static 'newsroom/js/ck_styles.js' %}"></script>
 	<script src="{% static 'newsroom/js/ck_init.js' %}"></script>
@@ -55,18 +55,18 @@
     <article>
 
 	<h1 id="article_title"
-	    {% if perms.newsroom.change_article %}
+	    {% if can_edit %}
 	    contenteditable="true"
 	    {% endif %} >{{ article.title|safe}}</h1>
 	{% if article.subtitle %}
 	    <h2 id="article_subtitle"
-	    	{% if perms.newsroom.change_article %}
+	    	{% if can_edit %}
 		contenteditable="true"
 		{% endif %} >{{ article.subtitle|safe }}</h2>
 	{% else %}
 	    {% comment %}Subtitle must always be visible for editors
 	    {% endcomment %}
-	    {% if perms.newsroom.change_article %}
+	    {% if can_edit %}
 		<h2 id="article_subtitle"
 		    contenteditable="true">{{ article.subtitle|safe }}</h2>
 	    {% endif %}
@@ -99,7 +99,7 @@
 
 		    {% if article.primary_image_caption %}
 			<figcaption id="article_primary_image_caption"
-			    {% if perms.newsroom.change_article %}
+			    {% if can_edit %}
 				contenteditable="true"
 			    {% endif %} >
 			    {{article.primary_image_caption|safe}}
@@ -107,7 +107,7 @@
 		    {% else %}
 			{% comment %}Editors must have empty caption to edit
 			{% endcomment %}
-			{% if perms.newsroom.change_article %}
+			{% if can_edit %}
 			    <figcaption id="article_primary_image_caption"
 					contenteditable="true">
 				{{article.primary_image_caption|safe}}
@@ -120,16 +120,16 @@
 
 
 	<div
-	    {% if perms.newsroom.change_article %}
+	    {% if can_edit %}
 	    id="article_body"
 	    contenteditable="true"
 	    {% endif %}>
 	    {{article.body|safe}}
 	</div>
 
-	{% if perms.newsroom.change_article %}
+	{% if can_edit %}
 	    <div style="display:none;">
-		<form action="{% url 'article.update' article.pk %}"
+		<form action="{% url 'article.detail' article.slug %}"
 		      method="post">{% csrf_token %}
 		    {{form.as_p}}
 		    <input id="saveedits" type="submit" value="Save">
@@ -311,7 +311,7 @@
      });
 
 
-    {% if perms.newsroom.change_article %}
+    {% if can_edit %}
 
      var content_div = $('#content-main');
      var saved_height = content_div.outerHeight(true);

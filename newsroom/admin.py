@@ -55,13 +55,8 @@ class ArticleForm(forms.ModelForm):
 
         if self.instance.pk:
             if self.instance.version > self.cleaned_data["version"]:
-                raise ValidationError("Changes not saved. "
-                                      "User {} edited the article "
-                                      "after you opened this page. "
-                                      "Copy and paste your changes somewhere "
-                                      "safe (like an editor). "
-                                      "Then open this page again.".\
-                                      format(self.instance.user))
+                raise ValidationError(utils.get_edit_lock_msg( \
+                    self.instance.user))
 
         if self.cleaned_data["main_topic"]:
             topic = self.cleaned_data["main_topic"]

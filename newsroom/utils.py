@@ -96,3 +96,10 @@ def replaceBadHtmlWithGood(html):
     html = replaceImgHeightWidthWithClass(html)
     html = replacePImgWithFigureImg(html)
     return html
+
+def get_edit_lock_msg(user):
+    message = \
+    "Changes not saved. User " + str(user) + " edited the article " \
+    "after you opened this page. Copy and paste your changes somewhere " \
+    "safe (like a text editor). Then open this page again."
+    return message
