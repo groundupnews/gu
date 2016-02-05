@@ -22,4 +22,4 @@
     files</a></li>
 <li><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Article list</a></li>
 <li><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
-<li><a href="{% url 'admin:logout' %}" class="admin-menu-item">Logout</a></li>
+<li><a href="{% url 'admin:logout' %}" class="admin-menu-item">Logout {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}</a></li>
