@@ -145,6 +145,12 @@ class ArticleAdmin(admin.ModelAdmin):
     inlines = [
         TweetInline, RepublisherInline
     ]
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        return super(ArticleAdmin, self).\
+            changelist_view(request, extra_context=extra_context)
+
     def get_changeform_initial_data(self, request):
         return {'category': 'News'}
 

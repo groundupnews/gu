@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+
+{% block javascripts %}
+    {{block.super}}
+    {% if original.pk %}
+	<script type="text/javascript">
+	 {% include "newsroom/manage_concurrent_updates.js" with pk=original.pk version=original.version %}
+	</script>
+    {% endif %}
+{% endblock %}

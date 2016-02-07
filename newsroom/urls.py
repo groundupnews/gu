@@ -184,7 +184,7 @@ urlpatterns = [
         views.article_publish, name='article.publish'),
 
 
-    url(r'^article/concurrent/(?P<pk>[0-9]+)/(?P<version>[0-9]+)$',
+    url(r'^article_concurrent$',
         views.check_concurrent_edit, name='article.concurrent_check'),
 
 

@@ -14,7 +14,8 @@ class ArticleForm(forms.ModelForm):
         if self.cleaned_data["use_editor"]:
             body = self.cleaned_data["body"]
             self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
-            super(ArticleForm, self).clean(*args, **kwargs)
+
+        super(ArticleForm, self).clean(*args, **kwargs)
 
     class Meta:
         model = models.Article

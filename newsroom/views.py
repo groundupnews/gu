@@ -159,34 +159,42 @@ def article_publish(request, pk):
       else:
             return HttpResponseForbidden()
 
-def check_concurrent_edit(request, pk, version):
-      article = get_object_or_404(models.Article, pk=pk)
-      if article.version > int(version):
-            response = article.user
+
+def check_concurrent_edit(request):
+      '''This is an Ajax callback on article update pages to
+      check if another user has updated the article.
+      '''
+      if request.method == "POST" and request.is_ajax:
+            pk = int(request.POST["pk"])
+            version = int(request.POST["version"])
+            article = get_object_or_404(models.Article, pk=pk)
+            if article.version > version:
+                  response = article.user
+            else:
+                  response = "(None)"
+            return HttpResponse(response)
       else:
-            response = "(None)"
-      return HttpResponse(response)
+            raise Http404
 
 
-# This was originally two generic Django class views (DetailView and
+# These functions were originally two generic Django class views (DetailView and
 # UpdateView). But the logic was hidden behind Django's opaque and not
 # very well documented system. This might seem complex with lots of coding
 # that Django could take care of, but at least I can understand what's going
 # on here without having to search reams of documentation and StackOverview
 # questions.
 
-def article_detail(request, slug):
-      if request.method == 'POST':
-            form = ArticleForm(request.POST)
-            if form.is_valid():
-                  if request.user.has_perm("newsroom.change_article"):
-                        article = get_object_or_404(models.Article, slug=slug)
-                        if article.version > form.cleaned_data["version"]:
-                              messages.add_message(request, messages.ERROR,
-                                    utils.get_edit_lock_msg(article.user))
-                              for field in form.changed_data:
-                                    setattr(article, field,
-                                            form.cleaned_data[field])
+def article_post(request, slug):
+      form = ArticleForm(request.POST)
+      if form.is_valid():
+            if request.user.has_perm("newsroom.change_article"):
+                  article = get_object_or_404(models.Article, slug=slug)
+                  if article.version > form.cleaned_data["version"]:
+                        messages.add_message(request, messages.ERROR,
+                              utils.get_edit_lock_msg(article.user))
+                        for field in form.changed_data:
+                              setattr(article, field,
+                                      form.cleaned_data[field])
                               return render(request, article.template,
                                             {'article': article,
                                              'display_region': None,
@@ -195,21 +203,29 @@ def article_detail(request, slug):
                                              'blocks': get_blocks(),
                                              'can_edit': False,
                                              'form':form})
-                        for field in form.changed_data:
-                              setattr(article, field, form.cleaned_data[field])
-                        article.user = request.user
-                        article.save()
-                        messages.add_message(request, messages.INFO,
-                                             "Changes saved.")
-                        return HttpResponseRedirect(reverse('article.detail',
-                                                            args=(slug,)))
-                  else:
-                        return HttpResponseForbidden()
+                  for field in form.cleaned_data:
+                        setattr(article, field, form.cleaned_data[field])
+                  article.user = request.user
+                  article.save()
+                  messages.add_message(request, messages.INFO,
+                                       "Changes saved.")
+                  return HttpResponseRedirect(reverse('article.detail',
+                                                      args=(slug,)))
+            else:
+                  return HttpResponseForbidden()
+      else:
+            if form.data["title"] == "":
+                  messages.add_message(request, messages.ERROR,
+                                       "Title can't be blank.")
             else:
                   messages.add_message(request, messages.ERROR,
-                                             "Something went wrong.")
-                  return HttpResponseRedirect(reverse('article_detail',
-                                                      args=(slug,)))
+                                       "Something went wrong.")
+            return HttpResponseRedirect(reverse('article.detail',
+                                                args=(slug,)))
+
+def article_detail(request, slug):
+      if request.method == 'POST':
+            return article_post(request, slug)
       else: # GET
             article = get_object_or_404(models.Article, slug=slug)
             if request.user.has_perm('newsroom.change_article'):
@@ -268,7 +284,7 @@ def article_detail(request, slug):
             else:
                   raise Http404
 
-
+####################################################
 
 ''' Redirect images on old Drupal site
 '''
