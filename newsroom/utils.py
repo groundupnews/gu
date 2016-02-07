@@ -48,9 +48,8 @@ figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (c
 def remove_blank_paras(html):
     return blankpara_regex.sub(r'', html)
 
-def replaceImgHeightWidthWithClass(html):
+def replaceImgHeightWidthWithClass(soup):
     try:
-        soup = BeautifulSoup(html, "html.parser")
         for tag in soup.find_all("img"):
             # This deals with CKEditor's image insertion
             if tag.has_attr("style"):
@@ -67,12 +66,11 @@ def replaceImgHeightWidthWithClass(html):
                         continue
                 del tag["height"]
                 del tag["width"]
-        return str(soup)
+        return soup
     except:
-        return html
+        return soup
 
-def replacePImgWithFigureImg(html):
-    soup = BeautifulSoup(html, "html.parser")
+def replacePImgWithFigureImg(soup):
     images = soup.find_all("img")
     for image in images:
         parent = image.find_parent()
@@ -87,15 +85,45 @@ def replacePImgWithFigureImg(html):
                 del caption["class"]
                 caption.name = "figcaption"
                 sibling.append(caption)
-    return str(soup)
+    return soup
+
+def fixEditorSummary(soup):
+    uls = list(set([item.parent for item in \
+                    [tag.parent for tag in \
+                     soup.find_all("div","editor-summary")] \
+                    if item.parent is not None]))
+    for ul in uls:
+        divs = ul.find_all("div", "editor-summary")
+        for div in divs:
+            del div["class"]
+        d = soup.new_tag("div")
+        d["class"] = "editor-summary"
+        ul.wrap(d)
+    return soup
+
+def removeGoogleDocsSpans(soup):
+    spans = soup.find_all("span")
+    deletes_exist = False
+    for span in spans:
+        if span.has_attr("id"):
+            if span["id"][0:18] == 'docs-internal-guid':
+                span.name = "_delete_me_"
+                p = span.parent
+                if p:
+                    p._delete_me_.unwrap()
+
+    return soup
 
 
 def replaceBadHtmlWithGood(html):
     html = html.replace('dir="ltr"',"")
     html = remove_blank_paras(html)
-    html = replaceImgHeightWidthWithClass(html)
-    html = replacePImgWithFigureImg(html)
-    return html
+    soup = BeautifulSoup(html, "html.parser")
+    soup = replaceImgHeightWidthWithClass(soup)
+    soup = replacePImgWithFigureImg(soup)
+    soup = fixEditorSummary(soup)
+    soup = removeGoogleDocsSpans(soup)
+    return str(soup)
 
 def get_edit_lock_msg(user):
     message = \

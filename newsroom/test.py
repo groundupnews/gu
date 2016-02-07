@@ -5,7 +5,7 @@ from django.utils import timezone
 import datetime
 from newsroom.models import Article, Topic, Category
 from newsroom import utils
-
+from bs4 import BeautifulSoup as bs
 
 class HtmlCleanUp(TestCase):
 
@@ -16,12 +16,13 @@ class HtmlCleanUp(TestCase):
         self.assertEqual(utils.remove_blank_paras(html),
                          "<p>Hello</p><p class='test'> Good bye </p>")
 
-        html = '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>'
-        self.assertEqual(utils.replaceImgHeightWidthWithClass(html),
-                        '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>')
+        html = bs('<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>', "html.parser")
+        print("BS: ", str(bs))
+        self.assertEqual(str(utils.replaceImgHeightWidthWithClass(html)),
+                         '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>', "html.parser")
 
-        html = '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>'
-        self.assertEqual(utils.replacePImgWithFigureImg(html),
+        html = bs('<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>', "html.parser")
+        self.assertEqual(str(utils.replacePImgWithFigureImg(html)),
                          '<figure><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;"/><figcaption>This is the caption.</figcaption></figure>')
         html = '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>'
         self.assertEqual(utils.replaceBadHtmlWithGood(html),

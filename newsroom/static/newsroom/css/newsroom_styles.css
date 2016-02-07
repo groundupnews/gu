@@ -133,6 +133,7 @@ article {
 }
 
 article p {
+    margin-top: 18px;
     margin-bottom: 18px;
 }
 
@@ -458,7 +459,7 @@ a.admin-menu-item {
 div.editor-summary {
     background-color: black;
     color: orange;
-    margin: 10px;
+    margin-right: 150px;
     padding: 10px;
 }
 
