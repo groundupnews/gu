@@ -19,7 +19,7 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
     { name: 'Pullout Quote' , element: 'aside',
       attributes: { 'class': 'pquote' } },
     { name: 'Editor summary', element: 'div',
-      attributes: { 'class': 'editor-summary' } }
+      attributes: { 'class': 'editor-summary' } },
     { name: 'Front page summary', element: 'p',
       attributes: { 'class': 'summary' } }
 ] );
