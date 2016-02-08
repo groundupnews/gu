@@ -132,6 +132,9 @@
 		<form action="{% url 'article.detail' article.slug %}"
 		      method="post">{% csrf_token %}
 		    {{form.as_p}}
+		    <input id="input-is-published"
+			   value="{{article.is_published}}"
+			   name="is_published">
 		    <input id="saveedits" type="submit" value="Save">
 		</form>
 	    </div>
@@ -304,8 +307,6 @@
 	 fix_bottom_div();
      });
 
-     // START HERE!!!!
-     // Hook change in content div to #content-main
      $("#content-main").on('input propertychange paste', function() {
 	 fix_bottom_div();
      });
@@ -315,6 +316,12 @@
 
      var content_div = $('#content-main');
      var saved_height = content_div.outerHeight(true);
+
+     $("#publish-now" ).click(function() {
+	 $("#input-is-published").val("Now");
+	 $("#saveedits").click();
+	 return false;
+     });
 
      function update_form(editor, field) {
 	 document.getElementById(field).value =

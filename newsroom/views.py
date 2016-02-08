@@ -148,17 +148,7 @@ class TopicDetail(ArticleList):
       return (self.topic.template,)
 
 
-def article_publish(request, pk):
-      if request.user.has_perm("newsroom.change_article"):
-            article = get_object_or_404(models.Article, pk=pk)
-            article.publish_now()
-            messages.add_message(request, messages.INFO,
-                                 "Article published.")
-            return HttpResponseRedirect(reverse('article.detail',
-                                                args=[article.slug]))
-      else:
-            return HttpResponseForbidden()
-
+# Support functions for article editing
 
 def check_concurrent_edit(request):
       '''This is an Ajax callback on article update pages to
@@ -207,8 +197,14 @@ def article_post(request, slug):
                         setattr(article, field, form.cleaned_data[field])
                   article.user = request.user
                   article.save()
-                  messages.add_message(request, messages.INFO,
-                                       "Changes saved.")
+                  # Check if user clicked "Publish" button
+                  if request.POST["is_published"] == "Now":
+                        article.publish_now()
+                        messages.add_message(request, messages.INFO,
+                                             "Article published.")
+                  else:
+                        messages.add_message(request, messages.INFO,
+                                             "Changes saved.")
                   return HttpResponseRedirect(reverse('article.detail',
                                                       args=(slug,)))
             else:

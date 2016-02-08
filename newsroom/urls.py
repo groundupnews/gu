@@ -180,13 +180,8 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.article_detail), name='article.detail'),
 
-    url(r'^article/publish/(?P<pk>[0-9]+)$',
-        views.article_publish, name='article.publish'),
-
-
     url(r'^article_concurrent$',
         views.check_concurrent_edit, name='article.concurrent_check'),
-
 
     url(r'^author/([0-9]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))

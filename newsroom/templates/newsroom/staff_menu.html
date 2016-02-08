@@ -2,8 +2,8 @@
     <li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
 	   class="admin-menu-item">Edit in admin</a></li>
     {% if not article.is_published %}
-	<li><a href="{% url 'article.publish' article.pk %}"
-	       class="admin-menu-item">Publish now</a></li>
+	<li id="publish-now"><a href="#"
+	       class="admin-menu-item">Publish</a></li>
     {% endif %}
     {% if request.GET.edit != "no" %}
 	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}?edit=no">Edit off</a></li>
