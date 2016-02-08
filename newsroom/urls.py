@@ -188,10 +188,6 @@ urlpatterns = [
         views.check_concurrent_edit, name='article.concurrent_check'),
 
 
-    #url(r'^article/(?P<pk>[0-9]+)/edit/$',
-    #    views.ArticleUpdate.as_view(), name='article.update'),
-
-
     url(r'^author/([0-9]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.AuthorDetail.as_view()), name='author.detail'),

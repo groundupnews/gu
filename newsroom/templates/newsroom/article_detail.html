@@ -271,6 +271,7 @@
      });
 
      $('#print-article').click(function(){
+	 $("aside").remove();
 	 var print_contents = document.getElementsByTagName(
 	     "article")[0].innerHTML;
          return_button = "<p><a href='{{request.build_absolute_uri}}'>Back</a></p>";
