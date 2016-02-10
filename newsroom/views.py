@@ -157,7 +157,9 @@ def check_concurrent_edit(request):
       '''This is an Ajax callback on article update pages to
       check if another user has updated the article.
       '''
-      if request.method == "POST" and request.is_ajax:
+      if request.method == "POST" and \
+         request.is_ajax and \
+         request.user.has_perm("newsroom.change_article"):
             pk = int(request.POST["pk"])
             version = int(request.POST["version"])
             article = get_object_or_404(models.Article, pk=pk)
@@ -175,14 +177,12 @@ def check_concurrent_edit(request):
                   user_edit.user = request.user
             finally:
                   user_edit.save()
-            cutoff = timezone.now() - datetime.timedelta(seconds=45)
+            cutoff = timezone.now() - datetime.timedelta(seconds=30)
             user_edits  = models.UserEdit.objects. \
                           filter(article=article). \
                           exclude(user=request.user). \
                           filter(edit_time__gte=cutoff)
-            print("Here")
             users = [str(obj.user) for obj in user_edits]
-            print("Users", users)
             return JsonResponse({
                   'edited_by': edited_by,
                   'users': users

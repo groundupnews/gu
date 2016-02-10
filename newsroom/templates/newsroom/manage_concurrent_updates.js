@@ -15,7 +15,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-timerCheckConcurrency = window.setInterval(function(){
+function manageConcurrentEditing()
+{
     $.ajax({
 	url: "{% url "article.concurrent_check" %}",
 	type:"POST",
@@ -45,9 +46,25 @@ timerCheckConcurrency = window.setInterval(function(){
 		if ($("#content-main").length)
 		    $("#content-main").prepend($msg);
 	    }
+	    if ($("#editing-article").length) {
+		num_users = json["users"].length;
+		var editor_html = "";
+		for (var i = 0; i < num_users; ++i) {
+		    editor_html += "<span class='editing-user'>" +
+			json["users"][i] +
+			"</span>";
+		}
+		$("#editing-article").html(editor_html);
+	    }
 	},
 	error: function(data){
 	    console.log("Error: ", data);
 	}
     });
-}, 10000);
+}
+
+manageConcurrentEditing();
+
+timerCheckConcurrency = window.setInterval(function(){
+    manageConcurrentEditing();
+}, 5000);

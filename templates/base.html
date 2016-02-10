@@ -58,6 +58,20 @@
 
 	    <div id="sidebar-left" class="col-sm-1">
 		{% block sidebar-left %}
+		    {% if request.user.is_staff %}
+			<div id="admin-area">
+		    {% endif %}
+		    {% block admin-area %}
+			{% if request.user.is_staff %}
+			    <span id="admin-user">
+				{{ request.user }}
+			    </span>
+			{% endif %}
+		    {% endblock %}
+		    {% if request.user.is_staff %}
+			</div>
+		    {% endif %}
+
 		{% endblock %}
 	    </div>
 

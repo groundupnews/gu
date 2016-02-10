@@ -38,6 +38,14 @@
     {% endif %}
 {% endblock %}
 
+{% block admin-area %}
+    {% if request.user.is_staff %}
+    {{block.super}}
+    <div id="editing-article">
+    </div>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 
     {{block.super}}

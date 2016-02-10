@@ -486,3 +486,23 @@ div.editor-summary {
         float:none;
     }
 }
+
+/************ Styles for editors and administrators - PC only *****************/
+/* These don't need to be responsive. We don't edit on tablets or phones. */
+
+#admin-area {
+    position: fixed;
+    margin: 5px;
+}
+
+#admin-user, .editing-user {
+    font-weight: bold;
+    background-color: #e5ffff;
+    padding: 10px;
+    font-size: 10px;
+    display: block;
+}
+
+.editing-user {
+    background-color: pink;
+}
