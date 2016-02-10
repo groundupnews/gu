@@ -413,6 +413,19 @@ class Article(models.Model):
     class Meta:
         ordering = ["-stickiness", "-published",]
 
+class UserEdit(models.Model):
+     article = models.ForeignKey(Article)
+     user = models.ForeignKey(User)
+     edit_time = models.DateTimeField(auto_now=True)
+
+     class Meta:
+         unique_together = ('article', 'user',)
+         ordering = ['article__published', 'edit_time',]
+
+     def __str__(self):
+         return ", ".join([str(self.article), str(self.user), \
+                           str(self.edit_time)])
+
 class MostPopular(models.Model):
     '''This table's records each contain a list of the
     most popular articles as returned by the management command

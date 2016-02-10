@@ -5,6 +5,7 @@
 *.backup
 *.p12
 *.pem
+sandbox/*
 gu_production*.sql
 local_settings.py
 groundup/media/*

@@ -15,7 +15,10 @@ from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import UpdateView
 from django.views.decorators.http import last_modified
+from django.utils import timezone
+from django.http import JsonResponse
 
+import datetime
 import logging
 from random import randint
 
@@ -159,10 +162,31 @@ def check_concurrent_edit(request):
             version = int(request.POST["version"])
             article = get_object_or_404(models.Article, pk=pk)
             if article.version > version:
-                  response = article.user
+                  edited_by = str(article.user)
             else:
-                  response = "(None)"
-            return HttpResponse(response)
+                  edited_by = "(None)"
+            try:
+                  user_edit = models.UserEdit.objects.get(
+                        article__pk=article.pk,
+                        user=request.user)
+            except models.UserEdit.DoesNotExist:
+                  user_edit = models.UserEdit()
+                  user_edit.article = article
+                  user_edit.user = request.user
+            finally:
+                  user_edit.save()
+            cutoff = timezone.now() - datetime.timedelta(seconds=45)
+            user_edits  = models.UserEdit.objects. \
+                          filter(article=article). \
+                          exclude(user=request.user). \
+                          filter(edit_time__gte=cutoff)
+            print("Here")
+            users = [str(obj.user) for obj in user_edits]
+            print("Users", users)
+            return JsonResponse({
+                  'edited_by': edited_by,
+                  'users': users
+            }, safe=False)
       else:
             raise Http404
 

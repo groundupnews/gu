@@ -21,10 +21,12 @@ timerCheckConcurrency = window.setInterval(function(){
 	type:"POST",
 	headers: { "X-CSRFToken": getCookie("csrftoken") },
 	data: { "pk": {{pk}}, "version": {{version}} },
-	success: function(user){
-	    if (user != "(None)") {
+	dataType: 'json',
+	success: function(json){
+	    edited_by = json["edited_by"];
+	    if (edited_by != "(None)") {
 		clearTimeout(timerCheckConcurrency);
-		msg = "User " + user +
+		msg = "User " + edited_by +
 		    " has edited the article. This is no longer " +
 		    "the latest version. Editing disabled."
 		alert(msg);

@@ -169,6 +169,7 @@ class ArticleAdmin(admin.ModelAdmin):
         ]
 
 admin.site.register(models.Article, ArticleAdmin)
+admin.site.register(models.UserEdit)
 tagulous.admin.register(models.Category)
 tagulous.admin.register(models.Region)
 tagulous.admin.register(models.Topic)
