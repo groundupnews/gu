@@ -6,20 +6,26 @@ Clear Cache {{block.super}}
 
 {% block content %}
 
-      {{block.super}}
+    {{block.super}}
 
-      {% if form %}
-      <h1>Clear the cache</h1>
-      <div id="clear-cache-form">
-      <form action="{% url 'cache:clearcache' %}" method="post">
-	{% csrf_token %}
-	<div style="display: none;" {{ form }}</div>
-	<input type="submit" value="Clear Cache" />
-      </form>
-      </div>
-      {% endif %}
-      <p>
-	<a href="{% url 'admin:index' %}">Site Administration</a>
-      </p>
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-md-offset-4">
+		 {% if form %}
+		<h1>Clear the cache</h1>
+		<div id="clear-cache-form">
+		    <form action="{% url 'cache:clearcache' %}" method="post">
+			{% csrf_token %}
+			<div style="display: none;" {{ form }}</div>
+			<input type="submit" value="Clear Cache" />
+		    </form>
+		</div>
+		 {% endif %}
+		 <p>
+		     <a href="{% url 'admin:index' %}">Site Administration</a>
+		 </p>
+	    </div>
+	</div>
+    </div>
 
 {% endblock %}
