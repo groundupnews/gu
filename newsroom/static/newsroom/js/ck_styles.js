@@ -21,5 +21,5 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
     { name: 'Editor summary', element: 'div',
       attributes: { 'class': 'editor-summary' } },
     { name: 'Front page summary', element: 'p',
-      attributes: { 'class': 'summary' } }
+      attributes: { 'class': 'summary-text' } }
 ] );

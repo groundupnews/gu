@@ -4,26 +4,26 @@
 {% load fb_versions %}
 
 {% block title %}
-{{article.title|safe}}
+    {{article.title|safe}}
 {% endblock %}
 
 {% block seo_fields %}
 
-<meta name="description" content="{{article.cached_summary_text_no_html|truncatechars:190}}">
-<meta property="og:title" content="{{article.title}}"/>
-<meta property="og:type" content="article"/>
+    <meta name="description" content="{{article.cached_summary_text_no_html|truncatechars:190}}">
+    <meta property="og:title" content="{{article.title}}"/>
+    <meta property="og:type" content="article"/>
 
 
-{% with image_url=article.cached_primary_image %}
-{% if image_url %}
-<meta property="og:image"
-      content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
-{% endif %}
-{% endwith %}
+    {% with image_url=article.cached_primary_image %}
+	{% if image_url %}
+	    <meta property="og:image"
+		  content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
+	{% endif %}
+    {% endwith %}
 
-<meta property="og:url" content="{{ request.build_absolute_uri }}"/>
-<meta property="og:description"
-      content="{{ article.cached_summary_text_no_html }}"/>
+    <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+    <meta property="og:description"
+	  content="{{ article.cached_summary_text_no_html }}"/>
 
 
 {% endblock %}
@@ -38,356 +38,369 @@
     {% endif %}
 {% endblock %}
 
-{% block admin-area %}
+
+{% block admin-area-additional %}
     {% if request.user.is_staff %}
-    {{block.super}}
-    <div id="editing-article">
-    </div>
+	<div id="editing-article">
+	</div>
     {% endif %}
 {% endblock %}
+
 
 {% block content %}
-
-    {{block.super}}
-
-    <p class="article-category">
-	<a href="{%url 'category.detail' article.category.name%}">{{article.category|upper}}</a>
-
-	{% if display_region %}
-	    |
-	    <a href="{% url 'region.detail' article.region.path %}"
-	    >{{display_region|upper}}</a>&nbsp;
-	{% endif %}
-    </p>
-
-    <article>
-
-	<h1 id="article_title"
-	    {% if can_edit %}
-	    contenteditable="true"
-	    {% endif %} >{{ article.title|safe}}</h1>
-	{% if article.subtitle %}
-	    <h2 id="article_subtitle"
-	    	{% if can_edit %}
-		contenteditable="true"
-		{% endif %} >{{ article.subtitle|safe }}</h2>
-	{% else %}
-	    {% comment %}Subtitle must always be visible for editors
-	    {% endcomment %}
-	    {% if can_edit %}
-		<h2 id="article_subtitle"
-		    contenteditable="true">{{ article.subtitle|safe }}</h2>
-	    {% endif %}
-	{% endif %}
-
-	<p class="article-byline">
-	    {{ article.cached_byline|safe }}
-	</p>
-
-	<p class="article-dateline">
-	    <time
-		datetime='{{ article.published|date:"Y-m-d" }}'>
-		{{ article.published|date:"j F Y"}}
-	    </time>
-	</p>
-
-	{% if article.cached_primary_image %}
-
-		<figure id="article-primary-image">
-		    {% if article.primary_image %}
-			<a href="{{MEDIA_URL}}{{article.primary_image}}">
-			    <img src="{{article.cached_primary_image}}"
-				 alt="{{article.primary_image_alt|addslashes}}" />
-			</a>
-		    {% else %}
-			<img src="{{article.cached_primary_image}}"
-		    	     alt="{{article.primary_image_alt|addslashes}}"
-			/>
-		    {% endif %}
-
-		    {% if article.primary_image_caption %}
-			<figcaption id="article_primary_image_caption"
+    <div class="container">
+	<div id="article-content">
+	    <article>
+		<div class="row">
+		    <div class="col-xs-12 col-md-8">
+			<h1 id="article_title"
 			    {% if can_edit %}
+			    contenteditable="true"
+			    {% endif %} >{{ article.title|safe}}
+			</h1>
+			{% if article.subtitle %}
+			    <h2 id="article_subtitle"
+	    			{% if can_edit %}
 				contenteditable="true"
-			    {% endif %} >
-			    {{article.primary_image_caption|safe}}
-			</figcaption>
-		    {% else %}
-			{% comment %}Editors must have empty caption to edit
-			{% endcomment %}
-			{% if can_edit %}
-			    <figcaption id="article_primary_image_caption"
-					contenteditable="true">
-				{{article.primary_image_caption|safe}}
-			    </figcaption>
+				{% endif %} >{{ article.subtitle|safe }}
+			    </h2>
+			{% else %}
+			    {% comment %}Subtitle must always be visible for editors
+			    {% endcomment %}
+			    {% if can_edit %}
+				<h2 id="article_subtitle"
+				    contenteditable="true">{{ article.subtitle|safe }}</h2>
+			    {% endif %}
 			{% endif %}
+		    </div>
+		</div>
+
+		<div class="row">
+		    <div class="col-xs-12 col-md-4 col-md-push-8">
+			<p class="article-byline">
+			    {{ article.cached_byline|safe }}
+			</p>
+			<p class="article-dateline">
+			    <time
+				datetime='{{ article.published|date:"Y-m-d" }}'>
+				{{ article.published|date:"j F Y"}}
+			    </time>
+			</p>
+			<p class="article-category">
+			    <a href="{%  url 'category.detail' article.category.name %}">{{article.category|upper}}</a>
+
+			    {% if display_region %}
+				|
+				<a href="{% url 'region.detail' article.region.path %}"
+				>{{display_region|upper}}</a>&nbsp;
+			    {% endif %}
+			</p>
+		    </div>
+
+		    <div class="col-xs-12 col-md-8 col-md-pull-4"
+			 {% if article.cached_primary_image %}
+			<figure id="article-primary-image">
+			    {% if article.primary_image %}
+				<a href="{{MEDIA_URL}}{{article.primary_image}}">
+				    <img src="{{article.cached_primary_image}}"
+					 alt="{{article.primary_image_alt|addslashes}}" />
+				</a>
+			    {% else %}
+				<img src="{{article.cached_primary_image}}"
+				     alt="{{article.primary_image_alt|addslashes}}"
+				/>
+			    {% endif %}
+
+			    {% if article.primary_image_caption %}
+				<figcaption id="article_primary_image_caption"
+					    {% if can_edit %}
+					    contenteditable="true"
+					    {% endif %} >
+				    {{article.primary_image_caption|safe}}
+				</figcaption>
+			    {% else %}
+				{% comment %}Editors must have empty caption to edit
+				{% endcomment %}
+				{% if can_edit %}
+				    <figcaption id="article_primary_image_caption"
+						contenteditable="true">
+					{{article.primary_image_caption|safe}}
+				    </figcaption>
+				{% endif %}
+			    {% endif %}
+
+
+			</figure>
+			 {% endif %}
+
+			 <div
+			     {% if can_edit %}
+			     id="article_body"
+			     contenteditable="true"
+			     {% endif %}>
+			     {{article.body|safe}}
+			 </div>
+
+			 {% if can_edit %}
+			     <div style="display:none;">
+				 <form action="{% url 'article.detail' article.slug %}"
+				       method="post">{% csrf_token %}
+				     {{form.as_p}}
+				     <input id="input-is-published"
+					    value="{{article.is_published}}"
+					    name="is_published">
+				     <input id="saveedits" type="submit" value="Save">
+				 </form>
+			     </div>
+			 {% endif %}
+
+		    </div>
+		</div>
+
+	    </article>
+
+	    <div class="row">
+		<div class="col-xs-12 col-md-8">
+		    <div id="sharing">
+			<p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+		    </div>
+		    {% with topics_all=article.topics.all %}
+			{% if topics_all|length  %}
+			    <div id="article-topics">
+				<p class="article-topics">
+				    <span id="article-topics-name">Topics:</span>
+				    {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
+														 href="{% url 'topic.detail' topic.slug %}"
+													     >{{ topic.name }}</a>{% endfor %}
+				</p>
+			    </div>
+			{% endif %}
+		{% endwith %}
+		</div>
+	    </div>
+	    <div  class="row">
+		{% if see_also %}
+		    <div id="see-also" class="col-xs-12">
+			<h2>Related articles</h2>
+			<div class="row">
+			    {% for item in see_also %}
+				<div class="col-xs-12 col-md-6">
+				    {% include 'newsroom/see_also.html' %}
+				</div>
+			    {% endfor %}
+			</div>
+		    </div>
+		{% endif %}
+
+		{% if read_next %}
+		    <div id="read-next" class="col-xs-12">
+			<h2>We recommend</h2>
+			<div class="row">
+			    <div class="col-xs-12 col-md-6">
+				{% include 'newsroom/read_next.html' %}
+			    </div>
+			</div>
+		    </div>
+		{% endif %}
+	    </div>
+	    <div class="row">
+
+		<div class="col-xs-12" id="newsletter-signup">
+		    <a href="http://eepurl.com/Or2a9"
+		       class="btn btn-info"
+		       role="button">Get GroundUp's
+			weekly newsletter</a>
+		</div>
+
+		{% if article.copyright %}
+		    <div class="col-xs-12" id="article-copyright">
+			{{article.copyright|safe}}
+		    </div>
+		{% endif %}
+
+
+	    </div>
+	    <div class="row">
+		<div class="col-xs-12">
+		    {% if article.comments_on %}
+
+			<div id="comment-policy">
+			    You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
+			</div>
+
+			<div id="disqus_thread">
+			    <script type="text/javascript">
+			     var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
+			     var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
+			     var disqus_url = '{{ request.build_absolute_uri }}';
+
+			     /* * * DON'T EDIT BELOW THIS LINE * * */
+			     (function() {
+				 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+				 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+				 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			     })();
+			    </script> <noscript>Please enable JavaScript to view the <a href=
+											"http://disqus.com/?ref_noscript">comments powered by
+				Disqus.</a></noscript> <a class="dsq-brlink" href=
+							  "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
+			</div>
+
 		    {% endif %}
-		</figure>
-
-	{% endif %}
-
-
-	<div
-	    {% if can_edit %}
-	    id="article_body"
-	    contenteditable="true"
-	    {% endif %}>
-	    {{article.body|safe}}
-	</div>
-
-	{% if can_edit %}
-	    <div style="display:none;">
-		<form action="{% url 'article.detail' article.slug %}"
-		      method="post">{% csrf_token %}
-		    {{form.as_p}}
-		    <input id="input-is-published"
-			   value="{{article.is_published}}"
-			   name="is_published">
-		    <input id="saveedits" type="submit" value="Save">
-		</form>
+		</div>
 	    </div>
-	{% endif %}
-    </article>
-
-    <div id="sharing">
-	<p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+	</div>
     </div>
-
-    {% with topics_all=article.topics.all %}
-	{% if topics_all|length  %}
-	    <div id="article-topics">
-		<p class="article-topics">
-		    <span id="article-topics-name">Topics:</span>
-		    {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
-												 href="{% url 'topic.detail' topic.slug %}"
-											     >{{ topic.name }}</a>{% endfor %}
-		</p>
-	    </div>
-	{% endif %}
-    {% endwith %}
-
-{% endblock %}
-
-{% block sidebar-right %}
-
-    {% if see_also %}
-	<div id="see-also">
-	    <h2>Related articles</h2>
-	    <div class="row">
-		{% for item in see_also %}
-		    {% include 'newsroom/see_also.html' %}
-		{% endfor %}
-	    </div>
-	</div>
-    {% endif %}
-
-    {% if read_next %}
-	<div id="read-next">
-	    <h2>We recommend</h2>
-	    <div class="row">
-		{% include 'newsroom/read_next.html' %}
-	    </div>
-	</div>
-    {% endif %}
-
-    {{block.super}}
-
-{% endblock %}
-
-{% block content-extra %}
-
-    <div id="newsletter-signup">
-	<a href="http://eepurl.com/Or2a9"
-	   class="btn btn-info"
-	   role="button">Get the free GroundUp
-	    weekly newsletter</a>
-    </div>
-
-    {% if article.copyright %}
-	<div id="article-copyright">
-	    {{article.copyright|safe}}
-	</div>
-    {% endif %}
-
-    {% if article.comments_on %}
-
-	<div id="comment-policy">
-	    You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
-	</div>
-
-	<div id="disqus_thread">
-	    <script type="text/javascript">
-	     var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
-	     var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
-	     var disqus_url = '{{ request.build_absolute_uri }}';
-
-	     /* * * DON'T EDIT BELOW THIS LINE * * */
-	     (function() {
-		 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-		 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-		 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	     })();
-	    </script> <noscript>Please enable JavaScript to view the <a href=
-									"http://disqus.com/?ref_noscript">comments powered by
-		Disqus.</a></noscript> <a class="dsq-brlink" href=
-					  "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
-	</div>
-
-    {% endif %}
-
-
-    {{block.super}}
-
 {% endblock %}
 
 {% block javascript-includes %}
 
-{{block.super}}
+    {{block.super}}
 
-<!-- Sharing buttons -->
-<script type="text/javascript">
- jQuery(document).ready(function ($) {
-     $('#twitter-share').click(function(){
-	 var article_title = encodeURI('{{article.title|addslashes|linebreaksbr|safe}}').
-						  substring(0, 115);
-	 var url = encodeURI('{{ request.build_absolute_uri }}');
-	 var twitter_url = "https://twitter.com/intent/tweet?text=" +
-			   article_title + "&url=" + url;
-	 var win = window.open(twitter_url, "_blank", "toolbar=no, scrollbars=yes, resizable=yes, top=20%, left=340, width=400, height=400");
-	 win.focus();
-	 return false;
-     });
-     $('#facebook-share').click(function(){
-	 var url = encodeURI('{{ request.build_absolute_uri }}');
-	 var facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" + url;
-	 var win = window.open(facebook_url, "_blank", "toolbar=no, scrollbars=yes, resizable=yes, top=20%, left=340, width=550, height=400");
-	 win.focus();
-	 return false;
-     });
-     $('#whatsapp-share').click(function(){
-	 var whatsapp_url = 'whatsapp://send?text=' +
-			    encodeURI('{{ request.build_absolute_uri }}');
-	 var win = window.open(whatsapp_url, '_blank');
-	 win.focus();
-	 return false;
-     });
-     $('#email-share').click(function(){
-	 var subject = encodeURI('{{article.title|addslashes|linebreaksbr|safe}}');
-	 var body = encodeURI('{{article.cached_summary_text|addslashes|striptags|truncatewords:100|safe}}' + ' ' +
-                              '{{ request.build_absolute_uri }}');
-	 var mail_url = "mailto:?subject=" + subject + "&body=" + body;
-	 var win = window.open(mail_url, '_self');
-	 win.focus();
-	 return false;
-     });
+    <!-- Sharing buttons -->
+    <script type="text/javascript">
+     jQuery(document).ready(function ($) {
+	 $('#twitter-share').click(function(){
+	     var article_title = encodeURI('{{article.title|addslashes|linebreaksbr|safe}}').
+						      substring(0, 115);
+	     var url = encodeURI('{{ request.build_absolute_uri }}');
+	     var twitter_url = "https://twitter.com/intent/tweet?text=" +
+			       article_title + "&url=" + url;
+	     var win = window.open(twitter_url, "_blank", "toolbar=no, scrollbars=yes, resizable=yes, top=20%, left=340, width=400, height=400");
+	     win.focus();
+	     return false;
+	 });
+	 $('#facebook-share').click(function(){
+	     var url = encodeURI('{{ request.build_absolute_uri }}');
+	     var facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+	     var win = window.open(facebook_url, "_blank", "toolbar=no, scrollbars=yes, resizable=yes, top=20%, left=340, width=550, height=400");
+	     win.focus();
+	     return false;
+	 });
+	 $('#whatsapp-share').click(function(){
+	     var whatsapp_url = 'whatsapp://send?text=' +
+				encodeURI('{{ request.build_absolute_uri }}');
+	     var win = window.open(whatsapp_url, '_blank');
+	     win.focus();
+	     return false;
+	 });
+	 $('#email-share').click(function(){
+	     var subject = encodeURI('{{article.title|addslashes|linebreaksbr|safe}}');
+	     var body = encodeURI('{{article.cached_summary_text|addslashes|striptags|truncatewords:100|safe}}' + ' ' +
+				  '{{ request.build_absolute_uri }}');
+	     var mail_url = "mailto:?subject=" + subject + "&body=" + body;
+	     var win = window.open(mail_url, '_self');
+	     win.focus();
+	     return false;
+	 });
 
-     $('#print-article').click(function(){
-	 $("aside").remove();
-	 var print_contents = document.getElementsByTagName(
-	     "article")[0].innerHTML;
-         return_button = "<p><a href='{{request.build_absolute_uri}}'>Back</a></p>";
-         document.body.innerHTML = print_contents;
-	 window.print();
-         document.body.innerHTML = return_button + print_contents;
-     });
-     var bottom_div_changed = false;
-     var bottom_div;
-     function fix_bottom_div() {
-	 if (window.innerWidth > 767) {
-	     var $el = $('#content-main');
-	     var bottom = $el.position().top + $el.outerHeight(true);
-	     var $el = $('#content-extra');
-	     var top = $el.position().top;
-	     var diff = top - bottom;
-	     if (diff > 3) {
-		 $el.css("margin-top", -diff);
-		 bottom_div_changed = true;
-	     };
-	 } else if (bottom_div_changed == true) {
-	     var $el = $('#content-extra');
-	     $el.css("margin-top", 0);
+	 $('#print-article').click(function(){
+	     $("aside").remove();
+	     var print_contents = document.getElementsByTagName(
+		 "article")[0].innerHTML;
+             return_button = "<p><a href='{{request.build_absolute_uri}}'>Back</a></p>";
+             document.body.innerHTML = print_contents;
+	     window.print();
+             document.body.innerHTML = return_button + print_contents;
+	 });
+	 var bottom_div_changed = false;
+	 var bottom_div;
+	 function fix_bottom_div() {
+	     if (window.innerWidth > 767) {
+		 var $el = $('#content-main');
+		 var bottom = $el.position().top + $el.outerHeight(true);
+		 var $el = $('#content-extra');
+		 var top = $el.position().top;
+		 var diff = top - bottom;
+		 if (diff > 3) {
+		     $el.css("margin-top", -diff);
+		     bottom_div_changed = true;
+		 };
+	     } else if (bottom_div_changed == true) {
+		 var $el = $('#content-extra');
+		 $el.css("margin-top", 0);
+	     }
+	 };
+	 /* $(window).resize(function () {
+	    fix_bottom_div();
+	    });
+	    $(window).load(function() {
+	    fix_bottom_div();
+	    });
+
+	    $("#content-main").on('input propertychange paste', function() {
+	    fix_bottom_div();
+	    });
+	  */
+
+	 {% if can_edit %}
+
+	 var content_div = $('#content-main');
+	 var saved_height = content_div.outerHeight(true);
+
+	 $("#publish-now" ).click(function() {
+	     $("#input-is-published").val("Now");
+	     $("#saveedits").click();
+	     return false;
+	 });
+
+	 function update_form(editor, field) {
+	     document.getElementById(field).value =
+	     CKEDITOR.instances[editor].getData();
+	     if (content_div.outerHeight(true) != saved_height) {
+		 fix_bottom_div();
+		 saved_height = content_div.outerHeight(true);
+	     }
 	 }
-     };
-     $(window).resize(function () {
-	 fix_bottom_div();
-     });
-     $(window).load(function() {
-	 fix_bottom_div();
-     });
 
-     $("#content-main").on('input propertychange paste', function() {
-	 fix_bottom_div();
-     });
-
-
-    {% if can_edit %}
-
-     var content_div = $('#content-main');
-     var saved_height = content_div.outerHeight(true);
-
-     $("#publish-now" ).click(function() {
-	 $("#input-is-published").val("Now");
-	 $("#saveedits").click();
-	 return false;
-     });
-
-     function update_form(editor, field) {
-	 document.getElementById(field).value =
-	 CKEDITOR.instances[editor].getData();
-	 if (content_div.outerHeight(true) != saved_height) {
-	     fix_bottom_div();
-	     saved_height = content_div.outerHeight(true);
-	 }
-     }
-
-     CKEDITOR.inline( 'article_title', {
-	 customConfig: "{% static 'newsroom/js/ck_inline_plaintext_config.js' %}"
-     });
-     CKEDITOR.inline( 'article_subtitle', {
-	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
-     });
-     {% if article.cached_primary_image %}
-     CKEDITOR.inline( 'article_primary_image_caption', {
-	 customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
-     });
-     {% endif %}
-
-     CKEDITOR.inline( 'article_body', {
-	 customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
-     });
-
-
-     CKEDITOR.instances.article_title.on('change', function()
-	 {
-	     update_form("article_title",
-			 "id_title");
+	 CKEDITOR.inline( 'article_title', {
+	     customConfig: "{% static 'newsroom/js/ck_inline_plaintext_config.js' %}"
 	 });
+	 CKEDITOR.inline( 'article_subtitle', {
+	     customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+	 });
+	 {% if article.cached_primary_image %}
+	 CKEDITOR.inline( 'article_primary_image_caption', {
+	     customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+	 });
+	 {% endif %}
 
-     CKEDITOR.instances.article_subtitle.on('change', function()
-	 {
-	     update_form("article_subtitle",
-			 "id_subtitle");
+	 CKEDITOR.inline( 'article_body', {
+	     customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
 	 });
 
 
-     {% if article.cached_primary_image %}
-     CKEDITOR.instances.article_primary_image_caption.on('change', function()
-	 {
-	     update_form("article_primary_image_caption",
-			 "id_primary_image_caption");
-	 });
-     {% endif %}
+	 CKEDITOR.instances.article_title.on('change', function()
+	     {
+		 update_form("article_title",
+			     "id_title");
+	     });
 
-     CKEDITOR.instances.article_body.on('change', function()
-	 {
-	     update_form("article_body",
-			 "id_body");
-	 });
+	 CKEDITOR.instances.article_subtitle.on('change', function()
+	     {
+		 update_form("article_subtitle",
+			     "id_subtitle");
+	     });
 
-     {% include "newsroom/manage_concurrent_updates.js" with pk=article.pk version=article.version %}
 
-    {% endif %}
- });
-</script>
+	 {% if article.cached_primary_image %}
+	 CKEDITOR.instances.article_primary_image_caption.on('change', function()
+	     {
+		 update_form("article_primary_image_caption",
+			     "id_primary_image_caption");
+	     });
+	 {% endif %}
+
+	 CKEDITOR.instances.article_body.on('change', function()
+	     {
+		 update_form("article_body",
+			     "id_body");
+	     });
+
+	 {% include "newsroom/manage_concurrent_updates.js" with pk=article.pk version=article.version %}
+
+	 {% endif %}
+     });
+    </script>
 
 {% endblock %}

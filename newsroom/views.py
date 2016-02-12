@@ -132,7 +132,17 @@ class RegionDetail(ArticleList):
 
    def get_context_data(self, **kwargs):
       context = super(RegionDetail, self).get_context_data(**kwargs)
-      context['heading'] = str(self.region)
+      query = Q(name=self.region.name)
+      region_name = str(self.region)
+      while region_name:
+            region_name = region_name.rpartition("/")[0]
+            query = query | Q(name=region_name)
+      regions = models.Region.objects.filter(query)
+      regions = ["<a href='" + reverse("region.detail",
+                                       args=(region.path,)) + "'>" \
+                 + region.name.rpartition("/")[2] + "</a>" \
+                 for region in regions]
+      context['heading'] = "|".join(regions)
       return context
 
 class TopicDetail(ArticleList):

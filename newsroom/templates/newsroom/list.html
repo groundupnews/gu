@@ -1,0 +1,9 @@
+<div class="row">
+    {% for article in articles %}
+	<div class="col-xs-12 col-sm-{{md_size}}">
+	    {% include article.summary_template with include_image=include_image include_summary=include_summary md_size=md_size %}
+	</div>
+    {% empty %}
+	<p>No articles found.</p>
+    {% endfor %}
+</div>

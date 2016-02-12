@@ -1,18 +1,23 @@
 <div class="thumbnail">
-  <h2 class="
-	     {% if forloop.first %}
-	     large-summary-title
-	     {% else %}
-	     summary-title
-	     {% endif %}">
-    <a href="{{article.get_absolute_url}}">
-      {{article.title|safe}}
-    </a>
-  </h2>
-  <p class="summary-text">
-    {{article.cached_summary_text_no_html|safe}}
-  </p>
-  <p class="summary-dateline">
-    {{article.published|date:"d F Y"}}
-  </p>
+    <div class="row article-summary with-no-image">
+	<div class="col-xs-12">
+	    <h2 class="summary-title">
+		<a href="{{article.get_absolute_url}}">
+		    {{article.title|safe }}
+		</a>
+	    </h2>
+	    <p class="summary-dateline">
+		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;<a href="{% url 'category.detail' article.category %}">{{article.category|upper}}</a>
+	    </p>
+
+	    <p class="summary-byline">
+		{{article.cached_byline|safe}}
+	    </p>
+	    {% if include_summary == "1" %}
+		<p class="summary-text">
+		    {{article.cached_summary_text|safe}}
+		</p>
+	    {% endif %}
+	</div>
+    </div>
 </div>

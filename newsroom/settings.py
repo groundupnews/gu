@@ -2,7 +2,7 @@ from django.conf import settings
 
 
 ARTICLE_COPYRIGHT = getattr(settings, 'NEWSROOM_ARTICLE_COPYRIGHT', "")
-ARTICLES_PER_PAGE = getattr(settings, 'NEWSROOM_ARTICLES_PER_PAGE', 10)
+ARTICLES_PER_PAGE = getattr(settings, 'NEWSROOM_ARTICLES_PER_PAGE', 12)
 BEAUTIFUL_SOUP_PARSER = getattr(settings, 'NEWSROOM_BEAUTIFUL_SOUP_PARSER',
                                 "lxml")
 ARTICLE_SUMMARY_IMAGE_SIZE = getattr(settings,

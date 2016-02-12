@@ -2,17 +2,20 @@
 
 body {
 
-    background-color: #f5f5f0;
+    background-color: white;
+    /* background-color: #f5f5f0;*/
     /* background-image: url("http://www.transparenttextures.com/patterns/cream-pixels.png");
     background-attachment: fixed;  */
     font-family: 'Ubuntu-1', 'Ubuntu-2', sans-serif;
 }
 
-.page-content {
+#list-header {
+    margin: 7px;
+    padding: 27px;
+}
+
+#list-header, #list-content {
     background-color: white;
-    border-left: 1px solid #d6d6d6;
-    border-right: 1px solid #d6d6d6;
-    # border-bottom: 1px solid #d6d6d6;
 }
 
 header {
@@ -23,11 +26,95 @@ header {
     margin-bottom: 55px;
 }
 
-@media (min-width: 769px) {
+h2.large-summary-title, h2.summary-title {
+    margin-top: 0;
+    font-size: 14px;
+}
+
+.thumbnail {
+    margin-bottom: 10px;
+}
+
+#summary-list-heading {
+    text-align: center;
+}
+
+.summary-byline,
+.summary-dateline,
+.summary-category
+{
+    font-size: 10px;
+}
+
+.summary-text {
+    display: none;
+}
+
+
+@media (min-width: 768px) {
     #whatsapp-share, .whatsapp-share {
 	display: none;
     }
+    div.article-summary {
+	height: 220px;
+    }
+    div.article-summary.with-no-image {
+	height: 190px;
+    }
+    div.article-summary.with-no-summary-text {
+	height: 130px;
+    }
+    div.article-summary
+    img.summary-image {
+	max-height: 220px;
+    }
+    div.summary-image-container {
+	height: 230px;
+	overflow: hidden;
+    }
+
+    #first-in-list div.article-summary,
+    #second-in-list div.article-summary {
+    	height: inherit;
+    }
+    #first-in-list img.summary-image,
+    #second-in-list img.summary-image {
+	width: 100%;
+	margin: 0;
+    }
+    h2.summary-title, h2.large-summary-title {
+	margin-top: 0;
+	line-height: 130%;
+    }
+
+    h2.large-summary-title {
+	font-size: 28px;
+    }
+
+    h2.summary-title {
+	font-size: 24px;
+    }
+    div.article-summary.with-no-image h2.summary-title {
+	font-size: 20px;
+    }
+    .summary-text {
+	display: inherit;
+	font-size: 16px;
+    }
+    div.article-summary.with-no-image p.summary-text {
+	font-size: 16px;
+    }
+    .summary-byline,
+    .summary-dateline,
+    .summary-category
+    {
+	font-size: 12px;
+    }
+    #article-content {
+	margin-left: 90px;
+    }
 }
+
 
 .navbar-default .navbar-nav > li > a:hover {
     color: #555;
@@ -120,16 +207,20 @@ ul.icons li {
 
 #article_subtitle {
     font-weight: normal;
-    font-size: 18px;
+    font-size: 19px;
     line-height: 135%;
 }
 
-article {
-    font-size: 16px;
+#article-content {
+    font-size: 17px;
     line-height: 160%;
-    border-bottom: 3px solid #e6e6e6;
     margin-bottom: 25px;
     padding-bottom: 15px;
+}
+
+article {
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 12px;
 }
 
 article p {
@@ -138,17 +229,24 @@ article p {
 }
 
 
+div.editor-summary {
+    background-color: black;
+    color: orange;
+    padding: 10px;
+}
+
 
 @media (min-width: 980px) {
     article p {
 	padding-right: 150px;
 	width: 100%;
     }
-    article figure, .pquote {
+    article figure, .pquote, div.editor-summary {
 	margin-right: 150px;
     }
     #article-primary-image figcaption,
     article figure.very-large figcaption {
+	max-width: 100%;
 	padding-right: 150px;
     }
     /* For legacy. */
@@ -169,6 +267,9 @@ figure {
     margin-bottom:10px;
 }
 
+#article-primary-image img {
+    max-width: 100%;
+}
 
 #article-primary-image,
 article figure.very-large
@@ -179,13 +280,11 @@ article figure.very-large
 
 figcaption, p.caption {
     font-size: 13px;
-    background-color: #efefef;
     line-height: 125%;
     margin-top: 0px;
     margin-bottom: 3px;
     padding-top: 4px;
     padding-bottom: 4px;
-    padding-left: 3px;
 }
 
 #footer {
@@ -222,21 +321,14 @@ h3 {
     font-style: italic;
 }
 
-p.article-byline, p.article-dateline {
-    font-size: 14px;
-}
-
-p.article-byline {
-    margin-bottom: 4px;
-}
-
-p.article-dateline {
-    margin-top: 4px;
-}
-
+p.article-byline, p.article-dateline,
 p.article-category, p.article-region {
-    font-size: 16px;
-    padding-top: 10px;
+    font-size: 14px;
+    line-height: 100%;
+}
+
+p.article-category {
+    margin-bottom: 16px;
 }
 
 div.featured-photo {
@@ -244,31 +336,17 @@ div.featured-photo {
     margin-right: auto;
 }
 
+.article-summary {
+    margin-bottom: 0px;
+}
+
 img.summary-image {
     margin-bottom: 5px;
     width: 100%;
 }
 
-h2.summary-title, h2.large-summary-title {
-    margin-top: 0;
-    line-height: 130%;
-}
-
-h2.large-summary-title {
-    font-size: 28px;
-}
-
-h2.summary-title {
-    font-size: 24px;
-}
-
-h2.summary-title a, h2.large-summary-title a {
-    color: #505050;
-}
-
-h2.summary-title a:hover, h2.large-summary-title a:hover {
-    text-decoration: none;
-    color: #26abe2;
+#sharing {
+    margin-bottom: 20px;
 }
 
 #sharing img {
@@ -305,19 +383,6 @@ h2.summary-title a:hover, h2.large-summary-title a:hover {
 div.thumbnail {
     border: none;
     border-bottom: inherit;
-}
-
-.summary-text {
-    font-size: 18px;
-}
-
-.summary-dateline {
-    font-size: 14px;
-}
-
-.summary-category {
-    text-align: right;
-    margin-right: 5px;
 }
 
 .summary-caption {
@@ -425,10 +490,6 @@ a.admin-menu-item {
     #see-also img {
 	height: 140px;
     }
-    #see-also p {
-	height: 85px;
-	overflow:hidden;
-    }
 }
 
 
@@ -453,17 +514,6 @@ a.admin-menu-item {
 #see-also p {
     font-size: 16px;
 }
-
-
-
-div.editor-summary {
-    background-color: black;
-    color: orange;
-    margin-right: 150px;
-    padding: 10px;
-}
-
-
 
 
 /**************************/
@@ -492,7 +542,9 @@ div.editor-summary {
 
 #admin-area {
     position: fixed;
-    margin: 5px;
+    top: 50px;
+    right: 40px;
+    margin-bottom: 20px;
 }
 
 #admin-user, .editing-user {

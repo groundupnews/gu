@@ -1,73 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}
-    {% if heading %}{{heading|capfirst}}{% endif %} {{block.super}}
-{% endblock %}
-
 {% block content %}
-
-    <div id="article-list">
-
-	{{block.super}}
-
-	{% block content-intro %}
-	    {% if heading %}
-		<h1>{{heading|capfirst}}</h1>
-	    {% endif %}
-	    {% if image %}
-		<div>
-		    <img src="{{MEDIA_URL}}{{image}}" />
+    {% block article-list %}
+	<div id="list-content" class="container">
+	    <div class="row">
+		<div class="xs-12">
+		    {% if heading %}
+			<h1 id="summary-list-heading">
+			    {{heading|safe}}
+			</h1>
+		    {% endif %}
+		    {% if image %}
+			<div>
+			    <img src="{{MEDIA_URL}}{{image}}" />
+			</div>
+		    {% endif %}
+		    {% if description %}
+			<p>{{description}}</p>
+		    {% endif %}
 		</div>
-	    {% endif %}
-	    {% if description %}
-		<p>{{description}}</p>
-	    {% endif %}
-
-	{% endblock %}
-
-	<div class="row">
-
-	    {% for article in article_list %}
-		<div class="col-sm-12 col-md-12">
-		    {% include article.summary_template %}
-		</div>
-	    {% empty %}
-		<p>No articles found.</p>
-	    {% endfor %}
-
-
-	    <div id="paginator">
-		<nav>
-		    <ul class="pagination">
-			{% if page_obj.has_previous %}
-			    <li>
-				<a href="?page=1">first</a>
-			    </li>
-			    <li>
-				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-			    </li>
-			{% endif %}
-
-			<li class="active">
-			    <a href="#">
-				{{page_obj.number}} of
-				{{page_obj.paginator.num_pages}}
-			    </a>
-			</li>
-
-			{% if page_obj.has_next %}
-			    <li>
-				<a href="?page={{ page_obj.next_page_number }}">next</a>
-			    </li>
-			    <li>
-				<a href="?page=last">last</a>
-			    </li>
-			{% endif %}
-		    </ul>
-		</nav>
 	    </div>
-
+	    {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="6" %}
 	</div>
+    {% endblock %}
+    {% block pagination %}
+	{% include 'paginator.html' %}
+    {% endblock %}
 
-    </div>
 {% endblock %}
