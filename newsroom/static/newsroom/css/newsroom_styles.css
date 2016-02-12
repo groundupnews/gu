@@ -237,7 +237,7 @@ div.editor-summary {
 
 
 @media (min-width: 980px) {
-    article p, article ul, article li {
+    article p, article ul {
 	padding-right: 150px;
 	width: 100%;
     }
