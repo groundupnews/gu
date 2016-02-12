@@ -56,7 +56,7 @@ h2.large-summary-title, h2.summary-title {
 	display: none;
     }
     div.article-summary {
-	height: 220px;
+	max-height: 220px;
     }
     div.article-summary.with-no-image {
 	height: 190px;
