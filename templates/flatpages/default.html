@@ -5,8 +5,14 @@
 {% endblock %}
 
 {% block content %}
-    <article>
-    <h1>{{ flatpage.title }}</h1>
-    {{ flatpage.content }}
-    </article>
+    <div class="container">
+	<div class="row">
+	    <article>
+		<div class="col-md-8 col-md-offset-2">
+		    <h1>{{ flatpage.title }}</h1>
+		    {{ flatpage.content }}
+		</div>
+	    </article>
+	</div>
+    </div>
 {% endblock %}
