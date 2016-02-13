@@ -30,8 +30,7 @@
 				</div>
 			    {% endif %}
 			{% endwith %}
-			{% include 'newsroom/list.html' with articles=article_list|slice:"2:4" include_image="0" include_summary="1" md_size="6" %}
-			{% include 'newsroom/list.html' with articles=article_list|slice:"4:" include_image="0" include_summary="0" md_size="6" %}
+			{% include 'newsroom/list.html' with articles=article_list|slice:"2:" include_image="1" include_summary="1" md_size="12" %}
 		    </div>
 		    <div class="col-md-4">
 			{% include 'blocks/blocks.html' %}
@@ -42,7 +41,7 @@
 	    <div class="container">
 		<div class="row">
 		    <div  class="col-md-12">
-			{% include 'newsroom/list.html' with articles=article_list include_image="0" include_text="0" md_size="4" %}
+			{% include 'newsroom/list.html' with articles=article_list include_image="1" include_text="0" md_size="6" %}
 		    </div>
 		</div>
 	    </div>
