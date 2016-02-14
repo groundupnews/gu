@@ -8,3 +8,7 @@ img {
 .very-large img {
     max-width: 800px !important;
 }
+
+.summary-text {
+    display: block !important;
+}

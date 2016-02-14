@@ -12,7 +12,7 @@
 		{% endif %}
 		">
 
-	{% if include_image == "1" %}
+	{% if include_image == "1" and article.cached_summary_image %}
 	    <div class="col-xs-6 col-sm-5 summary-image-container">
 		<a href="{{article.get_absolute_url}}">
 		    <img class="summary-image"
@@ -24,7 +24,7 @@
 
 
 	<div class="
-		    {% if include_image == "1" %}
+		    {% if include_image == "1" and article.cached_summary_image %}
 		    col-xs-6
 		    col-sm-7
 		    {% else %}
@@ -35,19 +35,17 @@
 		    {{article.title|safe }}
 		</a>
 	    </h2>
-	    <p class="summary-dateline">
-		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;<a href="{% url 'category.detail' article.category %}">{{article.category|upper}}</a>
-	    </p>
-
-	    <p class="summary-byline">
-		{{article.cached_byline|safe}}
-	    </p>
 	    {% if include_summary == "1" %}
 		<p class="summary-text">
 		    {{article.cached_summary_text|safe}}
 		</p>
 	    {% endif %}
-
+	    <p class="summary-byline">
+		{{article.cached_byline|safe}}
+	    </p>
+	    <p class="summary-dateline">
+		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;<a href="{% url 'category.detail' article.category %}">{{article.category|upper}}</a>
+	    </p>
 	</div>
     </div>
 </div>

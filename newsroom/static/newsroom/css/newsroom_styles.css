@@ -28,6 +28,7 @@ header {
 
 h2.large-summary-title, h2.summary-title {
     margin-top: 0;
+    font-weight: normal;
     font-size: 14px;
 }
 
@@ -46,13 +47,14 @@ h2.large-summary-title, h2.summary-title {
     font-size: 10px;
 }
 
-.summary-text {
-    display: none;
+img.summary-image {
+    width: 100%;
+    margin: 0;
 }
 
 
-@media (min-width: 768px) {
-    #whatsapp-share, .whatsapp-share {
+@media (min-width: 600px) {
+   #whatsapp-share, .whatsapp-share {
 	display: none;
     }
     div.article-summary {
@@ -65,23 +67,12 @@ h2.large-summary-title, h2.summary-title {
 	height: 130px;
     }
     div.article-summary
-    img.summary-image {
-	max-height: 220px;
-    }
-    div.summary-image-container {
-	height: 230px;
-	overflow: hidden;
-    }
 
     #first-in-list div.article-summary,
     #second-in-list div.article-summary {
     	height: inherit;
     }
-    #first-in-list img.summary-image,
-    #second-in-list img.summary-image {
-	width: 100%;
-	margin: 0;
-    }
+
     h2.summary-title, h2.large-summary-title {
 	margin-top: 0;
 	line-height: 130%;
@@ -98,7 +89,7 @@ h2.large-summary-title, h2.summary-title {
 	font-size: 20px;
     }
     .summary-text {
-	display: inherit;
+	display: block;
 	font-size: 16px;
     }
     div.article-summary.with-no-image p.summary-text {
@@ -110,11 +101,53 @@ h2.large-summary-title, h2.summary-title {
     {
 	font-size: 12px;
     }
+    div.summary-image-container {
+	height: 180px;
+	overflow: hidden;
+    }
+}
+
+
+
+@media (max-width: 767px) {
+    .summary-text {
+	display: none;
+    }
+    div.summary-image-container {
+	height: 125px;
+	overflow: hidden;
+    }
+}
+
+
+@media (min-width: 768px) {
     #article-content {
 	margin-left: 90px;
     }
 }
 
+
+p.article-byline, p.article-dateline,
+p.article-category, p.article-region {
+    font-size: 12px;
+    margin-bottom: 0px;
+    margin-top: 6px;
+    line-height: 125%;
+}
+
+p.article-category {
+     margin-bottom: 16px;
+}
+
+
+@media (min-width: 992px) {
+    p.article-byline, p.article-dateline,
+    p.article-category, p.article-region {
+	font-size: 14px;
+	margin-bottom: 12px;
+	margin-top: 12px;
+    }
+}
 
 .navbar-default .navbar-nav > li > a:hover {
     color: #555;
@@ -321,15 +354,6 @@ h3 {
     font-style: italic;
 }
 
-p.article-byline, p.article-dateline,
-p.article-category, p.article-region {
-    font-size: 14px;
-    line-height: 100%;
-}
-
-p.article-category {
-    margin-bottom: 16px;
-}
 
 div.featured-photo {
     margin-left: auto;
@@ -397,11 +421,6 @@ div.thumbnail {
 
 div#article-share-bottom {
     line-height: 24px;
-}
-
-#read-next {
-    margin-bottom: 10px;
-    border-bottom: 3px solid #e6e6e6;
 }
 
 #comment-policy {
@@ -472,9 +491,19 @@ a.admin-menu-item {
     height:100%;
 }
 
-#see-also h2 {
-    padding-bottom: 10px;
+#see-also h2, #read-next h2 {
+    margin-bottom: 0px;
 }
+
+#see-also p, #read-next p {
+    font-weight: bold;
+}
+
+#read-next {
+    margin-bottom: 10px;
+    border-bottom: 3px solid #e6e6e6;
+}
+
 
 #sidebar-right {
     padding-top: 40px;

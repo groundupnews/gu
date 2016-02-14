@@ -80,21 +80,27 @@
 			<p class="article-byline">
 			    {{ article.cached_byline|safe }}
 			</p>
-			<p class="article-dateline">
-			    <time
-				datetime='{{ article.published|date:"Y-m-d" }}'>
-				{{ article.published|date:"j F Y"}}
-			    </time>
-			</p>
-			<p class="article-category">
-			    <a href="{%  url 'category.detail' article.category.name %}">{{article.category|upper}}</a>
+			<div class="row">
+			    <div class="col-xs-6 col-md-12">
+				<p class="article-dateline">
+				    <time
+					datetime='{{ article.published|date:"Y-m-d" }}'>
+					{{ article.published|date:"j F Y"}}
+				    </time>
+				</p>
+			    </div>
+			    <div class="col-xs-6 col-md-12">
+				<p class="article-category">
+				    <a href="{%  url 'category.detail' article.category.name %}">{{article.category|upper}}</a>
 
-			    {% if display_region %}
-				|
-				<a href="{% url 'region.detail' article.region.path %}"
-				>{{display_region|upper}}</a>&nbsp;
-			    {% endif %}
-			</p>
+				    {% if display_region %}
+					|
+					<a href="{% url 'region.detail' article.region.path %}"
+					>{{display_region|upper}}</a>&nbsp;
+				    {% endif %}
+				</p>
+			    </div>
+			</div>
 		    </div>
 
 		    <div class="col-xs-12 col-md-8 col-md-pull-4"
