@@ -492,10 +492,10 @@ a.admin-menu-item {
 }
 
 #see-also h2, #read-next h2 {
-    margin-bottom: 0px;
+    margin-bottom: 6px;
 }
 
-#see-also p, #read-next p {
+#read-next p {
     font-weight: bold;
 }
 
@@ -504,11 +504,15 @@ a.admin-menu-item {
     border-bottom: 3px solid #e6e6e6;
 }
 
-#most-popular ol {
+#most-popular ol, #see-also ul {
     font-weight: bold;
     padding-left: 25px;
 }
 
+#see-also ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
 
 #sidebar-right {
     padding-top: 40px;
