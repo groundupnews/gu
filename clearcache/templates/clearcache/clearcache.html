@@ -10,7 +10,7 @@ Clear Cache {{block.super}}
 
     <div class="container">
 	<div class="row">
-	    <div class="col-xs-12 col-md-offset-4">
+	    <div class="col-xs-12 col-md-8 col-md-offset-4">
 		 {% if form %}
 		<h1>Clear the cache</h1>
 		<div id="clear-cache-form">
@@ -21,9 +21,6 @@ Clear Cache {{block.super}}
 		    </form>
 		</div>
 		 {% endif %}
-		 <p>
-		     <a href="{% url 'admin:index' %}">Site Administration</a>
-		 </p>
 	    </div>
 	</div>
     </div>

@@ -83,7 +83,7 @@ img.summary-image {
     }
 
     h2.summary-title {
-	font-size: 24px;
+	font-size: 22px;
     }
     div.article-summary.with-no-image h2.summary-title {
 	font-size: 20px;
@@ -112,10 +112,6 @@ img.summary-image {
 @media (max-width: 767px) {
     .summary-text {
 	display: none;
-    }
-    div.summary-image-container {
-	height: 125px;
-	overflow: hidden;
     }
 }
 
