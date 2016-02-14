@@ -28,6 +28,7 @@ header {
 
 h2.large-summary-title, h2.summary-title {
     margin-top: 0;
+    line-height: 130%;
     font-weight: normal;
     font-size: 14px;
 }
@@ -75,7 +76,6 @@ img.summary-image {
 
     h2.summary-title, h2.large-summary-title {
 	margin-top: 0;
-	line-height: 130%;
     }
 
     h2.large-summary-title {
