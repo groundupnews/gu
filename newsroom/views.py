@@ -62,19 +62,20 @@ def last_article_modified(request):
 class HomePage(ArticleList):
       template_name = "newsroom/home.html"
 
+      def get_context_data(self, **kwargs):
+            context = super(HomePage, self).get_context_data(**kwargs)
+            # Add extra context for the home page here
+            context['most_popular_html'] = \
+                        models.MostPopular.get_most_popular_html()
+            return context
+
       # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
       # WHICH CODE NEEDS TO CHANGE URGENTLY.
 
-      # def get_context_data(self, **kwargs):
-      #    context = super(HomePage, self).get_context_data(**kwargs)
-      #    # Add extra context for the home page here
-      #    #
-      #    return context
-
       # def get(self, request, *args, **kwargs):
       #       # Add messages here. E.g.
-      #       #messages.add_message(request, messages.INFO,
-      #       #                     "We are closed until 5 January.")
+      #       messages.add_message(request, messages.INFO,
+      #                            "We are closed <a href='#'>until 5 January</a>.")
       #       request = super(HomePage, self).get(request, args, kwargs)
       #       return request
 
@@ -207,6 +208,8 @@ def check_concurrent_edit(request):
 # that Django could take care of, but at least I can understand what's going
 # on here without having to search reams of documentation and StackOverview
 # questions.
+#
+# Nevertheless, some refactoring needed here.
 
 def article_post(request, slug):
       form = ArticleForm(request.POST)
@@ -226,6 +229,7 @@ def article_post(request, slug):
                                              'read_next': None,
                                              'blocks': get_blocks(),
                                              'can_edit': False,
+                                             'most_popular_html': None,
                                              'form':form})
                   for field in form.cleaned_data:
                         setattr(article, field, form.cleaned_data[field])
@@ -310,6 +314,8 @@ def article_detail(request, slug):
                                  'read_next': read_next,
                                  'blocks': get_blocks(),
                                  'can_edit': can_edit,
+                                 'most_popular_html':
+                                 models.MostPopular.get_most_popular_html,
                                  'form':form})
             else:
                   raise Http404

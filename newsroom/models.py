@@ -452,13 +452,13 @@ class MostPopular(models.Model):
     @staticmethod
     def get_most_popular_html():
         article_list = MostPopular.get_most_popular_list()
-        html = "<ul class='most-popular'>"
+        html = "<ol class='most-popular'>"
         for article in article_list:
             entry = "<li><a href='" + reverse('article.detail',  \
                                               args=[article[0]]) + \
                     "'>" + article[1] + "</a></li>"
             html = html + entry
-        html = html + "</ul>"
+        html = html + "</ol>"
         return html
 
     class Meta:
