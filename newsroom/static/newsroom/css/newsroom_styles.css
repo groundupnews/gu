@@ -53,6 +53,10 @@ img.summary-image {
     margin: 0;
 }
 
+div.summary-image-container {
+    height: 105px;
+    overflow: hidden;
+}
 
 @media (min-width: 600px) {
    #whatsapp-share, .whatsapp-share {
