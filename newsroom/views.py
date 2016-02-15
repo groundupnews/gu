@@ -290,12 +290,12 @@ def article_detail(request, slug):
                         see_also = models.Article.objects.published(). \
                               filter(topics=article.main_topic). \
                               exclude(pk=article.pk).exclude(pk=read_next_pk).\
-                              distinct()[0:4]
+                              exclude(recommended=False).distinct()[0:4]
                   elif article.topics:
                         see_also = models.Article.objects.published(). \
                               filter(topics=article.topics.all()). \
                               exclude(pk=article.pk).exclude(pk=read_next_pk). \
-                              distinct()[0:4]
+                              exclude(recommended=False).distinct()[0:4]
                   else:
                         see_also = None
 
