@@ -277,6 +277,9 @@ div.editor-summary {
     article figure, .pquote, div.editor-summary {
 	margin-right: 150px;
     }
+    div.editor-summary p, div.editor-summary ul {
+	padding-right: 0;
+    }
 
     #article-primary-image figcaption,
     article figure.very-large figcaption {
