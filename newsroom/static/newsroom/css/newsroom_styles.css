@@ -268,6 +268,10 @@ div.editor-summary {
     padding: 10px;
 }
 
+article figure.huge {
+    margin-right: 0;
+}
+
 
 @media (min-width: 980px) {
     article p, article ul {
@@ -282,10 +286,12 @@ div.editor-summary {
     }
 
     #article-primary-image figcaption,
-    article figure.very-large figcaption {
+    article figure.very-large figcaption
+    {
 	max-width: 100%;
 	padding-right: 150px;
     }
+
     /* For legacy. */
     p.full-width img, p img.full-width {
 	padding-right: 150px;
@@ -293,6 +299,21 @@ div.editor-summary {
     }
     p.very-large img, p img.very-large {
 	width: 100%;
+    }
+}
+
+@media (min-width: 1280px) {
+    article figure.huge
+    {
+	margin-left: -160px;
+	margin-right: -350px;
+    }
+
+    article figure.huge figcaption
+    {
+	padding-left: 160px;
+	padding-right: 350px;
+	max-width: 100%;
     }
 }
 
