@@ -21,5 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Anchor,Image,Table,HorizontalRule,SpecialChar,Maximize,About,Styles,Format,Blockquote,Outdent,Indent,BulletedList,NumberedList,Strike,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
     config.scayt_sLang = 'en_GB';
     config.scayt_autoStartup = true;
+    config.htmlEncodeOutput = false;
+    config.entities = false;
     config.enterMode = CKEDITOR.ENTER_BR;
 };
