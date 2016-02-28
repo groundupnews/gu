@@ -306,13 +306,13 @@ article figure.huge {
     article figure.huge
     {
 	margin-left: -160px;
-	margin-right: -350px;
+	margin-right: -370px;
     }
 
     article figure.huge figcaption
     {
 	padding-left: 160px;
-	padding-right: 350px;
+	padding-right: 400px;
 	max-width: 100%;
     }
 }
