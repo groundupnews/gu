@@ -3,9 +3,6 @@
 body {
 
     background-color: white;
-    /* background-color: #f5f5f0;*/
-    /* background-image: url("http://www.transparenttextures.com/patterns/cream-pixels.png");
-    background-attachment: fixed;  */
     font-family: 'Ubuntu-1', 'Ubuntu-2', sans-serif;
 }
 
@@ -303,18 +300,18 @@ article figure.huge {
 }
 
 @media (min-width: 1280px) {
-    article figure.huge
+    article figure.huge img
     {
-	margin-left: -160px;
-	margin-right: -360px;
+	margin-left: -175px;
+	margin-right: -470px;
     }
 
-    article figure.huge figcaption
-    {
-	padding-left: 160px;
-	padding-right: 360px;
-	max-width: 100%;
-    }
+    /* article figure.huge figcaption */
+    /* { */
+    /* 	padding-left: 160px; */
+    /* 	padding-right: 360px; */
+    /* 	max-width: 100%; */
+    /* } */
 }
 
 article figure img, article p img {
