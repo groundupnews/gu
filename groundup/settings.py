@@ -57,7 +57,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django.contrib.redirects',
 
-    'debug_toolbar',
+    #'debug_toolbar',
     'tagulous',
 
     'newsroom',
