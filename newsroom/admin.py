@@ -3,14 +3,13 @@ from django import forms
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
-from django.forms import ModelForm, Textarea
 from django.core.exceptions import ValidationError
 
 import re
 
 from . import models
 from . import utils
-from socialmedia.models import Tweet
+
 from socialmedia.admin import TweetInline
 from socialmedia.common import SCHEDULE_RESULTS
 from republisher.admin import RepublisherInline
@@ -20,7 +19,7 @@ from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 
 
 # Used to select sizes of images
-IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)  \
+IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)
                       for item in ADMIN_VERSIONS]
 IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
 
@@ -151,15 +150,12 @@ class ArticleAdmin(admin.ModelAdmin):
         return super(ArticleAdmin, self).\
             changelist_view(request, extra_context=extra_context)
 
-    def get_changeform_initial_data(self, request):
-        return {'category': 'News'}
-
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.save()
 
     class Media:
-        css = { 'all' : ('/static/newsroom/css/admin_enhance.css',)}
+        css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
             '//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
@@ -170,7 +166,8 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.UserEdit)
-tagulous.admin.register(models.Category)
+admin.site.register(models.Category)
+# tagulous.admin.register(models.Category)
 tagulous.admin.register(models.Region)
 tagulous.admin.register(models.Topic)
 

@@ -2,21 +2,18 @@ from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
-from django.utils import timezone
 from django.contrib.auth.models import User
 
 import tagulous
 from filebrowser.fields import FileBrowseField
-from filebrowser.settings import VERSIONS
 
 from . import settings
 from socialmedia.common import SCHEDULE_RESULTS
 
-from .utils import visible_text_in_html
-
 import logging
 
 logger = logging.getLogger("django")
+
 
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
@@ -38,24 +35,27 @@ class Author(models.Model):
 
     @staticmethod
     def autocomplete_search_fields():
-        return ("id__iexact", "first_names__icontains", "last_name__icontains",)
+        return ("id__iexact", "first_names__icontains",
+                "last_name__icontains",)
 
     def __str__(self):
-        return " ".join([self.title,self.first_names, self.last_name]).strip()
+        return " ".join([self.title, self.first_names,
+                         self.last_name]).strip()
 
     def get_absolute_url(self):
-        return reverse('author.detail', args=[self.pk,])
+        return reverse('author.detail', args=[self.pk, ])
 
     class Meta:
-        ordering = ["last_name","first_names",]
+        ordering = ["last_name", "first_names", ]
 
 
 class Region(tagulous.models.TagTreeModel):
     def get_absolute_url(self):
-        return reverse('region.detail', args=[self.path,])
+        return reverse('region.detail', args=[self.path, ])
 
     class TagMeta:
         case_sensitive = False
+
 
 class Topic(tagulous.models.TagModel):
     introduction = models.TextField(blank=True,
@@ -64,32 +64,40 @@ class Topic(tagulous.models.TagModel):
                                     "the default template does not render any "
                                     "other fields before the article list.")
     icon = FileBrowseField("Image", max_length=200, directory="images/",
-                                    blank=True, null=True)
+                           blank=True, null=True)
     template = models.CharField(max_length=200,
                                 default="newsroom/topic_detail.html")
 
     def get_absolute_url(self):
-        return reverse('topic.detail', args=[self.slug,])
+        return reverse('topic.detail', args=[self.slug, ])
 
     class TagMeta:
         case_sensitive = False
-        max_count=8
-        space_delimiter=False
+        max_count = 8
+        space_delimiter = False
 
-class Category(tagulous.models.TagModel):
+
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200)
+
     def get_absolute_url(self):
-        return reverse('category.detail', args=[self.slug,])
+        return reverse('category.detail', args=[self.slug, ])
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
+        ordering = ['name', ]
 
-    class TagMeta:
-        case_sensitive = False
-        space_delimiter = False
-        initial="Brief, News, " \
-            "Feature, Photo Essay, " \
-            "Analysis, Opinion, Photo"
+    # class TagMeta:
+    #     case_sensitive = False
+    #     space_delimiter = False
+    #     initial = "Brief, News, " \
+    #         "Feature, Photo Essay, " \
+    #         "Analysis, Opinion, Photo"
 
 
 # Used to prevent disaster on the template fields
@@ -107,11 +115,13 @@ SUMMARY_TEMPLATE_CHOICES = (
 class ArticleQuerySet(models.QuerySet):
     def published(self):
         return self.filter(published__lte=timezone.now())
+
     def list_view(self):
         return self.published().filter(exclude_from_list_views=False)
 
-def latest_article(request):
-    return Entry.objects.published().latest("modified").modified
+
+# def latest_article(request):
+#    return Entry.objects.published().latest("modified").modified
 
 class Article(models.Model):
     title = models.CharField(max_length=200)
@@ -164,10 +174,7 @@ class Article(models.Model):
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
     recommended = models.BooleanField(default=True)
-    category = tagulous.models.SingleTagField(
-        to=Category,
-        default=4 # News
-    )
+    category = models.ForeignKey(Category, default=4)
     region = tagulous.models.SingleTagField(to=Region, blank=True, null=True)
     topics = tagulous.models.TagField(
         to=Topic,
