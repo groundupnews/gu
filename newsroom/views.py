@@ -112,16 +112,16 @@ class AuthorDetail(ArticleList):
       return context
 
 
-
 class CategoryDetail(ArticleList):
-   def get_queryset(self):
-      self.category = self.args[0]
-      return models.Article.objects.list_view().filter(category=self.category)
+    def get_queryset(self):
+        self.category = self.args[0]
+        return models.Article.objects.list_view(). \
+            filter(category__name=self.category)
 
-   def get_context_data(self, **kwargs):
-      context = super(CategoryDetail, self).get_context_data(**kwargs)
-      context['heading'] = self.category
-      return context
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetail, self).get_context_data(**kwargs)
+        context['heading'] = self.category
+        return context
 
 
 class RegionDetail(ArticleList):
