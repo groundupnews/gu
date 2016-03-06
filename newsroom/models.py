@@ -87,6 +87,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "name__icontains",)
+
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"

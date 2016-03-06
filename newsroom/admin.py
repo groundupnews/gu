@@ -54,7 +54,7 @@ class ArticleForm(forms.ModelForm):
 
         if self.instance.pk:
             if self.instance.version > self.cleaned_data["version"]:
-                raise ValidationError(utils.get_edit_lock_msg( \
+                raise ValidationError(utils.get_edit_lock_msg(
                     self.instance.user))
 
         if self.cleaned_data["main_topic"]:
@@ -75,20 +75,20 @@ class ArticleAdmin(admin.ModelAdmin):
     form = ArticleForm
     list_display = ('title', 'created', 'modified', 'published',
                     'is_published', 'cached_byline_no_links', 'category',)
-    prepopulated_fields = {"slug": ("title",) }
-    search_fields = ['title', 'cached_byline_no_links',]
+    prepopulated_fields = {"slug": ("title", )}
+    search_fields = ['title', 'cached_byline_no_links', ]
     date_hierarchy = 'modified'
-    ordering = ['-modified',]
+    ordering = ['-modified', ]
     list_filter = ['published', 'category', 'region', 'topics']
-    raw_id_fields = ('author_01','author_02', 'author_03', \
-                     'author_04', 'author_05',)
+    raw_id_fields = ('author_01', 'author_02', 'author_03', 'author_04',
+                     'author_05', )
     autocomplete_lookup_fields = {
-        'fk': ['author_01', 'author_02', 'author_03', \
-                'author_04', 'author_05',],
+        'fk': ['author_01', 'author_02', 'author_03',
+               'author_04', 'author_05', ],
     }
 
-    readonly_fields=('cached_byline_no_links',
-                     'cached_summary_text', 'user', 'modified',)
+    readonly_fields = ('cached_byline_no_links', 'cached_summary_text',
+                       'user', 'modified', )
 
     fieldsets = (
         ('Identifying Information', {
@@ -102,16 +102,16 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Primary Image', {
             'classes': ('wide',),
-            'fields': ( ('primary_image', 'primary_image_size',),
-                        'primary_image_caption', 'primary_image_alt',)
+            'fields': (('primary_image', 'primary_image_size', ),
+                       'primary_image_caption', 'primary_image_alt', )
         }),
         ('External URL for primary image', {
             'classes': ('grp-collapse grp-closed',),
-            'fields':('external_primary_image',)
+            'fields': ('external_primary_image', )
         }),
         ('Content', {
             'classes': ('wide',),
-            'fields': ( 'body', )
+            'fields': ('body', )
         }),
         ('Publish', {
             'fields': ('category', 'topics', 'main_topic',
@@ -119,26 +119,24 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Summary', {
             'classes': ('grp-collapse grp-closed',),
-            'fields': ( ('summary_image', 'summary_image_size',),
-                        'summary_image_alt', 'cached_summary_text',
-                        'summary_text', 'summary_template',),
+            'fields': (('summary_image', 'summary_image_size', ),
+                       'summary_image_alt', 'cached_summary_text',
+                       'summary_text', 'summary_template',),
         }),
         ('Advanced', {
             'classes': ('grp-collapse grp-closed',),
-            'fields':('copyright', 'include_in_rss', 'comments_on',
-                      'stickiness', 'exclude_from_list_views',
-                      'recommended', 'byline', 'use_editor',
-                      'template', 'disqus_id',
-                      ('user', 'modified', 'version'),)
+            'fields': ('copyright', 'include_in_rss', 'comments_on',
+                       'stickiness', 'exclude_from_list_views',
+                       'recommended', 'byline', 'use_editor',
+                       'template', 'disqus_id',
+                       ('user', 'modified', 'version'),)
         }),
         ('Facebook', {
             'classes': ('grp-collapse grp-closed',),
-            'fields':(
-                'facebook_wait_time', 'facebook_image', 'facebook_image_caption',
-                'facebook_description', 'facebook_message',
-                'facebook_send_status',
-            ),
-        })
+            'fields': ('facebook_wait_time', 'facebook_image',
+                       'facebook_image_caption',
+                       'facebook_description', 'facebook_message',
+                       'facebook_send_status', ), })
     )
 
     inlines = [
@@ -164,10 +162,13 @@ class ArticleAdmin(admin.ModelAdmin):
             '/static/socialmedia/js/tweets.js',
         ]
 
+
+class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name", )}
+
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.UserEdit)
-admin.site.register(models.Category)
-# tagulous.admin.register(models.Category)
+admin.site.register(models.Category, CategoryAdmin)
 tagulous.admin.register(models.Region)
 tagulous.admin.register(models.Topic)
 

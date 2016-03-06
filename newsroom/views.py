@@ -114,13 +114,14 @@ class AuthorDetail(ArticleList):
 
 class CategoryDetail(ArticleList):
     def get_queryset(self):
-        self.category = self.args[0]
+        self.category = get_object_or_404(models.Category,
+                                          name__iexact=self.args[0])
         return models.Article.objects.list_view(). \
-            filter(category__name=self.category)
+            filter(category=self.category)
 
     def get_context_data(self, **kwargs):
         context = super(CategoryDetail, self).get_context_data(**kwargs)
-        context['heading'] = self.category
+        context['heading'] = self.category.name
         return context
 
 
