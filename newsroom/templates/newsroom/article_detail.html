@@ -324,40 +324,10 @@
 	     window.print();
              document.body.innerHTML = return_button + print_contents;
 	 });
-	 var bottom_div_changed = false;
-	 var bottom_div;
-	 function fix_bottom_div() {
-	     if (window.innerWidth > 767) {
-		 var $el = $('#content-main');
-		 var bottom = $el.position().top + $el.outerHeight(true);
-		 var $el = $('#content-extra');
-		 var top = $el.position().top;
-		 var diff = top - bottom;
-		 if (diff > 3) {
-		     $el.css("margin-top", -diff);
-		     bottom_div_changed = true;
-		 };
-	     } else if (bottom_div_changed == true) {
-		 var $el = $('#content-extra');
-		 $el.css("margin-top", 0);
-	     }
-	 };
-	 /* $(window).resize(function () {
-	    fix_bottom_div();
-	    });
-	    $(window).load(function() {
-	    fix_bottom_div();
-	    });
-
-	    $("#content-main").on('input propertychange paste', function() {
-	    fix_bottom_div();
-	    });
-	  */
 
 	 {% if can_edit %}
 
 	 var content_div = $('#content-main');
-	 var saved_height = content_div.outerHeight(true);
 
 	 $("#publish-now" ).click(function() {
 	     $("#input-is-published").val("Now");
@@ -368,10 +338,6 @@
 	 function update_form(editor, field) {
 	     document.getElementById(field).value =
 	     CKEDITOR.instances[editor].getData();
-	     if (content_div.outerHeight(true) != saved_height) {
-		 fix_bottom_div();
-		 saved_height = content_div.outerHeight(true);
-	     }
 	 }
 
 	 CKEDITOR.inline( 'article_title', {

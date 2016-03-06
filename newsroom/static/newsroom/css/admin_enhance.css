@@ -29,3 +29,17 @@
     color: white;
     background-color: red;
 }
+
+/***************************/
+
+#editing-article {
+    position: fixed;
+    z-index: 1000;
+    top: 40px;
+    left: 650px;
+    color: red;
+    background-color: pink;
+    font-weight: bold;
+    background-color: #e5ffff;
+    font-size: 10px;
+}
