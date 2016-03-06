@@ -8,14 +8,14 @@ import republisher.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('newsroom', '0023_auto_20160131_0107'),
+        ('newsroom', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Republisher',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
                 ('name', models.CharField(max_length=200, unique=True)),
                 ('email_addresses', models.CharField(max_length=250, validators=[republisher.models.validate_email_list])),
                 ('message', models.TextField(blank=True)),
@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RepublisherArticle',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
-                ('wait_time', models.PositiveIntegerField(default=0, help_text='Minimum number of minutes after publication till sent.')),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('wait_time', models.PositiveIntegerField(help_text='Minimum number of minutes after publication till sent.', default=0)),
                 ('note', models.TextField(blank=True, help_text='A note for the republisher specific to this article.')),
                 ('status', models.CharField(max_length=20, default='scheduled', choices=[('scheduled', 'Scheduled'), ('sent', 'Sent'), ('failed', 'Failed'), ('paused', 'Paused')])),
                 ('article', models.ForeignKey(to='newsroom.Article')),

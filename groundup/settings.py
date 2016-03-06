@@ -129,13 +129,6 @@ USE_TZ = True
 
 SITE_ID = 1
 
-SERIALIZATION_MODULES = {
-    'xml':    'tagulous.serializers.xml_serializer',
-    'json':   'tagulous.serializers.json',
-    'python': 'tagulous.serializers.python',
-    'yaml':   'tagulous.serializers.pyyaml',
-}
-
 
 # CACHES: This should be overriden in local_settings.py
 
