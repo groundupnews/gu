@@ -95,7 +95,7 @@
 
 				    {% if display_region %}
 					|
-					<a href="{% url 'region.detail' article.region.path %}"
+					<a href="{% url 'region.detail' article.region.name %}"
 					>{{display_region|upper}}</a>&nbsp;
 				    {% endif %}
 				</p>

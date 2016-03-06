@@ -2,16 +2,22 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django import forms
 from . import models
-import tagulous
+
 
 class TweetAdmin(admin.ModelAdmin):
-    list_display = ['article','tweet_text','characters_left','status',]
-    list_filter = ['status',]
-    search_fields = ['article__title', 'tweet_text',]
+    list_display = ['article', 'tweet_text', 'characters_left', 'status', ]
+    list_filter = ['status', ]
+    search_fields = ['article__title', 'tweet_text', ]
     ordering = ['status', 'article__modified']
 
+
+class TwitterHandleAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name", )}
+
+
 admin.site.register(models.Tweet, TweetAdmin)
-tagulous.admin.register(models.TwitterHandle)
+admin.site.register(models.TwitterHandle, TwitterHandleAdmin)
+
 
 class TweetForm(forms.ModelForm):
     def clean(self, *args, **kwargs):
@@ -21,12 +27,17 @@ class TweetForm(forms.ModelForm):
             raise ValidationError("Tweet too long.")
         super(TweetForm, self).clean(*args, **kwargs)
 
+
 class TweetInline(admin.TabularInline):
     form = TweetForm
     model = models.Tweet
     readonly_fields = ('characters_left',)
     fields = ('wait_time', 'tweet_text', 'image',
               'tag_accounts',  'status', 'characters_left',)
+    raw_id_fields = ('tag_accounts', )
+    autocomplete_lookup_fields = {
+        'm2m': ['tag_accounts', ],
+    }
     classes = ('grp-collapse grp-closed',)
     extra = 3
 

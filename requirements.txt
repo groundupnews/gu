@@ -5,7 +5,6 @@ Django==1.8.7
 # django-debug-toolbar==1.4
 django-filebrowser==3.6.1
 django-grappelli==2.7.2
-django-tagulous==0.11.1
 facebook-sdk
 google-api-python-client==1.4.2
 # html2text==2016.1.8

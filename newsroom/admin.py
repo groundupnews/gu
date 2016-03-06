@@ -14,7 +14,6 @@ from socialmedia.admin import TweetInline
 from socialmedia.common import SCHEDULE_RESULTS
 from republisher.admin import RepublisherInline
 
-import tagulous
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 
 
@@ -58,9 +57,9 @@ class ArticleForm(forms.ModelForm):
                     self.instance.user))
 
         if self.cleaned_data["main_topic"]:
-            topic = self.cleaned_data["main_topic"]
-            if topic not in self.cleaned_data["topics"]:
-                self.cleaned_data["topics"].append(topic)
+            self.cleaned_data["topics"] = self.cleaned_data["topics"] | \
+                    models.Topic.objects.filter(
+                        name=self.cleaned_data["main_topic"])
 
         # Transform the body to fix Wysiwyg editor limitations
 
@@ -81,10 +80,11 @@ class ArticleAdmin(admin.ModelAdmin):
     ordering = ['-modified', ]
     list_filter = ['published', 'category', 'region', 'topics']
     raw_id_fields = ('author_01', 'author_02', 'author_03', 'author_04',
-                     'author_05', )
+                     'author_05', 'topics', 'main_topic', )
     autocomplete_lookup_fields = {
         'fk': ['author_01', 'author_02', 'author_03',
-               'author_04', 'author_05', ],
+               'author_04', 'author_05', 'main_topic', ],
+        'm2m': ['topics', ]
     }
 
     readonly_fields = ('cached_byline_no_links', 'cached_summary_text',
@@ -166,19 +166,29 @@ class ArticleAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name", )}
 
+
+class RegionAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name", )}
+
+
+class TopicAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name", )}
+
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.UserEdit)
 admin.site.register(models.Category, CategoryAdmin)
-tagulous.admin.register(models.Region)
-tagulous.admin.register(models.Topic)
+admin.site.register(models.Region, RegionAdmin)
+admin.site.register(models.Topic, TopicAdmin)
+
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_names', 'created', 'modified',
                     'email', 'telephone', 'cell', )
-    search_fields = ['last_name', 'first_names',]
+    search_fields = ['last_name', 'first_names', ]
 
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
+
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
@@ -194,7 +204,7 @@ class FlatPageAdmin(FlatPageAdmin):
     )
 
     class Media:
-        css = { 'all' : ('/static/newsroom/css/admin_enhance.css',) }
+        css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
             '//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',

@@ -7,6 +7,7 @@ from newsroom.models import Article, Topic, Category
 from newsroom import utils
 from bs4 import BeautifulSoup as bs
 
+
 class HtmlCleanUp(TestCase):
 
     def test_html_cleaners(self):
@@ -28,6 +29,7 @@ class HtmlCleanUp(TestCase):
         self.assertEqual(utils.replaceBadHtmlWithGood(html),
                          '<figure><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/><figcaption>This is the caption.</figcaption></figure>')
 
+
 class ArticleTest(TestCase):
 
     def setUp(self):
@@ -41,18 +43,22 @@ class ArticleTest(TestCase):
         category.slug = "feature"
         category.save()
 
+        category = Category()
         category.name = "Photo essay"
         category.slug = "photo-essay"
         category.save()
 
+        category = Category()
         category.name = "Opinion"
         category.slug = "opinion"
         category.save()
 
+        category = Category()
         category.name = "Photo"
         category.slug = "photo"
         category.save()
 
+        category = Category()
         category.name = "News"
         category.slug = "news"
         category.save()
@@ -60,16 +66,15 @@ class ArticleTest(TestCase):
         a = Article()
         a.title = "Test article 1"
         a.slug = "test-article-1"
-        a.category = "news"
+        a.category = Category.objects.get(name="News")
         a.save()
         a.publish_now()
         a = Article()
         a.title = "Test article 2"
         a.slug = "test-article-2"
-        a.category = "opinion"
+        a.category = Category.objects.get(slug="opinion")
         a.save()
         a.publish_now()
-
 
     def test_pages(self):
         client = Client()
@@ -88,7 +93,7 @@ class ArticleTest(TestCase):
     def test_duplicate_save(self):
         a = Article()
         a.title = "Test article 3"
-        a.category = "news"
+        a.category = Category.objects.get(name__iexact="news")
         a.slug = "test-article-1"
         shouldHaveFailed = True
         try:
@@ -102,14 +107,14 @@ class ArticleTest(TestCase):
         a = Article()
         a.title = "Test article 3"
         a.slug = "test-article-3"
-        a.category = "news"
+        a.category = Category.objects.get(name="News")
         a.published = timezone.now()
         a.save()
         num_published_now = Article.objects.published().count()
         self.assertEqual(num_published + 1, num_published_now)
         a = Article()
         a.title = "Test article 4"
-        a.category = "news"
+        a.category = Category.objects.get(name="News")
         a.slug = "test-article-4"
         a.published = timezone.now() + datetime.timedelta(hours=10)
         a.save()

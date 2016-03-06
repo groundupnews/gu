@@ -57,9 +57,6 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django.contrib.redirects',
 
-    #'debug_toolbar',
-    'tagulous',
-
     'newsroom',
     'socialmedia',
     'republisher',
@@ -85,7 +82,7 @@ ROOT_URLCONF = 'groundup.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,17 +160,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 FILEBROWSER_DIRECTORY = "uploads/"
 
 FILEBROWSER_EXTENSIONS = {
-    'Image': ['.jpg','.jpeg','.gif','.png','.tif','.tiff'],
-    'Document': ['.pdf','.doc','.rtf','.txt','.xls','.csv'],
-    'Video': ['.mov','.wmv','.mpeg','.mpg','.avi','.rm'],
-    'Audio': ['.mp3','.mp4','.wav','.aiff','.midi','.m4p']
+    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
+    'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv'],
+    'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
+    'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p']
 }
 
-FILEBROWSER_SELECT_FORMATS =  {
-    'file': ['Image','Document','Video','Audio'],
+FILEBROWSER_SELECT_FORMATS = {
+    'file': ['Image', 'Document', 'Video', 'Audio'],
     'image': ['Image'],
     'document': ['Document'],
-    'media': ['Video','Audio'],
+    'media': ['Video', 'Audio'],
 }
 
 FILEBROWSER_VERSIONS_BASEDIR = '_versions'
@@ -221,7 +218,7 @@ LOGGING = {
         },
     },
     'handlers': {
-       'file': {
+        'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': local_settings.ERROR_LOG_FILE,
@@ -234,9 +231,9 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers':['file', 'mail_admins', ],
+            'handlers': ['file', 'mail_admins', ],
             'propagate': True,
-            'level':'WARNING',
+            'level': 'WARNING',
         },
     }
 }

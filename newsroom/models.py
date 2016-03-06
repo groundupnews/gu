@@ -4,7 +4,6 @@ from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User
 
-import tagulous
 from filebrowser.fields import FileBrowseField
 
 from . import settings
@@ -49,15 +48,31 @@ class Author(models.Model):
         ordering = ["last_name", "first_names", ]
 
 
-class Region(tagulous.models.TagTreeModel):
+class Region(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
+
+    def get_descendants(self):
+        regions = Region.objects.filter(name__startswith=(self.name + "/"))
+        return regions
+
     def get_absolute_url(self):
-        return reverse('region.detail', args=[self.path, ])
+        return reverse('region.detail', args=[self.name, ])
 
-    class TagMeta:
-        case_sensitive = False
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "name__icontains",)
+
+    class Meta:
+        ordering = ['name', ]
 
 
-class Topic(tagulous.models.TagModel):
+class Topic(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
     introduction = models.TextField(blank=True,
                                     help_text="Use unfiltered HTML. "
                                     "If this is not blank, "
@@ -71,15 +86,20 @@ class Topic(tagulous.models.TagModel):
     def get_absolute_url(self):
         return reverse('topic.detail', args=[self.slug, ])
 
-    class TagMeta:
-        case_sensitive = False
-        max_count = 8
-        space_delimiter = False
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "name__icontains",)
+
+    class Meta:
+        ordering = ['name', ]
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
 
     def get_absolute_url(self):
         return reverse('category.detail', args=[self.slug, ])
@@ -89,19 +109,12 @@ class Category(models.Model):
 
     @staticmethod
     def autocomplete_search_fields():
-        return ("id__iexact", "name__icontains",)
+        return ("name__icontains",)
 
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
         ordering = ['name', ]
-
-    # class TagMeta:
-    #     case_sensitive = False
-    #     space_delimiter = False
-    #     initial = "Brief, News, " \
-    #         "Feature, Photo Essay, " \
-    #         "Analysis, Opinion, Photo"
 
 
 # Used to prevent disaster on the template fields
@@ -117,6 +130,7 @@ SUMMARY_TEMPLATE_CHOICES = (
 
 
 class ArticleQuerySet(models.QuerySet):
+
     def published(self):
         return self.filter(published__lte=timezone.now())
 
@@ -139,7 +153,7 @@ class Article(models.Model):
     summary_image_alt = models.CharField(
         max_length=200,
         blank=True,
-        help_text = "Description of image for assistive technology.")
+        help_text="Description of image for assistive technology.")
     summary_text = models.TextField(blank=True)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_01",
@@ -161,7 +175,7 @@ class Article(models.Model):
                               help_text="If this is not blank it "
                               "overrides the value of the author fields")
     primary_image = FileBrowseField(max_length=200, directory="images/",
-                                   blank=True, null=True)
+                                    blank=True, null=True)
     primary_image_size = models.CharField(
         default=settings.ARTICLE_PRIMARY_IMAGE_SIZE,
         max_length=20,
@@ -169,9 +183,9 @@ class Article(models.Model):
     primary_image_alt = models.CharField(
         max_length=200,
         blank=True,
-        help_text = "Description of image for assistive technology.")
+        help_text="Description of image for assistive technology.")
     external_primary_image = models.URLField(blank=True, max_length=500,
-            help_text="If the primary image has a value, it overrides this.")
+                                             help_text="If the primary image has a value, it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
     body = models.TextField(blank=True)
     use_editor = models.BooleanField(default=True)
@@ -179,16 +193,15 @@ class Article(models.Model):
                                      verbose_name='publish time')
     recommended = models.BooleanField(default=True)
     category = models.ForeignKey(Category, default=4)
-    region = tagulous.models.SingleTagField(to=Region, blank=True, null=True)
-    topics = tagulous.models.TagField(
-        to=Topic,
-        blank=True
-    )
-    main_topic = tagulous.models.SingleTagField(
-        to=Topic, blank=True, null=True,
-        related_name="main",
-        help_text="Used for generating 'See also' list of articles.")
-    copyright = models.TextField(blank=True, default=settings.ARTICLE_COPYRIGHT)
+    region = models.ForeignKey(Region, blank=True, null=True)
+    topics = models.ManyToManyField(Topic, blank=True)
+    main_topic = models.ForeignKey(Topic, blank=True,
+                                   null=True,
+                                   related_name="main",
+                                   help_text="Used for generating"
+                                   "'See also' list of articles.")
+    copyright = models.TextField(blank=True,
+                                 default=settings.ARTICLE_COPYRIGHT)
     template = models.CharField(max_length=200,
                                 choices=DETAIL_TEMPLATE_CHOICES,
                                 default="newsroom/article_detail.html")
@@ -208,33 +221,29 @@ class Article(models.Model):
 
     # Facebook
     facebook_wait_time = models.PositiveIntegerField(
-        default = 0,
-        help_text = \
-        "Minimum number of minutes "
+        default=0,
+        help_text="Minimum number of minutes "
         "after publication "
         "till post.")
     facebook_image = FileBrowseField(max_length=200, directory="images/",
                                      blank=True, null=True,
                                      verbose_name="image",
-                                     help_text= \
-                                     "Leave blank to use primary image.")
+                                     help_text="Leave blank to use primary image.")
     facebook_image_caption = models.CharField(max_length=200,
                                               verbose_name="caption",
-                                              help_text= \
-                                              "Leave blank to use primary "
+                                              help_text="Leave blank to use primary "
                                               "image caption.",
                                               blank=True)
     facebook_description = models.CharField(max_length=200,
-        blank=True, help_text= "Leave blank to use same text as summary.")
+                                            blank=True, help_text="Leave blank to use same text as summary.")
     facebook_message = models.TextField(blank=True,
                                         verbose_name="message",
-                                        help_text=
-                                        "Longer status update that appears "
+                                        help_text="Longer status update that appears "
                                         "above the image in Facebook. ")
     facebook_send_status = models.CharField(max_length=20,
-                                           choices=SCHEDULE_RESULTS,
-                                           verbose_name="sent status",
-                                           default="paused")
+                                            choices=SCHEDULE_RESULTS,
+                                            verbose_name="sent status",
+                                            default="paused")
 
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -245,7 +254,7 @@ class Article(models.Model):
     # Cached fields
     cached_byline = models.CharField(max_length=500, blank=True)
     cached_byline_no_links = models.CharField(max_length=400, blank=True,
-                                     verbose_name="Byline")
+                                              verbose_name="Byline")
     cached_primary_image = models.URLField(blank=True, max_length=500)
     cached_summary_image = models.URLField(blank=True, max_length=500)
     cached_summary_text = models.TextField(blank=True)
@@ -267,27 +276,26 @@ class Article(models.Model):
     is_published.boolean = True
     is_published.short_description = 'published'
 
-
     # Methods that calculate cache fields
-
 
     '''Used to generate the cached byline upon model save, so
     there's less processing for website user requests.
     '''
+
     def calc_byline(self, links=False):
         if self.byline:
             return self.byline
         else:
-            names = [self.author_01, self.author_02, \
-                     self.author_03, self.author_04, \
+            names = [self.author_01, self.author_02,
+                     self.author_03, self.author_04,
                      self.author_05
-            ]
+                     ]
             if links:
-                names = [ "<a href='" + name.get_absolute_url() + \
-                          "'>" + str(name) + "</a>" \
-                          for name in names if name != None]
+                names = ["<a href='" + name.get_absolute_url() +
+                         "'>" + str(name) + "</a>"
+                         for name in names if name != None]
             else:
-                names = [ str(name) for name in names if name != None]
+                names = [str(name) for name in names if name != None]
         if len(names) == 0:
             return ""
         elif len(names) == 1:
@@ -303,6 +311,7 @@ class Article(models.Model):
     '''Used to generate the cached primary image upon model save, so
     there's less processing for website user requests.
     '''
+
     def calc_primary_image(self):
         if self.primary_image:
             if self.primary_image_size == "LEAVE":
@@ -312,10 +321,10 @@ class Article(models.Model):
                     self.primary_image_size).url
         return self.external_primary_image
 
-
     '''Used to generate the cached summary image upon model save, so
     there's less processing for website user requests.
     '''
+
     def calc_summary_image(self):
         image_size = self.summary_image_size
         if self.summary_image:
@@ -341,6 +350,7 @@ class Article(models.Model):
     '''Used to generate the cached small image upon model save, so
     there's less processing for website user requests.
     '''
+
     def calc_small_image(self):
         if self.summary_image:
             return self.summary_image.version_generate("small").url
@@ -353,11 +363,10 @@ class Article(models.Model):
 
         return ""
 
-
-
     '''Used to generate the cached summary text upon model save, so
     there's less processing for website user requests.
     '''
+
     def calc_summary_text(self):
         if self.summary_text:
             return self.summary_text
@@ -380,10 +389,10 @@ class Article(models.Model):
             return ""
         return strip_tags(end_para[0])
 
-
     '''Legacy code from when more complex processing was done. But too
     time-consuming and server times out.
     '''
+
     def calc_summary_text_no_html(self):
         return strip_tags(self.cached_summary_text)
 
@@ -392,21 +401,21 @@ class Article(models.Model):
         self.cached_byline_no_links = self.calc_byline(False)
 
         try:
-             self.cached_primary_image = self.calc_primary_image()
+            self.cached_primary_image = self.calc_primary_image()
         except:
-             self.cached_primary_image = ""
+            self.cached_primary_image = ""
         try:
-             self.cached_summary_text = self.calc_summary_text()
+            self.cached_summary_text = self.calc_summary_text()
         except:
-             self.cached_summary_text = ""
+            self.cached_summary_text = ""
         try:
-             self.cached_summary_text_no_html = self.calc_summary_text_no_html()
+            self.cached_summary_text_no_html = self.calc_summary_text_no_html()
         except:
-             self.cached_summary_text_no_html = ""
+            self.cached_summary_text_no_html = ""
         try:
-             self.cached_summary_image = self.calc_summary_image()
+            self.cached_summary_image = self.calc_summary_image()
         except:
-             self.cached_summary_image = ""
+            self.cached_summary_image = ""
         try:
             self.cached_small_image = self.calc_small_image()
         except:
@@ -415,27 +424,28 @@ class Article(models.Model):
         super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('article.detail', args=[self.slug,])
-
+        return reverse('article.detail', args=[self.slug, ])
 
     def __str__(self):
         return self.title
 
     class Meta:
-        ordering = ["-stickiness", "-published",]
+        ordering = ["-stickiness", "-published", ]
+
 
 class UserEdit(models.Model):
-     article = models.ForeignKey(Article)
-     user = models.ForeignKey(User)
-     edit_time = models.DateTimeField(auto_now=True)
+    article = models.ForeignKey(Article)
+    user = models.ForeignKey(User)
+    edit_time = models.DateTimeField(auto_now=True)
 
-     class Meta:
-         unique_together = ('article', 'user',)
-         ordering = ['article__published', 'edit_time',]
+    class Meta:
+        unique_together = ('article', 'user',)
+        ordering = ['article__published', 'edit_time', ]
 
-     def __str__(self):
-         return ", ".join([str(self.article), str(self.user), \
-                           str(self.edit_time)])
+    def __str__(self):
+        return ", ".join([str(self.article), str(self.user),
+                          str(self.edit_time)])
+
 
 class MostPopular(models.Model):
     '''This table's records each contain a list of the
@@ -455,21 +465,27 @@ class MostPopular(models.Model):
 
     @staticmethod
     def get_most_popular_list():
-        mostpopular = MostPopular.objects.latest("modified")
-        article_list = mostpopular.article_list.split("\n")
-        article_list = [item.split("|") for item in article_list]
+        try:
+            mostpopular = MostPopular.objects.latest("modified")
+            article_list = mostpopular.article_list.split("\n")
+            article_list = [item.split("|") for item in article_list]
+        except MostPopular.DoesNotExist:
+            article_list = None
         return article_list
 
     @staticmethod
     def get_most_popular_html():
         article_list = MostPopular.get_most_popular_list()
-        html = "<ol class='most-popular'>"
-        for article in article_list:
-            entry = "<li><a href='" + reverse('article.detail',  \
-                                              args=[article[0]]) + \
-                    "'>" + article[1] + "</a></li>"
-            html = html + entry
-        html = html + "</ol>"
+        if article_list:
+            html = "<ol class='most-popular'>"
+            for article in article_list:
+                entry = "<li><a href='" + \
+                        reverse('article.detail', args=[article[0]]) + \
+                        "'>" + article[1] + "</a></li>"
+                html = html + entry
+                html = html + "</ol>"
+        else:
+            html = ""
         return html
 
     class Meta:
