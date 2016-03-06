@@ -172,6 +172,7 @@ class RegionAdmin(admin.ModelAdmin):
 
 
 class TopicAdmin(admin.ModelAdmin):
+    list_display = ('name', 'count_articles', )
     prepopulated_fields = {"slug": ("name", )}
 
 admin.site.register(models.Article, ArticleAdmin)

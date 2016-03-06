@@ -83,6 +83,9 @@ class Topic(models.Model):
     template = models.CharField(max_length=200,
                                 default="newsroom/topic_detail.html")
 
+    def count_articles(self):
+        return Article.objects.filter(topics=self).count()
+
     def get_absolute_url(self):
         return reverse('topic.detail', args=[self.slug, ])
 
