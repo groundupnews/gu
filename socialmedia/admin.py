@@ -21,9 +21,11 @@ admin.site.register(models.TwitterHandle, TwitterHandleAdmin)
 
 class TweetForm(forms.ModelForm):
     def clean(self, *args, **kwargs):
+        twitter_handles = [str(name) for name in
+                           self.cleaned_data['tag_accounts']]
         if models.calc_chars_left(self.cleaned_data["tweet_text"],
                                   self.cleaned_data["image"],
-                                  self.cleaned_data["tag_accounts"]) < 0:
+                                  twitter_handles) < 0:
             raise ValidationError("Tweet too long.")
         super(TweetForm, self).clean(*args, **kwargs)
 
