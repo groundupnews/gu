@@ -5,13 +5,16 @@ function calc_tweet_chars(item) {
     }
     // Now for all the tags
     var tag_length = 0;
-    $("#s2id_id_tweet_set-" + item + "-tag_accounts ul li").each(function(i)
-		    {
-			var s = $(this).text().trim();
-			if (s.length > 0) {
-			    tag_length += s.length + 2;
-			}
-		    });
+
+    var selector = "#tweet_set" + item + " .tag_accounts ul li";
+    console.log("D0: ", $(selector).length);
+    $(selector).each(function(i) {
+	var s = $(this).text().trim();
+        if (s.length > 0) {
+            tag_length += s.length + 2;
+        }
+    });
+
     num_chars = 140 - num_chars - tag_length - 24;
 
     $("#tweet_set" + item + " .characters_left div").text(num_chars.toString());

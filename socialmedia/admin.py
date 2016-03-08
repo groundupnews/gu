@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django import forms
+from django.forms import TextInput
 from . import models
-
+from django.db import models as django_models
 
 class TweetAdmin(admin.ModelAdmin):
     list_display = ['article', 'tweet_text', 'characters_left', 'status', ]
