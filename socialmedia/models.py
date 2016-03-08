@@ -28,7 +28,7 @@ def calc_chars_left(tweet_text, image, tags):
     if image:
         chars_left = chars_left - 24
         for account in tags:
-            chars_left = chars_left - len(account.name.strip()) - 2
+            chars_left = chars_left - len(account.strip()) - 2
     return chars_left
 
 
