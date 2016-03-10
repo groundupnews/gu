@@ -618,3 +618,19 @@ a.admin-menu-item {
 .editing-user {
     background-color: pink;
 }
+
+/* Advert */
+
+.article-advert {
+}
+
+.frontpage-advert {
+    max-width: 100%;
+    align: center;
+}
+
+.frontpage-advert h2 {
+    font-size: 10px;
+    font-weight: normal;
+    text-align: center;
+}
