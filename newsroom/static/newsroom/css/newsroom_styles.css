@@ -634,3 +634,26 @@ a.admin-menu-item {
     font-weight: normal;
     text-align: center;
 }
+
+@media (min-width: 600px) {
+    .article-advert {
+	margin-left: -100px;
+    }
+}
+
+.article-advert {
+}
+
+.article-advert h2 {
+    font-size: 10px;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.article-advert-edit {
+    background-color: red;
+}
+
+.article-advert-edit:before {
+    content: "ADVERT";
+}

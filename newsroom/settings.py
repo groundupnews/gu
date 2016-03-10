@@ -6,9 +6,10 @@ ARTICLES_PER_PAGE = getattr(settings, 'NEWSROOM_ARTICLES_PER_PAGE', 12)
 BEAUTIFUL_SOUP_PARSER = getattr(settings, 'NEWSROOM_BEAUTIFUL_SOUP_PARSER',
                                 "lxml")
 ARTICLE_SUMMARY_IMAGE_SIZE = getattr(settings,
-                                    'NEWSROOM_ARTICLE_TEASER_IMAGE_SIZE',
-                                    "big")
+                                     'NEWSROOM_ARTICLE_TEASER_IMAGE_SIZE',
+                                     "big")
 ARTICLE_PRIMARY_IMAGE_SIZE = getattr(settings,
-                                    'NEWSROOM_ARTICLE_TEASER_IMAGE_SIZE',
-                                    "large")
-CACHE_PERIOD = getattr(settings,'NEWSROOM_CACHE_PERIOD', 500)
+                                     'NEWSROOM_ARTICLE_TEASER_IMAGE_SIZE',
+                                     "large")
+CACHE_PERIOD = getattr(settings, 'NEWSROOM_CACHE_PERIOD', 500)
+ADVERT_CODE = getattr(settings, 'NEWSROOM_ADVERT_CODE', '')

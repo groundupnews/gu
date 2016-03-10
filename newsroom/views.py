@@ -314,6 +314,19 @@ def article_detail(request, slug):
                 if query_edit.lower() == "no" or \
                    query_edit.lower() == "false":
                     can_edit = False
+
+            if not request.user.is_authenticated():
+                article_body = article.body.replace(
+                    '<div class="article-advert-edit">',
+                    '<div class="article-advert">' + settings.ADVERT_CODE)
+            else:
+                if can_edit:
+                    article_body = article.body
+                else:
+                    article_body = article.body.replace(
+                        '<div class="article-advert-edit">',
+                        '<div class="article-advert" style="display:none;">')
+
             return render(request, article.template,
                           {'article': article,
                            'display_region': display_region,
@@ -321,6 +334,7 @@ def article_detail(request, slug):
                            'read_next': read_next,
                            'blocks': get_blocks(),
                            'can_edit': can_edit,
+                           'article_body': article_body,
                            'most_popular_html':
                            models.MostPopular.get_most_popular_html,
                            'form': form})
