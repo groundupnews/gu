@@ -637,7 +637,7 @@ a.admin-menu-item {
 
 @media (min-width: 600px) {
     .article-advert {
-	margin-left: -100px;
+	/* margin-left: -100px; */
     }
 }
 
