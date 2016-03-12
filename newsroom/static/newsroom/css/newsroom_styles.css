@@ -644,6 +644,12 @@ a.admin-menu-item {
 .article-advert {
 }
 
+.article-advert:before {
+   content: "Advertisement";
+   font-weight: lighter;
+   font-size: 10px;
+}
+
 .article-advert h2 {
     font-size: 10px;
     font-weight: lighter;
