@@ -139,10 +139,8 @@
 			    </figure>
 			{% endif %}
 
-			<div
-			    {% if can_edit %}
-			    id="article_body"
-			    contenteditable="true"
+			<div id="article_body"
+			    {% if can_edit %} contenteditable="true"
 			    {% endif %}>
 			    {{article_body|safe}}
 			</div>
@@ -278,6 +276,23 @@
 
     {{block.super}}
 
+    <script type="text/javascript">
+     function getPureArticle()
+     {
+	 var pure_article = "<h1>" + $("#article_title").text() + "</h1>";
+	 if ($("#article_subtitle").length)
+	     pure_article += "<h2>" + $("#article_subtitle").text() + "</h2>";
+	 if ($(".article-byline").length) {
+	     pure_article += "<p>" + $(".article-byline").text() + "</p>";
+	 }
+	 if ($(".article-dateline").length)
+	     pure_article += "<p>" + $(".article-dateline").text() + "</p>";
+	 if ($("#article-primary-image").length)
+	     pure_article += $("#article-primary-image").html();
+	 pure_article += $("#article_body").html();
+	 return pure_article;
+     }
+    </script>
     <!-- Sharing buttons -->
     <script type="text/javascript">
      jQuery(document).ready(function ($) {
@@ -317,9 +332,10 @@
 
 	 $('#print-article').click(function(){
 	     $("aside").remove();
-	     $(".article-category").remove();
-	     var print_contents = document.getElementsByTagName(
-		 "article")[0].innerHTML;
+	     var print_contents = getPureArticle();
+	     print_contents = "<style>body { margin: 50px; }" +
+			      "img { max-width:90%; }</style>" +
+			      print_contents;
              return_button = "<p><a href='{{request.build_asolute_uri}}'>Back</a></p>";
              document.body.innerHTML = print_contents;
 
