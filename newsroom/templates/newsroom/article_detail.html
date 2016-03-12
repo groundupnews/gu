@@ -317,10 +317,12 @@
 
 	 $('#print-article').click(function(){
 	     $("aside").remove();
+	     $(".article-category").remove();
 	     var print_contents = document.getElementsByTagName(
 		 "article")[0].innerHTML;
-             return_button = "<p><a href='{{request.build_absolute_uri}}'>Back</a></p>";
+             return_button = "<p><a href='{{request.build_asolute_uri}}'>Back</a></p>";
              document.body.innerHTML = print_contents;
+
 	     window.print();
              document.body.innerHTML = return_button + print_contents;
 	 });
