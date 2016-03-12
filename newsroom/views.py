@@ -317,15 +317,15 @@ def article_detail(request, slug):
 
             if not request.user.is_authenticated():
                 article_body = article.body.replace(
-                    '<div class="article-advert-edit">',
-                    '<div class="article-advert">' + settings.ADVERT_CODE)
+                    '<aside class="article-advert-edit">',
+                    '<aside class="article-advert">' + settings.ADVERT_CODE)
             else:
                 if can_edit:
                     article_body = article.body
                 else:
                     article_body = article.body.replace(
-                        '<div class="article-advert-edit">',
-                        '<div class="article-advert" style="display:none;">')
+                        '<aside class="article-advert-edit">',
+                        '<aside class="article-advert" style="display:none;">')
 
             return render(request, article.template,
                           {'article': article,
