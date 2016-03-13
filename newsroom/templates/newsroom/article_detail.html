@@ -76,7 +76,11 @@
 		</div>
 
 		<div class="row">
-		    <div class="col-xs-12 col-md-4 col-md-push-8">
+		    <div class="col-xs-12 col-md-4
+				{% if  article.cached_primary_image %}
+				col-md-push-8
+				{% endif %}
+				">
 			<p class="article-byline">
 			    {{ article.cached_byline|safe }}
 			</p>
