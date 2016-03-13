@@ -138,7 +138,10 @@
 
 			    </figure>
 			{% endif %}
-
+		    </div>
+		</div>
+		<div class="row">
+		    <div class="col-xs-12 col-md-8">
 			<div id="article_body"
 			    {% if can_edit %} contenteditable="true"
 			    {% endif %}>
@@ -157,31 +160,34 @@
 				</form>
 			    </div>
 			{% endif %}
-
+			<div id="sharing">
+			    <p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+			</div>
+			{% with topics_all=article.topics.all %}
+			    {% if topics_all|length  %}
+				<div id="article-topics">
+				    <p class="article-topics">
+					<span id="article-topics-name">Topics:</span>
+					{% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
+														     href="{% url 'topic.detail' topic.slug %}"
+														 >{{ topic.name }}</a>{% endfor %}
+				    </p>
+				</div>
+			    {% endif %}
+			{% endwith %}
 		    </div>
+		    <div class="col-xs-12 col-md-4">
+			{% if not article.suppress_ads %}
+			    <aside class="article-side-advert">
+				{% include "newsroom/advert.html" %}
+			    </aside>
+			{% endif %}
+		    </div>
+		    </aside>
 		</div>
 
 	    </article>
 
-	    <div class="row">
-		<div class="col-xs-12 col-md-8">
-		    <div id="sharing">
-			<p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
-		    </div>
-		    {% with topics_all=article.topics.all %}
-			{% if topics_all|length  %}
-			    <div id="article-topics">
-				<p class="article-topics">
-				    <span id="article-topics-name">Topics:</span>
-				    {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
-														 href="{% url 'topic.detail' topic.slug %}"
-													     >{{ topic.name }}</a>{% endfor %}
-				</p>
-			    </div>
-			{% endif %}
-		    {% endwith %}
-		</div>
-	    </div>
 	    <div  class="row">
 		{% if see_also %}
 		    <div id="see-also" class="col-xs-12">

@@ -635,25 +635,21 @@ a.admin-menu-item {
     text-align: center;
 }
 
-@media (min-width: 600px) {
-    .article-advert {
-	/* margin-left: -100px; */
-    }
-}
-
-.article-advert {
-}
-
 .article-advert:before {
-   content: "Advertisement";
-   font-weight: lighter;
-   font-size: 10px;
+   content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
+}
+.article-side-advert:before {
+   content: "ADVERTISEMENT";
 }
 
-.article-advert h2 {
-    font-size: 10px;
-    font-weight: lighter;
-    text-align: center;
+.article-advert:before, .article-side-advert:before {
+   font-weight: lighter;
+   font-size: 9px;
+}
+
+.article-side-advert {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .article-advert-edit {
