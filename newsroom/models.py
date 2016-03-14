@@ -147,7 +147,8 @@ class ArticleQuerySet(models.QuerySet):
 class Article(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200, blank=True)
-    summary_image = FileBrowseField("Image", max_length=200, directory="images/",
+    summary_image = FileBrowseField("Image", max_length=200,
+                                    directory="images/",
                                     blank=True, null=True)
     summary_image_size = models.CharField(
         default=settings.ARTICLE_SUMMARY_IMAGE_SIZE,
@@ -188,7 +189,9 @@ class Article(models.Model):
         blank=True,
         help_text="Description of image for assistive technology.")
     external_primary_image = models.URLField(blank=True, max_length=500,
-                                             help_text="If the primary image has a value, it overrides this.")
+                                             help_text="If the primary "
+                                             "image has a value, "
+                                             "it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
     body = models.TextField(blank=True)
     use_editor = models.BooleanField(default=True)
@@ -218,6 +221,7 @@ class Article(models.Model):
                                        help_text="Only suppresses ads "
                                        "that are external to article. "
                                        "You can still create ads in article.")
+    promote_article = models.BooleanField(default=False)
     # Neccessary for importing old Drupal articles
     disqus_id = models.CharField(blank=True, max_length=20)
 

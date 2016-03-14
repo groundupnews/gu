@@ -19,7 +19,7 @@ header {
     width: 100%;
     text-align: center;
     background: #ccc;
-    display:block;
+    display: block;
     margin-bottom: 55px;
 }
 
@@ -617,6 +617,19 @@ a.admin-menu-item {
 
 .editing-user {
     background-color: pink;
+}
+
+/* Promote */
+
+.support-article {
+    width:100%;
+}
+
+.support-article p {
+    font-size: 11px;
+    padding: 0;
+    margin: 0;
+    line-height:130%;
 }
 
 /* Advert */

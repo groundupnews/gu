@@ -181,6 +181,11 @@
 			{% endwith %}
 		    </div>
 		    <div class="col-xs-12 col-md-4">
+			{% if article.promote_article %}
+			    <aside class="support-article">
+				{% include "newsroom/support_article.html" %}
+			    </aside>
+			{% endif %}
 			{% if not article.suppress_ads %}
 			    <aside class="article-side-advert">
 				{% include "newsroom/advert.html" %}
