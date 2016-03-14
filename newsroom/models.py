@@ -214,7 +214,7 @@ class Article(models.Model):
     include_in_rss = models.BooleanField(default=True)
     comments_on = models.BooleanField(default=True)
     exclude_from_list_views = models.BooleanField(default=False)
-    suppress_ads = models.BooleanField(default=True,
+    suppress_ads = models.BooleanField(default=False,
                                        help_text="Only suppresses ads "
                                        "that are external to article. "
                                        "You can still create ads in article.")
