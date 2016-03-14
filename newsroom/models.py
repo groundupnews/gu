@@ -221,7 +221,7 @@ class Article(models.Model):
                                        help_text="Only suppresses ads "
                                        "that are external to article. "
                                        "You can still create ads in article.")
-    promote_article = models.BooleanField(default=False)
+    promote_article = models.BooleanField(default=True)
     # Neccessary for importing old Drupal articles
     disqus_id = models.CharField(blank=True, max_length=20)
 
