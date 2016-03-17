@@ -653,7 +653,7 @@ a.admin-menu-item {
    content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
 }
 .article-side-advert:before {
-   content: "ADVERTISEMENT";
+   content: "ADVERTISEMENTS";
 }
 
 .article-advert:before, .article-side-advert:before {
