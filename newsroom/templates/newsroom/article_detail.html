@@ -188,6 +188,7 @@
 			{% endif %}
 			{% if not article.suppress_ads %}
 			    <aside class="article-side-advert">
+				{% include "newsroom/advert_article_side.html" %}
 				{% include "newsroom/advert.html" %}
 			    </aside>
 			{% endif %}
