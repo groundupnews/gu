@@ -13,12 +13,13 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'styles', groups: [ 'styles' ] },
 	{ name: 'colors', groups: [ 'colors' ] },
 	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-	{ name: 'about', groups: [ 'about' ] }
+	{ name: 'about', groups: [ 'about' ] },
+	{ name: 'tools', groups: [ 'tools' ] }
     ];
 
     config.extraPlugins = 'find,sourcedialog,saveedits';
 
-    config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,Undo,Redo,Anchor,HorizontalRule,SpecialChar,Table,Maximize,Strike,Outdent,Indent,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
+    config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,Undo,Redo,Anchor,HorizontalRule,Table,Maximize,Strike,Outdent,Indent,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';
