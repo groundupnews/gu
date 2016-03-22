@@ -18,7 +18,6 @@ class HtmlCleanUp(TestCase):
                          "<p>Hello</p><p class='test'> Good bye </p>")
 
         html = bs('<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>', "html.parser")
-        print("BS: ", str(bs))
         self.assertEqual(str(utils.replaceImgHeightWidthWithClass(html)),
                          '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>', "html.parser")
 
@@ -89,6 +88,15 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 404)
         response = client.get('/content/test-article-1/')
         self.assertEqual(response.status_code, 302)
+        response = client.get('/category/News/')
+        self.assertEqual(response.status_code, 200)
+        response = client.get('/category/news/')
+        self.assertEqual(response.status_code, 200)
+        response = client.get('/category/Opinion/')
+        self.assertEqual(response.status_code, 200)
+        response = client.get('/category/opinion/')
+        self.assertEqual(response.status_code, 200)
+
 
     def test_duplicate_save(self):
         a = Article()
@@ -121,3 +129,23 @@ class ArticleTest(TestCase):
         num_published_now = Article.objects.published().count()
         self.assertEqual(num_published + 1, num_published_now)
         self.assertEqual(a.is_published(), False)
+
+    def test_serialize(self):
+        num_published = Article.objects.published().count()
+        self.assertTrue(num_published > 0)
+        from django.core import serializers
+        data = serializers.serialize("xml", Article.objects.published())
+        objs = serializers.deserialize("xml", data)
+        self.assertTrue(len(list(objs)) == num_published)
+
+    def test_facebook(self):
+        article = Article.objects.published()[0]
+        self.assertEqual(article.facebook_send_status, "paused")
+        article.facebook_send_status = "scheduled"
+        article.save()
+        from .management.commands import posttofacebook
+        results = posttofacebook.process(1, 1)
+        self.assertEqual(results["successes"], 1)
+        self.assertEqual(results["failures"], 0)
+        article = Article.objects.published()[0]
+        self.assertEqual(article.facebook_send_status, "sent")

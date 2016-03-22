@@ -128,7 +128,11 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ('copyright', 'include_in_rss', 'comments_on',
                        'stickiness', 'exclude_from_list_views',
                        'recommended', 'byline', 'use_editor',
-                       'template', 'disqus_id',
+                       'template',
+                       'additional_head_scripts',
+                       'additional_body_scripts',
+                       'activate_slideshow',
+                       'disqus_id',
                        ('suppress_ads', 'promote_article', ),
                        ('user', 'modified', 'version'),)
         }),

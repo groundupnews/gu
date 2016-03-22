@@ -1,0 +1,145 @@
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+	<h1 id="article_title"
+	    {% if can_edit %}
+	    contenteditable="true"
+	    {% endif %} >{{ article.title|safe}}
+	</h1>
+	{% if article.subtitle %}
+	    <h2 id="article_subtitle"
+	    	{% if can_edit %}
+		contenteditable="true"
+		{% endif %} >{{ article.subtitle|safe }}
+	    </h2>
+	{% else %}
+	    {% comment %}Subtitle must always be visible for editors
+	    {% endcomment %}
+	    {% if can_edit %}
+		<h2 id="article_subtitle"
+		    contenteditable="true">{{ article.subtitle|safe }}</h2>
+	    {% endif %}
+	{% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-4
+		{% if  article.cached_primary_image %}
+		col-md-push-8
+		{% endif %}
+		">
+	<p class="article-byline">
+	    {{ article.cached_byline|safe }}
+	</p>
+	<div class="row">
+	    <div class="col-xs-6 col-md-12">
+		<p class="article-dateline">
+		    <time
+			datetime='{{ article.published|date:"Y-m-d" }}'>
+			{{ article.published|date:"j F Y"}}
+		    </time>
+		</p>
+	    </div>
+	    <div class="col-xs-6 col-md-12">
+		<p class="article-category">
+		    <a href="{%  url 'category.detail' article.category.name %}">{{article.category|upper}}</a>
+
+		    {% if display_region %}
+			|
+			<a href="{% url 'region.detail' article.region.name %}"
+			>{{display_region|upper}}</a>&nbsp;
+		    {% endif %}
+		</p>
+	    </div>
+	</div>
+    </div>
+
+    <div class="col-xs-12 col-md-8 col-md-pull-4">
+	{% if article.cached_primary_image %}
+	    <figure id="article-primary-image">
+		{% if article.primary_image %}
+		    <a href="{{MEDIA_URL}}{{article.primary_image}}">
+			<img src="{{article.cached_primary_image}}"
+			     alt="{{article.primary_image_alt|addslashes}}" />
+		    </a>
+		{% else %}
+		    <img src="{{article.cached_primary_image}}"
+			 alt="{{article.primary_image_alt|addslashes}}"
+		    />
+		{% endif %}
+
+		{% if article.primary_image_caption %}
+		    <figcaption id="article_primary_image_caption"
+				{% if can_edit %}
+				contenteditable="true"
+				{% endif %} >
+			{{article.primary_image_caption|safe}}
+		    </figcaption>
+		{% else %}
+		    {% comment %}Editors must have empty caption to edit
+		    {% endcomment %}
+		    {% if can_edit %}
+			<figcaption id="article_primary_image_caption"
+				    contenteditable="true">
+			    {{article.primary_image_caption|safe}}
+			</figcaption>
+		    {% endif %}
+		{% endif %}
+
+
+	    </figure>
+	{% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+	<div id="article_body"
+	     {% if can_edit %} contenteditable="true"
+	     {% endif %}>
+	    {{article_body|safe}}
+	</div>
+
+	{% if can_edit %}
+	    <div style="display:none;">
+		<form action="{% url 'article.detail' article.slug %}"
+		      method="post">{% csrf_token %}
+		    {{form.as_p}}
+		    <input id="input-is-published"
+			   value="{{article.is_published}}"
+			   name="is_published">
+		    <input id="saveedits" type="submit" value="Save">
+		</form>
+	    </div>
+	{% endif %}
+	<div id="sharing">
+	    <p><b>Share:</b>&nbsp; &nbsp;{% include 'newsroom/sharebuttons.html' %}</p>
+	</div>
+	{% with topics_all=article.topics.all %}
+	    {% if topics_all|length  %}
+		<div id="article-topics">
+		    <p class="article-topics">
+			<span id="article-topics-name">Topics:</span>
+			{% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
+												     href="{% url 'topic.detail' topic.slug %}"
+												 >{{ topic.name }}</a>{% endfor %}
+		    </p>
+		</div>
+	    {% endif %}
+	{% endwith %}
+    </div>
+    <div class="col-xs-12 col-md-4">
+	{% if article.promote_article %}
+	    <aside class="support-article">
+		{% include "newsroom/support_article.html" %}
+	    </aside>
+	{% endif %}
+	{% if not article.suppress_ads %}
+	    <aside class="article-side-advert">
+		{% include "newsroom/advert_article_side.html" %}
+		{% include "newsroom/advert.html" %}
+	    </aside>
+	{% endif %}
+    </div>
+	    </aside>
+</div>

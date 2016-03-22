@@ -222,6 +222,12 @@ class Article(models.Model):
                                        "that are external to article. "
                                        "You can still create ads in article.")
     promote_article = models.BooleanField(default=True)
+    activate_slideshow = models.BooleanField(default=False)
+    additional_head_scripts = models.TextField(blank=True)
+    additional_body_scripts = \
+        models.TextField(blank=True,
+                         help_text="Include things like additional javascript "
+                         "that should come at bottom of article")
     # Neccessary for importing old Drupal articles
     disqus_id = models.CharField(blank=True, max_length=20)
 
