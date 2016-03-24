@@ -222,6 +222,7 @@ class Article(models.Model):
                                        "that are external to article. "
                                        "You can still create ads in article.")
     promote_article = models.BooleanField(default=True)
+    encourage_republish = models.BooleanField(default=True)
     activate_slideshow = models.BooleanField(default=False)
     additional_head_scripts = models.TextField(blank=True)
     additional_body_scripts = \

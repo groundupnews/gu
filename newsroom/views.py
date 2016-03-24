@@ -341,6 +341,20 @@ def article_detail(request, slug):
         else:
             raise Http404
 
+
+def copy_article(request, slug):
+    article = get_object_or_404(models.Article, slug=slug)
+    if (article.is_published() or request.user.is_staff) and \
+       article.encourage_republish:
+        if request.user.is_staff and not article.is_published():
+            messages.add_message(request, messages.INFO,
+                                 "This article is not published.")
+        return render(request, "newsroom/copy_article.html",
+                      {'article': article})
+    else:
+        raise Http404
+
+
 ####################################################
 
 ''' Redirect images on old Drupal site

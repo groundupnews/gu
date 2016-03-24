@@ -180,6 +180,9 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.article_detail), name='article.detail'),
 
+    url(r'^copy_article/(?P<slug>[-\w]+)/$',
+        views.copy_article, name='article.copy'),
+
     url(r'^article_concurrent$',
         views.check_concurrent_edit, name='article.concurrent_check'),
 

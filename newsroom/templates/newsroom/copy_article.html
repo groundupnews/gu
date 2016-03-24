@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load fb_versions %}
+
+{% block title %}
+    Republish: {{article.title|safe}}
+{% endblock %}
+
+{% block additional_head %}
+
+    {{block.super}}
+
+    <style type="text/css">
+     figure, img {max-width: 100%;}
+     textarea {width: 100%;}
+     .CodeMirror {
+	 border-top: 1px solid black;
+	 border-bottom: 1px solid black;
+	 padding-top: 20px;
+	 padding-bottom: 20px;
+     }
+     .CodeMirror pre > * { text-indent: 0px; }
+    </style>
+    <link rel="stylesheet" href="{% static 'newsroom/css/codemirror.css' %}" />
+    <script src="{% static 'newsroom/js/codemirror.js' %}"></script>
+    <script src="{% static 'newsroom/js/xml.js' %}"></script>
+    <script src="{% static 'newsroom/js/clipboard.min.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <h1 style="text-align:center;">Republish Article</h1>
+    <hr />
+    <div class="container">
+	<div class="row">
+	    <div class="col-md-6" >
+		<h2>HTML
+		    <button type="button" class="btn btn-primary"
+			data-clipboard-target="#article-html">
+			Copy to clipboard
+		    </button>
+		</h2>
+		<div id="article-html">
+
+		</div>
+		<h3>Terms</h3>
+		{{article.copyright|safe}}
+	    </div>
+
+	    <div class="col-md-6" >
+		<h2>How the HTML renders
+		    <button type="button" class="btn btn-primary"
+			    data-clipboard-target="#article-rendered">
+			Copy to clipboard
+		    </button>
+		</h2>
+		<div id="article-rendered">
+		    <h1>{{article.title}}</h1>
+		    <h2>{{article.subtitle|safe}}</h2>
+		    <p>{{article.cached_byline_no_links|safe}}</p>
+		    <p>{{article.published|date:"j F Y"}}</p>
+		    <figure>
+			<img src="{{article.cached_primary_image}}"
+			     alt="{{article.primary_image_alt|addslashes}}" />
+			<figcaption>{{article.primary_image_caption}}</figcaption>
+		    </figure>
+		    {{article.body|safe}}
+		    <hr />
+		    Published originally on
+		    <a href="{% url 'article.detail' article.slug %}">
+			GroundUp
+		    </a>.
+		    <hr />
+		    {{article.copyright|safe}}
+		</div>
+	    </div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block javascript-includes %}
+    {{block.super}}
+    <script type="text/javascript">
+     $("aside").remove();
+     $("img[src^='/']").each(function(){
+	 var cur_src = $(this).attr("src");
+	 if( cur_src.indexOf( "http" ) !== -1 ) {
+             $(this).attr("src", cur_src);
+	 } else {
+             $(this).attr("src", "http://" + "{{request.get_host}}"
+				+ cur_src);
+	 }
+     });
+     $("a[href^='/']").each(function(){
+	 var cur_href = $(this).attr("href");
+	 if( cur_href.indexOf( "http" ) !== -1 ) {
+             $(this).attr("href", cur_href);
+	 } else {
+             $(this).attr("href", "http://" + "{{request.get_host}}"
+				+ cur_href);
+	 }
+     });
+     var article_html = document.getElementById('article-html');
+     var article_content = document.getElementById('article-rendered');
+     // article_html.value = article_content.innerHTML.trim();
+     var editor = CodeMirror(article_html, {
+         lineNumbers: true,
+         lineWrapping: true,
+         mode: "text/html",
+	 value: article_content.innerHTML.trim(),
+	 autofocus: true
+     });
+     var first_focus = true;
+     editor.on("focus", function(cm) {
+	 if (first_focus) {
+	     first_focus = false;
+	     cm.execCommand("selectAll");
+	     cm.execCommand("indentAuto");
+	     cm.execCommand("goDocStart");
+	 }
+     });
+     new Clipboard('.btn');
+    </script>
+{% endblock %}

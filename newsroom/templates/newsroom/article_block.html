@@ -53,6 +53,20 @@
 		</p>
 	    </div>
 	</div>
+	{% if article.encourage_republish %}
+	    <div class="row">
+		<div class="col-md-12">
+		    <div id="republish">
+			<a id="republish-article" target="_blank"
+			   href="{% url 'article.copy' article.slug %}">
+			    <button type="button" class="btn btn-primary">
+				Republish this article
+			    </button>
+			</a>
+		    </div>
+		</div>
+	    </div>
+	{% endif %}
     </div>
 
     <div class="col-xs-12 col-md-8 col-md-pull-4">

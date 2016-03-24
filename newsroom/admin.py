@@ -133,7 +133,8 @@ class ArticleAdmin(admin.ModelAdmin):
                        'additional_body_scripts',
                        'activate_slideshow',
                        'disqus_id',
-                       ('suppress_ads', 'promote_article', ),
+                       ('suppress_ads', 'promote_article',
+                        'encourage_republish', ),
                        ('user', 'modified', 'version'),)
         }),
         ('Facebook', {
