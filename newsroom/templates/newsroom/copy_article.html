@@ -7,10 +7,13 @@
     Republish: {{article.title|safe}}
 {% endblock %}
 
+{% block seo_fields %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
 {% block additional_head %}
 
     {{block.super}}
-
     <style type="text/css">
      figure, img {max-width: 100%;}
      textarea {width: 100%;}
@@ -109,7 +112,8 @@
          lineWrapping: true,
          mode: "text/html",
 	 value: article_content.innerHTML.trim(),
-	 autofocus: true
+	 autofocus: true,
+	 readOnly: true
      });
      var first_focus = true;
      editor.on("focus", function(cm) {
