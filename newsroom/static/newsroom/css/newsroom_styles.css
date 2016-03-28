@@ -642,6 +642,7 @@ a.admin-menu-item {
 .article-advert {
 }
 
+
 .frontpage-advert {
     max-width: 100%;
     align: center;
@@ -660,10 +661,17 @@ a.admin-menu-item {
    content: "ADVERTISEMENT";
 }
 
+@media (min-width: 992px) {
+    .article-side-advert:before {
+	margin-left: 15px;
+    }
+}
+
 .article-advert:before, .article-side-advert:before {
    font-weight: lighter;
-   font-size: 9px;
+   font-size: 12px;
 }
+
 
 .article-side-advert {
     margin-top: 15px;
