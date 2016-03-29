@@ -118,6 +118,10 @@ class AuthorDetail(ArticleList):
         return context
 
 
+class CategoryList(generic.ListView):
+    model = models.Category
+
+
 class CategoryDetail(ArticleList):
 
     def get_queryset(self):
@@ -130,6 +134,10 @@ class CategoryDetail(ArticleList):
         context = super(CategoryDetail, self).get_context_data(**kwargs)
         context['heading'] = self.category.name
         return context
+
+
+class RegionList(generic.ListView):
+    model = models.Region
 
 
 class RegionDetail(ArticleList):
@@ -154,6 +162,10 @@ class RegionDetail(ArticleList):
                    for region in regions]
         context['heading'] = "|".join(regions)
         return context
+
+
+class TopicList(generic.ListView):
+    model = models.Topic
 
 
 class TopicDetail(ArticleList):

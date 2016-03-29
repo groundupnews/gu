@@ -17,13 +17,22 @@ urlpatterns = [
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.OpinionAnalysisList.as_view()), name='article.opinion_analysis'),
 
+    url(r'^category/$', views.CategoryList.as_view(),
+        name="category.list"),
+
     url(r'^category/([-\s\w]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.CategoryDetail.as_view()), name='category.detail'),
 
+    url(r'^region/$', views.RegionList.as_view(),
+        name="region.list"),
+
     url(r'^region/(.*)$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.RegionDetail.as_view()), name='region.detail'),
+
+    url(r'^topic/$', views.TopicList.as_view(),
+        name="topic.list"),
 
     url(r'^topic/([-\s\w]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
@@ -186,7 +195,8 @@ urlpatterns = [
     url(r'^article_concurrent$',
         views.check_concurrent_edit, name='article.concurrent_check'),
 
-    url(r'^author/$', views.AuthorList.as_view()),
+    url(r'^author/$', views.AuthorList.as_view(),
+        name="author.list"),
 
     url(r'^author/([0-9]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
