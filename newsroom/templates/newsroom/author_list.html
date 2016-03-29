@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-md-push-3">
+		<h1>Writers</h1>
+		<ul>
+		    {% for author in object_list %}
+			<li>
+			    <a href="{% url 'author.detail' author.pk %}">
+				{{ author }}
+			    </a>
+			</li>
+		    {% endfor %}
+		</ul>
+	    </div>
+	</div>
+    </div>
+{% endblock %}

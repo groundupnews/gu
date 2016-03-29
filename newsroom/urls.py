@@ -186,6 +186,8 @@ urlpatterns = [
     url(r'^article_concurrent$',
         views.check_concurrent_edit, name='article.concurrent_check'),
 
+    url(r'^author/$', views.AuthorList.as_view()),
+
     url(r'^author/([0-9]+)/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.AuthorDetail.as_view()), name='author.detail'),
@@ -194,7 +196,8 @@ urlpatterns = [
         views.RedirectOldImages.as_view(), name='old_image.redirect'),
 
     url(r'^features/(?P<path>.*)$',
-        views.RedirectHandConstructedFeatures.as_view(), name='features.redirect'),
+        views.RedirectHandConstructedFeatures.as_view(),
+        name='features.redirect'),
 
     ####################################
     # Redirect /content/ to /article
