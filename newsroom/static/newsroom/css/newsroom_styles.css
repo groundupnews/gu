@@ -55,6 +55,11 @@ div.summary-image-container {
     overflow: hidden;
 }
 
+p.intro {
+    font-weight: bold;
+    font-size: 18px;
+}
+
 @media (min-width: 600px) {
    #whatsapp-share, .whatsapp-share {
 	display: none;
@@ -89,8 +94,9 @@ div.summary-image-container {
     div.article-summary.with-no-image h2.summary-title {
 	font-size: 20px;
     }
-    .summary-text {
+    .summary-text, .thumbnail p.intro {
 	display: block;
+	font-weight: normal;
 	font-size: 16px;
     }
     div.article-summary.with-no-image p.summary-text {
@@ -113,7 +119,7 @@ div.summary-image-container {
 }
 
 @media (max-width: 767px) {
-    .summary-text {
+    .summary-text, .thumbnail p.intro {
 	display: none;
     }
     #see-also img {
@@ -461,10 +467,6 @@ div#article-share-bottom {
 span#article-topics-name { font-weight: bold; }
 
 
-p.intro {
-    font-weight: bold;
-    font-size: 18px;
-}
 
 blockquote {
     font-size: 16px;
