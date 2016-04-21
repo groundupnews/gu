@@ -675,7 +675,7 @@ iframe {
    content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
 }
 .article-side-advert:before {
-   content: "ADVERTISEMENT";
+   content: "ADVERTISEMENTS";
 }
 
 @media (min-width: 992px) {
