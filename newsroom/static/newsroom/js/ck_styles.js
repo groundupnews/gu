@@ -8,7 +8,7 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
       attributes: { 'class': 'caption' } },
     { name: 'Introduction', element: 'p',
       attributes: { 'class': 'intro' } },
-    { name: 'Subheading', element: 'h3',
+    { name: 'Subheading', element: 'h2',
       attributes: { 'class': 'subheading' } },
     { name: 'Author description', element: 'p',
       attributes: { 'class': 'author-description' } },

@@ -62,54 +62,9 @@
 		{% endblock %}
 	    </article>
 	    <div id="DearReader" class="dearreader"></div>
-	    <div  class="row">
-		{% if see_also %}
-		    <div id="see-also" class="col-xs-12">
-			<h2>Related articles</h2>
-			<div class="row">
-			    <div class="col-xs-12 col-md-12">
-				<ul>
-				    {% for item in see_also %}
-					<li><a href="{{item.get_absolute_url}}
-						     ">{{item.title|safe}}</a>
-					</li>
-				    {% endfor %}
-				</ul>
-			    </div>
-			</div>
-		    </div>
-		{% endif %}
 
-		{% if read_next %}
-		    <div id="read-next" class="col-xs-12">
-			<h2>We recommend</h2>
-			<div class="row">
-			    <div class="col-xs-12 col-md-6">
-				{% include 'newsroom/read_next.html' %}
-			    </div>
-			</div>
-		    </div>
-		{% endif %}
-
-		{% if most_popular_html %}
-		    <div id="most-popular" class="col-xs-12">
-			<h2>Most popular</h2>
-			<div class="row">
-			    <div class="col-xs-12 col-md-6">
-				{{most_popular_html|safe}}
-			    </div>
-			</div>
-		    </div>
-		{% endif %}
-	    </div>
 	    <div class="row">
 
-		<div class="col-xs-12" id="newsletter-signup">
-		    <a href="http://eepurl.com/Or2a9"
-		       class="btn btn-info"
-		       role="button">Get GroundUp's
-			weekly newsletter</a>
-		</div>
 
 		{% if article.copyright %}
 		    <div class="col-xs-12" id="article-copyright">
