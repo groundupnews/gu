@@ -74,13 +74,14 @@ div.summary-image-container {
     max-width: 100%;
 }
 
-#sidebar-block {
-    border-top: 1px solid #CCC;
-}
 
 .sidebar-block p {
     font-size: 16px;
     line-height: 125%;
+}
+
+#sidebar-links a {
+    width: 100% !important;
 }
 
 p.intro {
@@ -657,28 +658,30 @@ iframe {
 .article-advert:before {
    content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
 }
-.article-side-advert:before {
+.side-advert:before {
    content: "ADVERTISEMENTS";
 }
 
 @media (min-width: 992px) {
-    .article-side-advert:before {
+    .side-advert:before {
 	margin-left: 0px;
     }
 }
 
-.article-advert:before, .article-side-advert:before {
+.article-advert:before, .side-advert:before {
    font-weight: lighter;
    font-size: 12px;
 }
 
 
-.article-side-advert {
+.side-advert {
     margin-top: 0px;
     margin-bottom: 5px;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
 }
 
-.article-side-advert h2 {
+.side-advert h2 {
     margin-top: 0px;
     margin-left: 0;
     padding-left: 0;
