@@ -74,6 +74,10 @@ div.summary-image-container {
     max-width: 100%;
 }
 
+#sidebar-block {
+    border-top: 1px solid #CCC;
+}
+
 .sidebar-block p {
     font-size: 16px;
     line-height: 125%;
