@@ -66,13 +66,17 @@
 	    {% endif %}
 
 	    <div id="article-byline">
-		<p>
+
 		    {{ article.cached_byline|safe }} &nbsp; &nbsp;
+
+	    </div>
+	    <div id="article-dateline">
+
 		    <time
 			datetime='{{ article.published|date:"Y-m-d" }}'>
 			{{ article.published|date:"j F Y"}}
 		    </time>
-		</p>
+
 	    </div>
 
 

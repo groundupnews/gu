@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,700italic,300italic,300|Roboto+Condensed:700,700italic|Roboto+Slab:400,300,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,700italic,300italic,300|Roboto+Condensed:300,300italic,400,700,700italic);
 
 
 /* Imported Fonts
@@ -66,8 +66,12 @@ div.summary-image-container {
 
 #sidebar {
     background-color: #F1F2F2;
-    font-size: 21px;
+    font-size: 18px;
     line-height: 160%;
+}
+
+#sidebar h2 {
+    font-size: 19px;
 }
 
 #sidebar img {
@@ -168,13 +172,14 @@ p.intro {
 }
 
 
-#article-byline
+#article-byline, #article-dateline
 {
     font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 0px;
-    margin-top: 6px;
     line-height: 125%;
+}
+
+#article-byline {
+    margin-bottom: 6px;
 }
 
 p.article-category {
@@ -271,10 +276,19 @@ ul.icons li {
 
 .icons a:hover { background-position: left -34px; }
 
+#article_title {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 38px;
+    margin-top: 10px;
+}
+
 #article_subtitle {
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Roboto Condensed', serif;
     font-weight: lighter;
     font-size: 21px;
+    margin-top: 12px;
+    margin-bottom: 14px;
 }
 
 #article-content {
@@ -351,7 +365,7 @@ article figure.very-large
 
 
 figcaption, p.caption {
-    font-size: 13px;
+    font-size: 16px;
     line-height: 125%;
     margin-top: 0px;
     margin-bottom: 3px;
@@ -377,18 +391,11 @@ figcaption, p.caption {
     color: #909090;
 }
 
-h1 {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: lighter;
-    font-size: 38px;
-    /* line-height: 140%;*/
-
-}
 
 h2, .subheading {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    margin-top: 26px;
+    margin-top: 22px;
 }
 
 h3 {
@@ -489,7 +496,7 @@ span#article-topics-name { font-weight: bold; }
 
 
 blockquote {
-    font-size: 20px;
+    font-size: 21px;
 }
 
 #article-list p.intro {
@@ -509,7 +516,6 @@ p.author-description, p.disclaimer, p.correction {
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 23px;
-    font-style: italic;
     border-top: 1px solid;
     border-bottom: 1px solid;
     line-height: 200%;
@@ -562,6 +568,15 @@ a.admin-menu-item {
 
 @media (max-width: 768px) {
     #article-content {
+	font-size: 18px;
+    }
+    .subheading {
+	font-size: 20px;
+    }
+    .pquote {
+	font-size: 20px;
+    }
+    blockquote {
 	font-size: 18px;
     }
     #content-extra {
