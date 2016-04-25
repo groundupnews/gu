@@ -365,13 +365,16 @@ article figure.very-large
 
 
 figcaption, p.caption {
-    font-size: 16px;
     line-height: 125%;
     margin-top: 0px;
     margin-bottom: 3px;
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 6px;
+}
+
+figure, figcaption, p.caption {
+    font-size: 16px;
 }
 
 #footer {
@@ -443,7 +446,7 @@ img.summary-image {
 
 
 .social-media {
-    margin-bottom: 14px;
+    margin-bottom: 5px;
     margin-top: 0;
     padding-bottom: 5px;
     text-align: center;
@@ -465,6 +468,7 @@ img.summary-image {
     color: #4D4D4D;
     padding: 3px;
 }
+
 
 div.thumbnail {
     border: none;

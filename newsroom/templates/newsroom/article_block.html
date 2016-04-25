@@ -135,12 +135,6 @@
     <div class="col-xs-12 col-md-4">
 	<div id="sidebar">
 	    {% include "newsroom/social_media.html" %}
-	    {% if not article.suppress_ads %}
-		<aside class="side-advert">
-		    {% include "newsroom/advert_article_side.html" %}
-		    {% include "newsroom/advert.html" %}
-		</aside>
-	    {% endif %}
 
 	    {% if see_also %}
 		<div id="see-also">
@@ -173,6 +167,13 @@
 			    {{most_popular_html|safe}}
 		</div>
 	    {% endif %}
+	    {% if not article.suppress_ads %}
+		<aside class="side-advert">
+		    {% include "newsroom/advert_article_side.html" %}
+		    {% include "newsroom/advert.html" %}
+		</aside>
+	    {% endif %}
+
 	</div>
     </div>
 </div>
