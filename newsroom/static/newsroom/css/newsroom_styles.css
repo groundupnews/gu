@@ -377,6 +377,10 @@ figure, figcaption, p.caption {
     font-size: 16px;
 }
 
+p.caption {
+   background-color: #E6E7E8;
+}
+
 #footer {
     background-color: #DDDDDD;
     padding-top: 18px;
