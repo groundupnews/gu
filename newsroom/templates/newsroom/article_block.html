@@ -98,38 +98,34 @@
 		    </form>
 		</div>
 	    {% endif %}
-	    {% if article.promote_article %}
-		<div id="support-article">
-		    {% include "newsroom/support_article.html" %}
+	    <div id="article-meta">
+		<div id="sharing">
+		    <p><span id="article-topics-name">Share:</span>
+			{% include 'newsroom/sharebuttons.html' %}
+			{% if article.encourage_republish %}
+			    <span id="republish">
+				<a id="republish-article" target="_blank"
+				   href="{% url 'article.copy' article.slug %}">
+				    <button type="button">
+					Republish this article
+				    </button>
+				</a>
+			    </span>
+			{% endif %}
+		    </p>
 		</div>
-	    {% endif %}
-	    <div id="sharing">
-		<p><span id="article-topics-name">Share:</span>
-		    {% include 'newsroom/sharebuttons.html' %}
-		    {% if article.encourage_republish %}
-			<span id="republish">
-			    <a id="republish-article" target="_blank"
-			       href="{% url 'article.copy' article.slug %}">
-				<button type="button" class="btn btn-primary">
-				    Republish this article
-				</button>
-			    </a>
-			</span>
+		{% with topics_all=article.topics.all %}
+		    {% if topics_all|length  %}
+			<div id="article-topics">
+			    <p class="article-topics">
+				<span id="article-topics-name">Topics:&nbsp;</span>
+				{% for topic in topics_all %}
+				    {% if not forloop.first %}&nbsp;|&nbsp;{% endif %}
+				    <a href="{% url 'topic.detail' topic.slug %}">{{ topic.name|upper }}</a>{% endfor %}</p>
+			</div>
 		    {% endif %}
-		</p>
+		{% endwith %}
 	    </div>
-	    {% with topics_all=article.topics.all %}
-		{% if topics_all|length  %}
-		    <div id="article-topics">
-			<p class="article-topics">
-			    <span id="article-topics-name">Topics:</span>
-			    {% for topic in topics_all %}{% if not forloop.first %},&nbsp;{% endif %}<a
-													 href="{% url 'topic.detail' topic.slug %}"
-												     >{{ topic.name }}</a>{% endfor %}
-			</p>
-		    </div>
-		{% endif %}
-	    {% endwith %}
 	</div>
     </div>
 
@@ -139,42 +135,6 @@
 		{% else %}
 		col-md-4
 		{% endif %}">
-	<div id="sidebar">
-	    {% include "newsroom/social_media.html" %}
-
-	    {% if see_also %}
-		<div id="see-also">
-		    <h2>Related articles</h2>
-
-		    <ul>
-			{% for item in see_also %}
-			    <li><a href="{{item.get_absolute_url}}
-					 ">{{item.title|safe}}</a>
-			    </li>
-			{% endfor %}
-		    </ul>
-		</div>
-	    {% endif %}
-
-	    {% if read_next %}
-		<div id="read-next">
-		    <h2>We recommend</h2>
-			    {% include 'newsroom/read_next.html' %}
-		</div>
-	    {% endif %}
-
-	    {% if most_popular_html %}
-		<div id="most-popular">
-		    <h2>Most popular</h2>
-			    {{most_popular_html|safe}}
-		</div>
-	    {% endif %}
-	    {% if not article.suppress_ads %}
-		<aside class="side-advert">
-		    {% include "newsroom/advert_article_side.html" %}
-		    {% include "newsroom/advert.html" %}
-		</aside>
-	    {% endif %}
-	</div>
+	{% include 'newsroom/sidebar.html' %}
     </div>
 </div>

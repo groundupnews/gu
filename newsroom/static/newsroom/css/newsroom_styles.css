@@ -64,7 +64,7 @@ div.summary-image-container {
     overflow: hidden;
 }
 
-#sidebar {
+#sidebar, #article-meta, #article-copyright {
     background-color: #F1F2F2;
     font-size: 14px;
     line-height: 160%;
@@ -165,8 +165,8 @@ p.intro {
 
 
 @media (min-width: 768px) {
-    #sidebar {
-	padding: 35px;
+    #sidebar, #article-meta, #article-copyright {
+	padding: 12px 35px 12px 35px;
     }
 }
 
@@ -299,7 +299,6 @@ ul.icons li {
 }
 
 article {
-    border-bottom: 1px solid #e6e6e6;
     margin-bottom: 12px;
 }
 
@@ -424,26 +423,35 @@ img.summary-image {
     width: 100%;
 }
 
-#sharing {
-    margin-bottom: 20px;
+#article-topics, #sharing {
+    background-color: #4D4D4D;
+    color: white;
+    font-size: 12px;
+    line-height: 160%;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 8px;
 }
 
-#sharing img {
-    width: 27px;
-    height: 26px;
-    margin-right: 5px;
-    margin-left: 5px;
-    vertical-align: middle;
+
+#sharing i, #republish-article button {
+    vertical-align:middle;
+    text-align: center;
+    background-color: white;
+    color: #4D4D4D;
+    padding: 4px;
+    margin-right: 3px;
+    margin-left: 3px;
+    height: px;
 }
 
 #sharing i {
-    vertical-align:middle;
-    margin-right: 5px;
-    margin-left: 5px;
-
+    width: 40px;
 }
 
-#sharing a:hover  {
+#sharing a:hover {
     text-decoration: none;
     margin-bottom: 10px;
 }
@@ -459,13 +467,21 @@ img.summary-image {
     width: 100%;
 }
 
-.social-media a {
+.social-media a, #article-topics a {
     font-size: 12x;
     font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
     color: white;
     width: 100%;
+}
+
+.social-media a {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#article-topics a {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .social-media i {
@@ -643,22 +659,15 @@ a.admin-menu-item {
     background-color: pink;
 }
 
-/* Promote */
-
-#support-article {
-    width:100%;
-}
-
 #support-article p {
-    font-size: 20px;
-    font-weight: bold;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    line-height:130%;
-    border-top: 1px solid #E2E2E2;
-    border-bottom: 1px solid #E2E2E2;
+    font-size: 16px;
+    margin-top: 3px;
 }
-
+#support-article p.call {
+    font-weight: bold;
+    margin-top: 22px;
+    margin-bottom: 3px;
+}
 /* Advert */
 
 .article-advert {
