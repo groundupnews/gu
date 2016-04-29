@@ -78,29 +78,7 @@
 	    <div class="row">
 		<div class="col-xs-12 col-md-8">
 		    {% if article.comments_on %}
-
-			<div id="comment-policy">
-			    You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
-			</div>
-
-			<div id="disqus_thread">
-			    <script type="text/javascript">
-			     var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
-			     var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
-			     var disqus_url = '{{ request.build_absolute_uri }}';
-
-			     /* * * DON'T EDIT BELOW THIS LINE * * */
-			     (function() {
-				 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-				 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-				 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-			     })();
-			    </script> <noscript>Please enable JavaScript to view the <a href=
-											"http://disqus.com/?ref_noscript">comments powered by
-				Disqus.</a></noscript> <a class="dsq-brlink" href=
-							  "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
-			</div>
-
+			{% include 'newsroom/article_comments.html' %}
 		    {% endif %}
 		</div>
 	    </div>

@@ -19,5 +19,8 @@ class Letter(models.Model):
                                      verbose_name='publish time')
     position = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         ordering = ['article', 'position', ]

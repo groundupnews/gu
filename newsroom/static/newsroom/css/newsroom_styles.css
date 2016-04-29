@@ -70,6 +70,15 @@ div.summary-image-container {
     line-height: 160%;
 }
 
+.panel-title > a:nth-child(1) {
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+#article-copyright {
+    margin-bottom: 12px;
+}
+
 #sidebar h2 {
     font-size: 19px;
 }
@@ -186,10 +195,17 @@ p.article-category {
      margin-bottom: 16px;
 }
 
-
 .navbar-default .navbar-nav > li > a:hover {
     color: #555;
-    background-color: #E7E7FF
+    background-color: #CCC;
+}
+
+.navbar {
+    background-color: #E6E7E8;
+}
+
+.navbar-default {
+    background-image: none;
 }
 
 

@@ -1,0 +1,35 @@
+<div id="comments">
+    <div class="panel-group">
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+		<h4 class="panel-title">
+		    <a data-toggle="collapse" href="#collapse1">Reader comments</a>
+		</h4>
+	    </div>
+	    <div id="collapse1" class="panel-collapse collapse">
+		<div class="panel-body">
+		    <div id="comment-policy">
+			You are welcome to comment. Please <a href="/code-decency">read our policy</a>.
+		    </div>
+		    <div id="disqus_thread">
+			<script type="text/javascript">
+			 var disqus_shortname = 'groundupnews'; // Required - Replace example with your forum shortname
+			 var disqus_identifier = '{% if article.disqus_id %}{{article.disqus_id}}{%else%}GU2_{{article.pk}}{% endif %}';
+			 var disqus_url = '{{ request.build_absolute_uri }}';
+
+			 /* * * DON'T EDIT BELOW THIS LINE * * */
+			 (function() {
+			     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			 })();
+			</script> <noscript>Please enable JavaScript to view the <a href=
+										    "http://disqus.com/?ref_noscript">comments powered by
+			    Disqus.</a></noscript> <a class="dsq-brlink" href=
+						      "http://disqus.com">Comments powered by <span class="logo-disqus">Disqus</span></a>
+		    </div>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
