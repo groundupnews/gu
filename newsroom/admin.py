@@ -125,7 +125,8 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Advanced', {
             'classes': ('grp-collapse grp-closed',),
-            'fields': ('copyright', 'include_in_rss', 'comments_on',
+            'fields': ('copyright', 'include_in_rss',
+                       ('comments_on', 'collapse_comments', ),
                        'stickiness', 'exclude_from_list_views',
                        'recommended', 'byline', 'use_editor',
                        ('template', 'undistracted_layout', ),
