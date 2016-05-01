@@ -45,19 +45,20 @@ def process():
 
     # Notify editors of new letters
     new_letters = Letter.objects.filter(notified_editors=False)
-    subject = "New letters received on " + Site.objects.all()[0].name
-    message = render_to_string('letters/new_letter.txt',
-                               {'letters': new_letters,
-                                'base_url': base_url})
-    send_mail(
-        subject,
-        message,
-        settings.EDITOR,
-        [settings.EDITOR]
-    )
-    for letter in new_letters:
-        letter.notified_editors = True
-        letter.save()
+    if len(new_letters) > 0:
+        subject = "New letters received on " + Site.objects.all()[0].name
+        message = render_to_string('letters/new_letter.txt',
+                                   {'letters': new_letters,
+                                    'base_url': base_url})
+        send_mail(
+            subject,
+            message,
+            settings.EDITOR,
+            [settings.EDITOR]
+        )
+        for letter in new_letters:
+            letter.notified_editors = True
+            letter.save()
 
     return {'Published': len(published_letters),
             'Rejects': len(rejected_letters),

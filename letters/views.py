@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from . import settings
 from django.core.mail import send_mail
+from django.contrib import messages
 from django.template.loader import render_to_string
 
 from .forms import LetterForm
@@ -31,6 +32,9 @@ def get_letter(request, pk):
             )
             return render(request, 'letters/letter_thanks.html',
                           {'letter': letter})
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 "Please fix the problems below.")
     else:
         form = LetterForm()
     return render(request, 'letters/letter_form.html', {'form': form,
