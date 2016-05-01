@@ -1,0 +1,13 @@
+Dear {{letter.byline}}
+
+You wrote a letter to GroundUp in response to the article:
+{{letter.article.title}}
+
+The title of your letter is:
+{{letter.title}}
+
+After carefully considering your letter, we regret that we have decided not to
+publish it.
+
+Regards
+GroundUp Editors

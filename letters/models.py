@@ -1,26 +1,48 @@
 from django.db import models
+from django.utils import timezone
+from django.core.urlresolvers import reverse
 from newsroom.models import Article
 
 # Create your models here.
+
+
+class LetterQuerySet(models.QuerySet):
+
+    def published(self):
+        return self.filter(published__lte=timezone.now())
 
 
 class Letter(models.Model):
     article = models.ForeignKey(Article)
     byline = models.CharField(max_length=200)
     email = models.EmailField()
-    author_response = models.BooleanField(default=False)
-    author_response_pk = models.PositiveIntegerField(default=0)
     title = models.CharField(max_length=200)
     text = models.TextField(blank=True)
     rejected = models.BooleanField(default=False)
+    notified_letter_writer = models.BooleanField(default=False)
+    notified_editors = models.BooleanField(default=False)
+    css_classes = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
     position = models.PositiveIntegerField(default=0)
 
+    objects = LetterQuerySet.as_manager()
+
+    def is_published(self):
+        return (self.published is not None) and \
+            (self.published <= timezone.now())
+
+    is_published.boolean = True
+    is_published.short_description = 'published'
+
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('article.detail', args=[self.article.slug, ]) + \
+            "#letter-" + str(self.pk)
+
     class Meta:
-        ordering = ['article', 'position', ]
+        ordering = ['article', 'position', 'published', ]

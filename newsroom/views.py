@@ -20,10 +20,11 @@ from random import randint
 
 from . import models
 from . import settings
+from letters.settings import DAYS_AGO
 from . import utils
 from .forms import ArticleListForm, ArticleForm
 
-
+from letters.models import Letter
 from blocks.models import Group
 
 logger = logging.getLogger(__name__)
@@ -52,6 +53,9 @@ class ArticleList(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(ArticleList, self).get_context_data(**kwargs)
         context = get_blocks_in_context(context)
+        date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
+        context['letters'] = Letter.objects.published().\
+            filter(published__gte=date_from).order_by('-published')
         return context
 
 
@@ -351,6 +355,7 @@ def article_detail(request, slug):
                            'blocks': get_blocks(),
                            'can_edit': can_edit,
                            'article_body': article_body,
+                           'letters': article.letter_set.published(),
                            'most_popular_html':
                            models.MostPopular.get_most_popular_html,
                            'form': form})

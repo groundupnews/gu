@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'republisher',
     'clearcache',
     'blocks',
+    'letters',
 )
 
 MIDDLEWARE_CLASSES = (

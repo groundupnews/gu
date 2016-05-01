@@ -1,0 +1,13 @@
+Dear {{letter.byline}}
+
+You wrote a letter to GroundUp in response to the article:
+{{letter.article.title}}
+
+The title of your letter is:
+{{letter.title}}
+
+We are pleased to inform you that it has been published. You can find it here:
+{{base_url}}{{letter.get_absolute_url}}
+
+Regards
+GroundUp Editors

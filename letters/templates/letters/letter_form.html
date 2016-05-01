@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}
+    Letter to the editor in response to {{article}}
+{% endblock %}
+{% block content %}
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-md-8">
+		<div id="letter-form">
+		    <div class="panel-group">
+			<div class="panel panel-default">
+			    <div class="panel-heading">
+				<h4 class="panel-title">
+				    <a data-toggle="collapse"
+				       href="#letter-tips-text">
+					<i class="fa fa-plus"
+					   aria-hidden="true"></i>
+					Tips for getting your letter published
+				    </a>
+				</h4>
+			    </div>
+			    <div id="letter-tips-text"
+				 class="panel-collapse collapse in">
+				<div class="panel-body">
+				    <p>
+					In contrast to comments, letters are
+					only published if approved by our
+					editors. Views expressed in letters are
+					not necessarily endorsed by GroundUp,
+					but they must meet our quality
+					requirements. Letters are given more
+					prominence than comments on the website.
+				    </p>
+				    <ol>
+					<li>Keep it short: 100 to 350 words.</li>
+
+					<li>Provide relevant information or
+					    arguments.
+					</li>
+
+					<li>Be polite and respectful.
+					    No gratuitous insults.
+					</li>
+					<li>Do not rant.
+					    That's what comments are for.
+					</li>
+					<li>
+					    Use your real name(s) unless there
+					    are exceptional circumstances.
+					</li>
+					<li>
+					    Use <a href="http://www.plainenglish.co.uk/free-guides.html">plain English</a>.
+					</li>
+				    </ol>
+				</div>
+			    </div>
+			</div>
+		    </div>
+		    <p id="letter-form-salutation">Dear Editor</p>
+		    <p id="letter-form-article-title">
+			This is a letter in response to <em>{{article.title}}</em>
+		</p>
+		<form action="{% url 'letter_to_editor' article.pk %}"
+		      method="post">
+		    {% csrf_token %}
+		    {{ form.as_p }}
+		    <input type="Submit" value="Send letter" />
+		</form>
+		</div>
+	    </div>
+	</div>
+    </div>
+{% endblock %}

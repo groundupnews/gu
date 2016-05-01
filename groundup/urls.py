@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^', include('newsroom.urls')),
+    url(r'^', include('letters.urls')),
     url(r'^sitemap\.xml$', sitemap,
         {'sitemaps':
          {'articles': GenericSitemap(article_dict,

@@ -175,7 +175,7 @@ p.intro {
 
 @media (min-width: 768px) {
     #sidebar, #article-meta, #article-copyright {
-	padding: 12px 35px 12px 35px;
+	padding: 35px 35px 12px 35px;
     }
 }
 
@@ -307,7 +307,7 @@ ul.icons li {
     margin-bottom: 14px;
 }
 
-#article-content {
+#article-content, #letter-form {
     font-size: 21px;
     line-height: 160%;
     margin-bottom: 25px;
@@ -472,7 +472,6 @@ img.summary-image {
     margin-bottom: 10px;
 }
 
-
 .social-media {
     margin-bottom: 5px;
     margin-top: 0;
@@ -584,11 +583,11 @@ a.admin-menu-item {
     font-weight: bold;
 }
 
-#most-popular {
+#most-popular, #latest-letters {
     margin-bottom: 10px;
 }
 
-#most-popular ol, #see-also ul {
+#most-popular ol, #see-also ul, #latest-letters ul {
     font-weight: bold;
     padding-left: 25px;
 }
@@ -651,6 +650,58 @@ a.admin-menu-item {
     .navbar-header {
         float:none;
     }
+}
+
+/**************************/
+/* Letters */
+
+#letters {
+    background-color: white;
+    padding: 5px;
+    font-size: 16px;
+}
+#letters  h4 a, #letter-form h4 a {
+    margin-left: 0px;
+}
+#letter-form h4 a {
+    font-size: 24px;
+    line-height: 135%;
+}
+
+.letter-byline  {
+    font-style: italic;
+}
+
+.letter-thank-you {
+    font-weight: bold;
+}
+
+#letter-form {
+    line-height: 130%;
+}
+
+#letter-form label, #letter-form input, #letter-form textarea {
+    display: block;
+}
+
+#letter-form .helptext {
+    font-size: 12px;
+    display: block;
+    line-height: 140%;
+    margin-top: 3px;
+}
+
+#letter-form .errorlist {
+    color: red;
+    list-style: none;
+    display: block;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#letter-form input, #letter-form textarea {
+    width: 100%;
 }
 
 /************ Styles for editors and administrators - PC only *****************/

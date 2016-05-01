@@ -1,0 +1,25 @@
+To: {{letter.byline}}
+
+Thank you for submitting your letter in response to the article:
+{{letter.article.title|safe}}.
+
+The title of your letter is:
+
+{{letter.title}}
+
+A GroundUp editor will make a decision whether to publish it or not within two
+working days.
+
+If we publish the letter, it may be edited for typos, grammar and style.
+
+We will communicate with you via this email address: {{letter.email}}.
+
+Here is the text of your letter:
+
+Dear Editor
+
+{{letter.text}}
+
+
+Sincerely
+{{letter.byline}}

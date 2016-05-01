@@ -1,0 +1,14 @@
+{% with letter_slice=letters|slice:":5" %}
+    {% if letter_slice %}
+	<div id="latest-letters">
+	    <h2>Latest reader letter{{ letter_slice|length|pluralize }}</h2>
+	    <ul>
+	    {% for letter in letters %}
+		<li>
+		    <a href="{{letter.get_absolute_url}}">{{letter.title}}</a>
+		</li>
+	    {% endfor %}
+	    </ul>
+	</div>
+    {% endif %}
+{% endwith %}

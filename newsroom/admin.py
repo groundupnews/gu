@@ -13,6 +13,7 @@ from . import utils
 from socialmedia.admin import TweetInline
 from socialmedia.common import SCHEDULE_RESULTS
 from republisher.admin import RepublisherInline
+from letters.admin import LetterInline
 
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 
@@ -147,7 +148,7 @@ class ArticleAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        TweetInline, RepublisherInline
+        TweetInline, RepublisherInline, LetterInline
     ]
 
     def changelist_view(self, request, extra_context=None):
