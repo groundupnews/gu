@@ -656,10 +656,19 @@ a.admin-menu-item {
 /* Letters */
 
 #letters {
-    background-color: white;
+    /* background-color: white;*/
     padding: 5px;
     font-size: 16px;
 }
+
+
+
+#write-letter button {
+    font-size: 21px;
+    padding: 10px;
+    font-weight: bold;
+}
+
 #letters  h4 a, #letter-form h4 a {
     margin-left: 0px;
 }
