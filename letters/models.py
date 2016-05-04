@@ -19,6 +19,7 @@ class Letter(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField(blank=True)
     rejected = models.BooleanField(default=False)
+    rejected_reason = models.TextField(blank=True)
     notified_letter_writer = models.BooleanField(default=False)
     notified_editors = models.BooleanField(default=False)
     css_classes = models.CharField(max_length=200, blank=True)
