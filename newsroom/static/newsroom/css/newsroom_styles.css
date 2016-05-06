@@ -531,7 +531,7 @@ div#article-share-bottom {
     padding-top: 15px;
 }
 
-span#article-topics-name { font-weight: bold; }
+span#article-topics-name, span#article-share-name { font-weight: bold; }
 
 
 
