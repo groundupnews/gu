@@ -21,7 +21,11 @@
 			 class="panel-collapse collapse in">
 			<div class="panel-body">
 			    <div class="letter">
-				<p class="letter-salutation">Dear Editor</p>
+          {% if letter.byline == "GroundUp Editor" %}
+          <p class="letter-salutation">GroundUp Editor's Response</p>
+          {% else %}
+				  <p class="letter-salutation">Dear Editor</p>
+          {% endif %}
 				<div class="letter-text">
 				    {{letter.text|urlize|linebreaks}}
 				</div>
