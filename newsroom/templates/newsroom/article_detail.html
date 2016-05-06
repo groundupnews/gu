@@ -16,8 +16,7 @@
 
     {% with image_url=article.cached_primary_image %}
 	{% if image_url %}
-	    <meta property="og:image"
-		  content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image}}"/>
+	    <meta property="og:image" content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
 	{% endif %}
     {% endwith %}
 
