@@ -34,11 +34,11 @@
 		<figure id="article-primary-image">
 		    {% if article.primary_image %}
 			<a href="{{MEDIA_URL}}{{article.primary_image}}">
-			    <img src="{{article.cached_primary_image}}"
+			    <img src="{{article.cached_primary_image|iriencode}}"
 				 alt="{{article.primary_image_alt|addslashes}}" />
 			</a>
 		    {% else %}
-			<img src="{{article.cached_primary_image}}"
+			<img src="{{article.cached_primary_image|iriencode}}"
 			     alt="{{article.primary_image_alt|addslashes}}"
 			/>
 		    {% endif %}
