@@ -3,7 +3,7 @@
 	<div id="latest-letters">
 	    <h2>Latest reader letter{{ letter_slice|length|pluralize }}</h2>
 	    <ul>
-	    {% for letter in letters %}
+	    {% for letter in letter_slice %}
 		<li>
 		    <a href="{{letter.get_absolute_url}}">{{letter.title}}</a>
 		</li>
