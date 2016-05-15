@@ -45,6 +45,7 @@ class Author(models.Model):
         return reverse('author.detail', args=[self.pk, ])
 
     class Meta:
+        unique_together = (('first_names', 'last_name'), )
         ordering = ["last_name", "first_names", ]
 
 
