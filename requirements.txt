@@ -1,10 +1,10 @@
 beautifulsoup4==4.4.1
-Django==1.8.7
+Django==1.9.6
 # django-appconf==1.0.1
 # django-compressor==1.6
 # django-debug-toolbar==1.4
-django-filebrowser==3.6.1
-django-grappelli==2.7.3
+django-filebrowser==3.7.1
+django-grappelli==2.8.1
 #facebook-sdk
 https://github.com/pythonforfacebook/facebook-sdk/archive/master.zip
 google-api-python-client==1.4.2

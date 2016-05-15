@@ -320,7 +320,7 @@ def article_detail(request, slug):
                     exclude(recommended=False).distinct()[0:4]
             elif article.topics:
                 see_also = models.Article.objects.published(). \
-                    filter(topics=article.topics.all()). \
+                    filter(topics__in=article.topics.all()). \
                     exclude(pk=article.pk).exclude(pk=read_next_pk). \
                     exclude(recommended=False).distinct()[0:4]
             else:
