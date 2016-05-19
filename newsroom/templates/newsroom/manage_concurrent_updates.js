@@ -67,4 +67,8 @@ manageConcurrentEditing();
 
 timerCheckConcurrency = window.setInterval(function(){
     manageConcurrentEditing();
-}, 5000);
+}, 10000);
+
+$('#saveedits').click(function(event){
+    clearTimeout(timerCheckConcurrency);
+});
