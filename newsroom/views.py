@@ -181,7 +181,7 @@ class TopicDetail(ArticleList):
 
     def get_context_data(self, **kwargs):
         context = super(TopicDetail, self).get_context_data(**kwargs)
-        context['heading'] = self.topic.name
+        context['heading'] = self.topic.name.upper()
         context['topic'] = self.topic
         return context
 

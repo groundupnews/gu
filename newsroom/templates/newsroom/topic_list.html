@@ -9,7 +9,7 @@
 		    {% for topic in object_list %}
 			<li>
 			    <a href="{% url 'topic.detail' topic.slug %}">
-				{{ topic }}
+				{{ topic.name|upper }}
 			    </a>
 			</li>
 		    {% endfor %}
