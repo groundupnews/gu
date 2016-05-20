@@ -9,11 +9,7 @@ The title of your letter is:
 After carefully considering your letter, we regret that we have decided not to
 publish it.
 
-{% if letter.rejected_reason %}
-Reason for rejection:
-
-{{letter.rejected_reason}}
-{% endif %}
+{{letter.note_to_writer}}
 
 Regards
 GroundUp Editors

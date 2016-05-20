@@ -9,5 +9,7 @@ The title of your letter is:
 We are pleased to inform you that it has been published. You can find it here:
 {{base_url}}{{letter.get_absolute_url}}
 
+{{letter.note_to_writer}}
+
 Regards
 GroundUp Editors
