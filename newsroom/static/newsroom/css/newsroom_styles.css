@@ -397,9 +397,18 @@ p.caption {
 }
 
 #footer {
-    background-color: #DDDDDD;
+    background-color: #4D4D4D;
+    color: white;
     padding-top: 18px;
     padding-bottom: 20px;
+}
+
+#footer a {
+    color: white;
+}
+
+#footer a:link {
+    text-decoration: underline;
 }
 
 .footer-text {
