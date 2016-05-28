@@ -26,3 +26,14 @@
    title="Print">
     <i class="fa fa-print fa-2x"></i>
 </a>
+
+{% if article.encourage_republish %}
+    <span id="republish">
+	<a href="{% url 'article.copy' article.slug %}"
+	   id="republish-article"
+	   target="_blank"
+	   title="Republish this article">
+	    <i class="fa fa-copy fa-2x"></i>
+	</a>
+    </span>
+{% endif %}

@@ -100,19 +100,10 @@
 	    {% endif %}
 	    <div id="article-meta">
 		<div id="sharing">
-		    <p><span id="article-share-name">Share:</span>
-			{% include 'newsroom/sharebuttons.html' %}
-			{% if article.encourage_republish %}
-			    <span id="republish">
-				<a id="republish-article" target="_blank"
-				   href="{% url 'article.copy' article.slug %}">
-				    <button type="button">
-					Republish this article
-				    </button>
-				</a>
-			    </span>
-			{% endif %}
-		    </p>
+		   <p>
+		       <span id="article-share-name">Share:</span>
+		       {% include 'newsroom/sharebuttons.html' %}
+		   </p>
 		</div>
 		{% with topics_all=article.topics.all %}
 		    {% if topics_all|length  %}
