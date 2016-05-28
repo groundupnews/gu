@@ -58,7 +58,9 @@
 		    </div>
 		    <p id="letter-form-salutation">Dear Editor</p>
 		    <p id="letter-form-article-title">
-			This is a letter in response to <em>{{article.title}}</em>
+			This is a letter in response to
+			<a href={% url 'article.detail' article.slug  %}>
+			    {{article.title}}</a>.
 		</p>
 		<form action="{% url 'letter_to_editor' article.pk %}"
 		      method="post">

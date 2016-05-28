@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import Http404
 from . import settings
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -11,6 +12,8 @@ from newsroom.models import Article
 
 def get_letter(request, pk):
     article = get_object_or_404(Article, pk=pk)
+    if article.letters_on is False:
+        raise Http404
     if request.method == 'POST':
         form = LetterForm(request.POST)
         if form.is_valid():

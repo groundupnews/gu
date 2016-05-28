@@ -40,9 +40,11 @@
 	</div>
     {% endif %}
 
-    <div id="write-letter">
-	<a href="{% url "letter_to_editor" article.pk %}">
+    {% if article.letters_on %}
+	<div id="write-letter">
+	    <a href="{% url "letter_to_editor" article.pk %}">
 		Write a letter in response to this article
-	</a>
-    </div>
+	    </a>
+	</div>
+    {% endif %}
 </div>

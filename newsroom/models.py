@@ -216,6 +216,7 @@ class Article(models.Model):
                                         choices=SUMMARY_TEMPLATE_CHOICES,
                                         default="newsroom/article_summary.html")
     include_in_rss = models.BooleanField(default=True)
+    letters_on = models.BooleanField(default=True)
     comments_on = models.BooleanField(default=True)
     collapse_comments = models.BooleanField(default=True)
     exclude_from_list_views = models.BooleanField(default=False)
