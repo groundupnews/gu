@@ -107,6 +107,7 @@ p.intro {
 }
 
 #write-letter a {
+    color: black;
     font-size: 21px;
     padding: 10px;
     font-weight: bold;
@@ -182,9 +183,6 @@ p.intro {
     }
     #republish {
 	display: none;
-    }
-    #write-letter a {
-	font-size: 12px;
     }
 }
 
@@ -629,6 +627,11 @@ a.admin-menu-item {
     }
 }
 
+@media (max-width: 360px) {
+    #write-letter a {
+	font-size: 14px;
+    }
+}
 
 @media (max-width: 768px) {
     #article-content {
