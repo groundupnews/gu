@@ -217,7 +217,7 @@ class Article(models.Model):
                                         default="newsroom/article_summary.html")
     include_in_rss = models.BooleanField(default=True)
     letters_on = models.BooleanField(default=True)
-    comments_on = models.BooleanField(default=True)
+    comments_on = models.BooleanField(default=False)
     collapse_comments = models.BooleanField(default=True)
     exclude_from_list_views = models.BooleanField(default=False)
     suppress_ads = models.BooleanField(default=False,
@@ -313,7 +313,7 @@ class Article(models.Model):
                      self.author_05
                      ]
             if links:
-                names = ["<a href='" + name.get_absolute_url() +
+                names = ["<a rel=\"author\" href='" + name.get_absolute_url() +
                          "'>" + str(name) + "</a>"
                          for name in names if name != None]
             else:

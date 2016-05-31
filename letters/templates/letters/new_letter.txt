@@ -4,7 +4,17 @@ The following new letters require your attention:
 
 {% for letter in letters %}
 
-{{forloop.counter}}: {{letter.title}}
+{{forloop.counter}}: In response to:
+{{letter.article}}
+
+Title: {{letter.title}}
+
+Text of letter:
+
+{{letter.text}}
+
+Byline: {{letter.byline}}
+
 {{base_url}}{% url 'admin:letters_letter_change' letter.pk %}
 
 {% endfor %}
