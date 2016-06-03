@@ -35,14 +35,24 @@ function createCallback( s ){
 tweet_suffixes = [
     ".",
     ":",
+    " :",
+    " |",
+    "|",
+    "  |",
     " -",
     " —",
-    " ·",
     "-",
     "--",
+    "---",
     " --",
     ": -",
-    ". -"
+    ". -",
+    " >",
+    "  >",
+    ". >",
+    " >-",
+    " *",
+    " ·"
 ];
 
 /* Executed when button to automatically generate tweets is clicked. */
@@ -61,7 +71,7 @@ function generate_tweets()
 	s = i.toString();
 	if ($("#id_tweet_set-" + s + "-wait_time").val().trim().length > 0) {
 	    wait_time = Number($("#id_tweet_set-" + s + "-wait_time").val())
-		+ 60;
+		+ 30;
 	    text = $("#id_tweet_set-" + s + "-tweet_text").val().trim();
 	    if (text.length > 0) {
 		tweet_text = text;
@@ -88,10 +98,10 @@ function generate_tweets()
 	    selector = $("#id_tweet_set-" + s + "-wait_time");
 	    if (selector.val().trim().length == 0) {
 		$(selector).val(wait_time.toString());
-		wait_time = wait_time + 60;
+		wait_time = wait_time + 30;
 	    }
 	    else {
-		wait_time = Number(selector.val()) + 60;
+		wait_time = Number(selector.val()) + 30;
 	    }
 	    calc_tweet_chars(s);
 	}
