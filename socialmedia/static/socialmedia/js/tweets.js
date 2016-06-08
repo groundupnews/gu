@@ -1,3 +1,5 @@
+TIME_BETWEEN_TWEETS = 30;
+
 function calc_tweet_chars(item) {
     var num_chars = $("#id_tweet_set-" + item + "-tweet_text").val().length;
     if ($("#id_tweet_set-" + item + "-image").val().length > 0) {
@@ -71,7 +73,7 @@ function generate_tweets()
 	s = i.toString();
 	if ($("#id_tweet_set-" + s + "-wait_time").val().trim().length > 0) {
 	    wait_time = Number($("#id_tweet_set-" + s + "-wait_time").val())
-		+ 30;
+		+ TIME_BETWEEN_TWEETS;
 	    text = $("#id_tweet_set-" + s + "-tweet_text").val().trim();
 	    if (text.length > 0) {
 		tweet_text = text;
@@ -98,10 +100,11 @@ function generate_tweets()
 	    selector = $("#id_tweet_set-" + s + "-wait_time");
 	    if (selector.val().trim().length == 0) {
 		$(selector).val(wait_time.toString());
-		wait_time = wait_time + 30;
+		wait_time = wait_time + TIME_BETWEEN_TWEETS;
 	    }
 	    else {
-		wait_time = Number(selector.val()) + 30;
+		wait_time = Number(selector.val()) +
+		    TIME_BETWEEN_TWEETS;
 	    }
 	    calc_tweet_chars(s);
 	}

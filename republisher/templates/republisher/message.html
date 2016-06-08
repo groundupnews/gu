@@ -1,0 +1,46 @@
+{{republisher.message|linebreaks}}
+
+{{note|linebreaks}}
+
+<p>URL: {{url}}</p>
+
+<p>Here is the article</p>
+
+<h2>{{article.title|safe}}</h2>
+
+<h3>{{article.subtitle|safe}}</h3>
+
+<h4>{{article.cached_byline_no_links}}</h4>
+
+{% if article.cached_primary_image %}
+
+    <p>Primary image:</p>
+
+    <p>
+	<img src="{{article.cached_primary_image}}"
+	     alt="{{article.primary_image_alt}}"
+	     style="width:70%;"
+	/>
+    </p>
+
+    <p>Primary image caption:
+	{{article.primary_image_caption|safe}}
+    </p>
+
+{% endif %}
+
+<h3>Body of the article</h3>
+
+
+<div>{{article.body|safe}}</div>
+
+<hr/>
+
+<p>
+    Originally published on <a href="{{url}}">
+    GroundUp</a>.
+</p>
+
+<p>
+    Copyright (C) GroundUp {% now "Y" %}
+</p>
