@@ -1,3 +1,4 @@
+from smtplib import SMTPException
 from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -17,12 +18,15 @@ def process():
         message = render_to_string('letters/published_letter.txt',
                                    {'letter': letter,
                                     'base_url': base_url})
-        send_mail(
-            subject,
-            message,
-            settings.EDITOR,
-            [letter.email]
-        )
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.EDITOR,
+                [letter.email]
+            )
+        except SMTPException as err:
+            print("Error sending email: {0}".format(err))
         letter.notified_letter_writer = True
         letter.save()
 
@@ -34,12 +38,16 @@ def process():
         message = render_to_string('letters/rejected_letter.txt',
                                    {'letter': letter,
                                     'base_url': base_url})
-        send_mail(
-            subject,
-            message,
-            settings.EDITOR,
-            [letter.email]
-        )
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.EDITOR,
+                [letter.email]
+            )
+        except SMTPException as err:
+            print("Error sending email: {0}".format(err))
+
         letter.notified_letter_writer = True
         letter.save()
 

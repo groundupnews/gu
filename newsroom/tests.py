@@ -6,6 +6,7 @@ import datetime
 from newsroom.models import Article, Topic, Category
 from newsroom import utils
 from bs4 import BeautifulSoup as bs
+from letters.models import Letter
 
 
 class HtmlCleanUp(TestCase):
@@ -66,14 +67,29 @@ class ArticleTest(TestCase):
         a.title = "Test article 1"
         a.slug = "test-article-1"
         a.category = Category.objects.get(name="News")
+        a.external_primary_image = \
+            "http://www.w3schools.com/html/pic_mountain.jpg"
         a.save()
         a.publish_now()
+
         a = Article()
         a.title = "Test article 2"
         a.slug = "test-article-2"
         a.category = Category.objects.get(slug="opinion")
         a.save()
         a.publish_now()
+
+    def test_articles(self):
+        articles = Article.objects.all()
+        self.assertEqual(len(articles), 2)
+        articles = Article.objects.published()
+        self.assertEqual(len(articles), 2)
+        article = Article.objects.published()[1]
+        self.assertEqual(article.title, "Test article 1")
+        self.assertEqual(article.cached_primary_image,
+            "http://www.w3schools.com/html/pic_mountain.jpg")
+        article = Article.objects.published()[0]
+        self.assertEqual(article.title, "Test article 2")
 
     def test_pages(self):
         client = Client()
@@ -96,7 +112,6 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 200)
         response = client.get('/category/opinion/')
         self.assertEqual(response.status_code, 200)
-
 
     def test_duplicate_save(self):
         a = Article()
@@ -139,6 +154,19 @@ class ArticleTest(TestCase):
         self.assertTrue(len(list(objs)) == num_published)
 
     def test_facebook(self):
+        article = Article.objects.published()[1]
+        self.assertEqual(article.cached_primary_image,
+            "http://www.w3schools.com/html/pic_mountain.jpg")
+        self.assertEqual(article.facebook_send_status, "paused")
+        article.facebook_send_status = "scheduled"
+        article.save()
+        from .management.commands import posttofacebook
+        results = posttofacebook.process(1, 1)
+        self.assertEqual(results["successes"], 1)
+        self.assertEqual(results["failures"], 0)
+        article = Article.objects.published()[1]
+        self.assertEqual(article.facebook_send_status, "sent")
+
         article = Article.objects.published()[0]
         self.assertEqual(article.facebook_send_status, "paused")
         article.facebook_send_status = "scheduled"
@@ -149,3 +177,31 @@ class ArticleTest(TestCase):
         self.assertEqual(results["failures"], 0)
         article = Article.objects.published()[0]
         self.assertEqual(article.facebook_send_status, "sent")
+
+    def test_letter(self):
+        letter = Letter()
+        article = Article.objects.published()[0]
+        letter.article = article
+        letter.byline = "John Doe"
+        letter.email = "johndoe@example.com"
+        letter.title = "Test"
+        letter.text = "Dear sir. This is a test"
+        letter.rejected = False
+        letter.published = timezone.now()
+        letter.save()
+
+        letter = Letter()
+        article = Article.objects.published()[0]
+        letter.article = article
+        letter.byline = "Jane Smith"
+        letter.email = "janedoe@this_is_an_invalid_domain.com"
+        letter.title = "Test"
+        letter.text = "Dear Madam. This is a test"
+        letter.rejected = True
+        letter.save()
+
+        from letters.management.commands import processletters
+        processletters.process()
+        letters = Letter.objects.all()
+        for l in letters:
+            self.assertEqual(l.notified_letter_writer, True)

@@ -46,4 +46,7 @@ class Letter(models.Model):
             "#letter-" + str(self.pk)
 
     class Meta:
+        verbose_name = "letter"
+        verbose_name_plural = "letters to the editor"
+
         ordering = ['article', 'position', 'published', ]

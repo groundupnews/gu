@@ -51,21 +51,26 @@ def process(days, max_posts):
             description = article.facebook_description
         else:
             description = article.cached_summary_text_no_html
-        picture = "http://" + Site.objects.all()[0].domain
+        url = "http://" + Site.objects.all()[0].domain
         if article.facebook_image:
-            picture = picture + article.facebook_image.url
+            picture = article.facebook_image.url
+        elif article.cached_primary_image:
+            picture = article.cached_primary_image
         else:
-            picture = picture + article.cached_primary_image
+            picture = ""
+            caption = ""
+        if picture and picture[0] == "/":
+            picture = url + picture
         attachment = {
-            'name' : article.title,
+            'name': article.title,
             'link': link,
             'caption': caption,
             'description': description,
-            'picture' : picture
+            'picture': picture
         }
         try:
-            status = api.put_wall_post(message=message,
-                                       attachment=attachment)
+            api.put_wall_post(message=message,
+                              attachment=attachment)
             print("PostToFacebook: {}".format(article.title))
             successes = successes + 1
             article.facebook_send_status = "sent"
