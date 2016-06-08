@@ -23,16 +23,17 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
 
-	<form class="navbar-form navbar-right" role="search">
+	<form class="navbar-form navbar-right" method="get" action="/search/">
 	  <span id="search-form" class="form-group">
-	    <input type="text" class="form-control" id='search-field'
-		    placeholder="Search">
+	    <input type="text" class="form-control" name="q" id="id_q"
+		   placeholder="Search" value="{{query}}">
 	  </span>
 	  <button  id="search-button" class="btn btn-default" >
-      	    <span class="glyphicon glyphicon-search">
-      	      <span class="sr-only">Search</span>
-      	    </span>
+      	       <span class="glyphicon glyphicon-search">
+      	       <span class="sr-only">Search</span>
+      	       </span>
 	  </button>
+
 	</form>
 
 

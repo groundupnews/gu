@@ -1,0 +1,4 @@
+{{ object.title }}
+{{ object.cached_byline }}
+{{ object.primary_image_caption }}
+{{ object.body }}

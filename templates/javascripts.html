@@ -6,16 +6,3 @@
 <!-- Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
 </script>
-<!-- Search DuckDuckGo Javascript -->
-<script>
-  $('#search-button').click(function() {
-  var search_string = document.getElementById('search-field').value;
-  if (search_string !== "") {
-  var url =
-  "https://duckduckgo.com/?q="+search_string+"%20site%3Agroundup.org.za"
-  var win = window.open(url, '_blank');
-  win.focus();
-  }
-  return false;
-  });
-</script>

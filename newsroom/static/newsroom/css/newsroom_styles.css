@@ -827,3 +827,7 @@ iframe {
 .article-advert-edit:before {
     content: "ADVERT";
 }
+
+.highlighted {
+    background-color: yellow;
+}

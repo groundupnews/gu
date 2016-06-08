@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load highlight %}
+
+{% block search %} {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-md-8">
+		{% if query %}
+		    <h2>Search results</h2>
+
+		    {% for result in page.object_list|dictsortreversed:"published" %}
+			<h4>
+			    <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
+			</h4>
+			<p>
+			   {{result.published|date:"j M Y"}}
+			</p>
+			<p>
+			    {% with result.object.body|safe as body %}
+				{% highlight body with query %}
+			    {% endwith %}
+			</p>
+		    {% empty %}
+			<p>No results found.</p>
+		    {% endfor %}
+
+
+		    {% block pagination %}
+			{% include 'paginator.html' with page_obj=page query=query %}
+		    {% endblock %}
+
+		{% endif %}
+	    </div>
+	</div>
+    </div>
+{% endblock %}
