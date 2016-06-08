@@ -45,7 +45,8 @@ coverage.xml
 *.log
 *.pot
 
+whoosh_index/
+
 # Sphinx documentation
 docs/_build/
-
 guarticles2_tidy.html
