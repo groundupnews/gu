@@ -31,7 +31,7 @@ def process():
             url = prefix + republisherarticle.article.get_absolute_url()
             article = republisherarticle.article
             if article.cached_primary_image[0] == "/":
-                article.cached_primary_image = url + \
+                article.cached_primary_image = prefix + \
                     article.cached_primary_image
             soup = bs(article.body, 'html.parser')
             images = soup.find_all("img")
