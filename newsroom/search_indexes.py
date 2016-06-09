@@ -8,6 +8,9 @@ class ArticleIndex(indexes.SearchIndex, indexes.Indexable):
     author = indexes.CharField(model_attr='cached_byline')
     published = indexes.DateTimeField(model_attr='published')
 
+    def get_updated_field(self):
+        return 'modified'
+
     def get_model(self):
         return Article
 

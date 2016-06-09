@@ -36,3 +36,4 @@ uritemplate==0.6
 wheel==0.24.0
 https://github.com/django-haystack/django-haystack/archive/v2.5.dev1.zip
 whoosh==2.7.4
+python-dateutil
