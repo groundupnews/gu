@@ -39,6 +39,14 @@ h2.large-summary-title, h2.summary-title {
     font-size: 14px;
 }
 
+#top-article h2.summary-title {
+    font-size: 24px;
+}
+
+#top-article div.summary-text {
+    margin-bottom: 8px;
+}
+
 .thumbnail {
     margin-bottom: 10px;
 }
@@ -453,9 +461,17 @@ div.featured-photo {
     margin-right: auto;
 }
 
+.article-list-heading {
+    background-color: #4D4D4D;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
+
 .article-summary {
     margin-bottom: 0px;
 }
+
 
 img.summary-image {
     margin-bottom: 5px;
