@@ -18,7 +18,6 @@
 				<h2 class="article-list-heading">
 				    Top story
 				</h2>
-
 				<h2 class="summary-title">
 				    <a href="{{article.get_absolute_url}}">
 					{{article.title|safe }}
@@ -29,7 +28,7 @@
 				</div>
 				<a href="{{article.get_absolute_url}}">
 				    <img class="summary-image"
-					 src="{{ article.cached_summary_image }}"
+					 src="{{ article.cached_primary_image }}"
 					 alt="{{ article.summary_image_alt }}"/>
 				</a>
 			    </div>
