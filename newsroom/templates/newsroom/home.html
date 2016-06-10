@@ -15,9 +15,11 @@
 		    {% else  %}
 			{% with article_list.0 as article %}
 			    <div id="top-article">
+				{% comment %}
 				<h2 class="article-list-heading">
 				    Top story
 				</h2>
+				{% endcomment %}
 				<h2 class="summary-title">
 				    <a href="{{article.get_absolute_url}}">
 					{{article.title|safe }}
