@@ -291,12 +291,24 @@ class Article(models.Model):
             (self.published <= timezone.now())
 
     def publish_now(self):
-        if self.is_published() == False:
+        if self.is_published() is False:
             self.published = timezone.now()
             self.save()
 
     is_published.boolean = True
     is_published.short_description = 'published'
+
+    def unsticky(self):
+        self.stickiness = 0
+        self.save()
+
+    def make_top_story(self):
+        articles = Article.objects.filter(stickiness__gt=0)
+        for article in articles:
+            article.stickiness = 0
+            article.save()
+        self.stickiness = 1
+        self.save()
 
     # Methods that calculate cache fields
 

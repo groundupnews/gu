@@ -266,6 +266,14 @@ def article_post(request, slug):
                 article.publish_now()
                 messages.add_message(request, messages.INFO,
                                      "Article published.")
+            elif request.POST["input_top_story"] == "YES":
+                article.make_top_story()
+                messages.add_message(request, messages.INFO,
+                                     "This is the top article.")
+            elif request.POST["input_unsticky"] == "YES":
+                messages.add_message(request, messages.INFO,
+                                     "This article is no longer sticky.")
+                article.unsticky()
             else:
                 messages.add_message(request, messages.INFO,
                                      "Changes saved.")

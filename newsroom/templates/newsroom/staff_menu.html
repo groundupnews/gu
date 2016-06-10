@@ -5,11 +5,20 @@
 	<li id="publish-now"><a href="#"
 	       class="admin-menu-item">Publish</a></li>
     {% endif %}
+    <li id="make-top-story"><a href="#"
+			       class="admin-menu-item"
+			    >Make top story</a></li>
+    {% if article.stickiness > 0 %}
+	<li id="make-unsticky"><a href="#"
+				   class="admin-menu-item"
+				>Unsticky</a></li>
+    {% endif %}
     {% if request.GET.edit != "no" %}
 	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}?edit=no">Edit off</a></li>
     {% else %}
 	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}">Edit on</a></li>
     {% endif %}
+    <li role="separator" class="divider"></li>
 {% endif %}
 
 {% if flatpage.url and perms.flatpages.flatpage_change %}
@@ -21,7 +30,10 @@
 
 {% if perms.newsroom.add_article %}
 <li><a href="{% url 'admin:newsroom_article_add' %}" class="admin-menu-item">New article</a></li>
-<li><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Admin article list</a></li>
+<li><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Articles</a></li>
+{% endif %}
+{% if perms.letter.add_letter %}
+    <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters to editor</a></li>
 {% endif %}
 <li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
 <li><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
