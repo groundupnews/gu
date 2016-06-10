@@ -32,7 +32,7 @@
 <li><a href="{% url 'admin:newsroom_article_add' %}" class="admin-menu-item">New article</a></li>
 <li><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Articles</a></li>
 {% endif %}
-{% if perms.letter.add_letter %}
+{% if perms.letters.add_letter %}
     <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters to editor</a></li>
 {% endif %}
 <li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
