@@ -36,15 +36,21 @@
 		</a>
 	    </h2>
 	    {% if include_summary == "1" %}
-		<p class="summary-text">
-		    {{article.cached_summary_text|safe}}
-		</p>
+		<a href="{{article.get_absolute_url}}">
+		    <p class="summary-text">
+			{{article.cached_summary_text|safe}}
+		    </p>
+		</a>
 	    {% endif %}
 	    <p class="summary-byline">
-		{{article.cached_byline_no_links|safe}}
+		<a href="{{article.get_absolute_url}}">
+		    {{article.cached_byline_no_links|safe}}
+		</a>
 	    </p>
-	    <p class="summary-dateline">
-		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;{{article.category|upper}}
+	    <a href="{{article.get_absolute_url}}">
+		<p class="summary-dateline">
+		    {{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;{{article.category|upper}}
+		</p>
 	    </p>
 	</div>
     </div>

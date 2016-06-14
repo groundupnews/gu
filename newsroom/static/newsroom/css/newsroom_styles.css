@@ -47,12 +47,13 @@ h2.first-summary-title {
     margin-bottom: 3px;
 }
 
-h2.summary-title a {
-    /* color: #26AAE2; */
+#top-article a, .article-summary a {
     color: #333;
+    text-decoration: none;
 }
 
-h2.summary-title a:hover {
+#top-article .first-summary-title a:hover,
+.summary-title a:hover {
     color: #26AAE2;
 }
 
