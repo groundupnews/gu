@@ -20,16 +20,19 @@
 				    Top story
 				</h2>
 				{% endcomment %}
-				<h2 class="first-summary-title">
+				<h2 class="first-summary-title
+					   summary-title">
 				    <a href="{{article.get_absolute_url}}">
 					{{article.title|safe }}
 				    </a>
 				</h2>
-				<div class="first-summary-text">
+				<div class="first-summary-text
+					    summary-text">
 				    {{article.cached_summary_text|safe}}
 				</div>
 				<a href="{{article.get_absolute_url}}">
-				    <img class="summary-image"
+				    <img class="first-summary-image
+						summary-image"
 					 src="{{ article.cached_primary_image }}"
 					 alt="{{ article.summary_image_alt }}"/>
 				</a>
