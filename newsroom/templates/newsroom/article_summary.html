@@ -41,10 +41,10 @@
 		</p>
 	    {% endif %}
 	    <p class="summary-byline">
-		{{article.cached_byline|safe}}
+		{{article.cached_byline_no_links|safe}}
 	    </p>
 	    <p class="summary-dateline">
-		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;<a href="{% url 'category.detail' article.category %}">{{article.category|upper}}</a>
+		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;{{article.category|upper}}
 	    </p>
 	</div>
     </div>

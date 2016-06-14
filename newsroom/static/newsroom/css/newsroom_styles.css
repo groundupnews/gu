@@ -32,19 +32,31 @@ header {
     margin-bottom: 55px;
 }
 
-h2.large-summary-title, h2.summary-title {
+h2.summary-title, h2.first-summary-title {
     margin-top: 0;
     line-height: 130%;
     font-weight: normal;
     font-size: 14px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
+h2.first-summary-title {
+    font-size: 22px;
+    margin-top: 12px;
+    margin-bottom: 3px;
+}
+
+h2.summary-title a, h2.first-summary-title a {
+    color: #26AAE2;
+    /* color: #333;*/
+}
+
+h2.summary-title a:hover, h2.first-summary-title a:hover {
+    color: #26AAE2;
+}
 #top-article h2.summary-title {
     font-size: 24px;
-}
-
-#top-article div.summary-text {
-    margin-bottom: 8px;
 }
 
 .thumbnail {
@@ -148,24 +160,23 @@ p.intro {
     	height: inherit;
     }
 
-    h2.summary-title, h2.large-summary-title {
-	margin-top: 0;
-    }
-
-    h2.large-summary-title {
-	font-size: 28px;
-    }
-
     h2.summary-title {
 	font-size: 22px;
+    }
+    h2.first-summary-title {
+	font-size: 28px;
     }
     div.article-summary.with-no-image h2.summary-title {
 	font-size: 20px;
     }
-    .summary-text, .thumbnail p.intro {
+    .first-summary-text, .summary-text, .thumbnail p.intro {
 	display: block;
 	font-weight: normal;
 	font-size: 16px;
+    }
+    .first-summary-text {
+	margin-top: 0;
+	margin-bottom: 6px;
     }
     div.article-summary.with-no-image p.summary-text {
 	font-size: 16px;
@@ -215,6 +226,11 @@ p.intro {
 
 p.article-category {
      margin-bottom: 16px;
+}
+
+#article-category a {
+    font-weight: bold;
+    color: #26AAE2;
 }
 
 .navbar-default .navbar-nav > li > a:hover {
