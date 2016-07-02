@@ -8,22 +8,30 @@
 {% endblock %}
 
 {% block seo_fields %}
+    {% comment %}Twitter Card{% endcomment %}
 
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@GroundUp_News" />
+    <meta name="twitter:title" content="{{article.title}}" />
+    <meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
+
+    {% comment %}Facebook{% endcomment %}
     <meta name="description" content="{{article.cached_summary_text_no_html|truncatechars:190}}">
     <meta property="og:title" content="{{article.title}}"/>
     <meta property="og:type" content="article"/>
 
-
+    {% comment %}Twitter and Facebook images{% endcomment %}
     {% with image_url=article.cached_primary_image %}
 	{% if image_url %}
 	    <meta property="og:image" content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
+	    <meta name="twitter:image" content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
+	    <meta name="twitter:image:alt" content="{{article.primary_image_alt}}" />
 	{% endif %}
     {% endwith %}
 
     <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
     <meta property="og:description"
 	  content="{{ article.cached_summary_text_no_html }}"/>
-
 
 {% endblock %}
 
