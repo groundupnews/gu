@@ -61,7 +61,7 @@ h2.first-summary-title {
     margin-bottom: 10px;
 }
 
-#summary-list-heading {
+#summary-list-heading, #topic-heading {
     text-align: center;
 }
 

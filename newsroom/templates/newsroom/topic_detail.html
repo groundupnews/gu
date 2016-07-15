@@ -8,7 +8,7 @@
 {% if topic.introduction %}
 {{topic.introduction|safe}}
 {% else %}
-<h1 class="topic-heading">{{ topic.name|upper }}</h1>
+<h1 id="topic-heading">{{ topic.name|upper }}</h1>
 {% endif %}
 
 {% if topic.icon %}
