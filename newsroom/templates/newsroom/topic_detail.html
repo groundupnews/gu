@@ -1,4 +1,5 @@
 {% extends 'newsroom/article_list.html' %}
+{% load staticfiles %}
 
 {% block content-intro %}
 
@@ -8,6 +9,12 @@
 {{topic.introduction|safe}}
 {% else %}
 <h1 class="topic-heading">{{ topic.name|upper }}</h1>
+{% endif %}
+
+{% if topic.icon %}
+    <div id="topic-icon">
+	<img src="{{ MEDIA_URL}}{{topic.icon }}" alt="" />
+    </div>
 {% endif %}
 
 </div>

@@ -3,6 +3,7 @@
 {% block content %}
     {% block article-list %}
 	<div id="list-content" class="container">
+	    {% block content-intro %}
 	    <div class="row">
 		<div class="xs-12">
 		    {% if heading %}
@@ -20,6 +21,7 @@
 		    {% endif %}
 		</div>
 	    </div>
+	    {% endblock %}
 	    <div class="row">
 		<div class="col-xs-12 col-md-8">
 		    {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
