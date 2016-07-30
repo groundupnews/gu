@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+    {{heading}} {{block.super}}
+{% endblock %}
+
 {% block content %}
     {% block article-list %}
 	<div id="list-content" class="container">
