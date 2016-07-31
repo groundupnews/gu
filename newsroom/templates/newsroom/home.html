@@ -10,7 +10,7 @@
 	<div class="container">
 	    <div class="row">
 		<div  class="col-xs-12 col-md-8">
-		    {% if page_obj.has_previous %}
+		    {% if page_obj.has_previous or article_list.0.stickiness == 0 %}
 			{% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
 		    {% else  %}
 			{% with article_list.0 as article %}
