@@ -50,3 +50,8 @@ whoosh_index/
 # Sphinx documentation
 docs/_build/
 guarticles2_tidy.html
+
+include/
+lib/
+pip-selfcheck.json
+share/

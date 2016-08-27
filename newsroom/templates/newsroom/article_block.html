@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-xs-12 col-md-8">
-	<div id="article-category">
+	<div id="article-category" class="category-{{article.category|lower}}">
 	    <a href="{%  url 'category.detail' article.category.name %}">{{article.category|upper}}</a>
 	    {% if display_region %}
 		|

@@ -63,7 +63,7 @@
 {% block content %}
     <div class="container">
 	<div id="article-content">
-	    <article>
+	    <article id="article-category-{{article.category|lower}}">
 		{% block article %}
 		    {% include "newsroom/article_block.html" %}
 		{% endblock %}
