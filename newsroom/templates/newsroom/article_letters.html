@@ -1,9 +1,9 @@
 <div id="letters">
-    {% if letters %}
+    {% if article_letters %}
 	<a name="letters-to-editor"></a>
 	<h2>Letters</h2>
 	<div class="panel-group" id="letter-accordion">
-	    {% for letter in letters %}
+	    {% for letter in article_letters %}
 		<a name="letter-{{letter.pk}}"></a>
 		<div class="panel panel-default">
 		    <div class="panel-heading">

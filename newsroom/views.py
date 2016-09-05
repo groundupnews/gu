@@ -256,6 +256,7 @@ def article_post(request, slug):
                                    'read_next': None,
                                    'blocks': get_blocks('Article'),
                                    'can_edit': False,
+                                   'article_letters': None,
                                    'most_popular_html': None,
                                    'form': form})
             for field in form.cleaned_data:
@@ -355,7 +356,7 @@ def article_detail(request, slug):
                     article_body = article.body.replace(
                         '<aside class="article-advert-edit">',
                         '<aside class="article-advert" style="display:none;">')
-
+            date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
             return render(request, article.template,
                           {'article': article,
                            'display_region': display_region,
@@ -364,7 +365,10 @@ def article_detail(request, slug):
                            'blocks': get_blocks('Article'),
                            'can_edit': can_edit,
                            'article_body': article_body,
-                           'letters': article.letter_set.published(),
+                           'article_letters': article.letter_set.published(),
+                           'letters': Letter.objects.published().\
+                           filter(published__gte=date_from).\
+                           order_by('-published'),
                            'most_popular_html':
                            models.MostPopular.get_most_popular_html,
                            'form': form})
