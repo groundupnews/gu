@@ -1,7 +1,72 @@
+{% comment %}
+
+Built-in blocks are:
+
+_Advert
+_Tshirt
+_Popular
+_Links (who writes for us etc)
+_Letters
+_Social (Facebook, Twitter etc)
+_Promote
+_Related
+_Recommend
+
+{% endcomment %}
 <div id="sidebar-block">
-{% for b in blocks %}
-    <div class="sidebar-block">
-	{{b.html|safe}}
-    </div>
-{% endfor %}
+    {% for b in blocks %}
+        <div class="sidebar-block">
+            {% if b.name == "_Popular" %}
+                <div id="most-popular">
+		    <h2>Most popular</h2>
+		    {{most_popular_html|safe}}
+		</div>
+            {% elif b.name == "_Advert" %}
+                {% if not article.suppress_ads %}
+		    <aside class="side-advert">
+		        {% include "newsroom/advert.html" %}
+		    </aside>
+                {% endif %}
+            {% elif b.name == "_Tshirt" %}
+                {% if not article.suppress_ads %}
+		    <aside class="side-advert">
+		        {% include "newsroom/advert_article_side.html" %}
+		    </aside>
+                {% endif %}
+            {% elif b.name == "_Links" %}
+                {% include "newsroom/sidebar_links.html" %}
+            {% elif b.name == "_Letters" %}
+                {% include 'letters/letters.html' %}
+            {% elif b.name == "_Social" %}
+		{% include "newsroom/social_media.html" %}
+            {% elif b.name == "_Promote" %}
+                {% if article.promote_article %}
+	            <div id="support-article">
+	                {% include "newsroom/support_article.html" %}
+	            </div>
+                {% endif %}
+            {% elif b.name == "_Related" %}
+                {% if see_also %}
+	            <div id="see-also">
+	                <h2>Related articles</h2>
+
+	                <ul>
+		            {% for item in see_also %}
+		                <li><a href="{{item.get_absolute_url}}
+				             ">{{item.title|safe}}</a>
+		                </li>
+		            {% endfor %}
+	                </ul>
+	            </div>
+                {% endif %}
+            {% elif b.name == "_Recommend" %}
+	        <div id="read-next">
+	            <h2>We recommend</h2>
+	            {% include 'newsroom/read_next.html' %}
+	        </div>
+            {% else %}
+                {{b.html|safe}}
+            {% endif %}
+        </div>
+    {% endfor %}
 </div>

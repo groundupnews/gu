@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_blocks(group_name="Home"):
+    print("D0", group_name)
     try:
         return Group.objects.get(name=group_name).get_blocks()
     except:
@@ -253,7 +254,7 @@ def article_post(request, slug):
                                    'display_region': None,
                                    'see_also': None,
                                    'read_next': None,
-                                   'blocks': get_blocks(),
+                                   'blocks': get_blocks('Article'),
                                    'can_edit': False,
                                    'most_popular_html': None,
                                    'form': form})
@@ -360,7 +361,7 @@ def article_detail(request, slug):
                            'display_region': display_region,
                            'see_also': see_also,
                            'read_next': read_next,
-                           'blocks': get_blocks(),
+                           'blocks': get_blocks('Article'),
                            'can_edit': can_edit,
                            'article_body': article_body,
                            'letters': article.letter_set.published(),
