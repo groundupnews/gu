@@ -31,7 +31,6 @@ logger = logging.getLogger(__name__)
 
 
 def get_blocks(group_name="Home"):
-    print("D0", group_name)
     try:
         return Group.objects.get(name=group_name).get_blocks()
     except:

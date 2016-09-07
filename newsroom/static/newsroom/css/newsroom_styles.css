@@ -866,3 +866,13 @@ iframe {
 .highlighted {
     background-color: yellow;
 }
+
+/* Youtube and Soundcloud in CKeditor */
+
+.youtube {
+    background-color: blue;
+}
+
+.soundcloud {
+    background-color: green;
+}

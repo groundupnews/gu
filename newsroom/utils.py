@@ -1,4 +1,5 @@
 import re
+import html
 from bs4 import BeautifulSoup
 
 from django.test import TestCase
@@ -114,6 +115,30 @@ def removeGoogleDocsSpans(soup):
 
     return soup
 
+# <div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/WsAn5AgAF0I" width="560"></iframe></div>
+
+def processYouTubeDivs(soup):
+    youtubedivs = soup.find_all('div', {'class':"youtube"})
+    for div in youtubedivs:
+        div["class"] = "embed-responsive embed-responsive-16by9"
+        d = BeautifulSoup(div.string)
+        div.string = ""
+        div.append(d)
+    return soup
+
+def processSoundCloudDivs(soup):
+    soundclouddivs = soup.find_all('div', {'class':"soundcloud"})
+    for div in soundclouddivs:
+        div["class"] = ""
+        sc = BeautifulSoup(div.string)
+        iframe = sc.find("iframe")
+        iframe["height"] = 100
+        div.string = ""
+        print("D0", iframe)
+        print("D1", sc)
+        div.append(sc)
+    return soup
+
 
 def replaceBadHtmlWithGood(html):
     html = html.replace('dir="ltr"',"")
@@ -123,6 +148,8 @@ def replaceBadHtmlWithGood(html):
     soup = replacePImgWithFigureImg(soup)
     soup = fixEditorSummary(soup)
     soup = removeGoogleDocsSpans(soup)
+    soup = processYouTubeDivs(soup)
+    soup = processSoundCloudDivs(soup)
     return str(soup)
 
 def get_edit_lock_msg(user):
