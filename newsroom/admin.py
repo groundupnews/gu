@@ -135,6 +135,7 @@ class ArticleAdmin(admin.ModelAdmin):
                        'additional_body_scripts',
                        'activate_slideshow',
                        'disqus_id',
+                       ('notified_authors', 'author_payment',),
                        ('suppress_ads', 'promote_article',
                         'encourage_republish', ),
                        ('user', 'modified', 'version'),)
