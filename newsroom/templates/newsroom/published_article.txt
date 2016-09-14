@@ -6,5 +6,8 @@ You article has been published on GroundUp:
 You can find it here:
 {{base_url}}{{article.get_absolute_url}}
 
+Please read the article carefully and check for errors. If you find any, please
+alert the GroundUp editors by replying to this email.
+
 Regards
 GroundUp Editors

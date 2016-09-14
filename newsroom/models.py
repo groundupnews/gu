@@ -27,6 +27,7 @@ class Author(models.Model):
     googleplus = models.CharField(max_length=200, blank=True)
     email = models.EmailField(blank=True)
     email_is_private = models.BooleanField(default=True)
+    freelancer = models.BooleanField(default=False)
     telephone = models.CharField(max_length=200, blank=True)
     cell = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)

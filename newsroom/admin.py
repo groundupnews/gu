@@ -195,6 +195,9 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_names', 'created', 'modified',
                     'email', 'telephone', 'cell', )
     search_fields = ['last_name', 'first_names', ]
+    fields = ('first_names','last_name','title', 'email','freelancer',
+              'cell','telephone',
+              'twitter','facebook','description',)
 
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)

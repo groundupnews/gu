@@ -23,13 +23,15 @@ def process(days_back, hours_since):
     for article in articles:
         for author in [article.author_01, article.author_02, \
                        article.author_03, article.author_04, article.author_05]:
-            if author and author.email is not None:
+            if author and author.email is not None and author.email is not "":
                 subject = "Your article has been published: " + article.title
                 message = render_to_string('newsroom/published_article.txt',
                                            {'article': article,
                                             'author': author,
                                             'base_url': base_url})
                 try:
+                    print("NotifyAuthors: Emailing: ", author.email,\
+                          " about ", article.title)
                     send_mail(
                         subject,
                         message,
@@ -38,7 +40,8 @@ def process(days_back, hours_since):
                     )
                     successes = successes + 1
                 except SMTPException as err:
-                    print("Error sending email: {0}".format(err))
+                    print("Error sending email: {0} - {1}".\
+                          format(author.email, err))
                     failures = failures + 1
         article.notified_authors = True
         article.save()
@@ -59,6 +62,5 @@ class Command(BaseCommand):
         print("PostToFacebook: {0}: Processing {1} days, waiting {2} hours.". \
               format(str(timezone.now()), days_back, hours_since))
         success_dict = process(days_back, hours_since)
-        print(success_dict)
         print("NotifyWriters: Successful: {0}. Failed: {1}".\
               format(success_dict["successes"], success_dict["failures"]))
