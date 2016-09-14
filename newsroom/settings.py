@@ -13,3 +13,4 @@ ARTICLE_PRIMARY_IMAGE_SIZE = getattr(settings,
                                      "large")
 CACHE_PERIOD = getattr(settings, 'NEWSROOM_CACHE_PERIOD', 500)
 ADVERT_CODE = getattr(settings, 'NEWSROOM_ADVERT_CODE', '')
+EDITOR = getattr(settings, 'ARTICLES_EDITOR', "")

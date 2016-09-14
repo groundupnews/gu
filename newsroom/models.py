@@ -273,6 +273,11 @@ class Article(models.Model):
     user = models.ForeignKey(User, default=1)
     version = models.PositiveIntegerField(default=0)
 
+    # Author notifications and payments
+    notified_authors = models.BooleanField(default=False)
+    author_payment = models.DecimalField(default=0.00, max_digits=9,
+                                         decimal_places=2)
+
     # Cached fields
     cached_byline = models.CharField(max_length=500, blank=True)
     cached_byline_no_links = models.CharField(max_length=400, blank=True,

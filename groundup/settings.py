@@ -63,7 +63,7 @@ INSTALLED_APPS = (
     'clearcache',
     'blocks',
     'letters',
-    # 'debug_toolbar',
+    #'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (

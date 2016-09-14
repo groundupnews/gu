@@ -1,0 +1,10 @@
+Dear {{author}}
+
+You article has been published on GroundUp:
+{{article.title}}
+
+You can find it here:
+{{base_url}}{{article.get_absolute_url}}
+
+Regards
+GroundUp Editors
