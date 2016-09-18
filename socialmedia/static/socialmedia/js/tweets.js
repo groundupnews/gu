@@ -1,4 +1,4 @@
-TIME_BETWEEN_TWEETS = 30;
+TIME_BETWEEN_TWEETS = 70;
 
 function calc_tweet_chars(item) {
     var num_chars = $("#id_tweet_set-" + item + "-tweet_text").val().length;
