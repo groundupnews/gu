@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{heading}} {{block.super}}
+    {% if title %}{{title}}{% else %}{{heading}}{% endif %} {{block.super}}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
 			</div>
 		    {% endif %}
 		    {% if description %}
-			<p>{{description}}</p>
+			<p>{{description|safe}}</p>
 		    {% endif %}
 		</div>
 	    </div>

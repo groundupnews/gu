@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
+    url(r'^gallery/', include('gallery.urls')),
     url(r'^', include('newsroom.urls')),
     url(r'^', include('letters.urls')),
     url(r'^search/', include('haystack.urls')),

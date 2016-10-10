@@ -191,7 +191,13 @@ admin.site.register(models.Region, RegionAdmin)
 admin.site.register(models.Topic, TopicAdmin)
 
 
+class AuthorForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AuthorForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+
 class AuthorAdmin(admin.ModelAdmin):
+    form = AuthorForm
     list_display = ('last_name', 'first_names', 'created', 'modified',
                     'email', 'telephone', 'cell', )
     search_fields = ['last_name', 'first_names', ]

@@ -42,7 +42,7 @@ class TweetInline(admin.TabularInline):
         'm2m': ['tag_accounts', ],
     }
     classes = ('grp-collapse grp-closed',)
-    extra = 10
+    extra = 5
 
     class Media:
         js = [

@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     'clearcache',
     'blocks',
     'letters',
+    'gallery',
     #'debug_toolbar',
 )
 

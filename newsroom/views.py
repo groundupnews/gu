@@ -164,6 +164,7 @@ class RegionDetail(ArticleList):
                                          args=(region.name, )) + "'>"
                    + region.name.rpartition("/")[2] + "</a>"
                    for region in regions]
+        context['title'] = str(self.region).rpartition("/")[2]
         context['heading'] = "|".join(regions)
         return context
 

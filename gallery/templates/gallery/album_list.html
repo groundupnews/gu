@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load fb_versions %}
+
+{% block content %}
+        <div class="container">
+	    <div class="row">
+	        <div class="col-xs-12 col-md-12">
+                    <div id="album-list">
+                        {% for album in albums %}
+                            <div class="album-item">
+                                <h2><a href="{% url 'album.detail' album.pk %}">{{album}}</a></h2>
+                                {% for photo in album.photograph_set.all|slice:":5" %}
+                                    <a href="{% url 'photo.detail' photo.pk %}">
+                                        <img src="{% version photo.image 'thumbnail' %}"
+                                             alt="{{photo.alt}}" />
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <p><a href="{% url 'photo.list' %}">All photos</a></p>
+                    </div>
+                </div>
+            </div>
+{% endblock %}

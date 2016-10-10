@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load fb_versions %}
+
+{% block content %}
+    <div class="container">
+	<div class="row">
+            <div class="col-xs-12">
+                <h2>Gallery photos</h2>
+                {% if keyword %}
+                    <h3>All tagged with: {{keyword}}</h3>
+                {% endif %}
+                <div class="row">
+                    {% for photo in photos %}
+	                <div class="col-xs-6 col-md-4">
+                            <div class="gallery-photo thumbnail">
+                                <a href="{% url 'photo.detail' photo.pk %}">
+                                    <img src="{% version photo.image 'medium' %}"
+                                         alt="{{photo.alt}}" />
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <p>
+                    <a href="{% url 'album.list' %}">Albums</a>
+                    {% if keyword %}
+                        | <a href="{% url 'photo.list' %}">All photos</a>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

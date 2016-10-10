@@ -1,7 +1,13 @@
 from django.db import models
+from django.core.urlresolvers import reverse
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
-from . import settings.
+
+from filebrowser.fields import FileBrowseField
 from newsroom.models import Author
+
+from . import settings
 
 class Keyword(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -26,11 +32,41 @@ class Album(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
-class Photo(models.Model):
-    image = FileBrowseField(max_length=200, directory=GALLERY_FOLDER)
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('album.detail', args=[self.pk, ])
+
+    class Meta:
+        ordering = ['modified', ]
+
+
+class Photograph(models.Model):
+    image = FileBrowseField(max_length=200, directory=settings.DIRECTORY)
+    albums = models.ManyToManyField(Album, blank=True)
     photographer =  models.ForeignKey(Author, blank=True, null=True)
     suggested_caption = models.CharField(max_length=600, blank=True)
+    alt = models.CharField(max_length=600, blank=True, help_text=
+                           "Description of image for assistive technology")
     date_taken = models.DateField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     keywords = models.ManyToManyField(Keyword, blank=True)
+
+    def __str__(self):
+        return ", ".join([str(self.image).rsplit('/',1)[-1],
+                          str(self.photographer),])
+
+    class Meta:
+        ordering = ['-modified', ]
+
+    def get_absolute_url(self):
+        return reverse('photo.detail', args=[self.pk, ])
+
+    def thumbnail(self):
+        return format_html(
+            '<img src="/media/{}" alt="{}">',
+            str(self.image.version_generate("thumbnail")),
+            self.suggested_caption
+        )

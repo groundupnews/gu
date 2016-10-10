@@ -24,3 +24,4 @@ django-haystack
 #https://github.com/django-haystack/django-haystack/archive/v2.5.dev1.zip
 whoosh==2.7.4
 python-dateutil
+piexif

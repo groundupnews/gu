@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load fb_versions %}
+
+{% block content %}
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-md-12">
+                <div id="gallery-photo">
+                    <h2>Photo: {{photo}}</h2>
+                    <img src="{% version photo.image 'large' %}"
+                         alt="{{photo.alt}}" />
+                    <p>Suggested caption:
+                        {{photo.suggested_caption}}</p>
+                    <p>Photographer: {{photo.photographer}}</p>
+                    <p>Date taken: {{photo.date_taken}}</p>
+                    <p>Keywords:
+                    {% for keyword in photo.keywords.all %}
+                        <a href="{% url 'photo.list' keyword %}">
+                            {{keyword}}
+                        </a>
+                    {% endfor %}
+                    </p>
+                    <p>
+                    <a href="{% url 'album.list' %}">Albums</a>
+                    |
+                    <a href="{% url 'photo.list' %}">All photos</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
