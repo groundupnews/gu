@@ -35,7 +35,6 @@ def photo_list(request, keyword=None):
         list_all = False
 
     photos = models.Photograph.objects.filter(query).distinct()
-
     return render(request, "gallery/photo_list.html",
                   {'photos': photos,
                    'keyword': keyword,
