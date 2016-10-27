@@ -1,0 +1,15 @@
+Dear {{commission.author.first_names}} {{commission.author.last_name}}
+
+RE: COMMISSION PAID FOR ARTICLE - {{commission.article.title}}
+
+A commission of R{{commission.commission_due}} has been paid to you less tax of  {{commission.tax_percent}}%.
+
+Thank you.
+
+This is an automated email sent by the GroundUp invoicing system.
+
+DISCLAIMER
+
+If the system has sent this email in error, we apologise. This email is not a
+contract. If it contains the wrong amount or the GroundUp management decides
+you are not owed commission by GroundUp, then that overrides this email.

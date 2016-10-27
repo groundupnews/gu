@@ -1,0 +1,24 @@
+Dear {{commission.author.first_names}} {{commission.author.last_name}}
+
+RE: COMMISSION APPROVED FOR ARTICLE - {{commission.article.title}}
+
+A commission of R{{commission.commission_due}} has been approved for you.
+The default tax rate we apply to this is: {{commission.tax_percent}}%.
+
+Please send GroundUp an invoice.
+
+Unless you have your own invoicing system, we recommend you fill in your invoice
+using our form: https://goo.gl/forms/JPELMEoYIPu5wZ012
+
+We pay on Tuesdays and Thursdays (unless they are public holidays) and try to
+process invoices within seven days of receiving them.
+
+This is an automated email sent by the GroundUp invoicing system.
+
+Thank you.
+
+DISCLAIMER
+
+If the system has sent this email in error, we apologise. This email is not a
+contract. If it contains the wrong amount or the GroundUp management decides
+you are not owed commission by GroundUp, then that overrides this email.

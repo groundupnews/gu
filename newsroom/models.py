@@ -133,6 +133,11 @@ SUMMARY_TEMPLATE_CHOICES = (
     ("newsroom/text_summary.html", "Text only"),
 )
 
+OVERRIDE_COMMISSION_CHOICES = (
+    ("NO", "No"),
+    ("PROCESS", "Process commissions for this article"),
+    ("NOPROCESS", "Don't process commissions for this article"),
+)
 
 class ArticleQuerySet(models.QuerySet):
 
@@ -275,9 +280,13 @@ class Article(models.Model):
     version = models.PositiveIntegerField(default=0)
 
     # Author notifications and payments
-    notified_authors = models.BooleanField(default=False)
+    # notified_authors = models.BooleanField(default=False)
     author_payment = models.DecimalField(default=0.00, max_digits=9,
                                          decimal_places=2)
+    override_commissions_system = models.CharField(choices=
+                                                   OVERRIDE_COMMISSION_CHOICES,
+                                                   default="NO", max_length=20)
+    commissions_processed = models.BooleanField(default=False)
 
     # Cached fields
     cached_byline = models.CharField(max_length=500, blank=True)
@@ -467,7 +476,7 @@ class Article(models.Model):
         return reverse('article.detail', args=[self.slug, ])
 
     def __str__(self):
-        return self.title
+        return str(self.pk) + " " + self.title
 
     class Meta:
         ordering = ["-stickiness", "-published", ]
@@ -530,3 +539,39 @@ class MostPopular(models.Model):
 
     class Meta:
         verbose_name_plural = "most popular"
+
+EXTENSIONS = [".jpg", ".pdf", ".doc", ".docx", ".odt", ".xls", ".xlsx",
+              ".zip", ".JPG", ".PDF", ".DOC", ".DOCX"]
+
+class Commission(models.Model):
+    author = models.ForeignKey(Author)
+    article = models.ForeignKey(Article, null=True)
+    description = models.TextField(blank=True)
+    our_reference = models.CharField(max_length=200, blank=True)
+    their_reference = models.CharField(max_length=200, blank=True)
+    funder = models.CharField(max_length=20, blank=True)
+    ledger = models.CharField(max_length=20, blank=True)
+    sys_generated = models.BooleanField(default=False)
+    date_generated = models.DateTimeField(blank=True, null=True)
+    date_approved = models.DateField(blank=True, null=True)
+    date_processed = models.DateField(blank=True, null=True)
+    date_rejected = models.DateField(blank=True, null=True)
+    date_notified_approved = models.DateTimeField(blank=True, null=True)
+    date_notified_processed = models.DateTimeField(blank=True, null=True)
+    invoice = FileBrowseField(max_length=200, directory="commissions/invoices/",
+                              blank=True, null=True, extensions=EXTENSIONS)
+    proof = FileBrowseField(max_length=200, directory="commissions/proofs/",
+                            blank=True, null=True, extensions=EXTENSIONS)
+    commission_due = models.DecimalField(max_digits=7,
+                                         decimal_places=2, default=0.00,
+                                         verbose_name="commission")
+    tax_percent = models.DecimalField(max_digits=2, decimal_places=0, default=25,
+                                      verbose_name="tax %")
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return " ".join([str(self.pk), str(self.author), str(self.article)])
+
+    class Meta:
+        ordering = ['author', 'article',]

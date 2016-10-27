@@ -59,7 +59,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         days_back = options["days_back"]
         hours_since = options["hours_since"]
-        print("PostToFacebook: {0}: Processing {1} days, waiting {2} hours.". \
+        print("NotifyWriters: {0}: Processing {1} days, waiting {2} hours.". \
               format(str(timezone.now()), days_back, hours_since))
         success_dict = process(days_back, hours_since)
         print("NotifyWriters: Successful: {0}. Failed: {1}".\

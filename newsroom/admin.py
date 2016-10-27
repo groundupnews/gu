@@ -34,6 +34,18 @@ img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)
 figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (class="caption")(.*?)>(.*?)(</p>)')
 
 
+class CommissionInline(admin.StackedInline):
+    model = models.Commission
+
+    #raw_id_fields = ('author', 'article', )
+    #autocomplete_lookup_fields = {
+    #    'fk': ['author', 'article',],
+    #}
+    classes = ('grp-closed',)
+    extra = 0
+
+
+
 class ArticleForm(forms.ModelForm):
 
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
@@ -135,9 +147,10 @@ class ArticleAdmin(admin.ModelAdmin):
                        'additional_body_scripts',
                        'activate_slideshow',
                        'disqus_id',
-                       ('notified_authors', 'author_payment',),
+                       ('author_payment', 'override_commissions_system',
+                        'commissions_processed',),
                        ('suppress_ads', 'promote_article',
-                        'encourage_republish', ),
+                        'encourage_republish',),
                        ('user', 'modified', 'version'),)
         }),
         ('Facebook', {
@@ -149,7 +162,7 @@ class ArticleAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        TweetInline, RepublisherInline, LetterInline
+        TweetInline, RepublisherInline, LetterInline, CommissionInline,
     ]
 
     def changelist_view(self, request, extra_context=None):
@@ -204,10 +217,47 @@ class AuthorAdmin(admin.ModelAdmin):
     fields = ('first_names','last_name','title', 'email','freelancer',
               'cell','telephone',
               'twitter','facebook','description',)
+    inlines = [
+        CommissionInline,
+    ]
 
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
 
+# Commissions
+
+class UnprocessedListFilter(admin.SimpleListFilter):
+    title = 'unprocessed'
+    parameter_name = 'unprocessed'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('unapproved', 'unapproved'),
+            ('unprocessed', 'unprocessed'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'unapproved':
+            return queryset.filter(date_approved__isnull = True)
+        if self.value() == 'unprocessed':
+            return queryset.filter(date_processed__isnull =True)
+
+class CommissionAdmin(admin.ModelAdmin):
+    list_display = ('author', 'article', 'funder', 'ledger',
+                    'date_approved','date_processed',
+                    'commission_due', 'tax_percent',)
+    list_editable = ('funder', 'ledger', 'date_approved', 'date_processed',
+                     'commission_due', 'tax_percent',)
+    search_fields = ('author__first_names', 'author__last_name',)
+    list_filter = ['author', UnprocessedListFilter,]
+    date_hierarchy = 'date_approved'
+    ordering = ['-modified', ]
+    raw_id_fields = ('author', 'article', )
+    autocomplete_lookup_fields = {
+        'fk': ['author', 'article',],
+    }
+
+admin.site.register(models.Commission, CommissionAdmin)
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
@@ -229,7 +279,6 @@ class FlatPageAdmin(FlatPageAdmin):
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
         ]
-
 
 # Re-register FlatPageAdmin
 admin.site.unregister(FlatPage)
