@@ -3,7 +3,7 @@ from django.test import Client
 from django.db import IntegrityError
 from django.utils import timezone
 import datetime
-from newsroom.models import Article, Topic, Category
+from newsroom.models import Article, Topic, Category, Author, Commission
 from newsroom import utils
 from bs4 import BeautifulSoup as bs
 from letters.models import Letter
@@ -205,3 +205,55 @@ class ArticleTest(TestCase):
         letters = Letter.objects.all()
         for l in letters:
             self.assertEqual(l.notified_letter_writer, True)
+
+    def test_commissions(self):
+        author1 = Author()
+        author1.first_names = "Joe"
+        author1.last_name = "Bloggs"
+        author1.email = "joe@example.com"
+        author1.freelancer = True
+        author1.save()
+        author2 = Author()
+        author2.first_names = "Jane"
+        author2.last_name = "Doe"
+        author2.email = "jane@example.com"
+        author2.freelancer = True
+        author2.save()
+        author3 = Author()
+        author3.first_names = "Lois"
+        author3.last_name = "Lane"
+        author3.email = "lane@example.com"
+        author3.freelancer = False
+        author3.save()
+        article1 = Article()
+        article1.title = "Test commission 1"
+        article1.slug = "test-commission-1"
+        article1.category = Category.objects.get(name="News")
+        article1.published = timezone.now()
+        article1.author_01 = author1
+        article1.author_02 = author2
+        article1.author_03 = author3
+        article1.save()
+        from django.core import management
+        management.call_command('processcommissions')
+        commissions = Commission.objects.all()
+        self.assertEqual(len(commissions), 2)
+        for commission in commissions:
+            commission.commission_due = 900.00
+            commission.date_approved = timezone.now()
+            commission.save()
+        c = Commission.objects.filter(date_notified_approved__isnull=True)
+        self.assertEqual(len(c), 2)
+        management.call_command('processcommissions')
+        c = Commission.objects.filter(date_notified_approved__isnull=True)
+        self.assertEqual(len(c), 0)
+        management.call_command('processcommissions')
+        for commission in commissions:
+            commission.date_processed = timezone.now()
+            commission.save()
+        c = Commission.objects.filter(date_notified_processed__isnull=True)
+        self.assertEqual(len(c), 2)
+        management.call_command('processcommissions')
+        c = Commission.objects.filter(date_notified_processed__isnull=True)
+        self.assertEqual(len(c), 0)
+        management.call_command('processcommissions')
