@@ -555,12 +555,11 @@ EXTENSIONS = [".jpg", ".pdf", ".doc", ".docx", ".odt", ".xls", ".xlsx",
 
 class Commission(models.Model):
     author = models.ForeignKey(Author)
-    article = models.ForeignKey(Article, null=True)
+    article = models.ForeignKey(Article, blank=True, null=True)
     description = models.TextField(blank=True)
     our_reference = models.CharField(max_length=200, blank=True)
     their_reference = models.CharField(max_length=200, blank=True)
-    fund = models.ForeignKey(Fund, null=True)
-    # ledger = models.CharField(max_length=20, blank=True)
+    fund = models.ForeignKey(Fund, blank=True, null=True)
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)
