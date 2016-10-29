@@ -540,6 +540,16 @@ class MostPopular(models.Model):
     class Meta:
         verbose_name_plural = "most popular"
 
+
+class Fund(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name.upper()
+
+    class Meta:
+        ordering = ['name',]
+
 EXTENSIONS = [".jpg", ".pdf", ".doc", ".docx", ".odt", ".xls", ".xlsx",
               ".zip", ".JPG", ".PDF", ".DOC", ".DOCX"]
 
@@ -549,8 +559,8 @@ class Commission(models.Model):
     description = models.TextField(blank=True)
     our_reference = models.CharField(max_length=200, blank=True)
     their_reference = models.CharField(max_length=200, blank=True)
-    funder = models.CharField(max_length=20, blank=True)
-    ledger = models.CharField(max_length=20, blank=True)
+    fund = models.ForeignKey(Fund, null=True)
+    # ledger = models.CharField(max_length=20, blank=True)
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)

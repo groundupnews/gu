@@ -243,10 +243,10 @@ class UnprocessedListFilter(admin.SimpleListFilter):
             return queryset.filter(date_processed__isnull =True)
 
 class CommissionAdmin(admin.ModelAdmin):
-    list_display = ('author', 'article', 'funder', 'ledger',
+    list_display = ('author', 'article',
                     'date_approved','date_processed',
-                    'commission_due', 'tax_percent',)
-    list_editable = ('funder', 'ledger', 'date_approved', 'date_processed',
+                    'commission_due', 'tax_percent','fund')
+    list_editable = ('fund', 'date_approved', 'date_processed',
                      'commission_due', 'tax_percent',)
     search_fields = ('author__first_names', 'author__last_name',)
     list_filter = ['author', UnprocessedListFilter,]
@@ -257,6 +257,7 @@ class CommissionAdmin(admin.ModelAdmin):
         'fk': ['author', 'article',],
     }
 
+admin.site.register(models.Fund)
 admin.site.register(models.Commission, CommissionAdmin)
 
 # Define a new FlatPageAdmin
