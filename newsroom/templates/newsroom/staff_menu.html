@@ -33,11 +33,23 @@
 <li><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Articles</a></li>
 {% endif %}
 {% if perms.letters.add_letter %}
-    <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters to editor</a></li>
+    <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
 {% endif %}
+{% if perms.newsroom.edit_commission %}
+    <li><a href="{% url 'admin:newsroom_commission_changelist' %}" class="admin-menu-item">Commissions</a></li>
+{% endif %}
+{% if perms.newsroom.edit_author %}
+    <li><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>
+{% endif %}
+
+<li role="separator" class="divider"></li>
+
 <li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
 <li><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
     files</a></li>
 <li><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Generate article list</a></li>
 <li><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
+
+<li role="separator" class="divider"></li>
+
 <li><a href="{% url 'admin:logout' %}" class="admin-menu-item">Logout {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}</a></li>
