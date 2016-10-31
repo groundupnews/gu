@@ -30,6 +30,11 @@ class Author(models.Model):
     freelancer = models.BooleanField(default=False)
     telephone = models.CharField(max_length=200, blank=True)
     cell = models.CharField(max_length=200, blank=True)
+    tax_no = models.CharField(max_length=50, blank=True)
+    id_or_db = models.CharField(max_length=20, blank=True,
+                                verbose_name="ID or date of birth")
+    address = models.TextField(blank=True)
+    bank_details = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 

@@ -215,7 +215,8 @@ class AuthorAdmin(admin.ModelAdmin):
                     'email', 'telephone', 'cell', )
     search_fields = ['last_name', 'first_names', ]
     fields = ('first_names','last_name','title', 'email','freelancer',
-              'cell','telephone',
+              'cell','telephone', 'address', 'id_or_db',
+              'tax_no', 'bank_details',
               'twitter','facebook','description',)
     inlines = [
         CommissionInline,
