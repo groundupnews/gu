@@ -7,6 +7,7 @@ from django.contrib.sites.models import Site
 import sys
 import tweepy
 import pytz
+from socialmedia.settings import TIME_BETWEEN_TWEETS
 from newsroom.models import Article
 
 def get_api(cfg):
@@ -32,15 +33,18 @@ def process(days, max_tweets):
 
     date_from = timezone.now() - datetime.timedelta(days=days)
     articles = Article.objects.published().filter(published__gte=date_from). \
-               order_by("modified")
+               order_by("last_tweeted")
     tweet_count = 0
 
     for article in articles:
         tweets = article.tweet_set.filter(status="scheduled").order_by("wait_time")
         for tweet in tweets:
 
-            dont_send_before = article.published + \
-                               datetime.timedelta(minutes=tweet.wait_time)
+            dont_send_before = max(article.published + \
+                                   datetime.timedelta(minutes=tweet.wait_time),
+                                   article.last_tweeted + \
+                                   datetime.timedelta(minutes=
+                                                      TIME_BETWEEN_TWEETS))
             if timezone.now() >= dont_send_before:
                 tweet_count = tweet_count + 1
                 if tweet_count > max_tweets:
@@ -61,6 +65,8 @@ def process(days, max_tweets):
                         print("Sendtweets: Sending tweet: {}".format(text))
                     tweet.status = "sent"
                     tweet.save()
+                    article.last_tweeted = timezone.now()
+                    article.save()
                     successes = successes + 1
                     break # Maximum of one successful tweet per article
                 except:

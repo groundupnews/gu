@@ -146,7 +146,7 @@ class ArticleAdmin(admin.ModelAdmin):
                        'additional_head_scripts',
                        'additional_body_scripts',
                        'activate_slideshow',
-                       'disqus_id',
+                       'disqus_id', 'last_tweeted',
                        ('author_payment', 'override_commissions_system',
                         'commissions_processed',),
                        ('suppress_ads', 'promote_article',
@@ -215,8 +215,8 @@ class AuthorAdmin(admin.ModelAdmin):
                     'email', 'telephone', 'cell', )
     search_fields = ['last_name', 'first_names', ]
     fields = ('first_names','last_name','title', 'email','freelancer',
-              'cell','telephone', 'address', 'id_or_db',
-              'tax_no', 'bank_details',
+              'cell','telephone', 'address', 'id_or_db', 'bank_details',
+              'tax_no', 'tax_directive', 'add_vat',
               'twitter','facebook','description',)
     inlines = [
         CommissionInline,

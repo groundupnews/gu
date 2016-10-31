@@ -10,6 +10,7 @@ from . import settings
 from socialmedia.common import SCHEDULE_RESULTS
 
 import logging
+import datetime
 
 logger = logging.getLogger("django")
 
@@ -31,6 +32,9 @@ class Author(models.Model):
     telephone = models.CharField(max_length=200, blank=True)
     cell = models.CharField(max_length=200, blank=True)
     tax_no = models.CharField(max_length=50, blank=True)
+    tax_directive = models.DecimalField(max_digits=2, decimal_places=0,
+                                        default=0)
+    add_vat = models.BooleanField(default=False)
     id_or_db = models.CharField(max_length=20, blank=True,
                                 verbose_name="ID or date of birth")
     address = models.TextField(blank=True)
@@ -277,7 +281,9 @@ class Article(models.Model):
                                             choices=SCHEDULE_RESULTS,
                                             verbose_name="sent status",
                                             default="paused")
-
+    last_tweeted = models.DateTimeField(default=
+                                        datetime.datetime(year=2000,
+                                                          month=1,day=1))
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
