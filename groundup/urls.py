@@ -26,6 +26,7 @@ from django.contrib.sitemaps.views import sitemap
 
 from newsroom.models import Article
 from newsroom.models import Author
+from newsroom.views import account_profile
 
 from filebrowser.sites import site
 
@@ -44,10 +45,12 @@ urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
-    url(r'^gallery/', include('gallery.urls')),
+    url(r'^imagegallery/', include('gallery.urls')),
     url(r'^', include('newsroom.urls')),
     url(r'^', include('letters.urls')),
     url(r'^search/', include('haystack.urls')),
+    url(r'^accounts/', include('allauth.urls')),
+
     url(r'^sitemap\.xml$', sitemap,
         {'sitemaps':
          {'articles': GenericSitemap(article_dict,

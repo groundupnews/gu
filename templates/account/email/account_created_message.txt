@@ -1,0 +1,13 @@
+Dear {{author.first_names}} {{author.last_name}}
+
+An account has been created for you on GroundUp.
+
+Your user name is: {{user.username}}
+Your password is: {{pwd}}
+
+Login here:
+http://{{site.domain}}/account/login/
+
+You should change your password after you've logged in the first time.
+
+This is an automated message by the GroundUp system.

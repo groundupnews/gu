@@ -3,14 +3,19 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 
 from filebrowser.fields import FileBrowseField
 
 from . import settings
+from . import utils
 from socialmedia.common import SCHEDULE_RESULTS
 
 import logging
 import datetime
+import sys
 
 logger = logging.getLogger("django")
 
@@ -39,6 +44,7 @@ class Author(models.Model):
                                 verbose_name="ID or date of birth")
     address = models.TextField(blank=True)
     bank_details = models.TextField(blank=True)
+    user = models.OneToOneField(User, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
@@ -53,6 +59,40 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         return reverse('author.detail', args=[self.pk, ])
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            pwd = None
+            site = Site.objects.get_current()
+            if self.user is None:
+                pwd = utils.generate_pwd()
+                username = (self.first_names + self.last_name).replace(" ", "_")
+                user = User.objects.create_user(username=username,
+                                                first_name = self.first_names,
+                                                last_name = self.last_name,
+                                                email=self.email,
+                                                password=pwd)
+                user.save()
+                self.user = user
+                super(Author, self).save(*args, **kwargs)
+            subject = "Account created for you on GroundUp"
+            message = render_to_string('account/email/account_created_message.txt',
+                                       {'user': user,
+                                        'author': self,
+                                        'pwd': pwd,
+                                        'site': site})
+            try:
+                send_mail(subject,
+                          message,
+                          settings.EDITOR,
+                          [self.email, settings.EDITOR,]
+                )
+            except:
+                log_message = "Error author creation email failed: " + \
+                              self.email
+                logger.error(log_message)
+        else:
+            super(Author, self).save(*args, **kwargs)
 
     class Meta:
         unique_together = (('first_names', 'last_name'), )

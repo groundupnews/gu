@@ -38,6 +38,10 @@ urlpatterns = [
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.TopicDetail.as_view()), name='topic.detail'),
 
+    url(r'^user/$', views.account_profile,
+        name="user.profile"),
+
+
 
     ###############################
     # Article list generate

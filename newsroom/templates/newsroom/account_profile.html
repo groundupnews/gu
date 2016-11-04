@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+{% load account socialaccount %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+    <h1>{{user.first_name}} {{user.last_name}}</h1>
+    <ul>
+        <li><a href="{% url "account_logout" %}">Logout</a></li>
+    </ul>
+
+{% else %}
+    <p>Please <a href="{% url 'account_login' %}">login</a>.</p>
+{% endif %}
+
+{% endblock %}

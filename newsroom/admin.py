@@ -217,10 +217,14 @@ class AuthorAdmin(admin.ModelAdmin):
     fields = ('first_names','last_name','title', 'email','freelancer',
               'cell','telephone', 'address', 'id_or_db', 'bank_details',
               'tax_no', 'tax_directive', 'add_vat',
-              'twitter','facebook','description',)
+              'twitter','facebook','description', 'user')
     inlines = [
         CommissionInline,
     ]
+    raw_id_fields = ('user', )
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
 
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
@@ -228,8 +232,8 @@ admin.site.register(models.MostPopular)
 # Commissions
 
 class UnprocessedListFilter(admin.SimpleListFilter):
-    title = 'unprocessed'
-    parameter_name = 'unprocessed'
+    title = 'Processed/Approved'
+    parameter_name = 'processed_approved'
 
     def lookups(self, request, model_admin):
         return (

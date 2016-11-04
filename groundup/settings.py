@@ -56,6 +56,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django.contrib.redirects',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'haystack',
     'newsroom',
     'socialmedia',
@@ -85,7 +88,7 @@ ROOT_URLCONF = 'groundup.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+        'DIRS': [ os.path.join(BASE_DIR, 'templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,6 +101,17 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+#ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+#ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+LOGIN_REDIRECT_URL = "/user/"
 
 WSGI_APPLICATION = 'groundup.wsgi.application'
 

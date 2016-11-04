@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block css-override %}
+    <style>
+
+     form {
+         background: -webkit-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+         background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+         background: linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+         font-family: Tahoma, Geneva, sans-serif;
+         font-size: 14px;
+         font-style: italic;
+         line-height: 24px;
+         font-weight: bold;
+         color: #09C;
+         text-decoration: none;
+         border-radius: 10px;
+         padding: 10px;
+         border: 1px solid #999;
+         border: inset 1px solid #333;
+         -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+         -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+         box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+         margin-bottom: 15px;
+     }
+
+     input {
+         padding: 5px;
+         display: block;
+         border: 1px solid #999;
+         height: 25px;
+        -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+         box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+     }
+
+     input[type="checkbox"] {
+         display:block;
+         border: none;
+         -webkit-box-shadow: 0 0 0 0;
+         -moz-box-shadow: 0 0 0 0;
+         box-shadow: 0 0 0 0;
+         margin-top: 0;
+         padding: 0;
+     }
+
+     button, input[type="submit"] {
+         display: block;
+         margin-bottom: 5px;
+         padding: 5px 15px 25px 15px;
+         /* width: 100px;*/
+         background: #09C;
+         color: #fff;
+         font-family: Tahoma, Geneva, sans-serif;
+         height: 30px;
+         border-radius: 15px;
+         border: 1p solid #999;
+     }
+
+
+
+     /*
+     textarea#feedback {
+         width: 375px;
+         height: 150px;
+         display: block;
+     }
+
+     input.button:hover {
+         background: #fff;
+         color: #09C;
+     } */
+    </style>
+{% endblock %}
+
+
+{% block content-wrapper %}
+
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-md-8">
+
+                {% block content %}
+
+                {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

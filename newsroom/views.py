@@ -461,6 +461,13 @@ def generate_article_list(request):
                    'output': output,
                    'len_articles': len(articles)})
 
+
+def account_profile(request):
+    return render(request, "newsroom/account_profile.html")
+
+
+
+
 ''' Used to test logging
 '''
 

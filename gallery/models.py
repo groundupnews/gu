@@ -39,7 +39,7 @@ class Album(models.Model):
         return reverse('album.detail', args=[self.pk, ])
 
     class Meta:
-        ordering = ['modified', ]
+        ordering = ['name', ]
 
 
 class Photograph(models.Model):

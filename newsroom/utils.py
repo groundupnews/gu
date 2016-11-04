@@ -1,5 +1,7 @@
 import re
 import html
+import string
+import random
 from bs4 import BeautifulSoup
 
 from django.test import TestCase
@@ -158,3 +160,10 @@ def get_edit_lock_msg(user):
     "after you opened this page. Copy and paste your changes somewhere " \
     "safe (like a text editor). Then open this page again."
     return message
+
+
+# Used to generate random passwords
+# Source: http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+
+def generate_pwd(size=12, chars=string.ascii_letters + string.digits):
+    return ''.join(random.SystemRandom().choice(chars) for _ in range(size))

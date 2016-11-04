@@ -78,6 +78,11 @@
             {% include 'newsroom/staff_menu.html' %}
 	    </ul>
 	  </li>
+          {% elif request.user.is_authenticated %}
+	  <li class="Dropdown">
+	      <a href="{% url 'user.profile' %}"
+                 class="dropdown-toggle admin-menu-item">My account</a>
+	  </li>
 	  {% endif %}
 	</ul>
       </div><!--/.nav-collapse -->

@@ -59,8 +59,10 @@
 	    {% block content-header %}
 	    {% endblock %}
 
-	    {% block content %}
-	    {% endblock %}
+            {% block content-wrapper %}
+	        {% block content %}
+	        {% endblock %}
+            {% endblock %}
 
 	    {% block admin-area %}
 		{% if request.user.is_staff %}

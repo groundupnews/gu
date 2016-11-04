@@ -7,6 +7,8 @@
 			    alert-danger
 			    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
 			    alert-success
+                            {% else %}
+                            alert-success
 			    {% endif %}
 			    ">
 		    {{message|safe}}
