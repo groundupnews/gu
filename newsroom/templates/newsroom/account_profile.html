@@ -5,8 +5,10 @@
 {% if request.user.is_authenticated %}
     <h1>{{user.first_name}} {{user.last_name}}</h1>
     <ul>
+        <li><a href="{% url "account_change_password" %}">Change password</a></li>
         <li><a href="{% url "account_logout" %}">Logout</a></li>
     </ul>
+
 
 {% else %}
     <p>Please <a href="{% url 'account_login' %}">login</a>.</p>

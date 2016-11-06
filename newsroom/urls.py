@@ -41,6 +41,8 @@ urlpatterns = [
     url(r'^user/$', views.account_profile,
         name="user.profile"),
 
+    url(r'^invoices/$', views.invoice_list,
+        name="invoice.list"),
 
 
     ###############################

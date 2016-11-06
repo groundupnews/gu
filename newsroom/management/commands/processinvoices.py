@@ -32,7 +32,6 @@ def generate_commissions():
                     commission = Commission()
                     # commission.author = author
                     commission.article = article
-                    commission.description = "System generated possible commission."
                     commission.sys_generated = True
                     commission.date_generated = timezone.now()
                     num_commissions = num_commissions + 1
@@ -73,8 +72,7 @@ def notify_freelancers():
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [invoice.author.email, settings.INVOICE_EMAIL,],
-                          html_message=message
+                          [invoice.author.email, settings.INVOICE_EMAIL,]
                 )
             except SMTPException as err:
                 print("ProcessInvoices: Error sending approval "
@@ -100,15 +98,14 @@ def notify_freelancers():
                                    {'invoice': invoice,
                                     'commissions': commissions})
 
-        print("ProcessInvoices: Emailing processed: ", \
+        print("ProcessInvoices: Emailing paid: ", \
               invoice.author.email,\
               " about ", invoice.pk)
         try:
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [commission.author.email, settings.INVOICE_EMAIL,],
-                          html_message=message
+                          [invoice.author.email, settings.INVOICE_EMAIL,]
                 )
         except SMTPException as err:
             print("ProcessInvoices: Error sending processed"

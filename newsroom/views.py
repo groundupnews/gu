@@ -389,6 +389,40 @@ def copy_article(request, slug):
         raise Http404
 
 
+
+def invoice_list(request):
+    user = request.user
+    if not user.is_authenticated():
+        raise Http404
+    staff_view = False
+    # Staff query
+    if user.is_staff() and user.has_perm("newsroom.change_invoice"):
+        invoices_unpaid = models.Invoice.objects.filter(status="0")
+        invoices_queried = models.Invoice.objects.filter(status="1")
+        invoices_reporter_approved = models.Invoice.objects.filter(status="2")
+        invoices_editor_approved = models.Invoice.objects.filter(status="3")
+        invoices_paid = models.Invoice.objects.filter(status="4")
+        staff_view = True
+    elif user.author is not None and user.author.freelancer is True:
+        invoices_unpaid = models.Invoice.objects.filter(status="0").\
+                        filter(author=user.author)
+        invoices_queried = models.Invoice.objects.filter(status="1").\
+                        filter(author=user.author)
+        invoices_reporter = models.Invoice.objects.filter(status="2").\
+                        filter(author=user.author)
+        invoices_editor = models.Invoice.objects.filter(status="3").\
+                        filter(author=user.author)
+        invoices_paid = models.Invoice.objects.filter(status="4").\
+                        filter(author=user.author)
+    else:
+        raise Http404
+    return render(request, "newsroom/invoice_list.html",
+                  {'invoices_unpaid': invoices_unpaid,
+                   'invoices_queried': invoices_queried,
+                   'invoices_reporter': invoices_reporter,
+                   'invoices_paid': invoices_paid,
+                   'staff_view': staff_view})
+
 ####################################################
 
 ''' Redirect images on old Drupal site
@@ -463,6 +497,11 @@ def generate_article_list(request):
 
 
 def account_profile(request):
+    if request.user.is_authenticated() == True:
+        if request.user.author is not None:
+            if request.user.author.password_changed == False:
+                messages.add_message(request, messages.WARNING,
+                                     "Please change your password.")
     return render(request, "newsroom/account_profile.html")
 
 

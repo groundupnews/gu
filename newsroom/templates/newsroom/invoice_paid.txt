@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Invoice paid</title>
+    </head>
+
+    <body>
+
+
+
+        <p>Dear {{invoice.author.first_names}} {{invoice.author.last_name}}</p>
+
+        <p>
+            RE: INVOICE {{invoice.short_string}} PAID: R{{invoice.amount_paid}}
+        </p>
+
+        <p>
+            Bank Details<br />
+            Bank: {{invoice.bank_name}}<br />
+            Account: {{invoice.bank_account_number}}<br />
+        </p>
+
+        <p>
+            Invoice {{invoice.short_string}} has been paid to you.
+        </p>
+
+        {% include "newsroom/invoice_common.txt" %}
+
+    </body>
+
+</html>

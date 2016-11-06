@@ -1,0 +1,50 @@
+<table>
+    <tr>
+        <th>Article</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Tax</th>
+        <th>VAT</th>
+        <th>Due to you</th>
+    </tr>
+    {% for commission in commissions %}
+    {% with commission.calc_payment as payment %}
+    <tr>
+        <td>{{commission.article.title}}</td>
+        <td>{{commission.description}}</td>
+        <td>R{{payment.3|floatformat:2}}</td>
+        <td>R{{payment.2|floatformat:2}}</td>
+        <td>R{{payment.1|floatformat:2}}</td>
+        <td>R{{payment.0|floatformat:2}}</td>
+    </tr>
+    {% endwith %}
+    {% endfor %}
+    {% with invoice.calc_payment as payment %}
+    <tr>
+        <td><b>TOTAL</b></td>
+        <td></td>
+        <td>R{{payment.3|floatformat:2}}</td>
+        <td>R{{payment.2|floatformat:2}}</td>
+        <td>R{{payment.1|floatformat:2}}</td>
+        <td><b>R{{payment.0|floatformat:2}}</b></td>
+    </tr>
+    {% endwith%}
+</table>
+
+<p>
+Thank you.
+</p>
+
+<p>
+This is an automated email sent by the GroundUp invoicing system.
+</p>
+
+<p>
+DISCLAIMER
+</p>
+
+<p>
+If the system has sent this email in error, we apologise. This email is not a
+contract. If it contains the wrong amount or the GroundUp management decides
+you are not owed commission by GroundUp, then that overrides this email.
+</p>

@@ -44,6 +44,10 @@ class CommissionInline(admin.StackedInline):
     classes = ('grp-closed',)
     extra = 0
 
+class InvoiceInline(admin.StackedInline):
+    model = models.Invoice
+    classes = ('grp-closed',)
+    extra = 0
 
 
 class ArticleForm(forms.ModelForm):
@@ -212,14 +216,15 @@ class AuthorForm(forms.ModelForm):
 class AuthorAdmin(admin.ModelAdmin):
     form = AuthorForm
     list_display = ('last_name', 'first_names', 'created', 'modified',
-                    'email', 'telephone', 'cell', )
+                    'email', 'cell', 'freelancer', )
+    list_editable = ('email', 'cell', 'freelancer',)
     search_fields = ['last_name', 'first_names', ]
     fields = ('first_names','last_name','title', 'email','freelancer',
               'cell','telephone', 'address', 'id_or_db', 'bank_details',
               'tax_no', 'tax_directive', 'add_vat',
-              'twitter','facebook','description', 'user')
+              'twitter','facebook','description', 'user', 'password_changed',)
     inlines = [
-        CommissionInline,
+        InvoiceInline,
     ]
     raw_id_fields = ('user', )
     autocomplete_lookup_fields = {
@@ -232,38 +237,38 @@ admin.site.register(models.MostPopular)
 # Commissions
 
 class UnprocessedListFilter(admin.SimpleListFilter):
-    title = 'Processed/Approved'
-    parameter_name = 'processed_approved'
+    title = 'Approved'
+    parameter_name = 'approved'
 
     def lookups(self, request, model_admin):
         return (
             ('unapproved', 'unapproved'),
-            ('unprocessed', 'unprocessed'),
         )
 
     def queryset(self, request, queryset):
         if self.value() == 'unapproved':
-            return queryset.filter(date_approved__isnull = True)
-        if self.value() == 'unprocessed':
-            return queryset.filter(date_processed__isnull =True)
+            return queryset.filter(fund__isnull = True)
 
 class CommissionAdmin(admin.ModelAdmin):
-    list_display = ('author', 'article',
-                    'date_approved','date_processed',
-                    'commission_due', 'tax_percent','fund')
-    list_editable = ('fund', 'date_approved', 'date_processed',
-                     'commission_due', 'tax_percent',)
+    list_display = ('invoice', 'author', 'article',
+                    'commission_due', 'taxable','fund')
+    list_editable = ('fund', 'commission_due', 'taxable',)
     search_fields = ('author__first_names', 'author__last_name',)
     list_filter = ['author', UnprocessedListFilter,]
-    date_hierarchy = 'date_approved'
     ordering = ['-modified', ]
-    raw_id_fields = ('author', 'article', )
+    raw_id_fields = ('invoice', 'author', 'article', )
     autocomplete_lookup_fields = {
-        'fk': ['author', 'article',],
+        'fk': ['invoice', 'author', 'article',],
     }
+
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('author', 'status', 'invoice_num',)
+    inlines = [CommissionInline,]
 
 admin.site.register(models.Fund)
 admin.site.register(models.Commission, CommissionAdmin)
+admin.site.register(models.Invoice, InvoiceAdmin)
+
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
