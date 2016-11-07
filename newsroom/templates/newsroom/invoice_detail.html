@@ -1,0 +1,124 @@
+{% extends "base_20161106.html" %}
+
+{% block content %}
+    <h1>Invoice #{{invoice.short_string}} for {{invoice.author}}:
+        {{invoice.get_status_display}}
+        {% if invoice.status == "4" %}
+            on {{invoice.date_time_processed|date:"j M Y"}}
+        {% endif %}
+    </h1>
+    <div class="container">
+        <div class="row">
+	    <div class="col-xs-12 col-md-4">
+                <div class="row">
+                    <div class="col-xs-6">
+                        Identification:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.identification}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Date of birth:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.dob}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Address:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.address}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Bank name:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.bank_name}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Bank account:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.bank_account_number}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Bank account type:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.bank_account_type}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Bank branch name:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.bank_branch_name}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Bank branch code:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.bank_branch_code}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Swift code:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.swift_code}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        IBAN:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.iban}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Tax number:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.tax_no}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        Tax:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.tax_percent}}%
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        VAT:
+                    </div>
+                    <div class="col-xs-6">
+                        {{invoice.vat}}%
+                    </div>
+                </div>
+            </div>
+	    <div class="col-xs-12 col-md-8">
+                {% include "newsroom/invoice_table.html" %}
+            </div>
+        </div>
+    </div>
+    <hr />
+{% endblock %}

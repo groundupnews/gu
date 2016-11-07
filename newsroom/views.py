@@ -396,32 +396,50 @@ def invoice_list(request):
         raise Http404
     staff_view = False
     # Staff query
-    if user.is_staff() and user.has_perm("newsroom.change_invoice"):
-        invoices_unpaid = models.Invoice.objects.filter(status="0")
-        invoices_queried = models.Invoice.objects.filter(status="1")
-        invoices_reporter_approved = models.Invoice.objects.filter(status="2")
-        invoices_editor_approved = models.Invoice.objects.filter(status="3")
-        invoices_paid = models.Invoice.objects.filter(status="4")
+    if user.is_staff and user.has_perm("newsroom.change_invoice"):
+        invoices = models.Invoice.objects.all()
         staff_view = True
     elif user.author is not None and user.author.freelancer is True:
-        invoices_unpaid = models.Invoice.objects.filter(status="0").\
-                        filter(author=user.author)
-        invoices_queried = models.Invoice.objects.filter(status="1").\
-                        filter(author=user.author)
-        invoices_reporter = models.Invoice.objects.filter(status="2").\
-                        filter(author=user.author)
-        invoices_editor = models.Invoice.objects.filter(status="3").\
-                        filter(author=user.author)
-        invoices_paid = models.Invoice.objects.filter(status="4").\
-                        filter(author=user.author)
+        invoices = models.Invoice.objects.filter(author=user.author)
     else:
         raise Http404
     return render(request, "newsroom/invoice_list.html",
-                  {'invoices_unpaid': invoices_unpaid,
-                   'invoices_queried': invoices_queried,
-                   'invoices_reporter': invoices_reporter,
-                   'invoices_paid': invoices_paid,
+                  {'invoices': invoices,
                    'staff_view': staff_view})
+
+
+def invoice_detail(request, author_pk, invoice_num):
+    user = request.user
+    if not user.is_authenticated():
+        print("D0")
+        raise Http404
+    staff_view = False
+
+    if user.is_staff and user.has_perm("newsroom.change_invoice"):
+        staff_view = True
+    else:
+        if request.user.author is None:
+            print("D1")
+            raise Http404
+        if request.user.author.pk != int(author_pk):
+            print("D2", request.user.author.pk, author_pk)
+            raise Http404
+        staff_view = False
+
+    invoice = get_object_or_404(models.Invoice, author__pk=author_pk,
+                                invoice_num=invoice_num)
+    # Get commissions
+    if staff_view:
+        commissions = models.Commission.objects.filter(invoice=invoice)
+    else:
+        commissions = models.Commission.objects.filter(invoice=invoice).\
+                      filter(fund__isnull=False)
+    return render(request, "newsroom/invoice_detail.html",
+                  {'invoice': invoice,
+                   'commissions': commissions,
+                   'staff_view': staff_view})
+
+
 
 ####################################################
 

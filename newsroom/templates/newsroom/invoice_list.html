@@ -1,20 +1,51 @@
-{% extends "base.html" %}
+{% extends "base_20161106.html" %}
 
 {% block content %}
-    <div class="container">
-	<div class="row">
-	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
-		<h1>Topics</h1>
-		<ul>
-		    {% for topic in object_list %}
-			<li>
-			    <a href="{% url 'topic.detail' topic.slug %}">
-				{{ topic.name|upper }}
-			    </a>
-			</li>
-		    {% endfor %}
-		</ul>
-	    </div>
-	</div>
-    </div>
+
+    <h1>Invoices
+        {% if not staff_view %}
+            for {{request.user.first_name}} {{request.user.last_name}}
+        {% endif %}
+    </h1>
+
+
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Status</th>
+            <th >Before tax & VAT</th>
+            <th >Tax</th>
+            <th >Vat</th>
+            <th >Due</th>
+            {% if staff_view %}
+                <th>Name</th>
+            {% endif %}
+        </tr>
+        {% for invoice in invoices %}
+            <tr>
+                <td>
+                    <a href="{% url "invoice.detail" invoice.author.pk invoice.invoice_num %}">
+                        {{invoice.short_string}}
+                    </a>
+                </td>
+                <td>{{invoice.get_status_display}}
+                    {% if invoice.status == "4" %}
+                        on {{invoice.date_time_processed|date:"j M Y"}}
+                    {% endif %}
+                </td>
+                {% with invoice.calc_payment as payment %}
+                    <td>R{{payment.3|floatformat:2}}</td>
+                    <td>R{{payment.2|floatformat:2}}</td>
+                    <td>R{{payment.1|floatformat:2}}</td>
+                    <td>R{{payment.0|floatformat:2}}</td>
+                    {% if staff_view %}
+                        <td>
+                            {{invoice.author}}
+                        </td>
+                    {% endif %}
+                {% endwith %}
+            </tr>
+        {% endfor %}
+    </table>
+
 {% endblock %}

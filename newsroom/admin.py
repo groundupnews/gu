@@ -219,10 +219,6 @@ class AuthorAdmin(admin.ModelAdmin):
                     'email', 'cell', 'freelancer', )
     list_editable = ('email', 'cell', 'freelancer',)
     search_fields = ['last_name', 'first_names', ]
-    fields = ('first_names','last_name','title', 'email','freelancer',
-              'cell','telephone', 'address', 'id_or_db', 'bank_details',
-              'tax_no', 'tax_directive', 'add_vat',
-              'twitter','facebook','description', 'user', 'password_changed',)
     inlines = [
         InvoiceInline,
     ]

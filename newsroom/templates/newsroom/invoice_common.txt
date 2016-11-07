@@ -1,3 +1,5 @@
+{% include "newsroom/invoice_table.html" %}
+
 <table>
     <tr>
         <th>Article</th>

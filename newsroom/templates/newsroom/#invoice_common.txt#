@@ -1,0 +1,19 @@
+{% include "newsroom/invoice_table.html" %}
+
+<p>
+Thank you.
+</p>
+
+<p>
+This is an automated email sent by the GroundUp invoicing system.
+</p>
+
+<p>
+DISCLAIMER
+</p>
+
+<p>
+If the system has sent this email in error, we apologise. This email is not a
+contract. If it contains the wrong amount or the GroundUp management decides
+you are not owed commission by GroundUp, then that overrides this email.
+</p>

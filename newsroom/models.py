@@ -25,17 +25,9 @@ logger = logging.getLogger("django")
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200)
-    title = models.CharField(max_length=20, blank=True)
-    photo = FileBrowseField(max_length=200, directory="images/",
-                            blank=True, null=True, )
-    description = models.TextField(blank=True)
-    website = models.URLField(blank=True)
-    twitter = models.CharField(max_length=200, blank=True)
-    facebook = models.CharField(max_length=200, blank=True)
-    googleplus = models.CharField(max_length=200, blank=True)
-    email = models.EmailField(blank=True)
-    email_is_private = models.BooleanField(default=True)
     freelancer = models.BooleanField(default=False)
+    email = models.EmailField(blank=True)
+    title = models.CharField(max_length=20, blank=True)
     telephone = models.CharField(max_length=200, blank=True)
     cell = models.CharField(max_length=200, blank=True)
 
@@ -72,6 +64,14 @@ class Author(models.Model):
                               "set this to 14 else leave at 0")
 
     ####
+    email_is_private = models.BooleanField(default=True)
+    photo = FileBrowseField(max_length=200, directory="images/",
+                            blank=True, null=True, )
+    description = models.TextField(blank=True)
+    website = models.URLField(blank=True)
+    twitter = models.CharField(max_length=200, blank=True)
+    facebook = models.CharField(max_length=200, blank=True)
+    googleplus = models.CharField(max_length=200, blank=True)
     user = models.OneToOneField(User, null=True, blank=True)
     password_changed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -723,6 +723,7 @@ class Invoice(models.Model):
             total_paid = total_paid + due
             total_vat = total_vat + vat
             total_tax = total_tax + tax
+            total_uncorrected = total_uncorrected + uncorrected
         self.amount_paid = total_paid
         self.vat_paid = total_vat
         self.tax_paid = total_tax
@@ -730,11 +731,14 @@ class Invoice(models.Model):
                 self.tax_paid, total_uncorrected,)
 
     def __str__(self):
-        return str(self.pk) + "-" + str(self.invoice_num) + " - " + \
+        return str(self.author.pk) + "-" + str(self.invoice_num) + " - " + \
             str(self.author) + " - " + self.get_status_display()
 
+    def get_absolute_url(self):
+        return reverse('invoice.detail', args=[self.author.pk, self.invoice_num])
+
     def short_string(self):
-        return str(self.pk) + "-" + str(self.invoice_num)
+        return str(self.author.pk) + "-" + str(self.invoice_num)
 
     def save(self, *args, **kwargs):
         if self.status == "2": # Reporter has approved
@@ -746,7 +750,7 @@ class Invoice(models.Model):
         if self.status == "4": # Invoice has been paid
             if self.date_time_editor_approved is None:
                 self.date_time_processed = timezone.now()
-            self.calc_payment()
+                self.calc_payment()
         super(Invoice, self).save(*args, **kwargs)
 
 
@@ -777,7 +781,7 @@ class Invoice(models.Model):
         return invoice
 
     class Meta:
-        ordering = ['-status','-modified',]
+        ordering = ['status','-modified',]
 
 
 
@@ -818,7 +822,8 @@ class Commission(models.Model):
         else:
             tax = Decimal(0.00)
         if self.vatable:
-                vat = (self.vat / Decimal(100.00))  * commission.commission_due
+                vat = (self.invoice.vat / Decimal(100.00)) * \
+                self.commission_due
         else:
             vat = Decimal(0.00)
         due = self.commission_due - tax + vat
@@ -826,8 +831,15 @@ class Commission(models.Model):
 
 
     def __str__(self):
-        return " ".join([str(self.pk), str(self.invoice.author),
-                         str(self.article)])
+        if self.invoice is not None and self.article is not None:
+            return " ".join([str(self.pk), str(self.invoice.author),
+                             str(self.article)])
+        elif self.invoice is not None:
+            return " ".join([str(self.pk), str(self.invoice.author)])
+        elif self.article is not None:
+            return " ".join([str(self.pk), str(self.article)])
+        else:
+            return str(self.pk)
 
     class Meta:
         ordering = ['author', 'article',]

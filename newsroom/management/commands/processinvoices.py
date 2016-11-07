@@ -72,7 +72,8 @@ def notify_freelancers():
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [invoice.author.email, settings.INVOICE_EMAIL,]
+                          [invoice.author.email, settings.INVOICE_EMAIL,],
+                          html_message=message
                 )
             except SMTPException as err:
                 print("ProcessInvoices: Error sending approval "
@@ -105,7 +106,8 @@ def notify_freelancers():
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [invoice.author.email, settings.INVOICE_EMAIL,]
+                          [invoice.author.email, settings.INVOICE_EMAIL,],
+                          html_message=message
                 )
         except SMTPException as err:
             print("ProcessInvoices: Error sending processed"
