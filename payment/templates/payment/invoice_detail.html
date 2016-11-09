@@ -50,8 +50,7 @@
         {% elif invoice.status == "3" %}
             The editors have approved this invoice for payment
         {% elif invoice.status == "4" %}
-            Paid
-            on {{invoice.date_time_processed|date:"j M Y"}}
+            Paid on {{invoice.date_time_processed|date:"j M Y"}}
         {% endif %}
     </h2>
     <div class="container">

@@ -13,7 +13,7 @@
     <tr>
         <td>
             {% if commission.article %}
-                <a href="{% url "article.detail" commission.article.slug %}">
+                <a href="http://{{site.domain}}{% url "article.detail" commission.article.slug %}">
                     {{commission.article.title}}
                 </a>
             {% endif %}
