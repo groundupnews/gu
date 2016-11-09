@@ -96,7 +96,7 @@ class Author(models.Model):
         return reverse('author.detail', args=[self.pk, ])
 
     def save(self, *args, **kwargs):
-        if self.pk is None:
+        if self.pk is None or self.user is None:
             pwd = None
             site = Site.objects.get_current()
             if self.user is None:
