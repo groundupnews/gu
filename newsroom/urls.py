@@ -41,13 +41,6 @@ urlpatterns = [
     url(r'^user/$', views.account_profile,
         name="user.profile"),
 
-    url(r'^invoices/$', views.invoice_list,
-        name="invoice.list"),
-
-    url(r'^invoices/([0-9]+)-([0-9]+)$', views.invoice_detail,
-        name="invoice.detail"),
-
-
     ###############################
     # Article list generate
 

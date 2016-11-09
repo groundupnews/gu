@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^imagegallery/', include('gallery.urls')),
     url(r'^', include('newsroom.urls')),
+    url(r'^', include('payment.urls')),
     url(r'^', include('letters.urls')),
     url(r'^search/', include('haystack.urls')),
     url(r'^accounts/', include('allauth.urls')),

@@ -1,6 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,700italic,300italic,300|Roboto+Condensed:300,300italic,400,700,700italic);
 
-
 /* Imported Fonts
 font-family: 'Roboto', sans-serif;
 
@@ -758,7 +757,7 @@ a.admin-menu-item {
     margin-top: 3px;
 }
 
-#letter-form .errorlist {
+#letter-form .errorlist, #invoice-form .errorlist {
     color: red;
     list-style: none;
     display: block;
@@ -769,6 +768,11 @@ a.admin-menu-item {
 
 #letter-form input, #letter-form textarea {
     width: 100%;
+}
+
+table#invoice-form .helptext {
+    font-size: 9px;
+    font-weight: bold;
 }
 
 /************ Styles for editors and administrators - PC only *****************/

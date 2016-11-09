@@ -1,4 +1,4 @@
-{% include "newsroom/invoice_table.html" %}
+{% include "payment/invoice_table.html" %}
 
 <p>
 Thank you.

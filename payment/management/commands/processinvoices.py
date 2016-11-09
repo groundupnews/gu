@@ -10,7 +10,8 @@ import logging
 from django.utils import timezone
 from newsroom import settings
 
-from newsroom.models import Article, Author, Commission, Invoice
+from newsroom.models import Article, Author
+from payment.models import Commission, Invoice
 
 def generate_commissions():
     num_commissions = 0
@@ -32,7 +33,6 @@ def generate_commissions():
                     commission = Commission()
                     # commission.author = author
                     commission.article = article
-                    commission.description = "System generated possible commission."
                     commission.sys_generated = True
                     commission.date_generated = timezone.now()
                     num_commissions = num_commissions + 1
@@ -51,6 +51,7 @@ def generate_commissions():
     return num_commissions
 
 def notify_freelancers():
+    site = Site.objects.get_current()
     num_approved = 0
     num_paid = 0
     # First do notifications for open invoices with approved commissions
@@ -67,9 +68,10 @@ def notify_freelancers():
                       invoice.author.email,\
                       " about ", invoice.pk)
                 subject = "Invoice for work done for GroundUp"
-                message = render_to_string('newsroom/invoice_approved.txt',
+                message = render_to_string('payment/invoice_approved.txt',
                                            {'invoice': invoice,
-                                            'commissions': commissions})
+                                            'commissions': commissions,
+                                            'site' : site})
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
@@ -96,18 +98,19 @@ def notify_freelancers():
                       filter(fund__isnull=False).\
                       filter(commission_due__gt=0.00)
         subject = "Payment for work done for GroundUp"
-        message = render_to_string('newsroom/invoice_paid.txt',
+        message = render_to_string('payment/invoice_paid.txt',
                                    {'invoice': invoice,
-                                    'commissions': commissions})
+                                    'commissions': commissions,
+                                    'site': site})
 
-        print("ProcessInvoices: Emailing processed: ", \
+        print("ProcessInvoices: Emailing paid: ", \
               invoice.author.email,\
               " about ", invoice.pk)
         try:
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [commission.author.email, settings.INVOICE_EMAIL,],
+                          [invoice.author.email, settings.INVOICE_EMAIL,],
                           html_message=message
                 )
         except SMTPException as err:

@@ -389,58 +389,6 @@ def copy_article(request, slug):
         raise Http404
 
 
-
-def invoice_list(request):
-    user = request.user
-    if not user.is_authenticated():
-        raise Http404
-    staff_view = False
-    # Staff query
-    if user.is_staff and user.has_perm("newsroom.change_invoice"):
-        invoices = models.Invoice.objects.all()
-        staff_view = True
-    elif user.author is not None and user.author.freelancer is True:
-        invoices = models.Invoice.objects.filter(author=user.author)
-    else:
-        raise Http404
-    return render(request, "newsroom/invoice_list.html",
-                  {'invoices': invoices,
-                   'staff_view': staff_view})
-
-
-def invoice_detail(request, author_pk, invoice_num):
-    user = request.user
-    if not user.is_authenticated():
-        print("D0")
-        raise Http404
-    staff_view = False
-
-    if user.is_staff and user.has_perm("newsroom.change_invoice"):
-        staff_view = True
-    else:
-        if request.user.author is None:
-            print("D1")
-            raise Http404
-        if request.user.author.pk != int(author_pk):
-            print("D2", request.user.author.pk, author_pk)
-            raise Http404
-        staff_view = False
-
-    invoice = get_object_or_404(models.Invoice, author__pk=author_pk,
-                                invoice_num=invoice_num)
-    # Get commissions
-    if staff_view:
-        commissions = models.Commission.objects.filter(invoice=invoice)
-    else:
-        commissions = models.Commission.objects.filter(invoice=invoice).\
-                      filter(fund__isnull=False)
-    return render(request, "newsroom/invoice_detail.html",
-                  {'invoice': invoice,
-                   'commissions': commissions,
-                   'staff_view': staff_view})
-
-
-
 ####################################################
 
 ''' Redirect images on old Drupal site
@@ -514,9 +462,17 @@ def generate_article_list(request):
                    'len_articles': len(articles)})
 
 
+def has_author(user):
+    has_author = False
+    try:
+        has_author = (user.author is not None)
+    except models.Author.DoesNotExist:
+         pass
+    return has_author
+
 def account_profile(request):
     if request.user.is_authenticated() == True:
-        if request.user.author is not None:
+        if has_author(request.user):
             if request.user.author.password_changed == False:
                 messages.add_message(request, messages.WARNING,
                                      "Please change your password.")

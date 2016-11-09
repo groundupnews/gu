@@ -4,7 +4,7 @@ from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
-
+from payment.admin import InvoiceInline, CommissionInline
 import re
 
 from . import models
@@ -32,22 +32,6 @@ blankpara_regex = re.compile(r'<p[^>]*?>\s*?</p>|<p[^>]*?>\s*?&nbsp;\s*?</p>')
 img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)')
 
 figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (class="caption")(.*?)>(.*?)(</p>)')
-
-
-class CommissionInline(admin.StackedInline):
-    model = models.Commission
-
-    #raw_id_fields = ('author', 'article', )
-    #autocomplete_lookup_fields = {
-    #    'fk': ['author', 'article',],
-    #}
-    classes = ('grp-closed',)
-    extra = 0
-
-class InvoiceInline(admin.StackedInline):
-    model = models.Invoice
-    classes = ('grp-closed',)
-    extra = 0
 
 
 class ArticleForm(forms.ModelForm):
@@ -229,42 +213,6 @@ class AuthorAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
-
-# Commissions
-
-class UnprocessedListFilter(admin.SimpleListFilter):
-    title = 'Approved'
-    parameter_name = 'approved'
-
-    def lookups(self, request, model_admin):
-        return (
-            ('unapproved', 'unapproved'),
-        )
-
-    def queryset(self, request, queryset):
-        if self.value() == 'unapproved':
-            return queryset.filter(fund__isnull = True)
-
-class CommissionAdmin(admin.ModelAdmin):
-    list_display = ('invoice', 'author', 'article',
-                    'commission_due', 'taxable','fund')
-    list_editable = ('fund', 'commission_due', 'taxable',)
-    search_fields = ('author__first_names', 'author__last_name',)
-    list_filter = ['author', UnprocessedListFilter,]
-    ordering = ['-modified', ]
-    raw_id_fields = ('invoice', 'author', 'article', )
-    autocomplete_lookup_fields = {
-        'fk': ['invoice', 'author', 'article',],
-    }
-
-class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ('author', 'status', 'invoice_num',)
-    inlines = [CommissionInline,]
-
-admin.site.register(models.Fund)
-admin.site.register(models.Commission, CommissionAdmin)
-admin.site.register(models.Invoice, InvoiceAdmin)
-
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):

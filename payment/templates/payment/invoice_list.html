@@ -1,0 +1,54 @@
+{% extends "base_20161106.html" %}
+
+{% block content %}
+
+    <h1>Invoices
+        {% if not staff_view %}
+            for {{request.user.first_name}} {{request.user.last_name}}
+        {% endif %}
+    </h1>
+
+
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Status</th>
+            <th >Before tax & VAT</th>
+            <th >Tax</th>
+            <th >Vat</th>
+            <th >Due</th>
+            {% if staff_view %}
+                <th>Name</th>
+            {% endif %}
+        </tr>
+        {% for invoice in invoices %}
+            {% with invoice.calc_payment as payment %}
+                {% if staff_view or payment.3 > 0.00 %}
+                    <tr>
+                        <td>
+                            <a href="{% url "invoice.detail" invoice.author.pk invoice.invoice_num %}">
+                                {{invoice.short_string}}
+                            </a>
+                        </td>
+                        <td>{{invoice.get_status_display}}
+                            {% if invoice.status == "4" %}
+                                on {{invoice.date_time_processed|date:"j M Y"}}
+                            {% endif %}
+                        </td>
+
+                        <td>R{{payment.3|floatformat:2}}</td>
+                        <td>R{{payment.2|floatformat:2}}</td>
+                        <td>R{{payment.1|floatformat:2}}</td>
+                        <td>R{{payment.0|floatformat:2}}</td>
+                        {% if staff_view %}
+                            <td>
+                                {{invoice.author}}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </table>
+
+{% endblock %}

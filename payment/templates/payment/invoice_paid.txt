@@ -26,7 +26,7 @@
             Invoice {{invoice.short_string}} has been paid to you.
         </p>
 
-        {% include "newsroom/invoice_common.txt" %}
+        {% include "payment/invoice_common.txt" %}
 
     </body>
 

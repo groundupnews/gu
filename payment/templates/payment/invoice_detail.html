@@ -1,0 +1,132 @@
+{% extends "base_20161106.html" %}
+
+{% block css-override %}
+    {% if can_edit == False %}
+        <style>
+         .helptext {display: none;}
+        </style>
+    {% endif %}
+    {% if print_view == True %}
+        <style>
+         #id_query {display: none;}
+         label[for="id_query"] {display:none;}
+        </style>
+    {% else %}
+        {{block.super}}
+    {% endif %}
+{% endblock %}
+
+{% block admin-area %}
+    {% if print_view %}
+    {% else %}
+        {{block.super}}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block banner %}
+    {% if print_view %}
+    {% else %}
+        {{block.super}}
+    {% endif %}
+{% endblock %}
+
+{% block messages %}
+    {% if print_view %}
+    {% else %}
+        {{block.super}}
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Invoice #{{invoice.short_string}} for {{invoice.author}}:
+        {{invoice.get_status_display}}
+        {% if invoice.status == "4" %}
+            on {{invoice.date_time_processed|date:"j M Y"}}
+        {% endif %}
+    </h1>
+    <div class="container">
+        <div class="row">
+	    <div class="col-xs-12 col-md-6">
+                <form
+                    action="{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}"
+                    method="post">
+                    {% if can_edit == False %}<fieldset disabled>
+                    {% endif %}
+                    {% csrf_token %}
+
+                    <table class="table table-striped table-condensed"
+                           id="invoice-form">
+
+                        {{ form.as_table }}
+                        {% if can_edit %}
+                        <tr>
+                            <td>
+                                {% if staff_view %}
+                                    <input type="submit"
+                                           name="return_button"
+                                           class="btn btn-warning"
+                                           value="Return to author" />
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not staff_view %}
+                                    <input type="submit"
+                                           name="query_button"
+                                           class="btn btn-warning"
+                                           value="Query invoice" />
+                                    &nbsp;
+                                    <input type="submit"
+                                           name="pay_button"
+                                           class="btn btn-primary"
+                                           value="Please pay invoice" />
+                                {% else %}
+
+                                    <input type="submit"
+                                           name="approve_button"
+                                           class="btn btn-primary"
+                                           value="Approve invoice" />
+                                    &nbsp;
+                                    <input type="submit"
+                                           name="paid_button"
+                                           class="btn btn-primary"
+                                           value="Mark as paid" />
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    {% if can_edit == False %}</fieldset>{% endif %}
+                </form>
+            </div>
+	    <div class="col-xs-12 col-md-6">
+                {% include "payment/invoice_table.html" %}
+                {% if not print_view %}
+                    <a href="{% url "invoice.list" %}">INVOICES</a> |
+                    <a href="{% url "invoice.print" invoice.author.pk invoice.invoice_num %}"
+                       target="_blank"
+                    >
+                        PRINT
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <hr />
+{% endblock %}
+
+{% block footer %}
+    {% if print_view %}
+    {% else %}
+        {{block.super}}
+    {% endif %}
+{% endblock %}
+
+{% block javascript-includes %}
+    {% if print_view %}
+    {% else %}
+        {{block.super}}
+    {% endif %}
+{% endblock %}

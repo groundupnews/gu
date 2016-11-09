@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Invoice approved</title>
+    </head>
+
+    <body>
+
+        <p>
+            Dear {{invoice.author.first_names}} {{invoice.author.last_name}}
+        </p>
+
+        <p>
+            RE: COMMISSIONS APPROVED
+        </p>
+
+        <p> Below is a list of commissions due to you. Please go to
+        <a href=
+           "http://{{site.domain}}{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}">
+            this link</a>, make sure your details are correct,
+            and approve the payment.  </p>
+
+        {% include "payment/invoice_common.txt" %}
+
+    </body>
+</html>

@@ -42,7 +42,6 @@ else:
 # Application definition
 
 INSTALLED_APPS = (
-
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'grappelli.dashboard',
@@ -61,6 +60,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'haystack',
     'newsroom',
+    'payment',
     'socialmedia',
     'republisher',
     'clearcache',
