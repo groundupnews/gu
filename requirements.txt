@@ -25,3 +25,4 @@ django-haystack
 whoosh==2.7.4
 python-dateutil
 piexif
+allauth==0.28.0
