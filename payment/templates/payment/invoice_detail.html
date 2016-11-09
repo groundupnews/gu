@@ -23,8 +23,6 @@
     {% endif %}
 {% endblock %}
 
-
-
 {% block banner %}
     {% if print_view %}
     {% else %}
@@ -41,12 +39,21 @@
 
 
 {% block content %}
-    <h1>Invoice #{{invoice.short_string}} for {{invoice.author}}:
-        {{invoice.get_status_display}}
-        {% if invoice.status == "4" %}
+    <h1>Invoice #{{invoice.short_string}} for {{invoice.author}}</h1>
+    <h2>
+        {% if invoice.status == "0" %}
+            {{invoice.author}} needs to approve this invoice
+        {% elif invoice.status == "1" %}
+            {{invoice.author}} has queried this invoice
+        {% elif invoice.status == "2" %}
+            {{invoice.author}} has approved this invoice
+        {% elif invoice.status == "3" %}
+            The editors have approved this invoice for payment
+        {% elif invoice.status == "4" %}
+            Paid
             on {{invoice.date_time_processed|date:"j M Y"}}
         {% endif %}
-    </h1>
+    </h2>
     <div class="container">
         <div class="row">
 	    <div class="col-xs-12 col-md-6">
