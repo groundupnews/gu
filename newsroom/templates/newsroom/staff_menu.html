@@ -35,13 +35,13 @@
 {% if perms.letters.add_letter %}
     <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
 {% endif %}
-{% if perms.payment.edit_invoice %}
+{% if perms.payment.change_invoice %}
     <li><a href="{% url 'invoice.list' %}" class="admin-menu-item">Invoices</a></li>
 {% endif %}
-{% if perms.payment.edit_commission %}
+{% if perms.payment.change_commission %}
     <li><a href="{% url 'admin:payment_commission_changelist' %}" class="admin-menu-item">Commissions</a></li>
 {% endif %}
-{% if perms.newsroom.edit_author %}
+{% if perms.newsroom.change_author %}
     <li><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>
 {% endif %}
 
