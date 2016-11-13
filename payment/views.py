@@ -143,6 +143,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                    'can_edit': can_edit,
                    'can_edit_commissions': can_edit_commissions,
                    'formset': formset,
+                   'site': Site.objects.get_current(),
                    'print_view': print_view})
 
 @login_required
