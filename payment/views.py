@@ -14,6 +14,7 @@ from django.views.decorators.http import last_modified
 from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 
 from . import models
 from . import forms
@@ -58,7 +59,12 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             raise Http404
         staff_view = False
 
-
+    CommissionFormSet = modelformset_factory(models.Commission,
+                                             fields=('commission_due',
+                                                     'taxable',
+                                                     'vatable',
+                                                     'fund',),
+                                             extra=0)
     invoice = get_object_or_404(models.Invoice, author__pk=author_pk,
                                 invoice_num=invoice_num)
     if request.method == 'POST':
@@ -94,6 +100,11 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                 messages.add_message(request, messages.INFO,
                                      "Details updated")
                 invoice.save()
+            if user.has_perm("payment.change_commission"):
+                commissionformset = CommissionFormSet(request.POST,
+                                                      request.FILES)
+                if commissionformset.is_valid():
+                    commissionformset.save()
         else:
             messages.add_message(request, messages.ERROR,
                                  "Please make corrections")
@@ -104,22 +115,34 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         can_edit = True
 
     # Get commissions
+    formset = None
+    can_edit_commissions = False
     if staff_view:
         commissions = models.Commission.objects.filter(invoice=invoice)
+        if user.has_perm("payment.change_commission"):
+            can_edit_commissions = True
+            formset = CommissionFormSet(queryset=commissions)
     else:
         commissions = models.Commission.objects.filter(invoice=invoice).\
                       filter(fund__isnull=False)
+    if formset:
+        commissionformset = zip(commissions, formset)
+    else:
+        commissionformset = zip(commissions, range(len(commissions)))
 
     if print_view:
         can_edit = False
+        can_edit_commissions = False
         staff_view = False
 
     return render(request, "payment/invoice_detail.html",
                   {'invoice': invoice,
-                   'commissions': commissions,
+                   'commissionformset': commissionformset,
                    'staff_view': staff_view,
                    'form': form,
                    'can_edit': can_edit,
+                   'can_edit_commissions': can_edit_commissions,
+                   'formset': formset,
                    'print_view': print_view})
 
 @login_required

@@ -8,44 +8,83 @@
         <th>Due</th>
         {% if staff_view %}<th>Fund</th>{% endif %}
     </tr>
-    {% for commission in commissions %}
-    {% with commission.calc_payment as payment %}
-    <tr>
-        <td>
-            {% if commission.article %}
-                <a href="http://{{site.domain}}{% url "article.detail" commission.article.slug %}">
-                    {{commission.article.title}}
-                </a>
-            {% endif %}
-        </td>
-        <td>{{commission.description}}</td>
-        <td align="right">{{payment.3|floatformat:0}}</td>
-        <td align="right">{% if payment.2 > 0.00 %}-{%endif %}{{payment.2|floatformat:0}}</td>
-        <td align="right">{{payment.1|floatformat:0}}</td>
-        {% if staff_view %}
-            <td align="right">
-                <a href="{% url 'admin:payment_commission_change' commission.pk %}"
-                   target="_blank">
-                    {{payment.0|floatformat:0}}
-                </a>
-            </td>
-        {% else %}
-            <td align="right">{{payment.0|floatformat:0}}</td>
+
+    XXXXXX
+    {% for commission, form in commissionformset %}
+        {% if can_edit_commissions %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
         {% endif %}
-        {% if staff_view %}<td>{{commission.fund}}</td>{% endif %}
-    </tr>
-    {% endwith %}
+        {% with commission.calc_payment as payment %}
+            <tr>
+                <td>
+                    {% if commission.article %}
+                        <a href="http://{{site.domain}}{% url "article.detail" commission.article.slug %}">
+                            {{commission.article.title}}
+                        </a>
+                    {% endif %}
+                </td>
+                <td>{{commission.description}}</td>
+                <td align="right">
+                    {% if can_edit_commissions %}
+                        <div class="commission-due-input">
+                            {{ form.commission_due }}
+                        </div>
+                    {% else %}
+                        {{payment.3|floatformat:0}}
+                    {% endif %}
+                </td>
+                <td align="right">{% if payment.2 > 0.00 %}-{%endif %}{{payment.2|floatformat:0}}
+                    {% if can_edit_commissions %}
+                        <div class="tax-input">
+                            {{ form.taxable }}
+                        </div>
+                    {% endif %}
+                </td>
+                <td align="right">
+                    {{payment.1|floatformat:0}}
+                    {% if can_edit_commissions %}
+                        <div class="vat-input">
+                            {{ form.vatable }}
+                        </div>
+                    {% endif %}
+                </td>
+                {% if staff_view %}
+                    <td align="right">
+                        <a href="{% url 'admin:payment_commission_change' commission.pk %}"
+                           target="_blank">
+                            {{payment.0|floatformat:0}}
+                        </a>
+                    </td>
+                {% else %}
+                    <td align="right">{{payment.0|floatformat:0}}</td>
+                {% endif %}
+                {% if staff_view %}
+                    <td>
+                        {% if can_edit_commissions %}
+                            <div class="fund-input">
+                                {{ form.fund }}
+                            </div>
+                        {% else %}
+                            {{commission.fund}}
+                        {% endif %}
+
+                    </td>
+                {% endif %}
+            </tr>
+        {% endwith %}
     {% endfor %}
     {% with invoice.calc_payment as payment %}
-    <tr>
-        <td><b>TOTAL</b></td>
-        <td></td>
-        <td align="right">{{payment.3|floatformat:0}}</td>
-        <td align="right">{% if payment.2 > 0.00 %}-{%endif %}{{payment.2|floatformat:0}}</td>
-        <td align="right">{{payment.1|floatformat:0}}</td>
-        <td align="right"><b>{{payment.0|floatformat:0}}</b></td>
-        {% if staff_view %}<td></td>{% endif %}
-    </tr>
+        <tr>
+            <td><b>TOTAL</b></td>
+            <td></td>
+            <td align="right">{{payment.3|floatformat:0}}</td>
+            <td align="right">{% if payment.2 > 0.00 %}-{%endif %}{{payment.2|floatformat:0}}</td>
+            <td align="right">{{payment.1|floatformat:0}}</td>
+            <td align="right"><b>{{payment.0|floatformat:0}}</b></td>
+            {% if staff_view %}<td></td>{% endif %}
+        </tr>
     {% endwith%}
 </table>
 <p>Amounts are in South African Rands</p>

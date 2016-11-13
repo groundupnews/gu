@@ -6,7 +6,7 @@ Your user name is: {{user.username}}
 Your password is: {{pwd}}
 
 Login here:
-http://{{site.domain}}/account/login/
+http://{{site.domain}}/accounts/login/
 
 You should change your password after you've logged in the first time.
 

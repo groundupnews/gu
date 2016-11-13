@@ -265,6 +265,10 @@ p.article-category {
     width: 75%;
 }
 
+div.commission-due-input input {
+    width: 75px;
+}
+
 ul.nav {
     list-style: none;
     display: inline-block;

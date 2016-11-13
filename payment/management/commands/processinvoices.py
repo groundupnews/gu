@@ -62,6 +62,8 @@ def notify_freelancers():
         commissions = Commission.objects.filter(invoice=invoice).\
                       filter(fund__isnull=False).\
                       filter(date_notified_approved__isnull=True)
+        commissionformset = zip(commissions, range(len(commissions)))
+
         if len(commissions) > 0:
             try:
                 print("ProcessInvoices: Emailing approval: ", \
@@ -70,7 +72,8 @@ def notify_freelancers():
                 subject = "Invoice for work done for GroundUp"
                 message = render_to_string('payment/invoice_approved.txt',
                                            {'invoice': invoice,
-                                            'commissions': commissions,
+                                            'commissionformset':
+                                            commissionformset,
                                             'site' : site})
                 send_mail(subject,
                           message,
@@ -97,10 +100,12 @@ def notify_freelancers():
         commissions = Commission.objects.filter(invoice=invoice).\
                       filter(fund__isnull=False).\
                       filter(commission_due__gt=0.00)
+        commissionformset = zip(commissions, range(len(commissions)))
+
         subject = "Payment for work done for GroundUp"
         message = render_to_string('payment/invoice_paid.txt',
                                    {'invoice': invoice,
-                                    'commissions': commissions,
+                                    'commissionformset': commissionformset,
                                     'site': site})
 
         print("ProcessInvoices: Emailing paid: ", \
