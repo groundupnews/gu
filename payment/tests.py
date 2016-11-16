@@ -93,9 +93,14 @@ class InvoiceTest(TestCase):
         c = Commission.objects.filter(date_notified_approved__isnull=True)
         self.assertEqual(len(c), 6)
 
+        invoices = Invoice.objects.filter(status="-")
+        self.assertEqual(len(invoices), 2)
+        for invoice in invoices:
+            invoice.status = "0"
+            invoice.save()
+
         management.call_command('processinvoices')
         c = Commission.objects.filter(date_notified_approved__isnull=True)
-
         self.assertEqual(len(c), 0)
         invoices = Invoice.objects.all()
         self.assertEqual(len(invoices), 2)
@@ -125,10 +130,13 @@ class InvoiceTest(TestCase):
         article5.save()
 
         management.call_command('processinvoices')
-        invoices = Invoice.objects.filter(status="0")
+        invoices = Invoice.objects.filter(status="-")
         self.assertEqual(len(invoices), 2)
         for invoice in invoices:
             self.assertEqual(invoice.invoice_num, 2)
+            invoice.status = "0"
+            invoice.save()
+
         commissions = Commission.objects.filter(fund__isnull=True)
         self.assertEqual(len(commissions), 2)
         for commission in commissions:

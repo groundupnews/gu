@@ -9,7 +9,7 @@
     </h1>
 
 
-    <table class="table">
+    <table class="table" id="invoice-table">
         <tr>
             <th>#</th>
             <th>Status</th>
@@ -27,13 +27,18 @@
                     <tr>
                         <td>
                             <a href="{% url "invoice.detail" invoice.author.pk invoice.invoice_num %}">
-                                {{invoice.short_string}}
+
+                                    {{invoice.short_string}}
+
                             </a>
                         </td>
-                        <td>{{invoice.get_status_display}}
-                            {% if invoice.status == "4" %}
-                                on {{invoice.date_time_processed|date:"j M Y"}}
-                            {% endif %}
+                        <td>
+                            <span class="status{{invoice.status}}">
+                                {{invoice.get_status_display}}
+                                {% if invoice.status == "4" %}
+                                    on {{invoice.date_time_processed|date:"j M Y"}}
+                                {% endif %}
+                            </span>
                         </td>
 
                         <td>R{{payment.3|floatformat:2}}</td>

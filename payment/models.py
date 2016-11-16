@@ -9,6 +9,7 @@ from filebrowser.fields import FileBrowseField
 from newsroom.models import Author, Article
 
 INVOICE_STATUS_CHOICES = (
+    ("-", "Invoice being prepared by editor"),
     ("0", "Reporter needs to approve"),
     ("1", "Queried by reporter"),
     ("2", "Approved by reporter"),
@@ -98,7 +99,7 @@ class Invoice(models.Model):
     proof = FileBrowseField(max_length=200, directory="commissions/proofs/",
                             blank=True, null=True, extensions=EXTENSIONS)
     status = models.CharField(max_length=2, choices=INVOICE_STATUS_CHOICES,
-                              default="0")
+                              default="-")
     notes = models.TextField(blank=True)
     query = models.TextField(blank=True, max_length=3000,
                              help_text="Explain your query here if you have one")

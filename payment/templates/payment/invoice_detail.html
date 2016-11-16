@@ -41,7 +41,9 @@
 {% block content %}
     <h1>Invoice #{{invoice.short_string}} for {{invoice.author}}</h1>
     <h2>
-        {% if invoice.status == "0" %}
+        {% if invoice.status == "-" %}
+            This invoice is being prepared by the editor
+        {% elif invoice.status == "0" %}
             {{invoice.author}} needs to approve this invoice
         {% elif invoice.status == "1" %}
             {{invoice.author}} has queried this invoice
@@ -71,11 +73,12 @@
                         {% if can_edit %}
                         <tr>
                             <td>
-                                {% if staff_view %}
+                                {% if can_edit_commissions %}
                                     <input type="submit"
-                                           name="return_button"
-                                           class="btn btn-warning"
-                                           value="Return to author" />
+                                           name="update_button"
+                                           class="btn btn-primary"
+                                           value="Update details" />
+                                    &nbsp;
                                 {% endif %}
                             </td>
                             <td>
@@ -90,16 +93,27 @@
                                            class="btn btn-primary"
                                            value="Please pay invoice" />
                                 {% else %}
-
-                                    <input type="submit"
-                                           name="approve_button"
-                                           class="btn btn-primary"
-                                           value="Approve invoice" />
-                                    &nbsp;
+                                    {% if can_edit_commissions %}
+                                        <input type="submit"
+                                               name="begin_button"
+                                               class="btn btn-primary"
+                                               value="Begin" />
+                                        &nbsp;
+                                        <input type="submit"
+                                               name="return_button"
+                                               class="btn btn-primary"
+                                               value="Author" />
+                                        &nbsp;
+                                        <input type="submit"
+                                               name="approve_button"
+                                               class="btn btn-primary"
+                                               value="Approve" />
+                                        &nbsp;
+                                    {% endif %}
                                     <input type="submit"
                                            name="paid_button"
                                            class="btn btn-primary"
-                                           value="Mark as paid" />
+                                           value="Paid" />
                                 {% endif %}
                             </td>
                         </tr>

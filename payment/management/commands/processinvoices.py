@@ -43,6 +43,9 @@ def generate_commissions():
                         invoice = Invoice.create_invoice(author)
                     else:
                         invoice = invoices[0]
+                        if invoice.status == "0":
+                            invoice.status = "-"
+                            invoice.save()
                     commission.invoice = invoice
                     commission.save()
 
@@ -70,7 +73,7 @@ def notify_freelancers():
             # The template handles a bunch of different views and this is
             # the format it needs the commissions in because of those
             # other views.
-            commissionformset = zip(commissions_all, range(len(commissions)))
+            commissionformset = zip(commissions_all, range(len(commissions_all)))
             try:
                 print("ProcessInvoices: Emailing approval: ", \
                       invoice.author.email,\
@@ -98,11 +101,11 @@ def notify_freelancers():
         num_approved = num_approved + 1
 
     # Second do notifications for paid invoices
-    # Get all unnotified unpaid invoices
+    # Get all unnotified paid invoices
     invoices = Invoice.objects.filter(status="4").\
                filter(date_notified_payment__isnull=True)
     for invoice in invoices:
-        # Get the approved commissions for this invoice
+        # Get the approved commissions > 0.00 for this invoice
         commissions = Commission.objects.filter(invoice=invoice).\
                       filter(fund__isnull=False).\
                       filter(commission_due__gt=0.00)

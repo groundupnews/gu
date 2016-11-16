@@ -779,6 +779,17 @@ table#invoice-form .helptext {
     font-weight: bold;
 }
 
+#invoice-table span.status- {
+    color: red;
+}
+
+
+
+#invoice-table span.status3 {
+    color: green;
+}
+
+
 /************ Styles for editors and administrators - PC only *****************/
 /* These don't need to be responsive. We don't edit on tablets or phones. */
 

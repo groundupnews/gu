@@ -32,7 +32,8 @@ def invoice_list(request):
         invoices = models.Invoice.objects.all()
         staff_view = True
     elif user.author is not None and user.author.freelancer is True:
-        invoices = models.Invoice.objects.filter(author=user.author)
+        invoices = models.Invoice.objects.filter(author=user.author).\
+                   filter(status__gt="-")
     else:
         raise Http404
     return render(request, "payment/invoice_list.html",
@@ -75,25 +76,30 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
 
         if form.is_valid():
             invoice = form.save(commit=False)
+            if "begin_button" in request.POST and invoice.status != "-":
+                invoice.status = "-"
+                messages.add_message(request, messages.INFO,
+                                     "Status changed to UNPROCESSED")
+                invoice.save()
             if "return_button" in request.POST and invoice.status != "0":
                 invoice.status = "0"
                 messages.add_message(request, messages.INFO,
-                                     "Status changed to UNPAID")
+                                     "Status changed to REPORTER MUST APPROVE")
                 invoice.save()
             elif "query_button" in request.POST and invoice.status != "1":
                 invoice.status = "1"
                 messages.add_message(request, messages.INFO,
-                                     "Status changed to QUERIED BY YOU")
+                                     "Status changed to QUERIED BY REPORTER")
                 invoice.save()
             elif "pay_button" in request.POST and invoice.status != "2":
                 invoice.status = "2"
                 messages.add_message(request, messages.INFO,
-                                     "Status changed to APPROVED BY YOU")
+                                     "Status changed to APPROVED BY REPORTER")
                 invoice.save()
             elif "approve_button" in request.POST and invoice.status != "3":
                 invoice.status = "3"
                 messages.add_message(request, messages.INFO,
-                                     "Status changed to APPROVED")
+                                     "Status changed to APPROVED BY EDITOR")
                 invoice.save()
             elif "paid_button" in request.POST and invoice.status != "4":
                 invoice.status = "4"
@@ -118,7 +124,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         else:
             form = forms.InvoiceForm(request.POST or None, instance=invoice)
 
-    if invoice.status < "2":
+    if invoice.status == "0" or invoice.status == "1":
         can_edit = True
 
     # Get commissions
