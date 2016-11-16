@@ -62,9 +62,15 @@ def notify_freelancers():
         commissions = Commission.objects.filter(invoice=invoice).\
                       filter(fund__isnull=False).\
                       filter(date_notified_approved__isnull=True)
-        commissionformset = zip(commissions, range(len(commissions)))
 
         if len(commissions) > 0:
+            # Now we have to get all the commissions for this invoice
+            commissions_all = Commission.objects.filter(invoice=invoice).\
+                          filter(fund__isnull=False)
+            # The template handles a bunch of different views and this is
+            # the format it needs the commissions in because of those
+            # other views.
+            commissionformset = zip(commissions_all, range(len(commissions)))
             try:
                 print("ProcessInvoices: Emailing approval: ", \
                       invoice.author.email,\

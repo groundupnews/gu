@@ -23,7 +23,8 @@
         </p>
 
         <p>
-            Invoice {{invoice.short_string}} has been paid to you.
+            <a href="http://{{site.domain}}{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}">Invoice
+            {{invoice.short_string}}</a> has been paid to you.
         </p>
 
         {% include "payment/invoice_common.txt" %}
