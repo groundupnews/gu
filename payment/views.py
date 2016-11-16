@@ -68,7 +68,11 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
     invoice = get_object_or_404(models.Invoice, author__pk=author_pk,
                                 invoice_num=invoice_num)
     if request.method == 'POST':
-        form = forms.InvoiceForm(request.POST, instance=invoice)
+        if staff_view:
+            form = forms.InvoiceStaffForm(request.POST, instance=invoice)
+        else:
+            form = forms.InvoiceForm(request.POST, instance=invoice)
+
         if form.is_valid():
             invoice = form.save(commit=False)
             if "return_button" in request.POST and invoice.status != "0":
@@ -109,7 +113,10 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             messages.add_message(request, messages.ERROR,
                                  "Please make corrections")
     else:
-        form = forms.InvoiceForm(request.POST or None, instance=invoice)
+        if staff_view:
+            form = forms.InvoiceStaffForm(request.POST or None, instance=invoice)
+        else:
+            form = forms.InvoiceForm(request.POST or None, instance=invoice)
 
     if invoice.status < "2":
         can_edit = True

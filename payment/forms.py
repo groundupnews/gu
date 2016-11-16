@@ -4,7 +4,22 @@ from payment.models import Invoice
 
 BIRTH_YEAR_CHOICES = range(1920,2016)
 
-class InvoiceForm(ModelForm):
+class InvoiceStaffForm(ModelForm):
+    dob = forms.DateField(widget=
+                          forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
+                          label="Date of birth",
+                          required=False)
+    class Meta:
+        model = Invoice
+        fields = ['identification', 'dob',
+                   'bank_name', 'bank_account_number',
+                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
+                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
+                   'query',
+        ]
+
+
+class InvoiceForm(InvoiceStaffForm):
     identification = forms.CharField(max_length=20, required=True,
                                      help_text=
                                      "SA ID, passport or some form "
@@ -24,11 +39,11 @@ class InvoiceForm(ModelForm):
                            "Please explain why you're querying "
                            "the invoice")
 
-    class Meta:
-        model = Invoice
-        fields = ['identification', 'dob',
-                   'bank_name', 'bank_account_number',
-                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
-                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-                   'query',
-        ]
+    # class Meta:
+    #     model = Invoice
+    #     fields = ['identification', 'dob',
+    #                'bank_name', 'bank_account_number',
+    #                'bank_account_type', 'bank_branch_name', 'bank_branch_code',
+    #                'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
+    #                'query',
+    #     ]

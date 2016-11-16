@@ -38,7 +38,7 @@ def generate_commissions():
                     num_commissions = num_commissions + 1
                     # Get the invoice for this commission
                     invoices = Invoice.objects.filter(author=author).\
-                               filter(status="0")
+                               filter(status__lte="0")
                     if len(invoices) == 0:
                         invoice = Invoice.create_invoice(author)
                     else:
