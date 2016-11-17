@@ -9,9 +9,12 @@ class InvoiceStaffForm(ModelForm):
                           forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
                           label="Date of birth",
                           required=False)
+    address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
+                              required=False,
+                              help_text="Required by SARS")
     class Meta:
         model = Invoice
-        fields = ['identification', 'dob',
+        fields = ['identification', 'dob', 'address',
                    'bank_name', 'bank_account_number',
                    'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                    'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
@@ -28,6 +31,10 @@ class InvoiceForm(InvoiceStaffForm):
                           forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
                           label="Date of birth",
                           required=True)
+    address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
+                              required=True,
+                              help_text="Required by SARS")
+
     bank_name = forms.CharField(max_length=20, required=True)
     bank_account_number = forms.CharField(max_length=20, required=True)
 
