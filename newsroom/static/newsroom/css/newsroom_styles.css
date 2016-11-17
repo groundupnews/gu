@@ -780,14 +780,29 @@ table#invoice-form .helptext {
 }
 
 #invoice-table span.status- {
+    color: #e6ac00;
+}
+
+#invoice-table span.status0 {
     color: red;
 }
 
+#invoice-table span.status1 {
+    color: #333300;
+}
 
+#invoice-table span.status2 {
+    color: indigo;
+}
 
 #invoice-table span.status3 {
     color: green;
 }
+
+#invoice-table span.status4 {
+    color: brown;
+}
+
 
 
 /************ Styles for editors and administrators - PC only *****************/
