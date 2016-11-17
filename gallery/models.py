@@ -50,6 +50,7 @@ class Photograph(models.Model):
     alt = models.CharField(max_length=600, blank=True, help_text=
                            "Description of image for assistive technology")
     date_taken = models.DateField(blank=True, null=True)
+    featured = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     keywords = models.ManyToManyField(Keyword, blank=True)

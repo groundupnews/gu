@@ -46,3 +46,8 @@ def photo_detail(request, pk):
     photo = get_object_or_404(models.Photograph, pk=pk)
     return render(request, "gallery/photo_detail.html",
                   {'photo':photo,})
+
+
+def gallery_front(request):
+    return render(request, "gallery/index.html",
+                  {})
