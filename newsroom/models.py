@@ -366,7 +366,7 @@ class Article(models.Model):
     version = models.PositiveIntegerField(default=0)
 
     # Author notifications and payments
-    # notified_authors = models.BooleanField(default=False)
+    notified_authors = models.BooleanField(default=False)
     author_payment = models.DecimalField(default=0.00, max_digits=9,
                                          decimal_places=2)
     override_commissions_system = models.CharField(choices=
