@@ -2,6 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+import random
 
 
 from filebrowser.fields import FileBrowseField
@@ -31,6 +32,11 @@ class Album(models.Model):
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def get_random_photo(self):
+        photographs = self.photograph_set.all()
+        i = random.randint(0, len(photographs) - 1)
+        return photographs[i]
 
     def __str__(self):
         return self.name

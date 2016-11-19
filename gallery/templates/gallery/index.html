@@ -90,7 +90,7 @@
                                     {{album.name|truncatechars:25}}
                                 </a>
                             </div>
-                            {% with album.photograph_set.all.0 as photo %}
+                            {% with album.get_random_photo as photo %}
                                 <a href="{% url 'album.detail' album.pk %}">
                                     <img src="{% version photo.image 'medium' %}"
                                          alt="{{photo.alt}}"
