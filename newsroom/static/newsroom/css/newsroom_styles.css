@@ -936,11 +936,24 @@ h1.gallery {
 .album-head {
     background-color: black;
     color: white;
-    margin: 0;
-    padding: 5px;
+    font-weight: bold;
+    padding: 3px 0 3px 3px;
+    font-size: 12px;
 }
 
 .album-head a {
-    padding: 3px;
     color: white;
+}
+
+
+#image-gallery-front div.thumbnail {
+    /* height:130px;*/
+}
+
+#image-gallery-front div.thumbnail img {
+    height: 110px;
+}
+
+#image-gallery-cc div.thumbnail img {
+    height: 80px;
 }
