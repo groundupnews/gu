@@ -1,0 +1,53 @@
+
+/* #s2id_id_region, #s2id_id_topics { */
+/*     width: 558px !important; */
+/* } */
+
+/* #s2id_id_main_topic { */
+/*     width: 200px !important; */
+/* } */
+
+/* #s2id_id_region .select2-display-none { */
+/*     width: 558px !important; */
+/* } */
+
+
+#id_slug {
+    width: 558px !important
+}
+
+#title-length {
+    padding-left: 10px;
+}
+
+# To make CKEDitor bearable
+.cke_editable img {
+    max-width: 500px !important;
+}
+
+.grp-td.image .vFileBrowseField {
+    width: 210px !important;
+}
+
+.grp-module.grp-table .grp-autocomplete-wrapper-m2m  {
+    width: 180px !important;
+}
+
+.alert-danger {
+    color: white;
+    background-color: red;
+}
+
+/***************************/
+
+#editing-article {
+    position: fixed;
+    z-index: 1000;
+    top: 40px;
+    left: 650px;
+    color: red;
+    background-color: pink;
+    font-weight: bold;
+    background-color: #e5ffff;
+    font-size: 10px;
+}

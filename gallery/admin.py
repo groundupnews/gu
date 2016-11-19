@@ -22,7 +22,7 @@ class PhotographAdmin(admin.ModelAdmin):
     }
     list_display = ('thumbnail', 'photographer', 'date_taken','created',
                     'featured', 'modified',)
-    list_display = ('featured',)
+    list_editable = ('featured',)
 
 class PhotoInline(admin.TabularInline):
     fields = ('photograph',)

@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render
+from . import settings
 
 from . import models
 
@@ -49,5 +50,7 @@ def photo_detail(request, pk):
 
 
 def gallery_front(request):
+    featured_photos = models.Photograph.objects.filter(featured=True).\
+                         order_by('modified')[:settings.FEATURED]
     return render(request, "gallery/index.html",
-                  {})
+                  {'featured_photos': featured_photos})

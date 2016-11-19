@@ -73,7 +73,10 @@
 
 	    <div class="row">
 		{% if article.copyright %}
-		    <div class="col-xs-12 col-md-8">
+		    <div class="col-xs-12 col-md-8
+                                {% if article.undistracted_layout %}
+                                col-md-offset-1
+                                {% endif %}">
 			<div id="article-copyright">
 			    {{article.copyright|safe}}
 			</div>

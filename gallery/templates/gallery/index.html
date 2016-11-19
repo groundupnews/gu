@@ -1,1 +1,84 @@
-{% include "base.html" %}
+{% extends "base_20161106.html" %}
+
+{% load fb_versions %}
+{% load staticfiles %}
+
+{% block additional_head %}
+
+    {{block.super}}
+
+    <link rel="stylesheet"
+	  href="{% static 'newsroom/css/pgwslider.min.css' %}"
+    />
+
+{% endblock %}
+
+
+{% block title %}
+    GroundUp Images
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-md-8 col-md-offset-1">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1 class="gallery">GroundUp Images: A free photo library</h1>
+                    <ul class="pgwSlider">
+                        {% for photo in featured_photos %}
+                            <li>
+                                <a href="{% url 'photo.detail' photo.pk %}">
+                                    <img
+                                        src="{% version photo.image 'large' %}"
+                                        alt="{{photo.suggested_caption}}
+                                             {% if photo.photographer %}
+                                             - {{photo.photographer}}
+                                             {% endif %}"
+                                    />
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <div class="thumbnail">
+                        <img src="{% static 'gallery/images/cc_large.png' %}"
+                             alt="Creative Commons logo"
+                        />
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <div class="thumbnail">
+                        <img src="{% static 'gallery/images/cc_large.png' %}"
+                             alt="Creative Commons logo"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascript-includes %}
+
+    {{block.super}}
+
+    <script src={% static 'newsroom/js/pgwslider.min.js' %}>
+    </script>
+    <script>
+     $(document).ready(function() {
+         var pgwSlider = $('.pgwSlider').pgwSlider();
+         pgwSlider.reload({
+	     displayControls : true,
+	     displayList: false,
+	     intervalDuration: 6000
+         });
+     });
+    </script>
+
+{% endblock %}
