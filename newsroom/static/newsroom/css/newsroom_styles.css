@@ -925,3 +925,22 @@ h1.gallery {
     margin-bottom: 0;
     margin-top: 0;
 }
+
+#gallery-home-albums h2 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+
+
+.album-head {
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 5px;
+}
+
+.album-head a {
+    padding: 3px;
+    color: white;
+}

@@ -51,6 +51,12 @@ def photo_detail(request, pk):
 
 def gallery_front(request):
     featured_photos = models.Photograph.objects.filter(featured=True).\
-                         order_by('modified')[:settings.FEATURED]
+                         order_by('modified')[:settings.NUM_FEATURED]
+    latest_photos = models.Photograph.objects.filter(featured=False).\
+                         order_by('modified')[:settings.NUM_LATEST]
+    latest_albums = models.Album.objects.all().order_by('modified')\
+                    [:settings.NUM_ALBUMS]
     return render(request, "gallery/index.html",
-                  {'featured_photos': featured_photos})
+                  {'featured_photos': featured_photos,
+                   'latest_photos': latest_photos,
+                   'latest_albums': latest_albums})
