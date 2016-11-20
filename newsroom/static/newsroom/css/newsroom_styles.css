@@ -46,6 +46,7 @@ h2.first-summary-title {
     margin-bottom: 3px;
 }
 
+
 #top-article a, .article-summary a {
     color: #333;
     text-decoration: none;
@@ -343,7 +344,7 @@ ul.icons li {
 
 .icons a:hover { background-position: left -34px; }
 
-#article_title {
+#article_title, #flatpage_title {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: bold;
     font-size: 38px;
