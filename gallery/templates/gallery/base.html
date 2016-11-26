@@ -1,0 +1,41 @@
+{% extends "base_20161106.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+    GroundUp Images
+{% endblock %}
+
+{% block css-override %}
+
+    <link rel="stylesheet"
+	  href="{% static 'gallery/css/gallery_styles.css' %}" />
+
+{% endblock %}
+
+{% block banner %}
+    {% include "banner.html" with searchform_template="gallery/searchform.html" %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="row" id="gallery">
+        <div class="col-xs-12 col-md-9 col-md-offset-1">
+            <h1>
+                {% block gallery_title %}
+                {% endblock %}
+            </h1>
+            {% block gallery_content %}
+            {% endblock %}
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div id="gallery-sidebar">
+                {% block gallery-sidebar %}
+                    <div id="gallery-menu">
+                        {% include "gallery/menu.html" %}
+                    </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

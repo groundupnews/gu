@@ -1,92 +1,26 @@
 {% load staticfiles %}
 <header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header" >
+                {% include logo_template|default:"logo.html" %}
 
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header" >
-	<span class="logo">
-	  <a href="/" title="Click to go to home page">
-	    <img src="{% static 'newsroom/images/GroundUpLogo.png' %}"
-                 alt="GroundUp Logo" />
-	  </a>
-	</span>
-	<button type="button" class=" navbar-toggle
-				     collapsed"
-		data-toggle="collapse" data-target="#navbar"
-		aria-expanded="false" aria-controls="navbar"
-		style="margin-left: 5px"  >
-	  <span class="sr-only">Toggle navigation</span>
-	  <span class="icon-bar"></span>
-	  <span class="icon-bar"></span>
-	  <span class="icon-bar"></span>
-	</button>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-
-	<form class="navbar-form navbar-right" method="get" action="/search/">
-	  <span id="search-form" class="form-group">
-	    <input type="text" class="form-control" name="q" id="id_q"
-		   placeholder="Search" value="{{query}}">
-	  </span>
-	  <button  id="search-button" class="btn btn-default" >
-      	       <span class="glyphicon glyphicon-search">
-      	       <span class="sr-only">Search</span>
-      	       </span>
-	  </button>
-
-	</form>
-
-
-	<ul class="nav navbar-nav">
-	  {% with path=request.get_full_path %}
-	      <li  {% if path == '/' %} class='active' {% endif %} >
-		  <a href="/">Home</a>
-	      </li>
-	  <li  {% if path == '/about/' %} class='active' {% endif %} >
-	    <a href="/about/">About</a>
-	  </li>
-	  <li {% if path == '/donate/' %} class='active' {% endif %}>
-	    <a href="/donate/">Donate</a>
-	  </li>
-	  {% endwith %}
-	  <li class="Dropdown">
-	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics<span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-	      <li><a href="/silicosis-court-case/">Silicosis Case</a></li>
-	      <li><a href="/topic/elections2016/">2016 Elections</a></li>
-	      <li><a href="/spotlight-social-grants/">Social Grants</a></li>
-	      <li><a href="/topic/coi">Inquiry into Policing</a></li>
-	      <li role="separator" class="divider"></li>
-	      <li><a href="/category/News">News</a></li>
-	      <li><a href="/category/opinion_and_analysis">Opinion &amp; Analysis</a></li>
-	      <li><a href="/topic/health">Health</a></li>
-	      <li><a href="/topic/education">Education</a></li>
-	      <li><a href="/topic/housing">Housing</a></li>
-	      <li><a href="/topic/immigration">Immigration</a></li>
-	      <li><a href="/topic/labour">Labour</a></li>
-	    </ul>
-	  </li>
-
-          {% if request.user.is_staff %}
-	  <li class="Dropdown">
-	      <a href="#" class="dropdown-toggle admin-menu-item"
-		 data-toggle="dropdown"
-		 role="button"
-		 aria-haspopup="true"
-		 aria-expanded="false">Admin<span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-            {% include 'newsroom/staff_menu.html' %}
-	    </ul>
-	  </li>
-          {% elif request.user.is_authenticated %}
-	  <li class="Dropdown">
-	      <a href="{% url 'user.profile' %}"
-                 class="dropdown-toggle admin-menu-item">My account</a>
-	  </li>
-	  {% endif %}
-	</ul>
-      </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-  </nav>
+	        <button type="button" class=" navbar-toggle
+				             collapsed"
+                        data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar"
+                        style="margin-left: 5px"  >
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	        </button>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                {% include searchform_template|default:"search/searchform.html" %}
+                {% include menu_template|default:"menu.html" %}
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
 
 </header>

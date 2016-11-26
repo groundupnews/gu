@@ -1,0 +1,15 @@
+<form class="photo-search navbar-form navbar-right"
+      method="get"
+      action="{% url 'photo.list' %}">
+    <span id="search-form" class="form-group">
+        <input type="text" class="form-control"
+               name="search-photos"
+               id="search-photos"
+               placeholder="Search photos" value="{{search_string}}">
+    </span>
+    <button  id="search-button" class="btn btn-default" >
+      	<span class="glyphicon glyphicon-search">
+      	    <span class="sr-only">Search</span>
+      	</span>
+    </button>
+</form>

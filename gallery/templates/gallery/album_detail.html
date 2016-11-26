@@ -1,36 +1,37 @@
-{% extends "base.html" %}
+{% extends "gallery/base.html" %}
 {% load fb_versions %}
 
-{% block content %}
-    <div class="container">
-	<div class="row">
-	    <div class="col-xs-12 col-md-12">
-                <div id="album">
-                    <h2>{{album}}</h2>
-                    <div id="album-description">
-                        {{description|safe}}
-                    </div>
-                    <div class="row">
-                        {% for photo in album.photograph_set.all %}
-                            <div class="col-xs-12 col-md-3">
-                                <a href="{% url 'photo.detail' photo.pk %}" class="thumbnail">
-                                    <img src="{% version photo.image 'small' %}"
-                                         alt="{{photo.alt}}" />
-                                    <p>Suggested caption:
-                                        {{photo.suggested_caption}}</p>
-                                    <p>Photographer: {{photo.photographer}}</p>
-                                    <p>Date taken: {{photo.date_taken}}</p>
-                                </a>
+{% block title %}
+    {{block.super}} | {{album}}
+{% endblock %}
+
+{% block gallery_title %}
+     Album: {{album}}
+{% endblock %}
+
+
+
+{% block gallery_content %}
+    <div id="gallery-album">
+        <div id="gallery-album-description">
+            {{album.description|safe}}
+        </div>
+        <div class="row">
+            {% for photo in album.photograph_set.all %}
+                <div class="col-xs-12 col-md-3">
+                    <div class="gallery-photo thumbnail">
+                        <a href="{% url 'photo.detail' photo.pk %}">
+                            <img src="{% version photo.image 'medium' %}"
+                                 alt="{{photo.alt}}" />
+                            <div class="caption">
+                                <p>{{photo.suggested_caption}}</p>
+                                <p>Photographer: {{photo.photographer}}</p>
+                                <p>Date taken: {{photo.date_taken}}</p>
                             </div>
-                            {% endfor %}
+                        </a>
                     </div>
-                    <p>
-                        <a href="{% url 'album.list' %}">Albums</a>
-                        |
-                        <a href="{% url 'photo.list' %}">All photos</a>
-                    </p>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

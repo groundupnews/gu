@@ -57,6 +57,8 @@ class Photograph(models.Model):
                            "Description of image for assistive technology")
     date_taken = models.DateField(blank=True, null=True)
     featured = models.BooleanField(default=False)
+    copyright = models.TextField(blank=True, help_text="Leave blank for default")
+    credit = models.TextField(blank=True, help_text="Leave blank for default")
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     keywords = models.ManyToManyField(Keyword, blank=True)

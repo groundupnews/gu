@@ -11,7 +11,7 @@ class KeywordAdmin(admin.ModelAdmin):
 
 class PhotographAdmin(admin.ModelAdmin):
     fields = ('image', 'photographer', 'suggested_caption', 'alt', 'date_taken',
-              'featured', 'keywords', 'albums',)
+              'featured', 'keywords', 'albums','copyright', 'credit',)
     search_fields = ['suggested_caption', 'keywords', 'photographer__name',
                      'albums__name',]
     ordering = ['-modified', ]

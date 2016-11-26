@@ -1,45 +1,37 @@
-{% extends "base.html" %}
+{% extends "gallery/base.html" %}
 {% load fb_versions %}
 
-{% block content %}
-    <div class="container">
-	<div class="row">
-            <div class="col-xs-12">
-                <h2>Gallery photos</h2>
-                {% if keyword %}
-                    <h3>All tagged with: {{keyword}}</h3>
-                {% endif %}
+{% block title %}
+    {{block.super}} | Photos
+{% endblock %}
 
-                <form class="photo-search" method="get" action="{% url 'photo.list' %}">
-                    <span id="search-form" class="form-group">
-                        <input type="text" class="form-control" name="search-photos" id="search-photos"
-                               placeholder="Search" value="{{search_string}}">
-                    </span>
-                    <button  id="search-button" class="btn btn-default" >
-                        Search Photos
-                    </button>
-                </form>
+{% block gallery_title %}
+    Photos
+    {% if keyword %}
+        tagged with: {{keyword}}
+    {% elif search_string %}
+        searched: {{search_string}}
+    {% endif %}
+
+{% endblock %}
 
 
-                <div class="row">
-                    {% for photo in photos %}
-	                <div class="col-xs-6 col-md-4">
-                            <div class="gallery-photo thumbnail">
-                                <a href="{% url 'photo.detail' photo.pk %}">
-                                    <img src="{% version photo.image 'medium' %}"
-                                         alt="{{photo.alt}}" />
-                                </a>
-                            </div>
-                        </div>
-                    {% endfor %}
+{% block gallery_content %}
+
+    <div class="row" id="gallery-thumbnails">
+        {% for photo in photos %}
+	    <div class="col-xs-6 col-md-3">
+                <div class="gallery-photo thumbnail">
+                    <a href="{% url 'photo.detail' photo.pk %}">
+                        <img src="{% version photo.image 'medium' %}"
+                             alt="{{photo.alt}}" />
+                    </a>
+                    <div class="caption">
+                        <p>{{photo.alt}}</p>
+                    </div>
                 </div>
-                <p>
-                    <a href="{% url 'album.list' %}">Albums</a>
-                    {% if not list_all %}
-                        | <a href="{% url 'photo.list' %}">All photos</a>
-                    {% endif %}
-                </p>
             </div>
-        </div>
+        {% endfor %}
     </div>
+
 {% endblock %}

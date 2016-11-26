@@ -1,0 +1,11 @@
+{% load staticfiles %}
+<span class="logo" id="gallery-logo">
+    <a href="/" title="GroundUp Home">
+	<img src=
+             "{% static 'newsroom/images/GroundUpLogo.png' %}"
+             alt="GroundUp Logo" />
+    </a>
+    <a href="{% url 'gallery.front' %}" title="GroundUp Images">
+        <span class="gallery-logo">Images</span>
+    </a>
+</span>

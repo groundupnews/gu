@@ -1,4 +1,4 @@
-{% extends "base_20161106.html" %}
+{% extends "gallery/base.html" %}
 
 {% load fb_versions %}
 {% load staticfiles %}
@@ -13,95 +13,83 @@
 
 {% endblock %}
 
-
-{% block title %}
-    GroundUp Images
+{% block gallery_title %}
+    GroundUp Images: A free photo library
 {% endblock %}
 
+{% block gallery_content %}
+    <ul class="pgwSlider">
+        {% for photo in featured_photos %}
+            <li>
+                <a href="{% url 'photo.detail' photo.pk %}">
+                    <img
+                        src="{% version photo.image 'large' %}"
+                        alt="{{photo.suggested_caption}}
+                             {% if photo.photographer %}
+                             - {{photo.photographer}}
+                             {% endif %}"
+                    />
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 
-{% block content %}
-
-    <div class="row" id="image-gallery-front">
-        <div class="col-xs-12 col-md-8 col-md-offset-1">
-            <div class="row" id="gallery-home-featured">
-                <div class="col-xs-12">
-                    <h1 class="gallery">GroundUp Images: A free photo library
-                    </h1>
-                    <ul class="pgwSlider">
-                        {% for photo in featured_photos %}
-                            <li>
-                                <a href="{% url 'photo.detail' photo.pk %}">
-                                    <img
-                                        src="{% version photo.image 'large' %}"
-                                        alt="{{photo.suggested_caption}}
-                                             {% if photo.photographer %}
-                                             - {{photo.photographer}}
-                                             {% endif %}"
-                                    />
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="row" id="gallery-home-photos">
-                <div class="col-xs-12">
-                    <h2><a href="{% url 'photo.list' %}">LATEST IMAGES</a></h2>
-                </div>
-            </div>
-            <div class="row">
-                {% for photo in latest_photos %}
-                    <div class="col-xs-6 col-md-3">
-                        <div class="thumbnail">
-                            <a href="{% url 'photo.detail' photo.pk %}">
-                                <img src="{% version photo.image 'medium' %}"
-                                     alt="{{photo.alt}}"
-                                />
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
-                <div class="col-xs-6 col-md-3" id="image-gallery-cc">
-                    <a href="/how-image-lib-works/">
-                        <div class="thumbnail">
-                            <img src="{% static 'gallery/images/cc_large.png' %}"
-                                 alt="Creative Commons logo"
-                            />
-                            <div class="caption">
-                                <p style="text-align: center;">How this works</p>
-                            </div>
-
-                        </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h2><a href="{% url 'photo.list' %}">LATEST IMAGES</a></h2>
+        </div>
+    </div>
+    <div class="row">
+        {% for photo in latest_photos %}
+            <div class="col-xs-6 col-md-3">
+                <div class="thumbnail">
+                    <a href="{% url 'photo.detail' photo.pk %}">
+                        <img src="{% version photo.image 'medium' %}"
+                             alt="{{photo.alt}}"
+                        />
                     </a>
                 </div>
             </div>
+        {% endfor %}
+        <div class="col-xs-6 col-md-3" id="gallery-image-cc">
+            <a href="/how-image-lib-works/">
+                <div class="thumbnail">
+                    <img src="{% static 'gallery/images/cc_large.png' %}"
+                         alt="Creative Commons logo"
+                    />
+                    <div class="caption">
+                        <p style="text-align: center;">How this works</p>
+                    </div>
 
-            <div class="row" id="gallery-home-albums">
-                <div class="col-xs-12">
-                    <h2><a href="{% url 'photo.list' %}">LATEST ALBUMS</a></h2>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row" id="gallery-home-albums">
+        <div class="col-xs-12">
+            <h2><a href="{% url 'photo.list' %}">ALBUMS</a></h2>
+        </div>
+    </div>
+    <div class="row">
+        {% for album in latest_albums %}
+            <div class="col-xs-6 col-md-3">
+                <div class="thumbnail">
+                    <div class="caption album-head">
+                        <a href="{% url 'album.detail' album.pk %}">
+                            {{album.name|truncatechars:25}}
+                        </a>
+                    </div>
+                    {% with album.get_random_photo as photo %}
+                        <a href="{% url 'album.detail' album.pk %}">
+                            <img src="{% version photo.image 'medium' %}"
+                                 alt="{{photo.alt}}"
+                            />
+                        </a>
+                    {% endwith %}
                 </div>
             </div>
-            <div class="row">
-                {% for album in latest_albums %}
-                    <div class="col-xs-6 col-md-3">
-                        <div class="thumbnail">
-                            <div class="caption album-head">
-                                <a href="{% url 'album.detail' album.pk %}">
-                                    {{album.name|truncatechars:25}}
-                                </a>
-                            </div>
-                            {% with album.get_random_photo as photo %}
-                                <a href="{% url 'album.detail' album.pk %}">
-                                    <img src="{% version photo.image 'medium' %}"
-                                         alt="{{photo.alt}}"
-                                    />
-                                </a>
-                            {% endwith %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}
 

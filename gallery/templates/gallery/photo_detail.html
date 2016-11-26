@@ -1,32 +1,84 @@
-{% extends "base.html" %}
+{% extends "gallery/base.html" %}
 {% load fb_versions %}
 
-{% block content %}
-    <div class="container">
-	<div class="row">
-	    <div class="col-xs-12 col-md-12">
-                <div id="gallery-photo">
-                    <h2>Photo: {{photo}}</h2>
-                    <img src="{% version photo.image 'large' %}"
-                         alt="{{photo.alt}}" />
-                    <p>Suggested caption:
-                        {{photo.suggested_caption}}</p>
-                    <p>Photographer: {{photo.photographer}}</p>
-                    <p>Date taken: {{photo.date_taken}}</p>
-                    <p>Keywords:
-                    {% for keyword in photo.keywords.all %}
-                        <a href="{% url 'photo.list' keyword %}">
-                            {{keyword}}
+{% block title %}
+    {{block.super}} | {{photo.alt}}
+{% endblock %}
+
+{% block gallery_title %}
+    {{photo.alt}}
+{% endblock %}
+
+{% block gallery_content %}
+        <figure id="gallery-photo">
+            <img src="{% version photo.image 'large' %}"
+                 alt="{{photo.alt}}" />
+            <figcaption>Suggested caption:
+                {{photo.suggested_caption}}
+            </figcaption>
+        </figure>
+{% endblock %}
+
+{% block gallery-sidebar %}
+
+    {{block.super}}
+
+    <div id="gallery-photo-details">
+
+        <div class="dropdown">
+            <a id="drop1" href="#"
+               role="button"
+               class="dropdown-toggle label label-default label-block"
+               data-toggle="dropdown">Download<b class="caret"></b></a>
+
+            <ul class="dropdown-menu">
+                {% for version in versions %}
+                    {% version photo.image version.0 as image %}
+                    <li>
+                        <a href="{{image.url}}" download>
+                            {{version.0|capfirst}}
+                            ({{image.width}}px X {{image.height}}px)
                         </a>
-                    {% endfor %}
-                    </p>
-                    <p>
-                    <a href="{% url 'album.list' %}">Albums</a>
-                    |
-                    <a href="{% url 'photo.list' %}">All photos</a>
-                    </p>
-                </div>
-            </div>
+                    </li>
+                {% endfor %}
+                <li>
+                    <a href="{{photo.image.url}}" download>
+                        Original ({{photo.image.width}}px X {{photo.image.height}}px)
+                    </a>
+                <li>
+            </ul>
+
         </div>
+    </p>
+    <p><span class="label label-default label-block">
+        Photographer</span> {{photo.photographer}}</p>
+    <p><span class="label label-default label-block">Date taken</span>
+        {{photo.date_taken|date:"j M Y"}}
+    </p>
+    <p><span class="label label-default label-block">Caption</span>
+        {{photo.suggested_caption}}
+    </p>
+    <p><span class="label label-default label-block">How to credit</span>
+        {% if photo.credit %}
+            {{photo.credit}}
+        {% else %}
+            {{photo.photographer}}/GroundUp
+        {% endif %}
+    </p>
+    <p><span class="label label-default label-block">Keywords</span>
+        {% for keyword in photo.keywords.all %}
+            <a href="{% url 'photo.list' keyword %}">
+                {{keyword}}
+            </a>
+            {% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </p>
+    <p><span class="label label-default label-block">Copyright</span>
+        {% if photo.copyright %}
+            {{photo.copyright|safe}}
+        {% else %}
+            {{default_copyright|safe}}
+        {% endif %}
+    </p>
     </div>
 {% endblock %}

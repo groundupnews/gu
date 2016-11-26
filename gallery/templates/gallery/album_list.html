@@ -1,24 +1,39 @@
-{% extends "base.html" %}
+{% extends "gallery/base.html" %}
 {% load fb_versions %}
 
-{% block content %}
-        <div class="container">
-	    <div class="row">
-	        <div class="col-xs-12 col-md-12">
-                    <div id="album-list">
-                        {% for album in albums %}
-                            <div class="album-item">
-                                <h2><a href="{% url 'album.detail' album.pk %}">{{album}}</a></h2>
-                                {% for photo in album.photograph_set.all|slice:":5" %}
+{% block title %}
+    {{block.super}} | Albums
+{% endblock %}
+
+
+{% block gallery_title %}
+    Albums
+{% endblock %}
+
+{% block gallery_content %}
+
+    <div id="gallery-album-list">
+        {% for album in albums %}
+            <div class="gallery-album-item">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2><a href="{% url 'album.detail' album.pk %}">{{album}}</a></h2>
+                        {% for photo in album.photograph_set.all|slice:":4" %}
+	                    <div class="col-xs-6 col-md-3">
+                                <div class="gallery-photo thumbnail">
                                     <a href="{% url 'photo.detail' photo.pk %}">
-                                        <img src="{% version photo.image 'thumbnail' %}"
+                                        <img src="{% version photo.image 'medium' %}"
                                              alt="{{photo.alt}}" />
                                     </a>
-                                {% endfor %}
+                                    <div class="caption">
+                                        <p>{{photo.alt}}</p>
+                                    </div>
+                                </div>
                             </div>
                         {% endfor %}
-                        <p><a href="{% url 'photo.list' %}">All photos</a></p>
                     </div>
                 </div>
             </div>
+        {% endfor %}
+    </div>
 {% endblock %}
