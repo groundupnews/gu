@@ -91,3 +91,7 @@
     font-size: 18px;
     margin: 14px;
 }
+
+#gallery-album .thumbnail {
+    height: 300px;
+}
