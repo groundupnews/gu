@@ -37,8 +37,14 @@
     height: 122px;
 }
 
-#gallery-image-cc div.thumbnail img {
-    height: 80px;
+
+#gallery-cc img  {
+    max-width: 150px;
+    margin-bottom: 10px;
+}
+
+#gallery-cc p {
+    padding-left: 20px;
 }
 
 #gallery-thumbnails .thumbnail {
@@ -48,6 +54,7 @@
 #gallery-photo img {
     width: 100%;
 }
+
 
 .gallery-logo {
     font-family: "HelveticaNeue-CondensedBold", "HelveticaNeueBoldCondensed", "HelveticaNeue-Bold-Condensed", "Helvetica Neue Bold Condensed", "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosCnBold', "Helvetica", "Tahoma", "Geneva", "Arial Narrow", "Arial", sans-serif;
@@ -70,7 +77,8 @@
 }
 
 #gallery-photo-details {
-    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 10px;
     padding: 10px;
 }
 
@@ -94,4 +102,8 @@
 
 #gallery-album .thumbnail {
     height: 300px;
+}
+
+#gallery-flatpage-content {
+    margin-top: 10px;
 }
