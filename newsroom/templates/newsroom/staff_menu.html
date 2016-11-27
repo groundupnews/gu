@@ -21,6 +21,20 @@
     <li role="separator" class="divider"></li>
 {% endif %}
 
+{% if photo.pk and perms.gallery.change_photograph %}
+    <li><a href="{% url 'admin:gallery_photograph_change' photo.pk %}"
+	   class="admin-menu-item">Edit photo</a>
+    </li>
+{% endif %}
+
+{% if album.pk and perms.gallery.change_album %}
+    <li><a href="{% url 'admin:gallery_album_change' album.pk %}"
+	   class="admin-menu-item">Edit album</a>
+    </li>
+{% endif %}
+
+
+
 {% if flatpage.url and perms.flatpages.flatpage_change %}
 <li><a href="
    {% url 'admin:flatpages_flatpage_change' flatpage.pk %}"
