@@ -1,0 +1,15 @@
+{% extends "gallery/base.html" %}
+
+{% block title %}
+    {{block.super}} | {{flatpage.title}}
+{% endblock %}
+
+
+{% block gallery_title %}
+    {{ flatpage.title }}
+{% endblock %}
+{% block gallery_content %}
+    <div id="gallery-flatpage-content">
+        {{flatpage.content}}
+    </div>
+{% endblock %}
