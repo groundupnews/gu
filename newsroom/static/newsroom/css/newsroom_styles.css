@@ -249,7 +249,8 @@ p.article-category {
 }
 
 .navbar {
-    background-color: #E6E7E8;
+    /* background-color: #E6E7E8;*/
+    border-bottom: 1px solid #26aae2;
 }
 
 .navbar-default {
@@ -360,8 +361,8 @@ ul.icons li {
 }
 
 #article-content, #letter-form {
-    font-size: 21px;
-    line-height: 160%;
+    font-size: 18px;
+    line-height: 140%;
     margin-bottom: 25px;
     padding-bottom: 15px;
 }
@@ -858,9 +859,12 @@ iframe {
     max-width: 100%;
 }
 
+/*
 .article-advert:before {
    content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
 }
+*/
+
 .side-advert:before {
    content: "ADVERTISEMENT";
 }
@@ -896,6 +900,10 @@ iframe {
 
 .article-advert-edit:before {
     content: "ADVERT";
+}
+
+.appeal img {
+    width: 100%;
 }
 
 .highlighted {

@@ -261,4 +261,13 @@ LOGGING = {
     }
 }
 
+advert_code_file_1 = open(os.path.join(BASE_DIR,
+                                     "newsroom/templates/newsroom/advert_1.html"),
+                        "r")
+NEWSROOM_ADVERT_CODE_1 = advert_code_file_1.read()
+advert_code_file_2 = open(os.path.join(BASE_DIR,
+                                     "newsroom/templates/newsroom/advert_2.html"),
+                        "r")
+NEWSROOM_ADVERT_CODE_2 = advert_code_file_2.read()
+
 from .local_settings import *
