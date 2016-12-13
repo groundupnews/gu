@@ -348,10 +348,8 @@ def article_detail(request, slug):
             if not request.user.is_authenticated():
                 ad_to_run = randint(1,2)
                 if ad_to_run == 1:
-                    print("D0: 1")
                     advert_code = settings.ADVERT_CODE_1
                 else:
-                    print("D0: 2")
                     advert_code = settings.ADVERT_CODE_2
                 article_body = article.body.replace(
                     '<aside class="article-advert-edit">',
