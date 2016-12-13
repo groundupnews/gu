@@ -20,7 +20,7 @@ class PhotographAdmin(admin.ModelAdmin):
         'fk': ['photographer',],
         'm2m': ['keywords', 'albums',]
     }
-    list_display = ('thumbnail', 'photographer', 'date_taken','created',
+    list_display = ('alt', 'thumbnail', 'photographer', 'date_taken','created',
                     'featured', 'modified',)
     list_editable = ('featured',)
 

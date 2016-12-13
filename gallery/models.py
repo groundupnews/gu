@@ -53,7 +53,9 @@ class Photograph(models.Model):
     albums = models.ManyToManyField(Album, blank=True)
     photographer =  models.ForeignKey(Author, blank=True, null=True)
     suggested_caption = models.CharField(max_length=600, blank=True)
-    alt = models.CharField(max_length=600, blank=True, help_text=
+    alt = models.CharField(max_length=600, blank=True,
+                           verbose_name="short title",
+                           help_text=
                            "Description of image for assistive technology")
     date_taken = models.DateField(blank=True, null=True)
     featured = models.BooleanField(default=False)
