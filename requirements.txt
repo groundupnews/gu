@@ -26,3 +26,5 @@ whoosh==2.7.4
 python-dateutil
 piexif
 django-allauth==0.28.0
+smartypants
+

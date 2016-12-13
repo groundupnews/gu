@@ -18,6 +18,7 @@ from socialmedia.common import SCHEDULE_RESULTS
 import logging
 import datetime
 import sys
+import smartypants
 
 logger = logging.getLogger("django")
 
@@ -236,8 +237,8 @@ class ArticleQuerySet(models.QuerySet):
 #    return Entry.objects.published().latest("modified").modified
 
 class Article(models.Model):
-    title = models.CharField(max_length=200)
-    subtitle = models.CharField(max_length=200, blank=True)
+    title = models.CharField(max_length=250)
+    subtitle = models.CharField(max_length=250, blank=True)
     summary_image = FileBrowseField("Image", max_length=200,
                                     directory="images/",
                                     blank=True, null=True)
@@ -555,6 +556,17 @@ class Article(models.Model):
             self.cached_small_image = self.calc_small_image()
         except:
             self.cached_small_image = ""
+        self.title = smartypants.smartypants(self.title).\
+                     replace("&nbsp;", "").replace("  ", " ")
+        self.subtitle = smartypants.smartypants(self.subtitle).\
+                        replace("&nbsp;", "").replace("  ", " ")
+        self.primary_image_caption = \
+                    smartypants.smartypants(self.primary_image_caption).\
+                    replace("  ", " ").replace("&nbsp; ", " ").\
+                    replace(" &nbsp;", " ")
+        self.body = smartypants.smartypants(self.body).replace("  ", " ").\
+                    replace("&nbsp; ", " ").replace(" &nbsp;", " ").\
+                    replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
         self.version = self.version + 1
         super(Article, self).save(*args, **kwargs)
 

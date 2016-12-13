@@ -9,6 +9,7 @@ import sys
 import facebook
 import pytz
 from newsroom.models import Article
+import html
 
 def get_api(cfg):
     graph = facebook.GraphAPI(cfg['access_token'])
@@ -62,10 +63,10 @@ def process(days, max_posts):
         if picture and picture[0] == "/":
             picture = url + picture
         attachment = {
-            'name': article.title,
+            'name': html.unescape(article.title).replace(u'\xa0',u''),
             'link': link,
-            'caption': caption,
-            'description': description,
+            'caption': html.unescape(caption).replace(u'\xa0',u''),
+            'description': html.unescape(description).replace(u'\xa0',u''),
             'picture': picture
         }
         try:
