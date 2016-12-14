@@ -532,6 +532,15 @@ class Article(models.Model):
     def calc_summary_text_no_html(self):
         return strip_tags(self.cached_summary_text)
 
+    def clean_typography(self, text):
+        return smartypants.smartypants(text).\
+            replace("&nbsp;", "").\
+            replace("  ", " ").\
+            replace(u'&#8217;', u'’').\
+            replace(u'&#8220;', u'“').\
+            replace(u'&#8221;', u'”').\
+            replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
+
     def save(self, *args, **kwargs):
         self.cached_byline = self.calc_byline(True)
         self.cached_byline_no_links = self.calc_byline(False)
@@ -556,17 +565,11 @@ class Article(models.Model):
             self.cached_small_image = self.calc_small_image()
         except:
             self.cached_small_image = ""
-        self.title = smartypants.smartypants(self.title).\
-                     replace("&nbsp;", "").replace("  ", " ")
-        self.subtitle = smartypants.smartypants(self.subtitle).\
-                        replace("&nbsp;", "").replace("  ", " ")
+        self.title = self.clean_typography(self.title)
+        self.subtitle = self.clean_typography(self.subtitle)
         self.primary_image_caption = \
-                    smartypants.smartypants(self.primary_image_caption).\
-                    replace("  ", " ").replace("&nbsp; ", " ").\
-                    replace(" &nbsp;", " ")
-        self.body = smartypants.smartypants(self.body).replace("  ", " ").\
-                    replace("&nbsp; ", " ").replace(" &nbsp;", " ").\
-                    replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
+                        self.clean_typography(self.primary_image_caption)
+        self.body = self.clean_typography(self.body)
         self.version = self.version + 1
         super(Article, self).save(*args, **kwargs)
 
