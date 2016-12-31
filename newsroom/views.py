@@ -84,7 +84,7 @@ class HomePage(ArticleList):
     #        return request
 
 home_page_view = HomePage.as_view()
-home_page_view = last_modified(last_article_modified)(home_page_view)
+#home_page_view = last_modified(last_article_modified)(home_page_view)
 
 
 class OpinionAnalysisList(ArticleList):
