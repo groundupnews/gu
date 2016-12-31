@@ -626,14 +626,17 @@ class MostPopular(models.Model):
     @staticmethod
     def get_most_popular_html():
         article_list = MostPopular.get_most_popular_list()
-        if article_list:
-            html = "<ol class='most-popular'>"
-            for article in article_list:
-                entry = "<li><a href='" + \
-                        reverse('article.detail', args=[article[0]]) + \
-                        "'>" + article[1] + "</a></li>"
-                html = html + entry
-            html = html + "</ol>"
+        if len(article_list) > 1:
+            try:
+                html = "<ol class='most-popular'>"
+                for article in article_list:
+                    entry = "<li><a href='" + \
+                            reverse('article.detail', args=[article[0]]) + \
+                            "'>" + article[1] + "</a></li>"
+                    html = html + entry
+                    html = html + "</ol>"
+            except:
+                html = ""
         else:
             html = ""
         return html
