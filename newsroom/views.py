@@ -79,13 +79,14 @@ class HomePage(ArticleList):
     def get(self, request, *args, **kwargs):
            # Add messages here. E.g.
            messages.add_message(request, messages.INFO,
-                                "We're only publishing urgent news until 10 January. Have a safe holiday season.")
+                                "We're only publishing urgent "
+                                "news until 10 January. Have a "
+                                "safe holiday season.")
            request = super(HomePage, self).get(request, args, kwargs)
            return request
 
 home_page_view = HomePage.as_view()
 home_page_view = last_modified(last_article_modified)(home_page_view)
-
 
 class OpinionAnalysisList(ArticleList):
 
@@ -99,10 +100,8 @@ class OpinionAnalysisList(ArticleList):
         context['heading'] = "Opinion and Analysis"
         return context
 
-
 class AuthorList(generic.ListView):
     model = models.Author
-
 
 class AuthorDetail(ArticleList):
 
@@ -362,6 +361,7 @@ def article_detail(request, slug):
                         '<aside class="article-advert-edit">',
                         '<aside class="article-advert" style="display:none;">')
             date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
+            most_popular = models.MostPopular.get_most_popular_html()
             return render(request, article.template,
                           {'article': article,
                            'display_region': display_region,
@@ -374,8 +374,7 @@ def article_detail(request, slug):
                            'letters': Letter.objects.published().\
                            filter(published__gte=date_from).\
                            order_by('-published'),
-                           'most_popular_html':
-                           models.MostPopular.get_most_popular_html,
+                           'most_popular_html': most_popular,
                            'form': form})
         else:
             raise Http404

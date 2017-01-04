@@ -634,7 +634,7 @@ class MostPopular(models.Model):
                             reverse('article.detail', args=[article[0]]) + \
                             "'>" + article[1] + "</a></li>"
                     html = html + entry
-                    html = html + "</ol>"
+                html = html + "</ol>"
             except:
                 html = ""
         else:
