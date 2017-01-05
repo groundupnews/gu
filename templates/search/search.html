@@ -11,7 +11,7 @@
 		{% if query %}
 		    <h2>Search results</h2>
 
-		    {% for result in page.object_listb %}
+		    {% for result in page.object_list %}
 			<h4>
 			    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title|safe }}</a>
 			</h4>
