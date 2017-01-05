@@ -59,7 +59,7 @@
 		    </button>
 		</h2>
 		<div id="article-rendered">
-		    <h1>{{article.title}}</h1>
+		    <h1>{{article.title|safe}}</h1>
 		    <h2>{{article.subtitle|safe}}</h2>
 		    <p>{{article.cached_byline_no_links|safe}}</p>
 		    <p>{{article.published|date:"j F Y"}}</p>
