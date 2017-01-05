@@ -11,9 +11,9 @@
 		{% if query %}
 		    <h2>Search results</h2>
 
-		    {% for result in page.object_list|dictsortreversed:"published" %}
+		    {% for result in page.object_listb %}
 			<h4>
-			    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
+			    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title|safe }}</a>
 			</h4>
 			<p>
 			   {{result.published|date:"j M Y"}}
