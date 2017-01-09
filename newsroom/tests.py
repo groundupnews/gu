@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 from letters.models import Letter
 from decimal import *
 from django.contrib.auth.models import User
-
+from pgsearch.utils import searchPostgresDB
 
 class HtmlCleanUp(TestCase):
 
@@ -71,6 +71,7 @@ class ArticleTest(TestCase):
 
         a = Article()
         a.title = "Test article 1"
+        a.body = "<p>The quick brown fox jumps over the lazy dog.</p>"
         a.slug = "test-article-1"
         a.category = Category.objects.get(name="News")
         a.external_primary_image = \
@@ -80,6 +81,8 @@ class ArticleTest(TestCase):
 
         a = Article()
         a.title = "Test article 2"
+        a.subtitle = "Dogs and things"
+        a.body = "<p>How now brown cow.</p>"
         a.slug = "test-article-2"
         a.category = Category.objects.get(slug="opinion")
         a.save()
@@ -211,3 +214,8 @@ class ArticleTest(TestCase):
         letters = Letter.objects.all()
         for l in letters:
             self.assertEqual(l.notified_letter_writer, True)
+
+    def test_search(self):
+        articles = searchPostgresDB("cow dog", Article, False,
+                                    "title", "subtitle", "body")
+        self.assertEqual(len(articles), 1)

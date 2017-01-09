@@ -44,6 +44,7 @@ else:
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.postgres',
     'grappelli.dashboard',
     'grappelli',
     'filebrowser',
@@ -67,6 +68,7 @@ INSTALLED_APPS = (
     'blocks',
     'letters',
     'gallery',
+    'pgsearch',
     #'debug_toolbar',
 )
 

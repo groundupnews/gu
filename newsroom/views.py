@@ -13,6 +13,8 @@ from django.http import HttpResponseForbidden
 from django.views.decorators.http import last_modified
 from django.utils import timezone
 from django.http import JsonResponse
+from pgsearch.utils import searchPostgresDB
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import datetime
 import logging
@@ -482,7 +484,40 @@ def account_profile(request):
                                      "Please change your password.")
     return render(request, "newsroom/account_profile.html")
 
-
+def search(request):
+    articles = None
+    query = request.GET.get('q')
+    method = request.GET.get('method')
+    if method is None:
+        method = "DATE"
+    if query:
+        if method == "DATE":
+            article_list = searchPostgresDB(query,
+                                            models.Article, False,
+                                            "title", "subtitle",
+                                            "body").published()\
+                                            [:settings.MAX_SEARCH_RESULTS]
+        else:
+            article_list = searchPostgresDB(query,
+                                            models.Article, True,
+                                            "title", "subtitle",
+                                            "body").published()\
+                                            [:settings.MAX_SEARCH_RESULTS]
+        paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
+        page_num = request.GET.get('page')
+        if page_num is None:
+            page_num = 1
+        try:
+            page = paginator.page(page_num)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+    else:
+        query = ""
+    return render(request, 'search/search.html', {'method': method,
+                                                  'page': page,
+                                                  'query': query})
 
 
 ''' Used to test logging

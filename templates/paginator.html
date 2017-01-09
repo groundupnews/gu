@@ -35,7 +35,7 @@
 		</li>
 		<li>
 		    {% if query %}
-			<a href="?q={{query}}&page=last">last</a>
+			<a href="?q={{query}}&page={{page_obj.paginator.num_pages}}">last</a>
 		    {% else %}
 			<a href="?page=last">last</a>
 		    {% endif %}

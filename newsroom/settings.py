@@ -17,3 +17,7 @@ ADVERT_CODE_1 = getattr(settings, 'NEWSROOM_ADVERT_CODE_1', '')
 ADVERT_CODE_2 = getattr(settings, 'NEWSROOM_ADVERT_CODE_2', '')
 EDITOR = getattr(settings, 'ARTICLES_EDITOR', "")
 INVOICE_EMAIL = getattr(settings, 'INVOICE_EMAIL', "")
+
+SEARCH_RESULTS_PER_PAGE = getattr(settings, 'NEWSROOM_SEARCH_RESULTS_PER_PAGE',
+                                  10)
+MAX_SEARCH_RESULTS = getattr(settings, 'NEWSROOM_MAX_SEARCH_RESULTS', 50)

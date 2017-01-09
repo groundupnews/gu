@@ -55,3 +55,4 @@ include/
 lib/
 pip-selfcheck.json
 share/
+db_backup*.sql

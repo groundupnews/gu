@@ -10,19 +10,31 @@
 	    <div class="col-xs-12 col-md-8">
 		{% if query %}
 		    <h2>Search results</h2>
-
-		    {% for result in page.object_list %}
+                    <p>
+                        {% if method == "DATE" %}
+                            Results are sorted by publication date.
+                            <a href="?q={{query}}&page={{page.number}}&method=RELEVANCE">
+                                Sort by relevance.
+                            </a>
+                        {% else %}
+                            Results are sorted by relevance.
+                            <a href="?q={{query}}&page={{page.number}}&method=DATE">
+                                Sort by publication date.
+                            </a>
+                        {% endif %}
+                    </p>
+		    {% for article in page.object_list %}
 			<h4>
-			    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title|safe }}</a>
+			    <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
 			</h4>
 			<p>
-			   {{result.published|date:"j M Y"}}
+			   {{article.published|date:"j M Y"}}
 			</p>
-			<p>
-			    {% with result.object.body|safe as body %}
-				{% highlight body with query %}
+                        <p>
+                            {% with article.body|safe as body %}
+			        {% highlight body with query %}
 			    {% endwith %}
-			</p>
+                        </p>
 		    {% empty %}
 			<p>No results found.</p>
 		    {% endfor %}
@@ -31,7 +43,8 @@
 		    {% block pagination %}
 			{% include 'paginator.html' with page_obj=page query=query %}
 		    {% endblock %}
-
+                {% else %}
+                    <h2>No search string</h2>
 		{% endif %}
 	    </div>
 	</div>
