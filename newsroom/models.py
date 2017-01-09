@@ -363,7 +363,7 @@ class Article(models.Model):
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, default=1)
+    user = models.ForeignKey(User, blank=True, null=True)
     version = models.PositiveIntegerField(default=0)
 
     # Author notifications and payments

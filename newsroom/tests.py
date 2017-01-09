@@ -9,6 +9,8 @@ from newsroom import utils
 from bs4 import BeautifulSoup as bs
 from letters.models import Letter
 from decimal import *
+from django.contrib.auth.models import User
+
 
 class HtmlCleanUp(TestCase):
 
@@ -33,7 +35,10 @@ class HtmlCleanUp(TestCase):
 
 class ArticleTest(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
         topic = Topic()
         topic.name = "government"
         topic.slug = "government"

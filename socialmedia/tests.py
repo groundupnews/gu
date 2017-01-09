@@ -1,10 +1,15 @@
 from django.test import TestCase
+from django.test import Client
 from newsroom.models import Article, Category
 from .models import Tweet, TwitterHandle
+from django.contrib.auth.models import User
 
 class TwitterTest(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
         category = Category()
         category.name = "News"
         category.slug = "news"

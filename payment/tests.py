@@ -7,12 +7,17 @@ from django.db import IntegrityError
 from django.utils import timezone
 
 from newsroom.models import Article, Topic, Category, Author
+
 from payment.models import Invoice, Commission, Fund
+from django.contrib.auth.models import User
+
 from decimal import *
 
 class InvoiceTest(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
 
         fund = Fund()
         fund.name = "Bertha|Reporters"
