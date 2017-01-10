@@ -216,6 +216,6 @@ class ArticleTest(TestCase):
             self.assertEqual(l.notified_letter_writer, True)
 
     def test_search(self):
-        articles = searchPostgresDB("cow dog", Article, False,
+        articles = searchPostgresDB("cow dog", Article, 'english', False,
                                     "title", "subtitle", "body")
         self.assertEqual(len(articles), 1)

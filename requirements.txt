@@ -15,7 +15,8 @@ pycrypto==2.6.1
 pytz==2015.7
 requests==2.9.1
 requests-oauthlib==0.6.0
-sqlparse==0.1.18
+#sqlparse==0.1.18
+sqlparse
 tweepy==3.5.0
 Unidecode==0.4.18
 uritemplate==0.6
@@ -27,4 +28,4 @@ python-dateutil
 piexif
 django-allauth==0.28.0
 smartypants
-
+django-debug-toolbar

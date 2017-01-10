@@ -49,7 +49,6 @@ urlpatterns = [
     url(r'^', include('newsroom.urls')),
     url(r'^', include('payment.urls')),
     url(r'^', include('letters.urls')),
-
     url(r'^accounts/', include('allauth.urls')),
 
     url(r'^sitemap\.xml$', sitemap,
@@ -70,3 +69,9 @@ urlpatterns = [
         name='test500'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]

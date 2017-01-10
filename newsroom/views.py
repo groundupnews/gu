@@ -493,13 +493,15 @@ def search(request):
     if query:
         if method == "DATE":
             article_list = searchPostgresDB(query,
-                                            models.Article, False,
+                                            models.Article,
+                                            settings.SEARCH_CONFIG, False,
                                             "title", "subtitle",
                                             "body").published()\
                                             [:settings.MAX_SEARCH_RESULTS]
         else:
             article_list = searchPostgresDB(query,
-                                            models.Article, True,
+                                            models.Article,
+                                            settings.SEARCH_CONFIG, True,
                                             "title", "subtitle",
                                             "body").published()\
                                             [:settings.MAX_SEARCH_RESULTS]
