@@ -517,6 +517,8 @@ def search(request):
             page = paginator.page(paginator.num_pages)
     else:
         query = ""
+        page = None
+        method = None
     return render(request, 'search/search.html', {'method': method,
                                                   'page': page,
                                                   'query': query})
