@@ -151,6 +151,13 @@ class Region(models.Model):
     def get_absolute_url(self):
         return reverse('region.detail', args=[self.name, ])
 
+    def get_specific(self):
+        index = self.name.rfind("/")
+        if index >= 0 and index < len(self.name):
+            return self.name[index + 1 :]
+        else:
+            return self.name
+
     def __str__(self):
         return self.name
 

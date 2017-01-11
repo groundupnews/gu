@@ -25,7 +25,16 @@
                         </a>
                     {% endif %}
                 </td>
-                <td>{{commission.description}}</td>
+                <td>
+                    {{commission.description}}
+                    {% if commission.article.category %}
+                        <br /><em>{{commission.article.category}}</em>
+                    {% endif %}
+                    {% if commission.article.region.slug != "none" %}
+                        <br />
+                        {{commission.article.region.get_specific}}
+                    {% endif %}
+                </td>
                 <td align="right">
                     {% if can_edit_commissions %}
                         <div class="commission-due-input">
