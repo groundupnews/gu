@@ -76,7 +76,7 @@
                                 {% if can_edit_commissions %}
                                     <input type="submit"
                                            name="update_button"
-                                           class="btn btn-primary"
+                                           class="btn btn-info"
                                            value="Update details" />
                                     &nbsp;
                                 {% endif %}
@@ -96,23 +96,32 @@
                                     {% if can_edit_commissions %}
                                         <input type="submit"
                                                name="begin_button"
-                                               class="btn btn-primary"
+                                               class="btn"
                                                value="Begin" />
                                         &nbsp;
                                         <input type="submit"
                                                name="return_button"
-                                               class="btn btn-primary"
+                                               class="btn
+                                                      {% if invoice.status == "-" or invoice.status == "1" %}
+                                                      btn-primary
+                                                      {% endif %}"
                                                value="Author" />
                                         &nbsp;
                                         <input type="submit"
                                                name="approve_button"
-                                               class="btn btn-primary"
+                                               class="btn
+                                                      {% if invoice.status == "2" %}
+                                                      btn-primary
+                                                      {% endif %}"
                                                value="Approve" />
                                         &nbsp;
                                     {% endif %}
                                     <input type="submit"
                                            name="paid_button"
-                                           class="btn btn-primary"
+                                           class="btn
+                                                  {% if invoice.status == "3" %}
+                                                  btn-primary
+                                                  {% endif %}""
                                            value="Paid" />
                                 {% endif %}
                             </td>
