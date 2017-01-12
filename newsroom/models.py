@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db.models import Max
+import traceback
 from decimal import *
 
 from filebrowser.fields import FileBrowseField
@@ -123,9 +124,10 @@ class Author(models.Model):
                           settings.EDITOR,
                           [self.email, settings.EDITOR,]
                 )
-            except:
+            except Exception as e:
                 log_message = "Error author creation email failed: " + \
-                              self.email
+                              self.email + "\n" + traceback.print_exc() + \
+                              "\n" + str(e)
                 logger.error(log_message)
         else:
             # Design error for legacy reasons: email is duplicated in Author
