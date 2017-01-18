@@ -57,37 +57,55 @@ body {
 
 #search-form {
     display: inline;
-    margin-top: 15px;
+    margin-top: 12px;
 }
+
+@media (min-width: 768px) {
+    #search-form  {
+        border: 1px solid #26aae2;
+        padding: 0;
+        border-radius: 0;
+        height: 32px;
+    }
+}
+
 
 #search-form input {
-    height: 28px;
-    display: inline-block;
-    padding-right: 0;
-    margin-right: 0;
-    border: 1px solid #26aae2;
-    border-radius: 0;
-    font-size: 16px;
+    display: inline;
+    width: 230px;
 }
 
-#search-button {
-    height: 28px;
-    margin: 0;
-    padding:0;
-    margin-left: -3px;
-    padding-left: 5px;
-    padding-right: 5px;
-    border: 1px solid #26aae2;
-    border-left: none;
-    background-color: white;
-    background-image: none;
-    color: black;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 0;
-    font-size: 16px;
+@media (min-width: 768px) {
+    #search-form input  {
+        font-size: 16px;
+        margin: 0;
+        border: none;
+        height: 28px;
+    }
 }
+
+
+#search-button {
+    margin-bottom: 4px;
+    display: inline;
+}
+
+@media (min-width: 768px) {
+    #search-button  {
+        max-width: 48px;
+        border: none;
+        border-left: 1px solid #26aae2;
+        border-radius: 0;
+        background-color: white;
+        background-image: none;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+        height: 28px;
+    }
+}
+
 
 
 /**************************/
