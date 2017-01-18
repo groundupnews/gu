@@ -920,12 +920,6 @@ iframe {
     max-width: 100%;
 }
 
-/*
-.article-advert:before {
-   content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
-}
-*/
-
 .side-advert:before {
    content: "ADVERTISEMENT";
 }
@@ -971,7 +965,7 @@ iframe {
     background-color: yellow;
 }
 
-/* Youtube and Soundcloud in CKeditor */
+/* Youtube, Soundcloud and Support ads in CKeditor */
 
 .youtube {
     background-color: blue;
@@ -979,4 +973,23 @@ iframe {
 
 .soundcloud {
     background-color: green;
+}
+
+.advert-editor {
+    background-color: pink;
+}
+
+.article-advert:before {
+   content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
+}
+
+.supportus-edit {
+    background-color: yellow;
+}
+
+.supportus-edit:before {
+   content: "Support GroundUp";
+}
+.supportus img {
+    width: 100%;
 }

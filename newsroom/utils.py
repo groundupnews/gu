@@ -4,8 +4,11 @@ import string
 import random
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
+from random import randint
 
 from django.test import TestCase
+from newsroom.settings import SUPPORT_US_IMAGES, ADVERT_CODE
+from django.conf import settings
 
 ''' Can be used to prevent staff from getting cached pages.
 '''
@@ -124,7 +127,7 @@ def processYouTubeDivs(soup):
     youtubedivs = soup.find_all('div', {'class':"youtube"})
     for div in youtubedivs:
         div["class"] = "embed-responsive embed-responsive-16by9"
-        d = BeautifulSoup(div.string)
+        d = BeautifulSoup(div.string, "html.parser")
         div.string = ""
         div.append(d)
     return soup
@@ -133,13 +136,33 @@ def processSoundCloudDivs(soup):
     soundclouddivs = soup.find_all('div', {'class':"soundcloud"})
     for div in soundclouddivs:
         div["class"] = ""
-        sc = BeautifulSoup(div.string)
+        sc = BeautifulSoup(div.string, "html.parser")
         iframe = sc.find("iframe")
         iframe["height"] = 100
         div.string = ""
-        print("D0", iframe)
-        print("D1", sc)
         div.append(sc)
+    return soup
+
+def processSupportUs(soup):
+    asides = soup.find_all('aside', {'class':"supportus-edit"})
+    for aside in asides:
+        aside['class'] = "supportus"
+        aside.string = ""
+        ad_to_run = randint(0, len(SUPPORT_US_IMAGES) - 1)
+        image_url = SUPPORT_US_IMAGES[ad_to_run]
+        supportimage = soup.new_tag('img', src=settings.STATIC_URL + image_url)
+        aside.append(supportimage)
+    return soup
+
+def processAdverts(soup):
+    asides = soup.find_all('aside', {'class':"article-advert-edit"})
+    for aside in asides:
+        aside['class'] = "article-advert"
+        aside.string = ""
+        print("DO:", ADVERT_CODE)
+        advert = BeautifulSoup(ADVERT_CODE, "html.parser")
+        print("D1:", advert)
+        aside.append(advert)
     return soup
 
 
@@ -153,6 +176,8 @@ def replaceBadHtmlWithGood(html):
     soup = removeGoogleDocsSpans(soup)
     soup = processYouTubeDivs(soup)
     soup = processSoundCloudDivs(soup)
+    soup = processSupportUs(soup)
+    soup = processAdverts(soup)
     return str(soup)
 
 def get_edit_lock_msg(user):

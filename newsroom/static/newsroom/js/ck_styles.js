@@ -26,6 +26,8 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
       attributes: { 'class': 'summary-text' } },
     { name: 'Editor summary', element: 'div',
       attributes: { 'class': 'editor-summary' } },
+    { name: 'Support Us', element: 'aside',
+      attributes: { 'class': 'supportus-edit'}},
     { name: 'Advert', element: 'aside',
       attributes: { 'class': 'article-advert-edit' } },
 ] );

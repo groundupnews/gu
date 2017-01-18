@@ -262,6 +262,7 @@ LOGGING = {
     }
 }
 
+# DEPRECATED BUT CODE MUST BE REMOVED FROM VIEW FIRST
 advert_code_file_1 = open(os.path.join(BASE_DIR,
                                      "newsroom/templates/newsroom/advert_1.html"),
                         "r")
@@ -270,6 +271,11 @@ advert_code_file_2 = open(os.path.join(BASE_DIR,
                                      "newsroom/templates/newsroom/advert_2.html"),
                         "r")
 NEWSROOM_ADVERT_CODE_2 = advert_code_file_2.read()
+#############
+
+NEWSROOM_ADVERT_CODE = open(os.path.join(BASE_DIR,
+                                     "newsroom/templates/newsroom/advert.html"),
+                            "r").read()
 
 from .local_settings import *
 

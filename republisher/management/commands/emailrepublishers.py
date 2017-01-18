@@ -40,7 +40,8 @@ def process():
                     image['src'] = prefix + image['src']
             links = soup.find_all("a")
             for link in links:
-                if link['href'][0] == '/':
+                if 'href' in link and (len(link['href'] > 0) and \
+                                       link['href'][0] == '/':
                     link['href'] = prefix + link['href']
             article.body = str(soup)
             message = render_to_string('republisher/message.html',

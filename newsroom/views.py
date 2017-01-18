@@ -253,8 +253,6 @@ def article_post(request, slug):
                     return render(request, article.template,
                                   {'article': article,
                                    'display_region': None,
-                                   'see_also': None,
-                                   'read_next': None,
                                    'blocks': get_blocks('Article'),
                                    'can_edit': False,
                                    'article_letters': None,
@@ -315,27 +313,27 @@ def article_detail(request, slug):
             else:
                 display_region = ""
 
-            try:
-                read_next = models.Article.objects.published().\
-                    exclude(pk=article.pk). \
-                    exclude(recommended=False)[randint(0, 9)]
-                read_next_pk = read_next.pk
-            except IndexError:
-                read_next = None
-                read_next_pk = article.pk
+            # try:
+            #     read_next = models.Article.objects.published().\
+            #         exclude(pk=article.pk). \
+            #         exclude(recommended=False)[randint(0, 9)]
+            #     read_next_pk = read_next.pk
+            # except IndexError:
+            #     read_next = None
+            #     read_next_pk = article.pk
 
-            if article.main_topic:
-                see_also = models.Article.objects.published(). \
-                    filter(topics=article.main_topic). \
-                    exclude(pk=article.pk).exclude(pk=read_next_pk).\
-                    exclude(recommended=False).distinct()[0:4]
-            elif article.topics:
-                see_also = models.Article.objects.published(). \
-                    filter(topics__in=article.topics.all()). \
-                    exclude(pk=article.pk).exclude(pk=read_next_pk). \
-                    exclude(recommended=False).distinct()[0:4]
-            else:
-                see_also = None
+            # if article.main_topic:
+            #     see_also = models.Article.objects.published(). \
+            #         filter(topics=article.main_topic). \
+            #         exclude(pk=article.pk).exclude(pk=read_next_pk).\
+            #         exclude(recommended=False).distinct()[0:4]
+            # elif article.topics:
+            #     see_also = models.Article.objects.published(). \
+            #         filter(topics__in=article.topics.all()). \
+            #         exclude(pk=article.pk).exclude(pk=read_next_pk). \
+            #         exclude(recommended=False).distinct()[0:4]
+            # else:
+            #     see_also = None
 
             can_edit = False
             if request.user.is_staff and \
@@ -347,11 +345,9 @@ def article_detail(request, slug):
                     can_edit = False
 
             if not request.user.is_authenticated():
-                ad_to_run = randint(1,2)
-                if ad_to_run == 1:
-                    advert_code = settings.ADVERT_CODE_1
-                else:
-                    advert_code = settings.ADVERT_CODE_2
+                # DEPRECATED - MUST REMOVE AT SOME POINT BUT
+                # WILL INVOLVE EXECUTING SAVE ON EVERY ARTICLE FIRST
+                advert_code = settings.ADVERT_CODE
                 article_body = article.body.replace(
                     '<aside class="article-advert-edit">',
                     '<aside class="article-advert">' + advert_code)
