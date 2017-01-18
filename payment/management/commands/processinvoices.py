@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
+from django.db import transaction
 
 import datetime
 import logging
@@ -18,39 +19,41 @@ def generate_commissions():
     articles = Article.objects.published().filter(commissions_processed=False)
 
     for article in articles:
-        process_commissions = False
-        if article.override_commissions_system == "NO":
-            if article.category is not "Opinion":
-                process_commissions = True
-        elif article.override_commissions_system == "PROCESS":
-                process_commissions = True
+        with transaction.atomic():
+            process_commissions = False
+            if article.override_commissions_system == "NO":
+                if article.category.name is not "Opinion":
+                    process_commissions = True
+            elif article.override_commissions_system == "PROCESS":
+                    process_commissions = True
 
-        if process_commissions is True:
-            authors = [article.author_01, article.author_02, article.author_03,
-                       article.author_04, article.author_05]
-            for author in authors:
-                if author is not None and author.freelancer is True:
-                    commission = Commission()
-                    # commission.author = author
-                    commission.article = article
-                    commission.sys_generated = True
-                    commission.date_generated = timezone.now()
-                    num_commissions = num_commissions + 1
-                    # Get the invoice for this commission
-                    invoices = Invoice.objects.filter(author=author).\
-                               filter(status__lte="0")
-                    if len(invoices) == 0:
-                        invoice = Invoice.create_invoice(author)
-                    else:
-                        invoice = invoices[0]
-                        if invoice.status == "0":
-                            invoice.status = "-"
-                            invoice.save()
-                    commission.invoice = invoice
-                    commission.save()
+            if process_commissions is True:
+                authors = [article.author_01, article.author_02,
+                           article.author_03, article.author_04,
+                           article.author_05]
+                for author in authors:
+                    if author is not None and author.freelancer is True:
+                        commission = Commission()
+                        # commission.author = author
+                        commission.article = article
+                        commission.sys_generated = True
+                        commission.date_generated = timezone.now()
+                        num_commissions = num_commissions + 1
+                        # Get the invoice for this commission
+                        invoices = Invoice.objects.filter(author=author).\
+                                   filter(status__lte="0")
+                        if len(invoices) == 0:
+                            invoice = Invoice.create_invoice(author)
+                        else:
+                            invoice = invoices[0]
+                            if invoice.status == "0":
+                                invoice.status = "-"
+                                invoice.save()
+                        commission.invoice = invoice
+                        commission.save()
 
-        article.commissions_processed = True
-        article.save()
+            article.commissions_processed = True
+            article.save()
     return num_commissions
 
 def notify_freelancers():
