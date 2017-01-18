@@ -367,8 +367,7 @@ def article_detail(request, slug):
             return render(request, article.template,
                           {'article': article,
                            'display_region': display_region,
-                           'see_also': see_also,
-                           'read_next': read_next,
+                           'recommended' : article.get_recommended(),
                            'blocks': get_blocks('Article'),
                            'can_edit': can_edit,
                            'article_body': article_body,
@@ -376,7 +375,7 @@ def article_detail(request, slug):
                            'letters': Letter.objects.published().\
                            filter(published__gte=date_from).\
                            order_by('-published'),
-                           'most_popular_html': most_popular,
+                           'content_type': 'article',
                            'form': form})
         else:
             raise Http404

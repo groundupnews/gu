@@ -7,7 +7,10 @@ from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db.models import Max
+from django.utils import timezone
+
 import traceback
+from random import shuffle
 from decimal import *
 
 from filebrowser.fields import FileBrowseField
@@ -298,7 +301,7 @@ class Article(models.Model):
     use_editor = models.BooleanField(default=True)
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
-    recommended = models.BooleanField(default=True)
+    recommended = models.BooleanField(default=False)
     category = models.ForeignKey(Category, default=4)
     region = models.ForeignKey(Region, blank=True, null=True)
     topics = models.ManyToManyField(Topic, blank=True)
@@ -367,8 +370,9 @@ class Article(models.Model):
                                             verbose_name="sent status",
                                             default="paused")
     last_tweeted = models.DateTimeField(default=
-                                        datetime.datetime(year=2000,
-                                                          month=1,day=1))
+                                        timezone.make_aware(
+                                            datetime.datetime(year=2000,
+                                                          month=1,day=1)))
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -587,6 +591,14 @@ class Article(models.Model):
 
     def __str__(self):
         return str(self.pk) + " " + self.title
+
+    def get_recommended(self, num_to_choose=3, days_back = 10):
+        publication_date = timezone.make_aware(datetime.datetime.now() -
+                                            datetime.timedelta(days=days_back))
+        return Article.objects.published().                         \
+                            filter(published__gt=publication_date).  \
+                            exclude(pk=self.pk).                    \
+                            order_by("?")[:num_to_choose]
 
     class Meta:
         ordering = ["-stickiness", "-published", ]

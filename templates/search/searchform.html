@@ -1,12 +1,12 @@
-<form class="navbar-form navbar-right"
+<form id="search-form" class="navbar-form navbar-right"
       method="get" action="/search/">
-    <span id="search-form" class="form-group">
+    <div class="form-group">
 	<input type="text" class="form-control" name="q" id="id_q"
-	       placeholder="Search" value="{{query}}">
-    </span>
-
-    <button  id="search-button" class="btn btn-default" >
-      	<span class="glyphicon glyphicon-search">
+	       placeholder="Search"
+               value="{{query}}" />
+    </div>
+    <button id="search-button" class="btn btn-default">
+        <span class="glyphicon glyphicon-search">
       	    <span class="sr-only">Search</span>
       	</span>
     </button>

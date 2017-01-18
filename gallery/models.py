@@ -44,6 +44,11 @@ class Album(models.Model):
     def get_absolute_url(self):
         return reverse('album.detail', args=[self.pk, ])
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("pk__iexact", "name__icontains")
+
+
     class Meta:
         ordering = ['name', ]
 

@@ -1,2 +1,31 @@
+{% load fb_versions %}
 
-<p><a href="{{read_next.get_absolute_url}}">{{read_next.title|safe}}</a></p>
+{% if recommended %}
+    <div id="recommended">
+    <h2>You might like</h2>
+
+    {% for article in recommended %}
+
+        <div class="row">
+            {% if article.cached_primary_image %}
+                <div class="col-xs-6 left">
+                    <a href="{{article.get_absolute_url}}">
+		        <img src="{% version article.primary_image 'small' %}"
+		             alt="{{article.primary_image_alt|addslashes}}" />
+                    </a>
+                </div>
+            {% endif %}
+            <div class="{% if article.cached_primary_image %}
+                        col-xs-6
+                        {% else %}
+                        col-xs-12
+                        {% endif %}">
+                <a href="{{article.get_absolute_url}}">
+                    <h3>{{article.title}}</h3>
+                    <h4>{{article.published|date:"Y-m-d"}}</h4>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endif %}

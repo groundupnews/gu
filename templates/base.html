@@ -52,34 +52,35 @@
 		{% include 'banner.html' %}
 	    {% endblock %}
 
-	    {% block messages %}
-		{% include 'messages.html' %}
-	    {% endblock %}
-
-	    {% block content-header %}
-	    {% endblock %}
-
-            {% block content-wrapper %}
-	        {% block content %}
+            <div id="#BelowTheBanner" class="{{content_type}}">
+	        {% block messages %}
+		    {% include 'messages.html' %}
 	        {% endblock %}
-            {% endblock %}
 
-	    {% block admin-area %}
-		{% if request.user.is_staff %}
-		    <div id="admin-area">
-			<div id="admin-user">
-			    {{request.user}}
-			</div>
-			{% block admin-area-additional %}
-			{% endblock %}
-		    </div>
-		{% endif %}
-	    {% endblock %}
+	        {% block content-header %}
+	        {% endblock %}
 
-	    {% block footer %}
-		{% include 'footer.html' %}
-	    {% endblock %}
+                {% block content-wrapper %}
+	            {% block content %}
+	            {% endblock %}
+                {% endblock %}
 
+	        {% block admin-area %}
+		    {% if request.user.is_staff %}
+		        <div id="admin-area">
+			    <div id="admin-user">
+			        {{request.user}}
+			    </div>
+			    {% block admin-area-additional %}
+			    {% endblock %}
+		        </div>
+		    {% endif %}
+	        {% endblock %}
+
+	        {% block footer %}
+		    {% include 'footer.html' %}
+	        {% endblock %}
+            </div>
 
 	    {% block javascript-includes %}
 		{% include 'javascripts.html' %}

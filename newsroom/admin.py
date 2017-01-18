@@ -116,7 +116,7 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Publish', {
             'fields': ('category', 'topics', 'main_topic',
-                       'region', 'slug', 'published', ),
+                       'region', 'recommended', 'slug', 'published', ),
         }),
         ('Summary', {
             'classes': ('grp-collapse grp-closed',),
@@ -129,7 +129,7 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ('copyright', 'include_in_rss',
                        ('letters_on', 'comments_on', 'collapse_comments', ),
                        'stickiness', 'exclude_from_list_views',
-                       'recommended', 'byline', 'use_editor',
+                       'byline', 'use_editor',
                        ('template', 'undistracted_layout', ),
                        'additional_head_scripts', 'additional_body_scripts',
                        'activate_slideshow',

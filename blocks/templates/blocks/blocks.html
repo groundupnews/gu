@@ -13,7 +13,7 @@ _Related
 _Recommend
 
 {% endcomment %}
-<div id="sidebar-block">
+
     {% for b in blocks %}
         <div class="sidebar-block">
             {% if b.name == "_Popular" %}
@@ -61,7 +61,6 @@ _Recommend
                 {% endif %}
             {% elif b.name == "_Recommend" %}
 	        <div id="read-next">
-	            <h2>We recommend</h2>
 	            {% include 'newsroom/read_next.html' %}
 	        </div>
             {% else %}
@@ -69,4 +68,3 @@ _Recommend
             {% endif %}
         </div>
     {% endfor %}
-</div>
