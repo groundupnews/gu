@@ -259,6 +259,49 @@ a {
 /**************/
 
 
+/* Youtube, Soundcloud and Support ads in CKeditor */
+
+.youtube {
+    background-color: blue;
+}
+
+.soundcloud {
+    background-color: green;
+}
+
+.article-advert-edit {
+    background-color: red;
+}
+
+.article-advert-edit:before {
+    content: "ADVERT";
+}
+
+.article-advert {
+    width: 100%;
+    text-align: center;
+}
+
+.article-advert h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+
+.supportus-edit {
+    background-color: yellow;
+}
+
+.supportus-edit:before {
+   content: "Support GroundUp";
+}
+.supportus img {
+    width: 100%;
+}
+
+
 /******************************************/
 
 #article-topics a {
@@ -900,9 +943,6 @@ table#invoice-form .helptext {
 }
 /* Advert */
 
-.article-advert {
-    text-align: center;
-}
 
 
 .frontpage-advert, #sidebar-advert {
@@ -930,10 +970,6 @@ iframe {
     }
 }
 
-.article-advert:before, .side-advert:before {
-   font-weight: lighter;
-   font-size: 12px;
-}
 
 
 .side-advert {
@@ -949,13 +985,6 @@ iframe {
     padding-left: 0;
 }
 
-.article-advert-edit {
-    background-color: red;
-}
-
-.article-advert-edit:before {
-    content: "ADVERT";
-}
 
 .appeal img {
     width: 100%;
@@ -963,33 +992,4 @@ iframe {
 
 .highlighted {
     background-color: yellow;
-}
-
-/* Youtube, Soundcloud and Support ads in CKeditor */
-
-.youtube {
-    background-color: blue;
-}
-
-.soundcloud {
-    background-color: green;
-}
-
-.advert-editor {
-    background-color: pink;
-}
-
-.article-advert:before {
-   content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
-}
-
-.supportus-edit {
-    background-color: yellow;
-}
-
-.supportus-edit:before {
-   content: "Support GroundUp";
-}
-.supportus img {
-    width: 100%;
 }

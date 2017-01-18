@@ -159,9 +159,7 @@ def processAdverts(soup):
     for aside in asides:
         aside['class'] = "article-advert"
         aside.string = ""
-        print("DO:", ADVERT_CODE)
         advert = BeautifulSoup(ADVERT_CODE, "html.parser")
-        print("D1:", advert)
         aside.append(advert)
     return soup
 
