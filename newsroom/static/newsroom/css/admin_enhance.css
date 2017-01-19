@@ -1,16 +1,7 @@
 
-/* #s2id_id_region, #s2id_id_topics { */
-/*     width: 558px !important; */
-/* } */
-
-/* #s2id_id_main_topic { */
-/*     width: 200px !important; */
-/* } */
-
-/* #s2id_id_region .select2-display-none { */
-/*     width: 558px !important; */
-/* } */
-
+body {
+    padding-top: 0 !important;
+}
 
 #id_slug {
     width: 558px !important
