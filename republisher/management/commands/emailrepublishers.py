@@ -18,16 +18,13 @@ def process():
     republisherarticles = RepublisherArticle.objects.filter(status="scheduled")
 
     for republisherarticle in republisherarticles:
-        print("D0")
         # Only notify once article is published
         if not republisherarticle.article.is_published():
             continue
-        print("D1")
         # Check that sufficient time has passed since publishing
         dont_send_before = republisherarticle.article.published + \
             datetime.timedelta(minutes=republisherarticle.wait_time)
         if timezone.now() >= dont_send_before:
-            print("D2")
             prefix = "http://" + Site.objects.all()[0].domain
             url = prefix + republisherarticle.article.get_absolute_url()
             article = republisherarticle.article

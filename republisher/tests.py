@@ -45,20 +45,20 @@ class RepublishTest(TestCase):
         category.slug = "news"
         category.save()
 
-        a = Article()
-        a.title = "Test article 1"
-        a.body = "<p>The quick brown fox jumps over the lazy dog.</p>"
-        a.slug = "test-article-1"
-        a.category = Category.objects.get(name="News")
-        a.external_primary_image = \
+        article = Article()
+        article.title = "Test article 1"
+        article.body = "<p>The quick brown fox jumps over the lazy dog.</p>"
+        article.slug = "test-article-1"
+        article.category = Category.objects.get(name="News")
+        article.external_primary_image = \
             "http://www.w3schools.com/html/pic_mountain.jpg"
-        a.save()
-        a.publish_now()
+        article.save()
+        article.publish_now()
 
-        r  = RepublisherArticle()
-        r.article = a
-        r.republisher = republisher
-        r.save()
+        republisherArticle  = RepublisherArticle()
+        republisherArticle.article = article
+        republisherArticle.republisher = republisher
+        republisherArticle.save()
 
     def test_republisher(self):
         r = RepublisherArticle.objects.all()
