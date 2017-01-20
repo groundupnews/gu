@@ -150,8 +150,10 @@ def processSupportUs(soup):
         aside.string = ""
         ad_to_run = randint(0, len(SUPPORT_US_IMAGES) - 1)
         image_url = SUPPORT_US_IMAGES[ad_to_run]
+        supporta = soup.new_tag('a', href=settings.DONATE_PAGE)
         supportimage = soup.new_tag('img', src=settings.STATIC_URL + image_url)
-        aside.append(supportimage)
+        supporta.append(supportimage)
+        aside.append(supporta)
     return soup
 
 def processAdverts(soup):
@@ -174,8 +176,8 @@ def replaceBadHtmlWithGood(html):
     soup = removeGoogleDocsSpans(soup)
     soup = processYouTubeDivs(soup)
     soup = processSoundCloudDivs(soup)
-    soup = processSupportUs(soup)
-    soup = processAdverts(soup)
+    #soup = processSupportUs(soup)
+    #soup = processAdverts(soup)
     return str(soup)
 
 def get_edit_lock_msg(user):

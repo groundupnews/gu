@@ -271,6 +271,8 @@ advert_code_file_2 = open(os.path.join(BASE_DIR,
                                      "newsroom/templates/newsroom/advert_2.html"),
                         "r")
 NEWSROOM_ADVERT_CODE_2 = advert_code_file_2.read()
+
+DONATE_PAGE = "/donate/"
 #############
 
 NEWSROOM_ADVERT_CODE = open(os.path.join(BASE_DIR,

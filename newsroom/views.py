@@ -16,6 +16,8 @@ from django.http import JsonResponse
 from pgsearch.utils import searchPostgresDB
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from bs4 import BeautifulSoup
+
 import datetime
 import logging
 from random import randint
@@ -313,28 +315,6 @@ def article_detail(request, slug):
             else:
                 display_region = ""
 
-            # try:
-            #     read_next = models.Article.objects.published().\
-            #         exclude(pk=article.pk). \
-            #         exclude(recommended=False)[randint(0, 9)]
-            #     read_next_pk = read_next.pk
-            # except IndexError:
-            #     read_next = None
-            #     read_next_pk = article.pk
-
-            # if article.main_topic:
-            #     see_also = models.Article.objects.published(). \
-            #         filter(topics=article.main_topic). \
-            #         exclude(pk=article.pk).exclude(pk=read_next_pk).\
-            #         exclude(recommended=False).distinct()[0:4]
-            # elif article.topics:
-            #     see_also = models.Article.objects.published(). \
-            #         filter(topics__in=article.topics.all()). \
-            #         exclude(pk=article.pk).exclude(pk=read_next_pk). \
-            #         exclude(recommended=False).distinct()[0:4]
-            # else:
-            #     see_also = None
-
             can_edit = False
             if request.user.is_staff and \
                request.user.has_perm("newsroom.change_article"):
@@ -344,20 +324,21 @@ def article_detail(request, slug):
                    query_edit.lower() == "false":
                     can_edit = False
 
-            if not request.user.is_authenticated():
-                # DEPRECATED - MUST REMOVE AT SOME POINT BUT
-                # WILL INVOLVE EXECUTING SAVE ON EVERY ARTICLE FIRST
-                advert_code = settings.ADVERT_CODE
-                article_body = article.body.replace(
-                    '<aside class="article-advert-edit">',
-                    '<aside class="article-advert">' + advert_code)
-            else:
-                if can_edit:
-                    article_body = article.body
-                else:
-                    article_body = article.body.replace(
+            article_body = article.body
+            if can_edit == False:
+                try:
+                    soup = BeautifulSoup(article_body, "html.parser")
+                    soup = utils.processSupportUs(soup)
+                    soup = utils.processAdverts(soup)
+                    article_body = str(soup)
+                except:
+                    article_body = article_body.replace(
                         '<aside class="article-advert-edit">',
                         '<aside class="article-advert" style="display:none;">')
+                    article_body = article_body.replace(
+                        '<aside class="supportus-edit">',
+                        '<aside class="supportus" style="display:none;">')
+
             date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
             most_popular = models.MostPopular.get_most_popular_html()
             return render(request, article.template,

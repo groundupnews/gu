@@ -297,7 +297,7 @@ a {
 }
 
 .article-advert-edit:before {
-    content: "ADVERT";
+    content: "ADVERTISEMENT";
 }
 
 .article-advert {
@@ -318,7 +318,7 @@ a {
 }
 
 .supportus-edit:before {
-   content: "Support GroundUp";
+   content: "SUPPORT GROUNDUP";
 }
 .supportus img {
     width: 100%;
