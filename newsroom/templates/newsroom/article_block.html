@@ -41,19 +41,19 @@ contenteditable="true"
     <div class="col-xs-12 col-md-8
                 {% if article.undistracted_layout %}
                 col-md-offset-1
-                {% endif %}"
-    >
+                {% endif %}">
 	{% if article.cached_primary_image %}
 	    <figure id="article-primary-image">
 		{% if article.primary_image %}
 		    <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}">
 			<img src="{{article.cached_primary_image|iriencode}}"
-			     alt="{{article.primary_image_alt|addslashes}}" />
+			     alt="{{article.primary_image_alt|addslashes}}"
+                             class="webfeedsFeaturedVisual" />
 		    </a>
 		{% else %}
 		    <img src="{{article.cached_primary_image|iriencode}}"
 			 alt="{{article.primary_image_alt|addslashes}}"
-/>
+                         class="webfeedsFeaturedVisual"/>
 		{% endif %}
 
 		{% if article.primary_image_caption %}
