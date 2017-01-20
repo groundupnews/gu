@@ -123,6 +123,18 @@ def removeGoogleDocsSpans(soup):
 
 # <div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/WsAn5AgAF0I" width="560"></iframe></div>
 
+def processDashes(soup):
+    # em-dash
+    target = soup.find_all(text=re.compile(r' --- '))
+    for dashes in target:
+        dashes.replace_with(dashes.replace('---', "\u2014"))
+    # en-dash
+    target = soup.find_all(text=re.compile(r' -- '))
+    for dashes in target:
+        dashes.replace_with(dashes.replace('--', "\u2013"))
+    return soup
+
+
 def processYouTubeDivs(soup):
     youtubedivs = soup.find_all('div', {'class':"youtube"})
     for div in youtubedivs:
@@ -174,10 +186,9 @@ def replaceBadHtmlWithGood(html):
     soup = replacePImgWithFigureImg(soup)
     soup = fixEditorSummary(soup)
     soup = removeGoogleDocsSpans(soup)
+    soup = processDashes(soup)
     soup = processYouTubeDivs(soup)
     soup = processSoundCloudDivs(soup)
-    #soup = processSupportUs(soup)
-    #soup = processAdverts(soup)
     return str(soup)
 
 def get_edit_lock_msg(user):

@@ -31,7 +31,18 @@ class HtmlCleanUp(TestCase):
         html = '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>'
         self.assertEqual(utils.replaceBadHtmlWithGood(html),
                          '<figure><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/><figcaption>This is the caption.</figcaption></figure>')
-
+        html1 = "<p>The dog ran away.</p>" \
+                "<p>The dog -- ran away.</p>" \
+                "<p>The dog --- ran away.</p>" \
+                "<p>The dog--ran away.</p>" \
+                "<p>The dog---ran away.</p>"
+        html2 = "<p>The dog ran away.</p>" \
+                "<p>The dog – ran away.</p>" \
+                "<p>The dog — ran away.</p>" \
+                "<p>The dog--ran away.</p>" \
+                "<p>The dog---ran away.</p>"
+        html3 = str(utils.processDashes(bs(html1)))
+        self.assertEqual(html2, html3)
 
 class ArticleTest(TestCase):
 
