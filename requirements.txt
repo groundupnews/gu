@@ -6,7 +6,7 @@ facebook-sdk
 google-api-python-client
 html2text
 httplib2
-oauth2client
+oauth2client==1.5.2
 oauthlib
 Pillow
 psycopg2
