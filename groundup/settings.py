@@ -217,12 +217,7 @@ GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 NEWSROOM_ARTICLE_COPYRIGHT = '&copy; ' + str(datetime.date.today().year) + \
                              ' GroundUp. <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/80x15.png" /></a><br />This article is licensed under a <a rel="license" href="http://creativecommons.ormodifiedg/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.<p>You may republish this article, so long as you credit the authors and GroundUp, and do not change the text. Please include a link back to the original article.</p>'
 
-# HAYSTACK_CONNECTIONS = {
-#     'default': {
-#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-#         'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
-#     },
-# }
+# System now uses Postgres full text search. This is Only being kept live because of the
 
 HAYSTACK_CONNECTIONS = {
     'default': {
