@@ -6,6 +6,8 @@ facebook-sdk
 google-api-python-client
 html2text
 httplib2
+# Upgrading this will require a painful time-consuming
+# change to get most popular articles from Google Analytics.
 oauth2client==1.5.2
 oauthlib
 Pillow
