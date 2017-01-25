@@ -1,39 +1,40 @@
 {% load staticfiles %}
 
-<a id="facebook-share" href="#"
-   title="Share on Facebook">
-    <i class="fa fa-facebook fa-2x"></i>
-</a>
-
-<a id="twitter-share" href="#" title="Share on Twitter">
-    <i class="fa fa-twitter fa-2x"></i>
-</a>
-
-
-<a id="whatsapp-share" href="#"
-   data-action="share/whatsapp/share"
-   title="Share via WhatsApp">
-    <i class="fa fa-whatsapp fa-2x"></i>
-</a>
-
-
-<a id="email-share" href="{{request.build_absolute_uri}}"
-   title="Email">
-    <i class="fa fa-envelope fa-2x"></i>
-</a>
-
-<a id="print-article" href="#"
-   title="Print">
-    <i class="fa fa-print fa-2x"></i>
-</a>
-
 {% if article.encourage_republish %}
     <span id="republish">
 	<a href="{% url 'article.copy' article.slug %}"
 	   id="republish-article"
 	   target="_blank"
 	   title="Republish this article">
-	    <i class="fa fa-copy fa-2x"></i>
+	    <i class="fa fa-copy"></i>&nbsp;REPUBLISH
 	</a>
     </span>
 {% endif %}
+
+
+<a id="facebook-share" href="#"
+   title="Share on Facebook">
+    <i class="fa fa-facebook"></i>
+</a>
+
+<a id="twitter-share" href="#" title="Share on Twitter">
+    <i class="fa fa-twitter"></i>
+</a>
+
+
+<a id="whatsapp-share" href="#"
+   data-action="share/whatsapp/share"
+   title="Share via WhatsApp">
+    <i class="fa fa-whatsapp"></i>
+</a>
+
+
+<a id="email-share" href="{{request.build_absolute_uri}}"
+   title="Email">
+    <i class="fa fa-envelope"></i>
+</a>
+
+<a id="print-article" href="#"
+   title="Print">
+    <i class="fa fa-print"></i>
+</a>

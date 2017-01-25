@@ -1,19 +1,23 @@
-
-<div class="row" id="social-media">
-    <div class="col-xs-6 left">
-        <a href="https://www.facebook.com/GroundUpNews/" target="_blank" >
-            <i class="icon fa fa-facebook"></i>
-        </a>
-        <a href="https://twitter.com/GroundUp_News" target="_blank">
-            <i class="icon fa fa-twitter"></i>
-        </a>
-        <a href="/feeds/">
-	    <i class="icon fa fa-rss"></i>
-        </a>
+{% load staticfiles  %}
+<div id="social-media">
+    <div class="row">
+    <div id="social-media "class="col-xs-7 col-sm-6 left">
+        Find us on
+        <a href="https://www.facebook.com/GroundUpNews/"
+           target="_blank" >
+            <img src="{% static "newsroom/images/icons/Facebook_Logo.png" %}"/></a>
+            <a href="https://twitter.com/GroundUp_News"
+               target="_blank">
+                <img src="{% static "newsroom/images/icons/Twitter_Logo.png" %}"/>
+            </a>
+            <a href="/feeds/">
+                <img src="{% static "newsroom/images/icons/RSS_Logo.png" %}"/>
+            </a>
     </div>
-    <div class="col-xs-6 right">
+    <div class="col-xs-5 col-sm-6 right">
 	<a href="http://eepurl.com/Or2a9" target="_blank">
-            Get the GroundUp weekly newsletter
+            Get our newsletter
 	</a>
     </div>
+</div>
 </div>
