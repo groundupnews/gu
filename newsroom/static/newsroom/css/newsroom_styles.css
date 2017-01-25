@@ -896,6 +896,12 @@ table#invoice-form .helptext {
     color: brown;
 }
 
+#invoice-table span.status5 {
+    color: black;
+    text-decoration: line-through;
+}
+
+
 
 
 /************ Styles for editors and administrators - PC only *****************/

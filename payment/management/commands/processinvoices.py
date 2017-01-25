@@ -65,8 +65,8 @@ def notify_freelancers():
     for invoice in invoices:
         # Commissions for this invoice that are approved and
         # for which the author hasn't been notified
-        commissions = Commission.objects.filter(invoice=invoice).\
-                      filter(fund__isnull=False).\
+        commissions = Commission.objects.for_authors().\
+                      filter(invoice=invoice).\
                       filter(date_notified_approved__isnull=True)
 
         if len(commissions) > 0:
@@ -109,9 +109,9 @@ def notify_freelancers():
                filter(date_notified_payment__isnull=True)
     for invoice in invoices:
         # Get the approved commissions > 0.00 for this invoice
-        commissions = Commission.objects.filter(invoice=invoice).\
-                      filter(fund__isnull=False).\
-                      filter(commission_due__gt=0.00)
+        commissions = Commission.objects.for_authors().\
+                      filter(invoice=invoice).\
+                      exclude(commission_due=0.00)
         commissionformset = zip(commissions, range(len(commissions)))
 
         subject = "Payment for work done for GroundUp"

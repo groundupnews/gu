@@ -7,6 +7,9 @@
         <th>VAT</th>
         <th>Due</th>
         {% if staff_view %}<th>Fund</th>{% endif %}
+        {% if can_edit_commissions and staff_view %}
+            <th>Del</th>
+        {% endif %}
     </tr>
 
 
@@ -78,8 +81,12 @@
                         {% else %}
                             {{commission.fund}}
                         {% endif %}
-
                     </td>
+                    {% if can_edit_commissions %}
+                        <td>
+                            {{form.deleted}}
+                        </td>
+                    {% endif %}
                 {% endif %}
             </tr>
         {% endwith %}
@@ -92,7 +99,9 @@
             <td align="right">{% if payment.2 > 0.00 %}-{%endif %}{{payment.2|floatformat:0}}</td>
             <td align="right">{{payment.1|floatformat:0}}</td>
             <td align="right"><b>{{payment.0|floatformat:0}}</b></td>
-            {% if staff_view %}<td></td>{% endif %}
+            {% if staff_view %}<td></td>
+                {% if can_edit_commissions %}<td></td>{% endif %}
+            {% endif %}
         </tr>
     {% endwith%}
 </table>

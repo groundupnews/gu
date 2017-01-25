@@ -53,6 +53,8 @@
             The editors have approved this invoice for payment
         {% elif invoice.status == "4" %}
             Paid on {{invoice.date_time_processed|date:"j M Y"}}
+        {% elif invoice.status == "5" %}
+            This invoice has been marked for deletion.
         {% endif %}
     </h2>
     <form
@@ -79,6 +81,13 @@
                                            class="btn btn-info"
                                            value="Update details" />
                                     &nbsp;
+                                    {% if can_edit_commissions %}
+                                        <br /><br />
+                                        <input type="submit"
+                                               name="delete_button"
+                                               class="btn btn-danger"
+                                               value="Delete" />
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td>

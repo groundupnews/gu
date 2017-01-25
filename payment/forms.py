@@ -12,6 +12,7 @@ class InvoiceStaffForm(ModelForm):
     address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
                               required=False,
                               help_text="Required by SARS")
+
     class Meta:
         model = Invoice
         fields = ['identification', 'dob', 'address',
@@ -45,12 +46,3 @@ class InvoiceForm(InvoiceStaffForm):
             self.add_error("query",
                            "Please explain why you're querying "
                            "the invoice")
-
-    # class Meta:
-    #     model = Invoice
-    #     fields = ['identification', 'dob',
-    #                'bank_name', 'bank_account_number',
-    #                'bank_account_type', 'bank_branch_name', 'bank_branch_code',
-    #                'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-    #                'query',
-    #     ]

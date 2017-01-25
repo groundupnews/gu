@@ -15,6 +15,7 @@ INVOICE_STATUS_CHOICES = (
     ("2", "Approved by reporter"),
     ("3", "Approved by editor"),
     ("4", "Paid"),
+    ("5", "Deleted"),
 )
 
 
@@ -117,9 +118,8 @@ class Invoice(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def calc_payment(self):
-        commissions = Commission.objects.filter(invoice=self).\
-                      filter(fund__isnull=False).\
-                      filter(commission_due__gt=0.00)
+        commissions = Commission.objects.for_authors().\
+                      filter(invoice=self)
         total_uncorrected = Decimal(0.00)
         total_paid = Decimal(0.00)
         total_tax = Decimal(0.00)
@@ -182,6 +182,15 @@ class Invoice(models.Model):
         unique_together = ['author', 'invoice_num',]
 
 
+class CommissionQuerySet(models.QuerySet):
+
+    def for_staff(self):
+        return self.filter(deleted=False)
+
+    def for_authors(self):
+        return self.for_staff().filter(fund__isnull=False)
+
+
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
     invoice = models.ForeignKey(Invoice)
@@ -203,8 +212,11 @@ class Commission(models.Model):
                                          verbose_name="amount")
     taxable = models.BooleanField(default=True)
     vatable = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+    objects = CommissionQuerySet.as_manager()
 
     def get_absolute_url(self):
         return reverse('invoice.detail',

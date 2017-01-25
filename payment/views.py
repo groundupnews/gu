@@ -33,7 +33,7 @@ def invoice_list(request):
         staff_view = True
     elif user.author is not None and user.author.freelancer is True:
         invoices = models.Invoice.objects.filter(author=user.author).\
-                   filter(status__gt="-")
+                   filter(status__gt="-").filter(status__lt="5")
     else:
         raise Http404
     return render(request, "payment/invoice_list.html",
@@ -64,7 +64,8 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                                              fields=('commission_due',
                                                      'taxable',
                                                      'vatable',
-                                                     'fund',),
+                                                     'fund',
+                                                     'deleted',),
                                              extra=0)
     invoice = get_object_or_404(models.Invoice, author__pk=author_pk,
                                 invoice_num=invoice_num)
@@ -106,6 +107,11 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                 messages.add_message(request, messages.INFO,
                                      "Status changed to PAID")
                 invoice.save()
+            elif "delete_button" in request.POST and invoice.status != "5":
+                invoice.status = "5"
+                messages.add_message(request, messages.INFO,
+                                     "Status changed to DELETED")
+                invoice.save()
             elif form.has_changed():
                 messages.add_message(request, messages.INFO,
                                      "Details updated")
@@ -122,6 +128,8 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         if staff_view:
             form = forms.InvoiceStaffForm(request.POST or None, instance=invoice)
         else:
+            if invoice.status == "-" or invoice.status == "5":
+                raise Http404
             form = forms.InvoiceForm(request.POST or None, instance=invoice)
 
     if invoice.status == "0" or invoice.status == "1":
@@ -131,13 +139,14 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
     formset = None
     can_edit_commissions = False
     if staff_view:
-        commissions = models.Commission.objects.filter(invoice=invoice)
+        commissions = models.Commission.objects.for_staff().\
+                      filter(invoice=invoice)
         if user.has_perm("payment.change_commission"):
             can_edit_commissions = True
             formset = CommissionFormSet(queryset=commissions)
     else:
-        commissions = models.Commission.objects.filter(invoice=invoice).\
-                      filter(fund__isnull=False)
+        commissions = models.Commission.objects.for_authors().\
+                      filter(invoice=invoice)
     if formset:
         commissionformset = zip(commissions, formset)
     else:
