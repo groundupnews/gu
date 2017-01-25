@@ -472,6 +472,7 @@ def search(request):
                                             models.Article,
                                             settings.SEARCH_CONFIG, False,
                                             "title", "subtitle",
+                                            "cached_byline_no_links",
                                             "body").published()\
                                             [:settings.MAX_SEARCH_RESULTS]
         else:
@@ -479,6 +480,7 @@ def search(request):
                                             models.Article,
                                             settings.SEARCH_CONFIG, True,
                                             "title", "subtitle",
+                                            "cached_byline_no_links",
                                             "body").published()\
                                             [:settings.MAX_SEARCH_RESULTS]
         paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
