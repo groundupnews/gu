@@ -199,7 +199,7 @@ class Commission(models.Model):
     # author = models.ForeignKey(Author, blank=True, null=True)
 
     article = models.ForeignKey(Article, blank=True, null=True)
-    description = models.CharField(max_length=30, blank=True,
+    description = models.CharField(max_length=200, blank=True,
                                    default="Article author")
     fund = models.ForeignKey(Fund, blank=True, null=True,
                              help_text="Selecting a fund approves the commission")
