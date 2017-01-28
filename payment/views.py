@@ -16,6 +16,8 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 
+from newsroom.models import Author
+
 from . import models
 from . import forms
 
@@ -171,3 +173,55 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
 @login_required
 def invoice_print(request, author_pk, invoice_num):
     return invoice_detail(request, author_pk, invoice_num, print_view=True)
+
+
+@staff_member_required
+def commission_detail(request, pk=None):
+    if not request.user.has_perm("payment.change_commission"):
+        raise Http404
+    if request.method == 'POST':
+        if pk:
+            commission = get_object_or_404(models.Commission, pk=pk)
+            form = forms.CommissionForm(request.POST, instance=commission)
+        else:
+            form = forms.CommissionForm(request.POST)
+        if form.is_valid():
+            author = form.cleaned_data['author']
+            if pk is None:
+                commission = form.save(commit=False)
+                commission.sys_generated = False
+                commission.date_generated = timezone.now()
+                commission = form.save(commit=False)
+                invoice = models.Invoice.get_open_invoice_for_author(author)
+            else:
+                current_commission = models.Commission.objects.get(pk=pk)
+                if current_commission.invoice.author == author:
+                    invoice = current_commission.invoice
+                else:
+                    invoice = models.Invoice.get_open_invoice_for_author(author)
+                commission = form.save(commit=False)
+            commission.invoice = invoice
+            commission.save()
+
+            pk = commission.pk
+            messages.add_message(request, messages.INFO,
+                                 "Commission saved")
+    else:
+        if pk:
+            commission = models.Commission.objects.get(pk=pk)
+            form = forms.CommissionForm(instance=commission)
+            form.fields["author"].initial = commission.invoice.author
+        else:
+            form = forms.CommissionForm()
+            commission = None
+            author_pk = request.GET.get("author", None)
+            if author_pk:
+                try:
+                    author = get_object_or_404(Author,pk=int(author_pk))
+                    form.fields["author"].initial = author
+                except:
+                    pass
+    return render(request, "payment/commission_detail.html",
+                  {'form': form,
+                   'pk' : pk,
+                   'commission': commission})

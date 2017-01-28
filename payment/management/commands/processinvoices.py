@@ -40,16 +40,8 @@ def generate_commissions():
                         commission.date_generated = timezone.now()
                         num_commissions = num_commissions + 1
                         # Get the invoice for this commission
-                        invoices = Invoice.objects.filter(author=author).\
-                                   filter(status__lte="0")
-                        if len(invoices) == 0:
-                            invoice = Invoice.create_invoice(author)
-                        else:
-                            invoice = invoices[0]
-                            if invoice.status == "0":
-                                invoice.status = "-"
-                                invoice.save()
-                        commission.invoice = invoice
+                        commission.invoice = Invoice.\
+                                             get_open_invoice_for_author(author)
                         commission.save()
 
             article.commissions_processed = True

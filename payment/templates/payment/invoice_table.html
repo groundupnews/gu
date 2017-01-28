@@ -8,7 +8,8 @@
         <th>Due</th>
         {% if staff_view %}<th>Fund</th>{% endif %}
         {% if can_edit_commissions and staff_view %}
-            <th>Del</th>
+            <th><i class="fa fa-eraser"></i></th>
+            <th><i class="fa fa-edit"></i></th>
         {% endif %}
     </tr>
 
@@ -64,10 +65,7 @@
                 </td>
                 {% if staff_view %}
                     <td align="right">
-                        <a href="{% url 'admin:payment_commission_change' commission.pk %}"
-                           target="_blank">
-                            {{payment.0|floatformat:0}}
-                        </a>
+                        {{payment.0|floatformat:0}}
                     </td>
                 {% else %}
                     <td align="right">{{payment.0|floatformat:0}}</td>
@@ -85,6 +83,14 @@
                     {% if can_edit_commissions %}
                         <td>
                             {{form.deleted}}
+                        </td>
+                        <td>
+                            <a href="
+                                     {% url 'commissions.detail' commission.pk %}
+                                     "
+                               target="_blank">
+                                <i class="fa fa-edit"></i>
+                            </a>
                         </td>
                     {% endif %}
                 {% endif %}

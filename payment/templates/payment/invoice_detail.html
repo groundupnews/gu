@@ -149,6 +149,13 @@
                     >
                         PRINT
                     </a>
+                    {% if can_edit_commissions %}
+                        |
+                        <a href="{% url 'commissions.detail.add' %}?author={{invoice.author.pk}}"
+                           target="_blank">
+                            ADD COMMISSION
+                        </a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

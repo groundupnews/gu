@@ -308,7 +308,7 @@ a {
 
 
 #sharing a {
-    color: black;
+    /* color: black;*/
 }
 
 #sharing img, #sharing i  {
@@ -441,25 +441,6 @@ div.summary-image-container {
 }
 
 
-/* #write-letter { */
-/*     margin-top: 12px; */
-/*     margin-bottom: 12px; */
-/* } */
-
-/* #write-letter a { */
-/*     color: black; */
-/*     font-size: 18px; */
-/*     padding: 10px; */
-/*     font-weight: bold; */
-/*     background: linear-gradient(#FFF2F2, #D1D2D2); */
-/*     padding: 8px 11px 8px 11px; */
-/*     border-top: 1px solid #CCCCCC; */
-/*     border-right: 1px solid #CCCCCC; */
-/*     border-bottom: 1px solid #CCCCCC; */
-/*     border-left: 1px solid #CCCCCC; */
-/* } */
-
-
 @media (min-width: 600px) {
    #whatsapp-share, .whatsapp-share {
 	display: none;
@@ -530,21 +511,6 @@ div.summary-image-container {
 }
 
 
-/* @media (min-width: 768px) { */
-/*     #sidebar, #article-meta, #article-copyright { */
-/* 	padding: 0px 35px 12px 35px; */
-/*     } */
-/* } */
-
-
-
-
-/* p.article-category { */
-/*      margin-bottom: 16px; */
-/* } */
-
-
-
 div.commission-due-input input {
     width: 75px;
 }
@@ -584,12 +550,6 @@ ul.icons li {
 article {
     margin-bottom: 12px;
 }
-
-/* article p { */
-/*     margin-top: 12px; */
-/*     margin-bottom: 12px; */
-/* } */
-
 
 div.editor-summary {
     background-color: #E6E7E8;
@@ -650,45 +610,6 @@ img.summary-image {
     width: 100%;
 }
 
-/* #article-topics, #sharing { */
-/*     background-color: #4D4D4D; */
-/*     color: white; */
-/*     font-size: 12px; */
-/*     line-height: 160%; */
-/*     margin-bottom: 2px; */
-/*     margin-top: 2px; */
-/*     padding-top: 1px; */
-/*     padding-bottom: 1px; */
-/*     padding-left: 8px; */
-/* } */
-
-
-/* #sharing i { */
-/*     vertical-align:middle; */
-/*     text-align: center; */
-/*     background-color: white; */
-/*     color: #4D4D4D; */
-/*     padding: 4px; */
-/*     margin-right: 3px; */
-/*     margin-left: 3px; */
-/*     height: px; */
-/* } */
-
-/* #sharing i { */
-/*     width: 40px; */
-/* } */
-
-/* #sharing a:hover { */
-/*     text-decoration: none; */
-/*     margin-bottom: 10px; */
-/* } */
-
-
-/* #article-topics a { */
-/*     padding-left: 0px; */
-/*     padding-right: 0px; */
-/* } */
-
 .social-media i {
     background-color: white;
     color: #4D4D4D;
@@ -720,10 +641,6 @@ div#article-share-bottom {
     border-top: 1px solid #e6e6e6;
     padding-top: 15px;
 }
-
-/* span#article-topics-name, span#article-share-name { font-weight: bold; }*/
-
-
 
 blockquote {
     padding: 0 0 0 12px;
@@ -794,12 +711,6 @@ a.admin-menu-item {
 	font-size: 12px;
     }
 }
-
-/* @media (max-width: 360px) { */
-/*     #write-letter a { */
-/* 	font-size: 14px; */
-/*     } */
-/* } */
 
 @media (max-width: 768px) {
     .subheading {
@@ -985,4 +896,22 @@ iframe {
 
 .highlighted {
     background-color: yellow;
+}
+
+/***************/
+/* Commission detail */
+
+#commission-detail table
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#commission-detail td { padding: 5px;}
+
+#commission-detail select,
+#commission-detail option,
+#commission-detail #id_notes  {
+    width: 450px;
+    max-width: 100%;
 }

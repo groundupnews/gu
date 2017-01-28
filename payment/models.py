@@ -18,6 +18,20 @@ INVOICE_STATUS_CHOICES = (
     ("5", "Deleted"),
 )
 
+COMMISSION_DESCRIPTION_CHOICES = (
+    ("", ""),
+    ("Article author", "Article author"),
+    ("Photographs", "Photographs"),
+    ("Article cancellation fee", "Article cancellation fee"),
+    ("Expenses", "Expenses"),
+    ("Editing", "Editing"),
+    ("Subediting", "Subediting"),
+    ("Consulting", "Consulting"),
+    ("Administration", "Administration"),
+    ("Sundry", "Sundry"),
+)
+
+
 
 class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -177,6 +191,19 @@ class Invoice(models.Model):
         invoice.save()
         return invoice
 
+    @staticmethod
+    def get_open_invoice_for_author(author):
+        invoices = Invoice.objects.filter(author=author).\
+                                   filter(status__lte="0")
+        if len(invoices) == 0:
+            invoice = Invoice.create_invoice(author)
+        else:
+            invoice = invoices[0]
+            if invoice.status == "0":
+                invoice.status = "-"
+                invoice.save()
+        return invoice
+
     class Meta:
         ordering = ['status','-modified',]
         unique_together = ['author', 'invoice_num',]
@@ -191,6 +218,7 @@ class CommissionQuerySet(models.QuerySet):
         return self.for_staff().filter(fund__isnull=False)
 
 
+
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
     invoice = models.ForeignKey(Invoice)
@@ -199,8 +227,10 @@ class Commission(models.Model):
     # author = models.ForeignKey(Author, blank=True, null=True)
 
     article = models.ForeignKey(Article, blank=True, null=True)
-    description = models.CharField(max_length=200, blank=True,
-                                   default="Article author")
+    description = models.CharField(max_length=50, blank=True,
+                                   default="Article author",
+                                   choices=COMMISSION_DESCRIPTION_CHOICES)
+    notes = models.CharField(max_length=200, blank=True)
     fund = models.ForeignKey(Fund, blank=True, null=True,
                              help_text="Selecting a fund approves the commission")
     sys_generated = models.BooleanField(default=False)

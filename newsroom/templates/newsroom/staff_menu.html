@@ -49,14 +49,17 @@
 {% if perms.letters.add_letter %}
     <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
 {% endif %}
+{% if perms.newsroom.change_author %}
+    <li><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>
+{% endif %}
+{% if perms.payment.change_invoice or perms.payment.change_commission %}
+    <li role="separator" class="divider"></li>
+{% endif %}
 {% if perms.payment.change_invoice %}
     <li><a href="{% url 'invoice.list' %}" class="admin-menu-item">Invoices</a></li>
 {% endif %}
 {% if perms.payment.change_commission %}
-    <li><a href="{% url 'admin:payment_commission_changelist' %}" class="admin-menu-item">Commissions</a></li>
-{% endif %}
-{% if perms.newsroom.change_author %}
-    <li><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>
+    <li><a href="{% url 'commissions.detail.add' %}" class="admin-menu-item">Add commission</a></li>
 {% endif %}
 
 <li role="separator" class="divider"></li>

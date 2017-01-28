@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ModelForm
-from payment.models import Invoice
+from newsroom.models import Article, Author
+from payment.models import Invoice, Commission
+
 
 BIRTH_YEAR_CHOICES = range(1920,2016)
 
@@ -46,3 +48,15 @@ class InvoiceForm(InvoiceStaffForm):
             self.add_error("query",
                            "Please explain why you're querying "
                            "the invoice")
+
+class CommissionForm(ModelForm):
+    author = forms.ModelChoiceField(queryset=Author.objects.all().\
+                                    order_by("first_names"),
+                                     required=True)
+    article = forms.ModelChoiceField(queryset=Article.objects.published().\
+                                     order_by("-pk")[:100],
+                                     required=False)
+    class Meta:
+        model = Commission
+        fields = ['author', 'article', 'description', 'notes',
+                  'commission_due', 'taxable', 'vatable', 'fund', ]
