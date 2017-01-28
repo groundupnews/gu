@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'haystack',
+    'ajax_select',
     'newsroom',
     'payment',
     'socialmedia',

@@ -26,4 +26,5 @@ python-dateutil
 piexif
 django-allauth
 smartypants
+django-ajax-selects
 django-debug-toolbar

@@ -30,6 +30,8 @@ from newsroom.views import account_profile
 
 from filebrowser.sites import site
 
+from ajax_select import urls as ajax_select_urls
+
 article_dict = {
     'queryset': Article.objects.published(),
     'date_field': 'published',
@@ -43,6 +45,7 @@ author_dict = {
 urlpatterns = [
     url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
+    url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^imagegallery/', include('gallery.urls')),

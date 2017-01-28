@@ -179,6 +179,7 @@ def invoice_print(request, author_pk, invoice_num):
 def commission_detail(request, pk=None):
     if not request.user.has_perm("payment.change_commission"):
         raise Http404
+    commission = None
     if request.method == 'POST':
         if pk:
             commission = get_object_or_404(models.Commission, pk=pk)
@@ -210,7 +211,7 @@ def commission_detail(request, pk=None):
         if pk:
             commission = models.Commission.objects.get(pk=pk)
             form = forms.CommissionForm(instance=commission)
-            form.fields["author"].initial = commission.invoice.author
+            form.fields["author"].initial = commission.invoice.author.pk
         else:
             form = forms.CommissionForm()
             commission = None
@@ -218,7 +219,7 @@ def commission_detail(request, pk=None):
             if author_pk:
                 try:
                     author = get_object_or_404(Author,pk=int(author_pk))
-                    form.fields["author"].initial = author
+                    form.fields["author"].initial = author.pk
                 except:
                     pass
     return render(request, "payment/commission_detail.html",

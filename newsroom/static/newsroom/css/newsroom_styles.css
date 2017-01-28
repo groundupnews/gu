@@ -734,7 +734,7 @@ a.admin-menu-item {
 
 
 /**************************/
-/* Letters */
+/* Letters and Commission form */
 
 
 #letter-form h4 a {
@@ -754,7 +754,8 @@ a.admin-menu-item {
     line-height: 130%;
 }
 
-#letter-form label, #letter-form input, #letter-form textarea {
+#letter-form label, #letter-form input, #letter-form textarea
+{
     display: block;
 }
 
@@ -765,7 +766,7 @@ a.admin-menu-item {
     margin-top: 3px;
 }
 
-#letter-form .errorlist, #invoice-form .errorlist {
+#letter-form .errorlist, #invoice-form .errorlist, #commission-detail .errorlist {
     color: red;
     list-style: none;
     display: block;
@@ -778,7 +779,7 @@ a.admin-menu-item {
     width: 100%;
 }
 
-table#invoice-form .helptext {
+table#invoice-form .helptext, #commission-detail .helptext {
     font-size: 9px;
     font-weight: bold;
 }

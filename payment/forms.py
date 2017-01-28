@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from newsroom.models import Article, Author
 from payment.models import Invoice, Commission
+from ajax_select.fields import AutoCompleteSelectField
 
 
 BIRTH_YEAR_CHOICES = range(1920,2016)
@@ -23,7 +24,6 @@ class InvoiceStaffForm(ModelForm):
                    'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
                    'query',
         ]
-
 
 class InvoiceForm(InvoiceStaffForm):
     identification = forms.CharField(max_length=20, required=True,
@@ -50,12 +50,16 @@ class InvoiceForm(InvoiceStaffForm):
                            "the invoice")
 
 class CommissionForm(ModelForm):
-    author = forms.ModelChoiceField(queryset=Author.objects.all().\
-                                    order_by("first_names"),
-                                     required=True)
-    article = forms.ModelChoiceField(queryset=Article.objects.published().\
-                                     order_by("-pk")[:100],
-                                     required=False)
+    author = AutoCompleteSelectField("authors", required=False, help_text=None)
+    article = AutoCompleteSelectField('articles', required=False,
+                                      help_text=None)
+
+    def clean_author(self):
+        data = self.cleaned_data['author']
+        if data is None:
+            raise forms.ValidationError("Please enter an author")
+        return data
+
     class Meta:
         model = Commission
         fields = ['author', 'article', 'description', 'notes',

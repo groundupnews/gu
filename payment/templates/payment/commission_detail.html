@@ -2,6 +2,8 @@
 
 
 {% block content %}
+    {{ form.media }}
+
     <div id="commission-detail">
         {% if pk %}
             {% with invoice=commission.invoice %}
