@@ -204,6 +204,10 @@ def check_concurrent_edit(request):
        request.user.has_perm("newsroom.change_article"):
         pk = int(request.POST["pk"])
         version = int(request.POST["version"])
+        if request.POST["changed"] == "true":
+            changed = True
+        else:
+            changed = False
         article = get_object_or_404(models.Article, pk=pk)
         if article.version > version:
             edited_by = str(article.user)
@@ -213,9 +217,11 @@ def check_concurrent_edit(request):
             user_edit = models.UserEdit.objects.get(
                 article__pk=article.pk,
                 user=request.user)
+            user_edit.changed = changed
         except models.UserEdit.DoesNotExist:
             user_edit = models.UserEdit()
             user_edit.article = article
+            user_edit.changed = changed
             user_edit.user = request.user
         finally:
             user_edit.save()
@@ -224,7 +230,7 @@ def check_concurrent_edit(request):
             filter(article=article). \
             exclude(user=request.user). \
             filter(edit_time__gte=cutoff)
-        users = [str(obj.user) for obj in user_edits]
+        users = [obj.editStatusPlusName() for obj in user_edits]
         return JsonResponse({
             'edited_by': edited_by,
             'users': users

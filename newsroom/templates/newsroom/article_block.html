@@ -101,6 +101,7 @@ datetime='{{ article.published|date:"Y-m-d" }}'>
 	{% if can_edit %}
 	    <div style="display:none;">
 		<form action="{% url 'article.detail' article.slug %}"
+                      id="article_form"
 		      method="post">{% csrf_token %}
 		    {{form.as_p}}
 		    <input id="input-is-published"

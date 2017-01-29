@@ -607,11 +607,20 @@ class Article(models.Model):
 class UserEdit(models.Model):
     article = models.ForeignKey(Article)
     user = models.ForeignKey(User)
+    changed = models.BooleanField(default=False)
     edit_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('article', 'user',)
         ordering = ['article__published', 'edit_time', ]
+
+    def editStatusPlusName(self):
+        if self.changed == True:
+            prefix = "*"
+        else:
+            prefix = ""
+        s = prefix + str(self.user)
+        return s
 
     def __str__(self):
         return ", ".join([str(self.article), str(self.user),
