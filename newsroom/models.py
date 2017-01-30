@@ -616,10 +616,10 @@ class UserEdit(models.Model):
 
     def editStatusPlusName(self):
         if self.changed == True:
-            prefix = "*"
+            suffix = " (changed)"
         else:
-            prefix = ""
-        s = prefix + str(self.user)
+            suffix = ""
+        s = str(self.user) + suffix
         return s
 
     def __str__(self):

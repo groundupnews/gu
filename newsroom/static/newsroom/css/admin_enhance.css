@@ -31,14 +31,19 @@ body {
 
 /***************************/
 
-#editing-article {
+#admin-user, #editing-article {
     position: fixed;
     z-index: 1000;
     top: 40px;
-    left: 650px;
-    color: red;
+    left: 590px;
+    color: blue;
     background-color: pink;
     font-weight: bold;
     background-color: #e5ffff;
     font-size: 10px;
+}
+
+#editing-article {
+    left: 700px;
+    color: red;
 }

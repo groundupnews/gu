@@ -75,7 +75,7 @@ $(document).ready(function() {
 		    }
 		    $("#editing-article").html(editor_html);
                     if (checkFormChanged()) {
-                        $("#admin-user").html("*" + "{{request.user}}");
+                        $("#admin-user").html("{{request.user}} (changed)");
                     }
 	        }
 	    },
