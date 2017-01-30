@@ -44,16 +44,18 @@ $(document).ready(function() {
 	    success: function(json){
 	        edited_by = json["edited_by"];
 	        if (edited_by != "(None)") {
-                    editors_enabled = false;
 		    clearTimeout(timerCheckConcurrency);
-		    msg = "User " + edited_by +
-		          " has edited the article. This is no longer " +
-		          "the latest version. Editing disabled."
-		    alert(msg);
 		    $("form :input").attr("readonly","readonly");
 		    for(name in CKEDITOR.instances) {
 		        CKEDITOR.instances[name].setReadOnly();
 		    }
+		    msg = "User " + edited_by +
+		        " has edited the article. This is no longer " +
+		        "the latest version. Editing disabled."
+                    if (checkFormChanged() == true) {
+		        alert(msg);
+                    }
+                    editors_enabled = false;
 		    $("[id^=article_]").removeAttr('contenteditable').blur();
 		    var $msg = $( "<div class='alert alert-danger' >" + msg +
 			          "</div>");
@@ -62,8 +64,8 @@ $(document).ready(function() {
 		        $("#grp-content-title").prepend($msg);
 		        $('input[type="submit"]').prop('disabled', true);
 		    }
-		    if ($("#content-main").length)
-		        $("#content-main").prepend($msg);
+		    if ($("#article-content").length)
+		        $("#article-content").prepend($msg);
 	        }
 	        if ($("#editing-article").length) {
 		    num_users = json["users"].length;
