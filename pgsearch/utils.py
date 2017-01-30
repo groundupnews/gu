@@ -4,9 +4,12 @@ import shlex
 import string
 
 def parseSearchString(search_string):
-    search_strings = shlex.split(search_string)
-    translator = str.maketrans({key: None for key in string.punctuation})
-    search_strings = [s.translate(translator) for s in search_strings]
+    try:
+        search_strings = shlex.split(search_string)
+        translator = str.maketrans({key: None for key in string.punctuation})
+        search_strings = [s.translate(translator) for s in search_strings]
+    except:
+        search_strings = []
     return search_strings
 
 def createSearchQuery(list_of_terms):
