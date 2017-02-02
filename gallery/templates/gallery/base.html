@@ -20,21 +20,15 @@
 
 {% block content %}
     <div class="row" id="gallery">
-        <div class="col-xs-12 col-md-9">
-            <h1>
-                {% block gallery_title %}
-                {% endblock %}
-            </h1>
+        <div class="col-xs-12 col-md-8">
             {% block gallery_content %}
             {% endblock %}
         </div>
-        <div class="col-xs-12 col-md-3">
-            <div id="gallery-sidebar">
-                {% block gallery-sidebar %}
-                    <div id="gallery-menu">
-                        {% include "gallery/menu.html" %}
-                    </div>
-            </div>
+        <div class="col-xs-12 col-md-4">
+            {% block gallery-sidebar %}
+                <div id="sidebar">
+
+                </div>
             {% endblock %}
         </div>
     </div>

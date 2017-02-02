@@ -81,6 +81,12 @@
 {% endblock %}
 
 
+{% block gallery-sidebar %}
+    <div class="sidebar-block gallery-block">
+         {% include "gallery/gallery_name.html" %}
+    </div>
+{% endblock %}
+
 {% block javascript-includes %}
 
     {{block.super}}

@@ -2,22 +2,19 @@
 /* Gallery */
 /*********************/
 
-#gallery h1 {
+#gallery-name {
+    padding-top: 20px;
+    padding-bottom: 20px;
     background-color: #26aae2;
     color: white;
+}
+
+
+#gallery-name h1, #gallery-name h2 {
+    color: white;
     text-align: center;
-    font-size: 28px;
-    height: 45px;
-    padding: 5px;
-    margin-bottom: 0;
-    margin-top: 0;
+    border-bottom: none;
 }
-
-#gallery-home-albums h2 {
-    margin-top: 0;
-    padding-top: 0;
-}
-
 
 
 .album-head {
