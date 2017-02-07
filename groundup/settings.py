@@ -165,6 +165,12 @@ except:
     }
 
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
 # These should be overriden in local_settings.py
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
