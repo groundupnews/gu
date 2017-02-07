@@ -13,44 +13,63 @@
 
 {% endblock %}
 
-{% block gallery_title %}
-    GroundUp Images: A free photo library
-{% endblock %}
+{% block gallery_above_line %}
 
-{% block gallery_content %}
     <ul class="pgwSlider">
+
         {% for photo in featured_photos %}
             <li>
                 <a href="{% url 'photo.detail' photo.pk %}">
                     <img
                         src="{% version photo.image 'large' %}"
-                        alt="{{photo.suggested_caption}}
-                             {% if photo.photographer %}
-                             - {{photo.photographer}}
-                             {% endif %}"
+                        alt="{{photo.suggested_caption}}{% if photo.photographer %} - {{photo.photographer}}{% endif %}"
                     />
                 </a>
             </li>
         {% endfor %}
+
     </ul>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <h2><a href="{% url 'photo.list' %}">LATEST IMAGES</a></h2>
-        </div>
+{% endblock %}
+
+
+{% block gallery-sidebar %}
+
+
+    <div class="sidebar-block gallery-block">
+         {% include "gallery/gallery_name.html" %}
     </div>
+
+    <div class="sidebar-block gallery-block">
+        {% include "gallery/how_to_use.html" %}
+    </div>
+
+
+    <div id="gallery-sidebar-advert" class="sidebar-block gallery-block">
+
+        {% include "advert.html" %}
+
+    </div>
+
+{% endblock %}
+
+
+{% block gallery_below_line %}
+
+    <h2><a href="{% url 'photo.list' %}">Photos</a></h2>
+
     <div class="row">
-        {% for photo in latest_photos %}
+        {% for photo in photos %}
             <div class="col-xs-6 col-md-3">
-                <div class="thumbnail">
-                    <a href="{% url 'photo.detail' photo.pk %}">
-                        <img src="{% version photo.image 'medium' %}"
-                             alt="{{photo.alt}}"
-                        />
-                    </a>
-                </div>
+                {% include "gallery/thumbnail.html" %}
             </div>
         {% endfor %}
+    </div>
+
+    <div class="row" id="gallery-content-blocks">
+        <div class="col-xs-12">
+            {% include "blocks/blocks.html" %}
+        </div>
     </div>
 
     <div class="row" id="gallery-home-albums">
@@ -59,7 +78,7 @@
         </div>
     </div>
     <div class="row">
-        {% for album in latest_albums %}
+        {% for album in albums %}
             <div class="col-xs-6 col-md-3">
                 <div class="thumbnail">
                     <div class="caption album-head">
@@ -78,13 +97,7 @@
             </div>
         {% endfor %}
     </div>
-{% endblock %}
 
-
-{% block gallery-sidebar %}
-    <div class="sidebar-block gallery-block">
-         {% include "gallery/gallery_name.html" %}
-    </div>
 {% endblock %}
 
 {% block javascript-includes %}

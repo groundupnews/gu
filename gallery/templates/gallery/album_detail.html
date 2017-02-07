@@ -11,25 +11,16 @@
 
 
 
-{% block gallery_content %}
+{% block gallery_below_line %}
     <div id="gallery-album">
-        <div id="gallery-album-description">
+        <h1>Album name: {{album.name}}</h1>
+        <h2>
             {{album.description|safe}}
-        </div>
+        </h2>
         <div class="row">
             {% for photo in album.photograph_set.all %}
                 <div class="col-xs-12 col-md-3">
-                    <div class="gallery-photo thumbnail">
-                        <a href="{% url 'photo.detail' photo.pk %}">
-                            <img src="{% version photo.image 'medium' %}"
-                                 alt="{{photo.alt}}" />
-                            <div class="caption">
-                                <p>{{photo.suggested_caption}}</p>
-                                <p>Photographer: {{photo.photographer}}</p>
-                                <p>Date taken: {{photo.date_taken|date:"j M Y"}}</p>
-                            </div>
-                        </a>
-                    </div>
+                    {% include "gallery/thumbnail.html" %}
                 </div>
             {% endfor %}
         </div>

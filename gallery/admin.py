@@ -42,7 +42,6 @@ class AlbumAdmin(admin.ModelAdmin):
     #fields = ('name', 'description', 'photographs',)
     inlines = [PhotoInline,]
 
-
 admin.site.register(models.Album, AlbumAdmin)
 admin.site.register(models.Photograph, PhotographAdmin)
 admin.site.register(models.Keyword, KeywordAdmin)

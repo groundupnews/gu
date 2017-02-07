@@ -2,9 +2,40 @@
 /* Gallery */
 /*********************/
 
+#gallery {
+    margin-bottom: 12px;
+}
+
+
+#gallery-logo {
+    position:relative;
+    z-index: 10000;
+    background-color: white;
+    top: -5px;
+    display: inline;
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 18px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+@media (min-width: 600px) {
+    #social-media .left a {
+        margin-left: 6px;
+    }
+}
+
+
+.gallery-block {
+    margin-top: 7px;
+    margin-bottom: 5px;
+}
+
+
 #gallery-name {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     background-color: #26aae2;
     color: white;
 }
@@ -14,30 +45,109 @@
     color: white;
     text-align: center;
     border-bottom: none;
+    margin-top: 0;
 }
 
 
-.album-head {
-    background-color: black;
-    color: white;
+#gallery-how-to-use {
+    /* border-top: 1px solid #26aae2;*/
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: #F1F2F2;
+}
+
+#gallery-how-to-use img {
+    margin-top: 4px;
+    height: 64px;
+}
+
+#gallery-how-to-use h1 {
+    font-size: 18px;
     font-weight: bold;
-    padding: 3px 0 3px 3px;
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+
+#gallery-how-to-use h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+#gallery-sidebar-advert {
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+#gallery-sidebar-advert h2 {
+    font-size: 10px;
+}
+
+#gallery-below-line-advert h2 {
     font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-.album-head a {
-    color: white;
+/* Thumbnails */
+
+.thumbnail {
+    height: 223px;
 }
 
-
-#gallery div.thumbnail img {
-    height: 122px;
+.thumbnail a > img {
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 170px;
 }
 
+.thumbnail .caption {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#gallery-photo-details h1 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#gallery-photo-labels div {
+    padding-left: 0;
+    margin-bottom: 6px;
+}
+
+#gallery-sidebar-advert {
+    margin-bottom: 16px;
+}
+
+#gallery-sidebar-advert h2 {
+    margin-top:16px;
+}
+
+.photo-label {
+    display: inline-block;
+    width: 130px;
+    font-weight: bold;
+}
+
+.photo-label::after {
+    content: ":";
+}
+
+#gallery-photo-details .dropdown
+{
+    margin: 10px;
+    margin-left: 0;
+}
 
 #gallery-cc img  {
-    max-width: 150px;
-    margin-bottom: 10px;
+    max-width: 170px;
 }
 
 #gallery-cc p {
@@ -46,10 +156,6 @@
 
 #gallery-thumbnails .thumbnail {
     height: 180px;
-}
-
-#gallery-photo img {
-    width: 100%;
 }
 
 
@@ -77,30 +183,4 @@
     border-bottom: 1px solid #e6e6e6;
     margin-bottom: 10px;
     padding: 10px;
-}
-
-.label-block {
-    width: 110px;
-    display: block !important;
-    text-align: left;
-    margin-top: 12px;
-    margin-bottom: 6px;
-    font-size: 14px;
-}
-
-.gallery-album-item h2 {
-    text-align: center;
-}
-
-#gallery-album-description {
-    font-size: 18px;
-    margin: 14px;
-}
-
-#gallery-album .thumbnail {
-    height: 300px;
-}
-
-#gallery-flatpage-content {
-    margin-top: 10px;
 }

@@ -57,6 +57,7 @@ class ArticleList(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(ArticleList, self).get_context_data(**kwargs)
         context = get_blocks_in_context(context)
+        context['most_popular_html'] =  models.MostPopular.get_most_popular_html()
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
         context['letters'] = Letter.objects.published().\
             filter(published__gte=date_from).order_by('-published')
@@ -69,13 +70,6 @@ def last_article_modified(request):
 
 class HomePage(ArticleList):
     template_name = "newsroom/home.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(HomePage, self).get_context_data(**kwargs)
-        # Add extra context for the home page here
-        context['most_popular_html'] = \
-            models.MostPopular.get_most_popular_html()
-        return context
 
     # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
     # WHICH CODE NEEDS TO CHANGE URGENTLY.

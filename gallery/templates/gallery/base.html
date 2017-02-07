@@ -19,17 +19,37 @@
 
 
 {% block content %}
-    <div class="row" id="gallery">
-        <div class="col-xs-12 col-md-8">
-            {% block gallery_content %}
-            {% endblock %}
-        </div>
-        <div class="col-xs-12 col-md-4">
-            {% block gallery-sidebar %}
-                <div id="sidebar">
+    <div id="gallery">
 
-                </div>
-            {% endblock %}
+        <div class="row">
+
+            <div class="col-xs-12">
+                {% block gallery_top %}
+                {% endblock %}
+            </div>
+
+            <div class="col-xs-12 col-md-8">
+                {% block gallery_above_line %}
+                {% endblock %}
+            </div>
+
+            <div class="col-xs-12 col-md-4">
+                {% block gallery-sidebar %}
+                    <div id="sidebar">
+
+                    </div>
+                {% endblock %}
+            </div>
+
         </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                {% block gallery_below_line %}
+                {% endblock %}
+            </div>
+
+        </div>
+
     </div>
 {% endblock %}

@@ -17,7 +17,9 @@
                 {% include logo_template|default:"logo.html" %}
             </div>
             <div class="collapse navbar-collapse" id="MainNavbar">
-                {% include searchform_template|default:"search/searchform.html" %}
+                {% block searchform %}
+                    {% include searchform_template|default:"search/searchform.html" %}
+                {% endblock %}
                 {% include menu_template|default:"menu.html" %}
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

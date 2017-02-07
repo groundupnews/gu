@@ -4,6 +4,10 @@
     GroundUp Home {{block.super}}
 {% endblock %}
 
+{% block seo_fields %}
+    {{block.super}}
+    <meta name="description" content="South African news website focussing on human rights stories">
+{% endblock %}
 
 {% block article-list %}
     <div id="list-content">

@@ -1,0 +1,11 @@
+{% load fb_versions %}
+
+<div class="thumbnail">
+    <a href="{% url 'photo.detail' photo.pk %}">
+        <img src="{% version photo.image 'medium' %}"
+             alt="{{photo.alt}}" />
+    </a>
+    <div class="caption">
+        {{photo.suggested_caption|safe|truncatechars_html:81}}
+    </div>
+</div>

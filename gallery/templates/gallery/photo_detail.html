@@ -9,24 +9,28 @@
     {{photo.alt}}
 {% endblock %}
 
-{% block gallery_content %}
-        <figure id="gallery-photo">
-            <img src="{% version photo.image 'large' %}"
-                 alt="{{photo.alt}}" />
-            <figcaption>Suggested caption:
-                {{photo.suggested_caption}}
-            </figcaption>
-        </figure>
+
+{% block gallery_above_line %}
+
+    <figure id="gallery-photo">
+        <img src="{% version photo.image 'large' %}"
+             alt="{{photo.alt}}" />
+    </figure>
+
 {% endblock %}
 
 {% block gallery-sidebar %}
 
     <div id="gallery-photo-details">
+        <h1>{{photo.alt}}</h1>
+
+        {{photo.suggested_caption|safe}}
+
 
         <div class="dropdown">
             <a id="drop1" href="#"
                role="button"
-               class="dropdown-toggle label label-default label-block"
+               class="dropdown-toggle btn btn-default btn-info"
                data-toggle="dropdown">Download<b class="caret"></b></a>
 
             <ul class="dropdown-menu">
@@ -43,41 +47,83 @@
                     <a href="{{photo.image.url}}" download>
                         Original ({{photo.image.width}}px X {{photo.image.height}}px)
                     </a>
-                <li>
+                    <li>
             </ul>
 
         </div>
-    </p>
-    <p><span class="label label-default label-block">
-        Photographer</span> {{photo.photographer}}</p>
-    <p><span class="label label-default label-block">Date taken</span>
-        {{photo.date_taken|date:"j M Y"}}
-    </p>
-    <p><span class="label label-default label-block">Caption</span>
-        {{photo.suggested_caption}}
-    </p>
-    <p><span class="label label-default label-block">How to credit</span>
-        {% if photo.credit %}
-            {{photo.credit}}
-        {% else %}
-            {{photo.photographer}}/GroundUp
-        {% endif %}
-    </p>
-    <p><span class="label label-default label-block">Keywords</span>
-        {% for keyword in photo.keywords.all %}
-            <a href="{% url 'photo.list' keyword %}">
-                {{keyword}}
-            </a>
-            {% if not forloop.last %},{% endif %}
-        {% endfor %}
-    </p>
-    <p><span class="label label-default label-block">Copyright</span>
+
+
+
+        <div id="gallery-photo-labels">
+            <div class="col-xs-4">
+                <span class="photo-label">Date taken</span>
+            </div>
+            <div class="col-xs-8">{{photo.date_taken|date:"j F Y"}}</div>
+
+            <div class="col-xs-4"><span class="photo-label">Photo by</span></div>
+            <div class="col-xs-8">
+                <a href="{% url 'photo.list' %}?photographer={{photo.photographer.pk}}">
+                    {{photo.photographer}}
+                </a>
+            </div>
+
+            <div class="col-xs-4">
+                <span class="photo-label">How to credit</span>
+            </div>
+
+            <div class="col-xs-8">
+                {% if photo.credit %}
+                    {{photo.credit}}
+                {% else %}
+                    {{photo.photographer}}/GroundUp
+                {% endif %}
+            </div>
+
+            <div class="col-xs-4"><span class="photo-label">Albums</span></div>
+            <div class="col-xs-8">
+                {% for album in photo.albums.all %}
+                    <a href="{% url 'album.detail' album.pk %}">{{album}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-xs-4">
+                <span class="photo-label">Keywords</span>
+            </div>
+            <div class="col-xs-8">
+                {% for keyword in photo.keywords.all %}
+                    <a href="{% url 'photo.list' keyword %}">
+                        {{keyword}}
+                    </a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
         {% if photo.copyright %}
             {{photo.copyright|safe}}
         {% else %}
             {{default_copyright|safe}}
         {% endif %}
-    </p>
+
     </div>
-    {{block.super}}
+    {% include "gallery/how_to_use.html" %}
+{% endblock %}
+
+
+
+{% block gallery_below_line %}
+    <div id="gallery-below-line-advert">
+    {% include "advert.html" %}
+    </div>
+
+    {% if related_photos %}
+        <h2><a href="{% url 'photo.list' %}">Related photos</a></h2>
+        <div id="gallery-related-photos" class="row">
+            {% for photo in related_photos %}
+                <div class="col-xs-6 col-md-3">
+                    {% include "gallery/thumbnail.html" %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
 {% endblock %}

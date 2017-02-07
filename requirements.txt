@@ -28,3 +28,6 @@ django-allauth
 smartypants
 django-ajax-selects
 django-debug-toolbar
+django-el-pagination
+csscompressor
+django-compressor

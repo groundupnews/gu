@@ -16,6 +16,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+#gallery-logo {
+    display: none;
+}
+
 /* Top navigational bar */
 
 .navbar-default .navbar-collapse {
@@ -226,7 +230,6 @@ a {
         margin-left: 6px;
     }
 }
-
 
 #social-media .right {
     border-left: 1px solid #D3D3D3;

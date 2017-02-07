@@ -4,7 +4,6 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 import random
 
-
 from filebrowser.fields import FileBrowseField
 from newsroom.models import Author
 

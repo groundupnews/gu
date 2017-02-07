@@ -1,37 +1,39 @@
 {% extends "gallery/base.html" %}
+{% load staticfiles %}
 {% load fb_versions %}
 
 {% block title %}
     {{block.super}} | Photos
 {% endblock %}
 
-{% block gallery_title %}
-    Photos
-    {% if keyword %}
-        tagged with: {{keyword}}
-    {% elif search_string %}
-        searched: {{search_string}}
-    {% endif %}
+{% block gallery_above_line %}
+    <h1>
+        Photos
+        {% if keyword %}
+            tagged with: <em>{{keyword}}</em>
+        {% elif search_string %}
+            searched: <em>{{search_string}}</em>
+        {% endif %}
+        {% if photographer %}
+            by {{photographer}}
+        {% endif %}
+    </h1>
 
 {% endblock %}
 
 
-{% block gallery_content %}
+{% block gallery_below_line %}
 
-    <div class="row" id="gallery-thumbnails">
-        {% for photo in photos %}
-	    <div class="col-xs-6 col-md-3">
-                <div class="gallery-photo thumbnail">
-                    <a href="{% url 'photo.detail' photo.pk %}">
-                        <img src="{% version photo.image 'medium' %}"
-                             alt="{{photo.alt}}" />
-                    </a>
-                    <div class="caption">
-                        <p>{{photo.alt}}</p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+    <div class="row" id="gallery-photo-list">
+        {% include page_template %}
     </div>
+
+{% endblock %}
+
+{% block javascript-includes %}
+    {{block.super}}
+
+    <script src="{% static 'el-pagination/js/el-pagination.js' %}"></script>
+    <script>$.endlessPaginate({paginateOnScroll: true});</script>
 
 {% endblock %}
