@@ -7,11 +7,6 @@ from . import models
 from newsroom.models import Author
 from blocks.models import Group
 
-versions = {key: value for (key, value) in
-            django_settings.FILEBROWSER_VERSIONS.items()
-            if not key.startswith("admin")}
-versions = sorted(versions.items(),key=lambda x: x[1]["width"])
-
 def album_list(request):
     albums = models.Album.objects.all()
     return render(request, "gallery/album_list.html",
@@ -69,6 +64,10 @@ def photo_list(request, keyword=None):
 
 
 def photo_detail(request, pk):
+    versions = {key: value for (key, value) in
+                django_settings.FILEBROWSER_VERSIONS.items()
+                if not key.startswith("admin")}
+    versions = sorted(versions.items(),key=lambda x: x[1]["width"])
     try:
         blocks = Group.objects.get(name="Gallery_Front").get_blocks()
     except:
