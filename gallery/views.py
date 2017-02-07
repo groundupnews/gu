@@ -67,11 +67,13 @@ def photo_detail(request, pk):
     versions = {key: value for (key, value) in
                 django_settings.FILEBROWSER_VERSIONS.items()
                 if not key.startswith("admin")}
+
     versions = sorted(versions.items(),key=lambda x: x[1]["width"])
     try:
         blocks = Group.objects.get(name="Gallery_Front").get_blocks()
     except:
         blocks = []
+
     photo = get_object_or_404(models.Photograph, pk=pk)
     related_by_keyword = models.Photograph.objects.filter(keywords__in=
                                                    photo.keywords.all())
@@ -92,7 +94,7 @@ def photo_detail(request, pk):
                    'photo':photo,
                    'default_copyright': settings.DEFAULT_COPYRIGHT,
                    'versions': versions,
-                   'related_photos' : related_photos})
+                   'photos' : related_photos})
 
 
 def gallery_front(request):

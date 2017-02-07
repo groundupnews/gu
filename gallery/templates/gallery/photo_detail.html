@@ -114,12 +114,10 @@
     {% include "advert.html" %}
     </div>
 
-    {% if related_photos %}
+    {% if photos %}
         <h2><a href="{% url 'photo.list' %}">Related photos</a></h2>
         <div id="gallery-related-photos" class="row">
-            {% with photos=related_photos %}
-                {% include page_template %}
-            {% endwith %}
+            {% include page_template %}
         </div>
     {% endif %}
 
