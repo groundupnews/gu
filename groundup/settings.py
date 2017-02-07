@@ -62,7 +62,6 @@ INSTALLED_APPS = (
     'haystack',
     'ajax_select',
     'el_pagination',
-    'compressor',
     'newsroom',
     'payment',
     'socialmedia',
@@ -168,7 +167,6 @@ except:
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 )
 
 # These should be overriden in local_settings.py

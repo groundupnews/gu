@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load compress %}
 
 <!DOCTYPE html>
 
@@ -37,11 +36,9 @@
 
 	{% block newsroom-css %}
 
-
-            {% compress css %}
 	    <link rel="stylesheet"
 		  href="{% static 'newsroom/css/newsroom_styles.css' %}" />
-            {% endcompress %}
+
 	{% endblock %}
 
 	{% block css-override %}
