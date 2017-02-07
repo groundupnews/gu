@@ -29,11 +29,3 @@
     </div>
 
 {% endblock %}
-
-{% block javascript-includes %}
-    {{block.super}}
-
-    <script src="{% static 'el-pagination/js/el-pagination.js' %}"></script>
-    <script>$.endlessPaginate({paginateOnScroll: true});</script>
-
-{% endblock %}

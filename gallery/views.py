@@ -81,8 +81,15 @@ def photo_detail(request, pk):
     related_photos = (related_by_keyword | related_by_album).\
                      exclude(pk=photo.pk).distinct()
 
-    return render(request, "gallery/photo_detail.html",
+    template= "gallery/photo_detail.html"
+    page_template='gallery/photo_list_page.html'
+
+    if request.is_ajax():
+        template = page_template
+
+    return render(request, template,
                   {'blocks': blocks,
+                   'page_template': page_template,
                    'photo':photo,
                    'default_copyright': settings.DEFAULT_COPYRIGHT,
                    'versions': versions,

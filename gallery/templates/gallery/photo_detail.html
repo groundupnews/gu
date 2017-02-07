@@ -117,11 +117,9 @@
     {% if related_photos %}
         <h2><a href="{% url 'photo.list' %}">Related photos</a></h2>
         <div id="gallery-related-photos" class="row">
-            {% for photo in related_photos %}
-                <div class="col-xs-6 col-md-3">
-                    {% include "gallery/thumbnail.html" %}
-                </div>
-            {% endfor %}
+            {% with related_photos as photos %}
+                {% include page_template %}
+            {% endwith %}
         </div>
     {% endif %}
 
