@@ -44,6 +44,9 @@
                 <li {% if path == '/imagegallery/photos/' %}
                     class='active'
                 {% endif %}><a href="{% url 'photo.list' %}">Photos</a></li>
+                <li {% if path == '/imagegallery/photos/?featured' %}
+                    class='active'
+                {% endif %}><a href="{% url 'photo.list' %}?featured">Featured photos</a></li>
 	    </ul>
         </li>
 

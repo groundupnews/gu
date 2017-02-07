@@ -74,7 +74,7 @@ class Photograph(models.Model):
                           str(self.photographer),])
 
     class Meta:
-        ordering = ['-modified', ]
+        ordering = ['-featured', '-modified', ]
 
     def get_absolute_url(self):
         return reverse('photo.detail', args=[self.pk, ])

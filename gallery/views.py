@@ -22,6 +22,7 @@ def album_detail(request, pk):
 def photo_list(request, keyword=None):
     search_string = ""
     photographer = None
+    featured = False
     list_all = True
     if keyword:
         query = Q(keywords__name__in=[keyword])
@@ -46,6 +47,13 @@ def photo_list(request, keyword=None):
             query = query & Q(photographer=photographer)
         except:
             pass
+
+    if "featured" in request.GET:
+        print("D0")
+        list_all = False
+        featured = True
+        query = query & Q(featured=True)
+
     photos = models.Photograph.objects.filter(query).distinct()
 
     template= "gallery/photo_list.html"
@@ -60,6 +68,7 @@ def photo_list(request, keyword=None):
                    'keyword': keyword,
                    'search_string': search_string,
                    'photographer': photographer,
+                   'featured': featured,
                    'list_all': list_all})
 
 
