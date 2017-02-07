@@ -117,7 +117,7 @@
     {% if related_photos %}
         <h2><a href="{% url 'photo.list' %}">Related photos</a></h2>
         <div id="gallery-related-photos" class="row">
-            {% with related_photos as photos %}
+            {% with photos=related_photos %}
                 {% include page_template %}
             {% endwith %}
         </div>
