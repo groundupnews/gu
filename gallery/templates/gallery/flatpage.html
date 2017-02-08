@@ -4,11 +4,8 @@
     {{block.super}} | {{flatpage.title}}
 {% endblock %}
 
-
-{% block gallery_title %}
-    {{ flatpage.title }}
-{% endblock %}
-{% block gallery_content %}
+{% block gallery_below_line %}
+    <h1>{{ flatpage.title }}</h1>
     <div id="gallery-flatpage-content">
         {{flatpage.content}}
     </div>

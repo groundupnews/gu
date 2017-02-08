@@ -10,15 +10,13 @@ from blocks.models import Group
 def album_list(request):
     albums = models.Album.objects.all()
     return render(request, "gallery/album_list.html",
-                  {'gallery': True,
-                   'albums':albums,})
+                  {'albums':albums,})
 
 
 def album_detail(request, pk):
     album = get_object_or_404(models.Album, pk=pk)
     return render(request, "gallery/album_detail.html",
-                  {'gallery': True,
-                   'album':album,})
+                  {'album':album,})
 
 
 def photo_list(request, keyword=None):
@@ -65,8 +63,7 @@ def photo_list(request, keyword=None):
         template = page_template
 
     return render(request, template,
-                  {'gallery': True,
-                   'photos': photos,
+                  {'photos': photos,
                    'page_template': page_template,
                    'keyword': keyword,
                    'search_string': search_string,
@@ -122,8 +119,7 @@ def gallery_front(request):
     albums = models.Album.objects.all().order_by('?')\
                     [:settings.NUM_ALBUMS]
     return render(request, "gallery/index.html",
-                  {'gallery': True,
-                   'blocks' : blocks,
+                  {'blocks' : blocks,
                    'featured_photos': featured_photos,
                    'photos': photos,
                    'albums': albums})

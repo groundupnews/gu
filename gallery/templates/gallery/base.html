@@ -14,7 +14,9 @@
 {% endblock %}
 
 {% block banner %}
-    {% include "banner.html" with searchform_template="gallery/searchform.html" %}
+    {% with gallery=1 %}
+        {% include "banner.html" with searchform_template="gallery/searchform.html" %}
+    {% endwith %}
 {% endblock %}
 
 
