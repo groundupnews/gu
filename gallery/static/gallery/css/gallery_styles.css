@@ -108,6 +108,8 @@
 .thumbnail .caption {
     padding-left: 0;
     padding-right: 0;
+    height: 54px;
+    overflow: hidden;
 }
 
 #gallery-photo-details h1 {
