@@ -12,7 +12,7 @@ class KeywordAdmin(admin.ModelAdmin):
 class PhotographAdmin(admin.ModelAdmin):
     fields = ('image', 'photographer', 'suggested_caption', 'alt', 'date_taken',
               'featured', 'keywords', 'albums','copyright', 'credit',)
-    search_fields = ['pk', 'suggested_caption', 'keywords__name',
+    search_fields = ['suggested_caption', 'alt', 'keywords__name',
                      'photographer__first_names', 'photographer__last_name',
                      'albums__name',]
     ordering = ['-modified', ]
@@ -42,7 +42,7 @@ class PhotoInline(admin.TabularInline):
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    search_fields = ['pk', 'name', 'description', ]
+    search_fields = ['name', 'description', ]
     list_display = ['pk', 'name', 'description',]
     inlines = [PhotoInline,]
 
