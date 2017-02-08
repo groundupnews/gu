@@ -42,13 +42,13 @@ class LatestArticlesRssFeed(Feed):
 
     def item_enclosure_length(self, article):
         if article.primary_image:
-            return article.primary_image.version_generate("thumbnail").filesize
+            return article.primary_image.version_generate("medium").filesize
         else:
             return os.path.getsize(settings.STATIC_ROOT + LOGO)
 
     def item_enclosure_mime_type(self, article):
         if article.primary_image:
-            suffix = article.primary_image.version_generate("thumbnail").url[-3:]
+            suffix = article.primary_image.version_generate("medium").url[-3:]
         else:
             suffix = LOGO[-3:]
 
@@ -58,7 +58,6 @@ class LatestArticlesRssFeed(Feed):
             return "image/jpeg"
 
 class LatestArticlesAtomFeed(LatestArticlesRssFeed):
-    title = "GroundUp Atom Feed"
     feed_type = Atom1Feed
     subtitle = LatestArticlesRssFeed.description
 
