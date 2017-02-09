@@ -1,13 +1,45 @@
 {% extends "base_20161106.html" %}
+{% load humanize %}
 
 {% block content %}
 
     <h1>Invoices
         {% if not staff_view %}
             for {{request.user.first_name}} {{request.user.last_name}}
+        {% else %}
+            for
+            {% if this_month %}
+                {{this_month|date:"F Y"}}
+            {% else %}
+                all time
+            {% endif %}
         {% endif %}
     </h1>
 
+    {% if staff_view %}
+        <p>
+            Total paid: R{{total_paid_for_month|floatformat:"2"|intcomma}}
+        </p>
+        <p>
+            {% if this_month %}
+                <a href="{% url "invoice.list" previous_month.year previous_month.month %}">
+                    Previous: {{previous_month|date:"F Y"}}
+                </a>
+                &nbsp;|&nbsp;
+                <a href="{% url "invoice.list" next_month.year next_month.month %}">
+                    Next: {{next_month|date:"F Y"}}
+                </a>
+                &nbsp;|&nbsp;
+                <a href="{% url "invoice.list" 0 0 %}">
+                    All
+                </a>
+            {% else %}
+                <a href="{% url "invoice.list" next_month.year next_month.month %}">
+                    Go to latest month: {{next_month|date:"F Y"}}
+                </a>
+            {% endif %}
+        </p>
+    {% endif %}
 
     <table class="table" id="invoice-table">
         <tr>

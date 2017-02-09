@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.views import generic
 from django.views.generic import View
 from django.db.models import Q
+from django.db.models import F, Sum
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
@@ -15,23 +16,82 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
+from django.utils import timezone
+
+from dateutil import relativedelta
+import calendar
 
 from newsroom.models import Author
 
 from . import models
 from . import forms
 
+
 # Create your views here.
 
 @login_required
-def invoice_list(request):
+def invoice_list(request, year=None, month=None):
     user = request.user
     if not user.is_authenticated():
         raise Http404
     staff_view = False
+    year_month_begin = None
+    next_month = None
+    previous_month = None
+    total_paid_for_month = None
     # Staff query
+
     if user.is_staff and user.has_perm("payment.change_invoice"):
-        invoices = models.Invoice.objects.all()
+
+        if year and int(year) == 0:
+            year = 0
+            year_month_begin = timezone.datetime(1900, 1, 1)
+
+        elif year == None or month == None:
+            year_month_begin = timezone.now()
+            year_month_begin = timezone.datetime(year_month_begin.year,
+                                                 year_month_begin.month,
+                                                 1)
+        else:
+            try:
+                year_month_begin = timezone.datetime(int(year), int(month), 1)
+            except:
+                raise Http404
+        last_day = calendar.monthrange(year_month_begin.year,
+                                       year_month_begin.month)[1]
+        if year == 0:
+            year_month_end = timezone.datetime(5000,1,1)
+        else:
+            year_month_end = timezone.datetime(year_month_begin.year,
+                                               year_month_begin.month,
+                                               last_day)
+
+        if year == 0:
+            next_month = timezone.now()
+            previous_month = timezone.now() - \
+                             relativedelta.relativedelta(months=1)
+            query = Q()
+            year_month_begin = None
+        else:
+            next_month = year_month_begin + \
+                relativedelta.relativedelta(months=1)
+            previous_month = year_month_begin - \
+                relativedelta.relativedelta(months=1)
+
+            query = (Q(date_time_processed__gte=year_month_begin) &
+                     Q(date_time_processed__lte=year_month_end) &
+                     Q(status="4")) | \
+                     (Q(created__gte=year_month_begin) &
+                      Q(created__lte=year_month_end) &
+                      Q(status="5"))
+            if year_month_begin.month == timezone.now().month and \
+               year_month_begin.year == timezone.now().year:
+                query = query | Q(status__lte="3")
+
+        invoices = models.Invoice.objects.filter(query)
+        total_paid_for_month = invoices.filter(status="4").aggregate(
+            amount_paid=Sum(F('amount_paid') + F('vat_paid') + F('tax_paid')))\
+            ["amount_paid"]
         staff_view = True
     elif user.author is not None and user.author.freelancer is True:
         invoices = models.Invoice.objects.filter(author=user.author).\
@@ -40,6 +100,10 @@ def invoice_list(request):
         raise Http404
     return render(request, "payment/invoice_list.html",
                   {'invoices': invoices,
+                   'total_paid_for_month' : total_paid_for_month,
+                   'this_month': year_month_begin,
+                   'next_month': next_month,
+                   'previous_month': previous_month,
                    'staff_view': staff_view})
 
 

@@ -170,7 +170,7 @@ class Invoice(models.Model):
         if self.status == "4": # Invoice has been paid
             if self.date_time_processed is None:
                 self.date_time_processed = timezone.now()
-                self.calc_payment()
+            self.calc_payment()
         super(Invoice, self).save(*args, **kwargs)
         set_corresponding_vals(self, self.author)
         self.author.save()
