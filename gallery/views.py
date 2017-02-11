@@ -1,3 +1,4 @@
+
 from django.db.models import Q
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render
@@ -35,7 +36,7 @@ def photo_list(request, keyword=None):
         search_query = Q(suggested_caption__icontains=search_string) | \
                        Q(photographer__last_name__icontains=search_string) | \
                        Q(photographer__first_names__icontains=search_string) | \
-                       Q(keywords__name__in=[search_string])
+                       Q(keywords__name__icontains=search_string)
         query = query & search_query
         list_all = False
 
@@ -54,7 +55,8 @@ def photo_list(request, keyword=None):
         featured = True
         query = query & Q(featured=True)
 
-    photos = models.Photograph.objects.filter(query).distinct()
+    photos = models.Photograph.objects.filter(query).\
+             order_by('-modified').distinct()
 
     template= "gallery/photo_list.html"
     page_template='gallery/photo_list_page.html'
