@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load compress %}
 
 <!DOCTYPE html>
 
@@ -73,22 +72,20 @@
 	        {% endblock %}
             </div>
 
-            {% compress css %}
 	    {% block bootstrap-css %}
 	        {% include "bootstrap_css.html" %}
 	    {% endblock %}
 
             {% block newsroom-css %}
-
+                {% compress css %}
 	        <link rel="stylesheet"
 		      href="{% static 'newsroom/css/newsroom_styles.css' %}" />
-
+                {% endcompress %}
 	    {% endblock %}
 
 	    {% block css-override %}
 	    {% endblock %}
 
-            {% endcompress %}
 
 	    {% block javascript-includes %}
 		{% include 'javascripts.html' %}
