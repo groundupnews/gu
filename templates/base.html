@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load compress %}
 
 <!DOCTYPE html>
 
@@ -27,22 +28,10 @@
 	    {% include "google_analytics.html" %}
 	{% endblock %}
 
-	{% block bootstrap-css %}
-	    {% include "bootstrap_css.html" %}
-	{% endblock %}
 
 	{% block additional_head %}
 	{% endblock %}
 
-	{% block newsroom-css %}
-
-	    <link rel="stylesheet"
-		  href="{% static 'newsroom/css/newsroom_styles.css' %}" />
-
-	{% endblock %}
-
-	{% block css-override %}
-	{% endblock %}
 
     </head>
 
@@ -83,6 +72,23 @@
 		    {% include 'footer.html' %}
 	        {% endblock %}
             </div>
+
+            {% compress css %}
+	    {% block bootstrap-css %}
+	        {% include "bootstrap_css.html" %}
+	    {% endblock %}
+
+            {% block newsroom-css %}
+
+	        <link rel="stylesheet"
+		      href="{% static 'newsroom/css/newsroom_styles.css' %}" />
+
+	    {% endblock %}
+
+	    {% block css-override %}
+	    {% endblock %}
+
+            {% endcompress %}
 
 	    {% block javascript-includes %}
 		{% include 'javascripts.html' %}

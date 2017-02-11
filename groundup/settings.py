@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'haystack',
+    'compressor',
     'ajax_select',
     'el_pagination',
     'newsroom',
@@ -168,7 +169,13 @@ except:
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSCompressorFilter'
+]
 
 # These should be overriden in local_settings.py
 STATIC_URL = '/static/'
