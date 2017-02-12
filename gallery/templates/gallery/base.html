@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block title %}
-    GroundUp Images
+    GroundUp Images: Gallery of high-quality free South African news photos
 {% endblock %}
 
 {% block css-override %}
@@ -12,6 +12,14 @@
 	  href="{% static 'gallery/css/gallery_styles.css' %}" />
 
 {% endblock %}
+
+{% block seo_fields %}
+    {{block.super}}
+    {% block meta_description %}
+    <meta name="description" content="High-quality free photographs of South African news">
+    {% endblock %}
+{% endblock %}
+
 
 {% block banner %}
     {% with gallery=1 %}

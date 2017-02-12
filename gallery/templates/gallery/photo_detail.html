@@ -5,6 +5,10 @@
     {{block.super}} | {{photo.alt}}
 {% endblock %}
 
+{% block meta_description %}
+    <meta name="description" content="{{photo.alt}}">
+{% endblock %}
+
 {% block gallery_title %}
     {{photo.alt}}
 {% endblock %}
