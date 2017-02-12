@@ -163,7 +163,9 @@ def processSupportUs(soup):
         ad_to_run = randint(0, len(SUPPORT_US_IMAGES) - 1)
         image_url = SUPPORT_US_IMAGES[ad_to_run]
         supporta = soup.new_tag('a', href=settings.DONATE_PAGE)
-        supportimage = soup.new_tag('img', src=settings.STATIC_URL + image_url)
+        supportimage = soup.new_tag('img',
+                                    src=settings.STATIC_URL + image_url,
+                                    alt="Support GroundUp image")
         supporta.append(supportimage)
         aside.append(supporta)
     return soup
