@@ -1,0 +1,5 @@
+# robots.txt for http://www.groundup.org.za/
+
+User-agent: *
+Disallow: /admin/
+Disallow: /invoices/
