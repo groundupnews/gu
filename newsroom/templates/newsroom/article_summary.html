@@ -44,7 +44,7 @@
 	    {% endif %}
 	    <p class="summary-byline">
 		<a href="{{article.get_absolute_url}}">
-		    {{article.cached_byline_no_links|safe}}
+		    {{article.cached_byline_no_links|safe|striptags}}
 		</a>
 	    </p>
 	    <a href="{{article.get_absolute_url}}">
