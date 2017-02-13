@@ -1,25 +1,31 @@
 {% load staticfiles  %}
 <div id="social-media">
     <div class="row">
-        <div class="col-xs-7 col-sm-6 left">
-            Find us on
+        <div class="col-xs-8 left">
+            <span class="social-media-follow">
+                FOLLOW:
+            </span>
             <a href="https://www.facebook.com/GroundUpNews/"
                target="_blank" >
-                <img alt ="Facebook icon"
-                     src="{% static "newsroom/images/icons/Facebook_Logo.png" %}"/></a>
-
+                <i class="fa fa-facebook fa-2x"></i>
+            </a>
+            &nbsp;
             <a href="https://twitter.com/GroundUp_News"
                target="_blank">
-                <img alt="Twitter icon"
-                     src="{% static "newsroom/images/icons/Twitter_Logo.png" %}"/>
+                <i class="fa fa-twitter fa-2x"></i>
             </a>
+            &nbsp;
+            <a href="https://www.youtube.com/c/GroundUpNews"
+               target="_blank">
+                <i class="fa fa-youtube fa-2x"></i>
+            </a>
+            &nbsp;
 
             <a href="/feeds/">
-                <img alt="RSS icon"
-                     src="{% static "newsroom/images/icons/RSS_Logo.png" %}"/>
+                <i class="fa fa-rss fa-2x"></i>
             </a>
         </div>
-        <div class="col-xs-5 col-sm-6 right">
+        <div class="col-xs-4 right">
 	    <a href="http://eepurl.com/Or2a9" target="_blank">
                 Get our newsletter
 	    </a>

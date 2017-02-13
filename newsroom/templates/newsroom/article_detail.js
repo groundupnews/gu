@@ -136,7 +136,11 @@ jQuery(document).ready(function ($) {
 	    update_form("article_body",
 			"id_body");
 	});
+    {% endif %}
 });
 
+
+{% if can_edit %}
 {% include "newsroom/manage_concurrent_updates.js" with pk=article.pk version=article.version %}
-    {% endif %}
+
+{% endif %}

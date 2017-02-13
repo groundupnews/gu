@@ -217,7 +217,11 @@ a {
 }
 
 #social-media .left {
+    padding-top: 8px;
+}
 
+span.social-media-follow {
+    vertical-align: 3px;
 }
 
 #social-media .left a {
