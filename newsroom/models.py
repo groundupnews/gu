@@ -598,6 +598,7 @@ class Article(models.Model):
         return Article.objects.published().                         \
                             filter(published__gt=publication_date).  \
                             exclude(pk=self.pk).                    \
+                            exclude(recommended=False). \
                             order_by("?")[:num_to_choose]
 
     class Meta:

@@ -88,7 +88,7 @@ def replacePImgWithFigureImg(soup):
     for caption in captions:
         if caption.find_parent().name != "figure":
             sibling = caption.find_previous_sibling()
-            if sibling.name == "figure":
+            if sibling and sibling.name == "figure":
                 del caption["class"]
                 caption.name = "figcaption"
                 sibling.append(caption)
