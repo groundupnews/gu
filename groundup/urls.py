@@ -28,6 +28,8 @@ from newsroom.models import Article
 from newsroom.models import Author
 from newsroom.views import account_profile
 
+from gallery.models import Photograph
+
 from filebrowser.sites import site
 
 from ajax_select import urls as ajax_select_urls
@@ -39,6 +41,11 @@ article_dict = {
 
 author_dict = {
     'queryset': Author.objects.all(),
+    'date_field': 'modified',
+}
+
+photo_dict = {
+    'queryset': Photograph.objects.all(),
     'date_field': 'modified',
 }
 
@@ -61,6 +68,8 @@ urlpatterns = [
           'authors': GenericSitemap(author_dict,
                                     priority=0.5,
                                     changefreq='weekly'),
+          'photos': GenericSitemap(photo_dict,
+                                   priority=0.5),
           'flatpages': FlatPageSitemap}},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^cache/', include('clearcache.urls', namespace="cache")),
