@@ -857,7 +857,7 @@ table#invoice-form .helptext, #commission-detail .helptext {
 
 
 
-.frontpage-advert, #sidebar-advert {
+.frontpage-advert, #sidebar-advert, .image-max-100pc {
     max-width: 100%;
 }
 
