@@ -42,7 +42,7 @@
                     {% version photo.image version.0 as image %}
                     <li>
                         <a href="{{image.url}}" download>
-                            {{version.0|capfirst}}
+                            {{version.1.verbose_name|capfirst}}
                             ({{image.width}}px X {{image.height}}px)
                         </a>
                     </li>
