@@ -119,6 +119,10 @@
     padding-top: 0;
 }
 
+#gallery-photo img {
+    max-width: 100%;
+}
+
 #gallery-photo-labels div {
     padding-left: 0;
     margin-bottom: 6px;

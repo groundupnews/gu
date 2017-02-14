@@ -21,7 +21,7 @@
             <li>
                 <a href="{% url 'photo.detail' photo.pk %}">
                     <img
-                        src="{% version photo.image 'large' %}"
+                        src="{% version photo.image 'extra_large' %}"
                         alt="{{photo.suggested_caption}}{% if photo.photographer %} - {{photo.photographer}}{% endif %}"
                     />
                 </a>
@@ -74,7 +74,7 @@
 
     <div class="row" id="gallery-home-albums">
         <div class="col-xs-12">
-            <h2><a href="{% url 'photo.list' %}">ALBUMS</a></h2>
+            <h2><a href="{% url 'album.list' %}">ALBUMS</a></h2>
         </div>
     </div>
     <div class="row">

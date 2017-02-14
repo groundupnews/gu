@@ -212,18 +212,22 @@ FILEBROWSER_OVERWRITE_EXISTING = False
 FILEBROWSER_VERSIONS = {
     'admin_thumbnail': {'verbose_name': 'Admin Thumbnail',
                         'width': 60, 'height': 60, 'opts': 'crop'},
-    'thumbnail': {'verbose_name': 'Thumbnail (1 col crop)',
+    'thumbnail': {'verbose_name': 'Thumbnail',
                   'width': 60, 'height': 60, 'opts': 'crop'},
-    'small': {'verbose_name': 'Small (2 col crop)',
+    'small': {'verbose_name': 'Small',
               'width': 140, 'height': 100, 'opts': 'crop'},
-    'medium': {'verbose_name': 'Medium (4 col)',
+    'medium': {'verbose_name': 'Medium',
                'width': 300, 'height': '', 'opts': ''},
-    'big': {'verbose_name': 'Big (6 col)',
+    'big': {'verbose_name': 'Big',
             'width': 460, 'height': '', 'opts': ''},
-    'large': {'verbose_name': 'Large (8 col)',
+    'large': {'verbose_name': 'Large',
               'width': 680, 'height': '', 'opts': ''},
+    'extra_large': {'verbose_name': 'Extra large',
+              'width': 750, 'height': '', 'opts': ''},
 }
 
+FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 'small', 'medium', 'big',
+                              'large', 'extra_large']
 
 GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 

@@ -17,7 +17,6 @@ from letters.admin import LetterInline
 
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 
-
 # Used to select sizes of images
 IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)
                       for item in ADMIN_VERSIONS]
@@ -39,7 +38,7 @@ class ArticleForm(forms.ModelForm):
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="medium")
     primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
-                                           initial="large")
+                                           initial="extra_large")
     facebook_send_status = forms.ChoiceField(choices=SCHEDULE_RESULTS,
                                              initial="scheduled")
     '''Remove height and width from TinyMCE image insertions.
