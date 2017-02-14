@@ -33,6 +33,19 @@
 	{% block additional_head %}
 	{% endblock %}
 
+        {% block bootstrap-css %}
+	    {% include "bootstrap_css.html" %}
+	{% endblock %}
+
+        {% block newsroom-css %}
+            {% compress css %}
+	    <link rel="stylesheet"
+		  href="{% static 'newsroom/css/newsroom_styles.css' %}" />
+                {% endcompress %}
+	{% endblock %}
+
+	{% block css-override %}
+	{% endblock %}
 
     </head>
 
@@ -73,20 +86,6 @@
 		    {% include 'footer.html' %}
 	        {% endblock %}
             </div>
-
-	    {% block bootstrap-css %}
-	        {% include "bootstrap_css.html" %}
-	    {% endblock %}
-
-            {% block newsroom-css %}
-                {% compress css %}
-	        <link rel="stylesheet"
-		      href="{% static 'newsroom/css/newsroom_styles.css' %}" />
-                {% endcompress %}
-	    {% endblock %}
-
-	    {% block css-override %}
-	    {% endblock %}
 
 
 	    {% block javascript-includes %}
