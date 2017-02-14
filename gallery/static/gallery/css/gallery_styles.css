@@ -96,8 +96,15 @@
 /* Thumbnails */
 
 .thumbnail {
-    height: 223px;
+    height: 222px;
 }
+
+@media (max-width: 380px) {
+    .thumbnail {
+        height: 160px;
+    }
+}
+
 
 .thumbnail a > img {
     overflow: hidden;
@@ -108,7 +115,7 @@
 .thumbnail .caption {
     padding-left: 0;
     padding-right: 0;
-    height: 54px;
+    height: 52px;
     overflow: hidden;
 }
 

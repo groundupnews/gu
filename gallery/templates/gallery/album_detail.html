@@ -18,7 +18,7 @@
             {{album.description|safe}}
         </h2>
         <div class="row">
-            {% for photo in album.photograph_set.all %}
+            {% for photo in album.photograph_set.ordered_by_date_taken %}
                 <div class="col-xs-12 col-md-3">
                     {% include "gallery/thumbnail.html" %}
                 </div>

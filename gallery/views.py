@@ -55,7 +55,7 @@ def photo_list(request, keyword=None):
         query = query & Q(featured=True)
 
     photos = models.Photograph.objects.filter(query).\
-             order_by('-modified').distinct()
+             ordered_by_date_taken().distinct()
 
     template= "gallery/photo_list.html"
     page_template='gallery/photo_list_page.html'

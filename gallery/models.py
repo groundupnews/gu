@@ -52,6 +52,11 @@ class Album(models.Model):
         ordering = ['name', ]
 
 
+class PhotographQuerySet(models.QuerySet):
+
+    def ordered_by_date_taken(self):
+        return self.order_by("-date_taken")
+
 class Photograph(models.Model):
     image = FileBrowseField(max_length=200, directory=settings.DIRECTORY)
     albums = models.ManyToManyField(Album, blank=True)
@@ -68,6 +73,8 @@ class Photograph(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     keywords = models.ManyToManyField(Keyword, blank=True)
+
+    objects = PhotographQuerySet.as_manager()
 
     def __str__(self):
         return ", ".join([str(self.image).rsplit('/',1)[-1],
