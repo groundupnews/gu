@@ -50,7 +50,6 @@ def photo_list(request, keyword=None):
             pass
 
     if "featured" in request.GET:
-        print("D0")
         list_all = False
         featured = True
         query = query & Q(featured=True)
