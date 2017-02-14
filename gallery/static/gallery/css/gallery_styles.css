@@ -190,3 +190,7 @@
     margin-bottom: 10px;
     padding: 10px;
 }
+
+.sidebar-block {
+    max-width: 100%;
+}

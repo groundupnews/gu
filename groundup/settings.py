@@ -177,7 +177,6 @@ COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSCompressorFilter'
 ]
 
-# These should be overriden in local_settings.py
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
