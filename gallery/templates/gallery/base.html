@@ -67,10 +67,7 @@
 
 {% block javascript-includes %}
     {{block.super}}
-
-    {% compress css %}
     <script src="{% static 'el-pagination/js/el-pagination.js' %}"></script>
     <script>$.endlessPaginate({paginateOnScroll: true});</script>
-    {% endcompress %}
 
 {% endblock %}
