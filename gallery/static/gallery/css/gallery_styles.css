@@ -26,7 +26,6 @@
     }
 }
 
-
 .gallery-block {
     margin-top: 7px;
     margin-bottom: 5px;
@@ -50,16 +49,18 @@
 
 
 #gallery-how-to-use {
-    /* border-top: 1px solid #26aae2;*/
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 6px;
     padding-right: 6px;
     background-color: #F1F2F2;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 #gallery-how-to-use img {
-    margin-top: 4px;
+    padding-left: 10px;
+    margin-top: 6px;
     height: 64px;
 }
 
@@ -95,6 +96,11 @@
 
 /* Thumbnails */
 
+
+#gallery-home-albums h2 {
+    margin-bottom: 0;
+}
+
 .thumbnail {
     height: 222px;
 }
@@ -117,6 +123,10 @@
     padding-right: 0;
     height: 52px;
     overflow: hidden;
+}
+
+.thumbnail .album-head {
+    height: 36px;
 }
 
 #gallery-photo-details h1 {
