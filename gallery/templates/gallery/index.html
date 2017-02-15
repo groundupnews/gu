@@ -1,5 +1,6 @@
 {% extends "gallery/base.html" %}
 
+{% load compress %}
 {% load fb_versions %}
 {% load staticfiles %}
 
@@ -104,6 +105,7 @@
 
     {{block.super}}
 
+    {% compress js %}
     <script src={% static 'newsroom/js/pgwslider.min.js' %}>
     </script>
     <script>
@@ -118,5 +120,6 @@
          });
      });
     </script>
+    {% endcompress %}
 
 {% endblock %}

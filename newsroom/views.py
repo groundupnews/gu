@@ -41,8 +41,8 @@ def get_blocks(group_name="Home"):
         return []
 
 
-def get_blocks_in_context(context, group_name="Home"):
-    context["blocks"] = get_blocks(group_name)
+def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
+    context[context_key] = get_blocks(group_name)
     return context
 
 
@@ -70,6 +70,11 @@ def last_article_modified(request):
 
 class HomePage(ArticleList):
     template_name = "newsroom/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(HomePage, self).get_context_data(**kwargs)
+        context = get_blocks_in_context(context, "Home_Top", "topblocks")
+        return context
 
     # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
     # WHICH CODE NEEDS TO CHANGE URGENTLY.

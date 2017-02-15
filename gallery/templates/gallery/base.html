@@ -1,5 +1,5 @@
 {% extends "base_20161106.html" %}
-
+{% load compress %}
 {% load staticfiles %}
 
 {% block title %}
@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block css-override %}
-
+    {% compress css %}
     <link rel="stylesheet"
 	  href="{% static 'gallery/css/gallery_styles.css' %}" />
-
+    {% endcompress %}
 {% endblock %}
 
 {% block seo_fields %}
@@ -68,7 +68,9 @@
 {% block javascript-includes %}
     {{block.super}}
 
+    {% compress css %}
     <script src="{% static 'el-pagination/js/el-pagination.js' %}"></script>
     <script>$.endlessPaginate({paginateOnScroll: true});</script>
+    {% endcompress %}
 
 {% endblock %}
