@@ -9,6 +9,14 @@
      Album: {{album}}
 {% endblock %}
 
+{% block breadcrumbs %}
+    <div id="gallery-breadcrumbs">
+        <a href="{% url 'gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
+        <a href="{% url 'album.list' %}">Albums</a>&nbsp;|&nbsp;
+        {{album.name}}
+    </div>
+
+{% endblock %}
 
 
 {% block gallery_below_line %}

@@ -5,9 +5,16 @@
     {{block.super}} | Albums
 {% endblock %}
 
+{% block breadcrumbs %}
+    <div id="gallery-breadcrumbs">
+        <a href="{% url 'gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
+        Albums
+    </div>
+
+{% endblock %}
 
 {% block gallery_above_line %}
-    <h1>Albums</h1>
+
 {% endblock %}
 
 {% block gallery_below_line %}

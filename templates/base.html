@@ -39,8 +39,12 @@
 
         {% block newsroom-css %}
             {% compress css %}
+            <link rel="stylesheet"
+                  href="https://fonts.googleapis.com/css?family=Roboto:400,700,700italic,300italic,300|Roboto+Condensed:300,300italic,400,700,700italic"
+                  type='text/css' />
 	    <link rel="stylesheet"
-		  href="{% static 'newsroom/css/newsroom_styles.css' %}" />
+		  href="{% static 'newsroom/css/newsroom_styles.css' %}"
+                  type='text/css' />
                 {% endcompress %}
 	{% endblock %}
 

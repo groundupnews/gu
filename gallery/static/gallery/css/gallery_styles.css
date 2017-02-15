@@ -31,6 +31,11 @@
     margin-bottom: 5px;
 }
 
+#gallery-breadcrumbs {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    font-size: 12px;
+}
 
 #gallery-name {
     padding-top: 4px;
@@ -182,13 +187,13 @@
 }
 
 
-.gallery-logo {
-    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeueBoldCondensed", "HelveticaNeue-Bold-Condensed", "Helvetica Neue Bold Condensed", "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosCnBold', "Helvetica", "Tahoma", "Geneva", "Arial Narrow", "Arial", sans-serif;
-    font-weight: 600;
-    font-stretch: condensed;
-    font-size: 25px;
-    color: black;
-}
+/* .gallery-logo { */
+/*     /\* font-family: "HelveticaNeue-CondensedBold", "HelveticaNeueBoldCondensed", "HelveticaNeue-Bold-Condensed", "Helvetica Neue Bold Condensed", "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosCnBold', "Helvetica", "Tahoma", "Geneva", "Arial Narrow", "Arial", sans-serif; *\/ */
+/*     font-weight: 600; */
+/*     font-stretch: condensed; */
+/*     font-size: 25px; */
+/*     color: black; */
+/* } */
 
 #gallery-logo a:hover {
     text-decoration: none;

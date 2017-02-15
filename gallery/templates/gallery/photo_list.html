@@ -6,6 +6,14 @@
     {{block.super}} | Photos
 {% endblock %}
 
+{% block breadcrumbs %}
+    <div id="gallery-breadcrumbs">
+        <a href="{% url 'gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
+        Photos
+    </div>
+
+{% endblock %}
+
 {% block gallery_above_line %}
     <h1>
         Photos
