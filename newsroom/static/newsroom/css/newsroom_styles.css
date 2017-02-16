@@ -58,7 +58,7 @@ body {
 }
 
 .navbar-brand img {
-    height: 135%;
+    /*height: 135%;*/
     padding-bottom: 8px;
     margin-left: 5px;
 }
@@ -71,7 +71,7 @@ body {
 
 #search-form input {
     display: inline;
-    width: 230px;
+    width: 211px;
 }
 
 #search-button {
@@ -315,9 +315,12 @@ span.social-media-follow {
     margin-bottom: 20px;
     border-top: 1px solid #ebebe0;
     border-bottom: 1px solid #ebebe0;
-    font-size: 13px;
+    font-size: 18px;
 }
 
+#article-topics {
+    margin-bottom: 12px;
+}
 
 #sharing a {
     /* color: black;*/

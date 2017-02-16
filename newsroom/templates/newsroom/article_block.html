@@ -124,7 +124,7 @@ datetime='{{ article.published|date:"Y-m-d" }}'>
 	            {% with topics_all=article.topics.all %}
 		        {% if topics_all|length  %}
 
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-lg-6">
 
 		                <div id="article-topics">
 
@@ -139,7 +139,7 @@ datetime='{{ article.published|date:"Y-m-d" }}'>
 
 		        {% endif %}
 	            {% endwith %}
-                    <div id="sharing" class="col-xs-12 col-sm-6">
+                    <div id="sharing" class="col-xs-12 col-lg-6">
 		        <span id="article-share-name">Share:</span>
 		        {% include 'newsroom/sharebuttons.html' %}
 	            </div>
