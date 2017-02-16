@@ -38,6 +38,20 @@
 	{% endblock %}
 
         {% block newsroom-css %}
+
+            {% comment %}
+
+            Roboto font is default in Chrome, exists
+            in Firefox.  Why slow down web load for something that exists for
+            most users, and its replacement with sans-serif will be just fine on
+            browsers that don't support it.
+
+            <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:400,700,700italic,300italic,300|Roboto+Condensed:300,300italic,400,700,700italic"
+            type='text/css' />
+
+            {% endcomment %}
+
             {% compress css %}
 	    <link rel="stylesheet"
 		  href="{% static 'newsroom/css/newsroom_styles.css' %}"
