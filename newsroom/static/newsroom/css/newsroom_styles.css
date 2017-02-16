@@ -99,7 +99,8 @@ body {
 
 
 #article_title, #flatpage_title {
-    font-family: 'Roboto Condensed', sans-serif;
+    /* font-family: sans-serif;*/
+    font-stretch: condensed;
     font-weight: bold;
     font-size: 36px;
     margin-top: 12px;
@@ -374,7 +375,8 @@ h2.summary-title {
     font-weight: normal;
     font-size: 14px;
     font-weight: bold;
-    font-family: 'Roboto Condensed', sans-serif;
+    /* font-family: sans-serif;*/
+    font-stretch: condensed;
 }
 
 h2.first-summary-title {
