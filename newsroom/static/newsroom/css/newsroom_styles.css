@@ -315,11 +315,9 @@ span.social-media-follow {
     margin-bottom: 20px;
     border-top: 1px solid #ebebe0;
     border-bottom: 1px solid #ebebe0;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 18px;
-}
-
-#article-topics {
-    margin-bottom: 12px;
 }
 
 #sharing a {
