@@ -931,3 +931,34 @@ iframe {
     width: 450px;
     max-width: 100%;
 }
+
+.ps-caption {
+    font-size: 13px;
+}
+
+
+@media (min-width: 600px) {
+    {
+        .ps-caption {
+            font-size: 16px;
+        }
+    }
+}
+
+
+div.background-img {
+    background-repeat: no-repeat;
+    color: white;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 400px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
