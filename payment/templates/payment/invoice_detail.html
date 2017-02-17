@@ -1,5 +1,10 @@
 {% extends "base_20161106.html" %}
 
+{% block title %}
+    Invoice {{block.super}}
+{% endblock %}
+
+
 {% block css-override %}
     {% if can_edit == False %}
         <style>
