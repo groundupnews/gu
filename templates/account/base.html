@@ -5,7 +5,7 @@
 {% block css-override %}
     <style>
 
-     form {
+     #BelowTheBanner form {
          background: -webkit-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
          background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
          background: linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
@@ -26,7 +26,7 @@
          margin-bottom: 15px;
      }
 
-     input {
+     #BelowTheBanner input {
          padding: 5px;
          display: block;
          border: 1px solid #999;
@@ -36,7 +36,7 @@
          box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
      }
 
-     input[type="checkbox"] {
+     #BelowTheBanner input[type="checkbox"] {
          display:block;
          border: none;
          -webkit-box-shadow: 0 0 0 0;
@@ -46,7 +46,7 @@
          padding: 0;
      }
 
-     button, input[type="submit"] {
+     #BelowTheBanner button, #BelowTheBanner input[type="submit"] {
          display: block;
          margin-bottom: 5px;
          padding: 5px 15px 25px 15px;
@@ -59,19 +59,6 @@
          border: 1p solid #999;
      }
 
-
-
-     /*
-     textarea#feedback {
-         width: 375px;
-         height: 150px;
-         display: block;
-     }
-
-     input.button:hover {
-         background: #fff;
-         color: #09C;
-     } */
     </style>
 {% endblock %}
 
