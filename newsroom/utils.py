@@ -1,17 +1,14 @@
 import re
-import html
 import string
 import random
 from bs4 import BeautifulSoup
-from django.contrib.auth.models import User
 from random import randint
-
-from django.test import TestCase
 from newsroom.settings import SUPPORT_US_IMAGES, ADVERT_CODE
 from django.conf import settings
 
 ''' Can be used to prevent staff from getting cached pages.
 '''
+
 
 def cache_except_staff(decorator):
     """ Returns decorated view if user is not staff. Un-decorated otherwise """
@@ -32,15 +29,6 @@ def cache_except_staff(decorator):
 
     return _decorator
 
-'''Used to find visible text in html.
-Courtesy of: http://stackoverflow.com/questions/1936466/beautifulsoup-grab-visible-webpage-text
-'''
-def visible_text_in_html(element):
-    if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
-        return False
-    elif re.match('<!--.*-->', str(element)):
-        return False
-    return True
 
 '''Replace bad html with good. Not foolproof, but should cover most cases
 that arise in the editor.
@@ -48,12 +36,10 @@ that arise in the editor.
 
 blankpara_regex = re.compile(r'<p[^>]*?>\s*?</p>|<p[^>]*?>\s*?&nbsp;\s*?</p>')
 
-img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)')
-
-figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (class="caption")(.*?)>(.*?)(</p>)')
 
 def remove_blank_paras(html):
     return blankpara_regex.sub(r'', html)
+
 
 def replaceImgHeightWidthWithClass(soup):
     try:
@@ -77,6 +63,7 @@ def replaceImgHeightWidthWithClass(soup):
     except:
         return soup
 
+
 def replacePImgWithFigureImg(soup):
     images = soup.find_all("img")
     for image in images:
@@ -94,10 +81,11 @@ def replacePImgWithFigureImg(soup):
                 sibling.append(caption)
     return soup
 
+
 def fixEditorSummary(soup):
-    uls = list(set([item.parent for item in \
-                    [tag.parent for tag in \
-                     soup.find_all("div","editor-summary")] \
+    uls = list(set([item.parent for item in
+                    [tag.parent for tag in
+                     soup.find_all("div", "editor-summary")]
                     if item.parent is not None]))
     for ul in uls:
         divs = ul.find_all("div", "editor-summary")
@@ -108,9 +96,9 @@ def fixEditorSummary(soup):
         ul.wrap(d)
     return soup
 
+
 def removeGoogleDocsSpans(soup):
     spans = soup.find_all("span")
-    deletes_exist = False
     for span in spans:
         if span.has_attr("id"):
             if span["id"][0:18] == 'docs-internal-guid':
@@ -121,7 +109,6 @@ def removeGoogleDocsSpans(soup):
 
     return soup
 
-# <div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/WsAn5AgAF0I" width="560"></iframe></div>
 
 def processDashes(soup):
     # em-dash
@@ -136,7 +123,7 @@ def processDashes(soup):
 
 
 def processYouTubeDivs(soup):
-    youtubedivs = soup.find_all('div', {'class':"youtube"})
+    youtubedivs = soup.find_all('div', {'class': "youtube"})
     for div in youtubedivs:
         div["class"] = "embed-responsive embed-responsive-16by9"
         d = BeautifulSoup(div.string, "html.parser")
@@ -144,8 +131,9 @@ def processYouTubeDivs(soup):
         div.append(d)
     return soup
 
+
 def processSoundCloudDivs(soup):
-    soundclouddivs = soup.find_all('div', {'class':"soundcloud"})
+    soundclouddivs = soup.find_all('div', {'class': "soundcloud"})
     for div in soundclouddivs:
         div["class"] = ""
         sc = BeautifulSoup(div.string, "html.parser")
@@ -155,8 +143,9 @@ def processSoundCloudDivs(soup):
         div.append(sc)
     return soup
 
+
 def processSupportUs(soup):
-    asides = soup.find_all('aside', {'class':"supportus-edit"})
+    asides = soup.find_all('aside', {'class': "supportus-edit"})
     for aside in asides:
         aside['class'] = "supportus"
         aside.string = ""
@@ -170,8 +159,9 @@ def processSupportUs(soup):
         aside.append(supporta)
     return soup
 
+
 def processAdverts(soup):
-    asides = soup.find_all('aside', {'class':"article-advert-edit"})
+    asides = soup.find_all('aside', {'class': "article-advert-edit"})
     for aside in asides:
         aside['class'] = "article-advert"
         aside.string = ""
@@ -181,7 +171,7 @@ def processAdverts(soup):
 
 
 def replaceBadHtmlWithGood(html):
-    html = html.replace('dir="ltr"',"")
+    html = html.replace('dir="ltr"', "")
     html = remove_blank_paras(html)
     soup = BeautifulSoup(html, "html.parser")
     soup = replaceImgHeightWidthWithClass(soup)
@@ -193,16 +183,17 @@ def replaceBadHtmlWithGood(html):
     soup = processSoundCloudDivs(soup)
     return str(soup)
 
+
 def get_edit_lock_msg(user):
     message = \
-    "Changes not saved. User " + str(user) + " edited the article " \
-    "after you opened this page. Copy and paste your changes somewhere " \
-    "safe (like a text editor). Then open this page again."
+              "Changes not saved. User " + str(user) + " edited the article " \
+              "after you opened this page. Copy and paste your changes " \
+              "somewhere safe (like a text editor). Then open this page again."
     return message
 
 
-# Used to generate random passwords
-# Source: http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+# Used to generate random passwords. Source:
+# http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
 
 def generate_pwd(size=12, chars=string.ascii_letters + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))

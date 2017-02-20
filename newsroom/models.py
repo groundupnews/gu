@@ -6,23 +6,15 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
-from django.db.models import Max
-from django.utils import timezone
-
 import traceback
-from random import shuffle
-from decimal import *
-
+import logging
+import datetime
+import smartypants
+# from decimal import *
 from filebrowser.fields import FileBrowseField
-
 from . import settings
 from . import utils
 from socialmedia.common import SCHEDULE_RESULTS
-
-import logging
-import datetime
-import sys
-import smartypants
 
 logger = logging.getLogger("django")
 
@@ -32,6 +24,7 @@ OVERRIDE_COMMISSION_CHOICES = (
     ("PROCESS", "Process commissions for this article"),
     ("NOPROCESS", "Don't process commissions for this article"),
 )
+
 
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
