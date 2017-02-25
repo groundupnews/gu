@@ -1,22 +1,14 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404, render
 from django.http import Http404
-from django.http import HttpResponseRedirect
-from django.views import generic
-from django.views.generic import View
 from django.db.models import Q
 from django.db.models import F, Sum
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
-from django.utils.html import strip_tags
-from django.http import HttpResponseForbidden
-from django.views.decorators.http import last_modified
 from django.utils import timezone
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
-from django.utils import timezone
+
 
 from dateutil import relativedelta
 import calendar
@@ -26,8 +18,6 @@ from newsroom.models import Author
 from . import models
 from . import forms
 
-
-# Create your views here.
 
 @login_required
 def invoice_list(request, year=None, month=None):
@@ -39,6 +29,8 @@ def invoice_list(request, year=None, month=None):
     next_month = None
     previous_month = None
     total_paid_for_month = None
+    total_outstanding_for_month = None
+    total_for_month = None
     # Staff query
 
     if user.is_staff and user.has_perm("payment.change_invoice"):
@@ -47,7 +39,7 @@ def invoice_list(request, year=None, month=None):
             year = 0
             year_month_begin = timezone.datetime(1900, 1, 1)
 
-        elif year == None or month == None:
+        elif year is None or month is None:
             year_month_begin = timezone.now()
             year_month_begin = timezone.datetime(year_month_begin.year,
                                                  year_month_begin.month,
@@ -60,7 +52,7 @@ def invoice_list(request, year=None, month=None):
         last_day = calendar.monthrange(year_month_begin.year,
                                        year_month_begin.month)[1]
         if year == 0:
-            year_month_end = timezone.datetime(5000,1,1)
+            year_month_end = timezone.datetime(5000, 1, 1)
         else:
             year_month_end = timezone.datetime(year_month_begin.year,
                                                year_month_begin.month,
@@ -69,7 +61,7 @@ def invoice_list(request, year=None, month=None):
         if year == 0:
             next_month = timezone.now()
             previous_month = timezone.now() - \
-                             relativedelta.relativedelta(months=1)
+                relativedelta.relativedelta(months=1)
             query = Q()
             year_month_begin = None
         else:
@@ -81,17 +73,21 @@ def invoice_list(request, year=None, month=None):
             query = (Q(date_time_processed__gte=year_month_begin) &
                      Q(date_time_processed__lte=year_month_end) &
                      Q(status="4")) | \
-                     (Q(created__gte=year_month_begin) &
-                      Q(created__lte=year_month_end) &
-                      Q(status="5"))
+                    (Q(created__gte=year_month_begin) &
+                     Q(created__lte=year_month_end) &
+                     Q(status="5"))
             if year_month_begin.month == timezone.now().month and \
                year_month_begin.year == timezone.now().year:
                 query = query | Q(status__lte="3")
 
         invoices = models.Invoice.objects.filter(query)
         total_paid_for_month = invoices.filter(status="4").aggregate(
-            amount_paid=Sum(F('amount_paid') + F('vat_paid') + F('tax_paid')))\
-            ["amount_paid"]
+            amount_paid=Sum(F('amount_paid') + F('vat_paid') +
+                            F('tax_paid')))["amount_paid"]
+        total_outstanding_for_month = invoices.filter(status__lt="4").\
+            aggregate(amount_paid=Sum(F('amount_paid') + F('vat_paid') +
+                                      F('tax_paid')))["amount_paid"]
+        total_for_month = total_paid_for_month + total_outstanding_for_month
         staff_view = True
     elif user.author is not None and user.author.freelancer is True:
         invoices = models.Invoice.objects.filter(author=user.author).\
@@ -100,7 +96,9 @@ def invoice_list(request, year=None, month=None):
         raise Http404
     return render(request, "payment/invoice_list.html",
                   {'invoices': invoices,
-                   'total_paid_for_month' : total_paid_for_month,
+                   'total_paid_for_month': total_paid_for_month,
+                   'total_outstanding_for_month': total_outstanding_for_month,
+                   'total_for_month': total_for_month,
                    'this_month': year_month_begin,
                    'next_month': next_month,
                    'previous_month': previous_month,
@@ -192,7 +190,8 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                                  "Please make corrections")
     else:
         if staff_view:
-            form = forms.InvoiceStaffForm(request.POST or None, instance=invoice)
+            form = forms.InvoiceStaffForm(request.POST or None,
+                                          instance=invoice)
         else:
             if invoice.status == "-" or invoice.status == "5":
                 raise Http404
@@ -233,6 +232,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                    'formset': formset,
                    'site': Site.objects.get_current(),
                    'print_view': print_view})
+
 
 @login_required
 def invoice_print(request, author_pk, invoice_num):
@@ -282,11 +282,11 @@ def commission_detail(request, pk=None):
             author_pk = request.GET.get("author", None)
             if author_pk:
                 try:
-                    author = get_object_or_404(Author,pk=int(author_pk))
+                    author = get_object_or_404(Author, pk=int(author_pk))
                     form.fields["author"].initial = author.pk
                 except:
                     pass
     return render(request, "payment/commission_detail.html",
                   {'form': form,
-                   'pk' : pk,
+                   'pk': pk,
                    'commission': commission})
