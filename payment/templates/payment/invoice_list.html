@@ -22,12 +22,12 @@
 
     {% if staff_view %}
         <p>
-            Paid: R{{total_paid_for_month|floatformat:"2"|intcomma}} |
+            Paid: R{{total_paid_for_month|floatformat:"2"|intcomma}}
             {% if total_outstanding_for_month %}
-                Outstanding: R{{total_outstanding_for_month|floatformat:"2"|intcomma}} |
+                | Outstanding: R{{total_outstanding_for_month|floatformat:"2"|intcomma}} |
             {% endif %}
             {% if total_for_month %}
-                Total:R{{total_for_month|floatformat:"2"|intcomma}}
+                | Total:R{{total_for_month|floatformat:"2"|intcomma}}
             {% endif %}
         </p>
         <p>
