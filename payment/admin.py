@@ -57,7 +57,9 @@ class CommissionAdmin(admin.ModelAdmin):
     }
 
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ('author', 'status', 'invoice_num',)
+    search_fields = ('author__first_names',
+                     'author__last_name',)
+    list_display = ('__str__', 'author', 'status', 'invoice_num',)
     inlines = [CommissionInline,]
 
 admin.site.register(models.Fund)

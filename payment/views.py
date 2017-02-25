@@ -87,7 +87,10 @@ def invoice_list(request, year=None, month=None):
         total_outstanding_for_month = invoices.filter(status__lt="4").\
             aggregate(amount_paid=Sum(F('amount_paid') + F('vat_paid') +
                                       F('tax_paid')))["amount_paid"]
-        total_for_month = total_paid_for_month + total_outstanding_for_month
+        if total_paid_for_month is not None and \
+           total_outstanding_for_month is not None:
+            total_for_month = total_paid_for_month + \
+                              total_outstanding_for_month
         staff_view = True
     elif user.author is not None and user.author.freelancer is True:
         invoices = models.Invoice.objects.filter(author=user.author).\
