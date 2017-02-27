@@ -6,15 +6,16 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.dispatch import receiver
+from socialmedia.common import SCHEDULE_RESULTS
+from allauth.account.signals import password_changed
+from filebrowser.fields import FileBrowseField
 import traceback
 import logging
 import datetime
 import smartypants
-# from decimal import *
-from filebrowser.fields import FileBrowseField
 from . import settings
 from . import utils
-from socialmedia.common import SCHEDULE_RESULTS
 
 logger = logging.getLogger("django")
 
@@ -35,14 +36,15 @@ class Author(models.Model):
     telephone = models.CharField(max_length=200, blank=True)
     cell = models.CharField(max_length=200, blank=True)
 
-    ### Fields that contain default values for invoices
-    identification = models.CharField(max_length=20, blank=True, help_text=
-                                      "SA ID, passport or some form "
+    # Fields that contain default values for invoices
+    identification = models.CharField(max_length=20, blank=True,
+                                      help_text="SA ID, passport or some form "
                                       "of official identification")
     dob = models.DateField(blank=True, null=True, verbose_name="date of birth",
                            help_text="Please fill this in. Required by SARS.")
     address = models.TextField(blank=True,
-                               help_text="Please fill this in. Required by SARS.")
+                               help_text="Please fill this in. "
+                               "Required by SARS.")
     bank_name = models.CharField(max_length=20, blank=True)
     bank_account_number = models.CharField(max_length=20, blank=True)
     bank_account_type = models.CharField(max_length=20, default="CURRENT")
@@ -53,15 +55,18 @@ class Author(models.Model):
                                         help_text="Unnecessary for Capitec, "
                                         "FNB, Standard, Nedbank and Absa")
     swift_code = models.CharField(max_length=12, blank=True,
-                                  help_text="Only relevant for banks outside SA")
+                                  help_text="Only relevant for "
+                                  "banks outside SA")
     iban = models.CharField(max_length=34, blank=True,
-                             help_text="Only relevant for banks outside SA")
+                            help_text="Only relevant "
+                            "for banks outside SA")
     tax_no = models.CharField(max_length=50, blank=True,
                               help_text="Necessary for SARS.")
-    tax_percent = models.DecimalField(max_digits=2, decimal_places=0, default=25,
-                                      verbose_name="tax %",
-                                      help_text="Unless you have a tax directive"
-                                      " we have to deduct 25% PAYE for SARS.")
+    tax_percent = models.DecimalField(max_digits=2, decimal_places=0,
+                                      default=25, verbose_name="tax %",
+                                      help_text="Unless you have a tax "
+                                      "directive we have to deduct 25% "
+                                      "PAYE for SARS.")
     vat = models.DecimalField(max_digits=2, decimal_places=0, default=0,
                               verbose_name="vat %",
                               help_text="If you are VAT regisered "
@@ -99,27 +104,28 @@ class Author(models.Model):
             site = Site.objects.get_current()
             if self.user is None:
                 pwd = utils.generate_pwd()
-                username = (self.first_names + self.last_name).replace(" ", "_")
+                username = (self.first_names +
+                            self.last_name).replace(" ", "_")
                 user = User.objects.create_user(username=username,
-                                                first_name = self.first_names,
-                                                last_name = self.last_name,
+                                                first_name=self.first_names,
+                                                last_name=self.last_name,
                                                 email=self.email,
                                                 password=pwd)
                 user.save()
                 self.user = user
                 super(Author, self).save(*args, **kwargs)
             subject = "Account created for you on GroundUp"
-            message = render_to_string('account/email/account_created_message.txt',
-                                       {'user': user,
-                                        'author': self,
-                                        'pwd': pwd,
-                                        'site': site})
+            message = render_to_string(
+                'account/email/account_created_message.txt',
+                {'user': user,
+                 'author': self,
+                 'pwd': pwd,
+                 'site': site})
             try:
                 send_mail(subject,
                           message,
                           settings.EDITOR,
-                          [self.email, settings.EDITOR,]
-                )
+                          [self.email, settings.EDITOR, ])
             except Exception as e:
                 log_message = "Error author creation email failed: " + \
                               self.email + "\n" + traceback.print_exc() + \
@@ -152,7 +158,7 @@ class Region(models.Model):
     def get_specific(self):
         index = self.name.rfind("/")
         if index >= 0 and index < len(self.name):
-            return self.name[index + 1 :]
+            return self.name[index + 1:]
         else:
             return self.name
 
@@ -294,7 +300,7 @@ class Article(models.Model):
     use_editor = models.BooleanField(default=True)
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
-    recommended = models.BooleanField(default=False)
+    recommended = models.BooleanField(default=True)
     category = models.ForeignKey(Category, default=4)
     region = models.ForeignKey(Region, blank=True, null=True)
     topics = models.ManyToManyField(Topic, blank=True)
@@ -308,9 +314,10 @@ class Article(models.Model):
     template = models.CharField(max_length=200,
                                 choices=DETAIL_TEMPLATE_CHOICES,
                                 default="newsroom/article_detail.html")
-    summary_template = models.CharField(max_length=200,
-                                        choices=SUMMARY_TEMPLATE_CHOICES,
-                                        default="newsroom/article_summary.html")
+    summary_template = models.CharField(
+        max_length=200,
+        choices=SUMMARY_TEMPLATE_CHOICES,
+        default="newsroom/article_summary.html")
     include_in_rss = models.BooleanField(default=True)
     letters_on = models.BooleanField(default=True)
     comments_on = models.BooleanField(default=False)
@@ -343,29 +350,27 @@ class Article(models.Model):
         help_text="Minimum number of minutes "
         "after publication "
         "till post.")
-    facebook_image = FileBrowseField(max_length=200, directory="images/",
-                                     blank=True, null=True,
-                                     verbose_name="image",
-                                     help_text="Leave blank to use primary image.")
-    facebook_image_caption = models.CharField(max_length=200,
-                                              verbose_name="caption",
-                                              help_text="Leave blank to use primary "
-                                              "image caption.",
-                                              blank=True)
-    facebook_description = models.CharField(max_length=200,
-                                            blank=True, help_text="Leave blank to use same text as summary.")
-    facebook_message = models.TextField(blank=True,
-                                        verbose_name="message",
-                                        help_text="Longer status update that appears "
-                                        "above the image in Facebook. ")
+    facebook_image = FileBrowseField(
+        max_length=200, directory="images/", blank=True, null=True,
+        verbose_name="image", help_text="Leave blank to use primary image.")
+    facebook_image_caption = models.CharField(
+        max_length=200, verbose_name="caption",
+        help_text="Leave blank to use primary "
+        "image caption.", blank=True)
+    facebook_description = models.CharField(
+        max_length=200, blank=True,
+        help_text="Leave blank to use same text as summary.")
+    facebook_message = models.TextField(
+        blank=True, verbose_name="message",
+        help_text="Longer status update that appears "
+        "above the image in Facebook. ")
     facebook_send_status = models.CharField(max_length=20,
                                             choices=SCHEDULE_RESULTS,
                                             verbose_name="sent status",
                                             default="paused")
-    last_tweeted = models.DateTimeField(default=
-                                        timezone.make_aware(
-                                            datetime.datetime(year=2000,
-                                                          month=1,day=1)))
+    last_tweeted = models.DateTimeField(
+        default=timezone.make_aware(datetime.datetime(year=2000,
+                                                      month=1, day=1)))
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -376,9 +381,8 @@ class Article(models.Model):
     notified_authors = models.BooleanField(default=False)
     author_payment = models.DecimalField(default=0.00, max_digits=9,
                                          decimal_places=2)
-    override_commissions_system = models.CharField(choices=
-                                                   OVERRIDE_COMMISSION_CHOICES,
-                                                   default="NO", max_length=20)
+    override_commissions_system = models.CharField(
+        choices=OVERRIDE_COMMISSION_CHOICES, default="NO", max_length=20)
     commissions_processed = models.BooleanField(default=False)
 
     # Cached fields
@@ -435,9 +439,9 @@ class Article(models.Model):
             if links:
                 names = ["<a rel=\"author\" href='" + name.get_absolute_url() +
                          "'>" + str(name) + "</a>"
-                         for name in names if name != None]
+                         for name in names if name is not None]
             else:
-                names = [str(name) for name in names if name != None]
+                names = [str(name) for name in names if name is not None]
         if len(names) == 0:
             return ""
         elif len(names) == 1:
@@ -519,15 +523,15 @@ class Article(models.Model):
         # and the server would time out.
         start_para = str(self.body).partition("<p")
 
-        if start_para[2] == None:
+        if start_para[2] is None:
             return ""
         start_para = start_para[2].partition(">")
 
-        if start_para[2] == None:
+        if start_para[2] is None:
             return ""
         end_para = start_para[2].partition("</p>")
 
-        if end_para[1] == None or end_para[0] == None:
+        if end_para[1] is None or end_para[0] is None:
             return ""
         return strip_tags(end_para[0])
 
@@ -574,7 +578,7 @@ class Article(models.Model):
         self.title = self.clean_typography(self.title)
         self.subtitle = self.clean_typography(self.subtitle)
         self.primary_image_caption = \
-                        self.clean_typography(self.primary_image_caption)
+            self.clean_typography(self.primary_image_caption)
         self.body = self.clean_typography(self.body)
         self.version = self.version + 1
         super(Article, self).save(*args, **kwargs)
@@ -585,14 +589,12 @@ class Article(models.Model):
     def __str__(self):
         return str(self.pk) + " " + self.title
 
-    def get_recommended(self, num_to_choose=3, days_back = 10):
-        publication_date = timezone.make_aware(datetime.datetime.now() -
-                                            datetime.timedelta(days=days_back))
+    def get_recommended(self, num_to_choose=3, days_back=10):
+        publication_date = timezone.make_aware(
+            datetime.datetime.now() - datetime.timedelta(days=days_back))
         return Article.objects.published().                         \
-                            filter(published__gt=publication_date).  \
-                            exclude(pk=self.pk).                    \
-                            exclude(recommended=False). \
-                            order_by("?")[:num_to_choose]
+            filter(published__gt=publication_date).exclude(pk=self.pk). \
+            exclude(recommended=False).order_by("?")[:num_to_choose]
 
     class Meta:
         ordering = ["-stickiness", "-published", ]
@@ -609,7 +611,7 @@ class UserEdit(models.Model):
         ordering = ['article__published', 'edit_time', ]
 
     def editStatusPlusName(self):
-        if self.changed == True:
+        if self.changed is True:
             suffix = " (changed)"
         else:
             suffix = ""
@@ -670,12 +672,10 @@ class MostPopular(models.Model):
 
 # Signals
 
-from allauth.account.signals import password_changed
-from django.dispatch import receiver
 
 @receiver(password_changed)
 def set_password_reset(sender, **kwargs):
     author = kwargs["user"].author
-    if author.password_changed == False:
+    if author.password_changed is False:
         author.password_changed = True
         author.save()
