@@ -49,6 +49,7 @@
 	<script src="{% static 'newsroom/js/ck_init.js' %}"></script>
     {% endif %}
     {{article.additional_head_scripts|safe}}
+
 {% endblock %}
 
 
@@ -103,7 +104,7 @@
     {{article.additional_body_scripts|safe}}
 
     <script type="text/javascript">
-     {% include "newsroom/article_detail.js" %}
+        {% include "newsroom/article_detail.js" %}
     </script>
     {% if article.activate_slideshow %}
 	<script src={% static 'newsroom/js/pgwslider.min.js' %}></script>

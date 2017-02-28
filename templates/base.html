@@ -29,7 +29,6 @@
 	    {% include "google_analytics.html" %}
 	{% endblock %}
 
-
 	{% block additional_head %}
 	{% endblock %}
 
@@ -55,12 +54,25 @@
             {% compress css %}
 	    <link rel="stylesheet"
 		  href="{% static 'newsroom/css/newsroom_styles.css' %}"
-                  type='text/css' />
-                {% endcompress %}
+                  type='text/css'/>
+            {% endcompress %}
 	{% endblock %}
 
 	{% block css-override %}
 	{% endblock %}
+
+
+        {% block top-js %}
+            <script async='async'
+                    src='https://www.googletagservices.com/tag/js/gpt.js'>
+            </script>
+            {% compress js %}
+            <script>
+                {% include "acme_head.js" %}
+            </script>
+            {% endcompress %}
+        {% endblock %}
+
 
     </head>
 

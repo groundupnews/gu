@@ -290,13 +290,13 @@ NEWSROOM_ADVERT_CODE_2 = advert_code_file_2.read()
 DONATE_PAGE = "/donate/"
 #############
 
-NEWSROOM_ADVERT_CODE = open(os.path.join(BASE_DIR,
-                                     "newsroom/templates/newsroom/advert.html"),
+NEWSROOM_ADVERT_CODE = open(os.path.join(
+    BASE_DIR, "newsroom/templates/newsroom/advert_acme_responsive.html"),
                             "r").read()
 
 from .local_settings import *
 
-if DEBUG == True:
+if DEBUG is True:
     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
     MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
-                         ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+        ('debug_toolbar.middleware.DebugToolbarMiddleware',)
