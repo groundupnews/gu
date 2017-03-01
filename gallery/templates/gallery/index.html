@@ -88,11 +88,13 @@
                         </a>
                     </div>
                     {% with album.get_random_photo as photo %}
-                        <a href="{% url 'album.detail' album.pk %}">
-                            <img src="{% version photo.image 'medium' %}"
-                                 alt="{{photo.alt}}"
-                            />
-                        </a>
+                        {% if photo %}
+                            <a href="{% url 'album.detail' album.pk %}">
+                                <img src="{% version photo.image 'medium' %}"
+                                     alt="{{photo.alt}}"
+                                />
+                            </a>
+                        {% endif %}
                     {% endwith %}
                 </div>
             </div>

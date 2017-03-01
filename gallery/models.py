@@ -34,8 +34,12 @@ class Album(models.Model):
 
     def get_random_photo(self):
         photographs = self.photograph_set.all()
-        i = random.randint(0, len(photographs) - 1)
-        return photographs[i]
+        num_photos = len(photographs)
+        if num_photos:
+            i = random.randint(0, num_photos - 1)
+            return photographs[i]
+        else:
+            return None
 
     def __str__(self):
         return self.name
