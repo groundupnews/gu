@@ -34,28 +34,39 @@ class LatestArticlesRssFeed(Feed):
 
     def item_enclosure_url(self, article):
         if article.primary_image:
-            url = article.primary_image.version_generate("medium").url
+            try:
+                url = article.primary_image.version_generate("medium").url
+            except:
+                url = settings.STATIC_URL + LOGO
         else:
             url = settings.STATIC_URL + LOGO
         full_url = 'http://%s%s' % (Site.objects.get_current().domain, url)
         return full_url
 
     def item_enclosure_length(self, article):
-        if article.primary_image:
-            return article.primary_image.version_generate("medium").filesize
-        else:
+        try:
+            if article.primary_image:
+                return article.primary_image.version_generate("medium").\
+                    filesize
+            else:
+                return os.path.getsize(settings.STATIC_ROOT + LOGO)
+        except:
             return os.path.getsize(settings.STATIC_ROOT + LOGO)
 
     def item_enclosure_mime_type(self, article):
-        if article.primary_image:
-            suffix = article.primary_image.version_generate("medium").url[-3:]
-        else:
-            suffix = LOGO[-3:]
+        try:
+            if article.primary_image:
+                suffix = article.primary_image.version_generate("medium").\
+                         url[-3:]
+            else:
+                suffix = LOGO[-3:]
 
-        if suffix.lower() == "png":
+            if suffix.lower() == "png":
+                    return "image/png"
+            else:
+                return "image/jpeg"
+        except:
             return "image/png"
-        else:
-            return "image/jpeg"
 
 class LatestArticlesAtomFeed(LatestArticlesRssFeed):
     feed_type = Atom1Feed
