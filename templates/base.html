@@ -63,8 +63,10 @@
 
 
         {% block top-js %}
-            <script async='async'
-                    src='https://www.googletagservices.com/tag/js/gpt.js'>
+            <script
+                data-cfasync=''false'
+                async='async'
+                src='https://www.googletagservices.com/tag/js/gpt.js'>
             </script>
             {% compress js %}
             <script>
