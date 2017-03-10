@@ -279,7 +279,18 @@ span.social-media-follow {
     content: "ADVERTISEMENT";
 }
 
+.article-advert:before {
+    margin-top: 0;
+    content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
+    font-size: 10px;
+    padding-bottom: 12px;
+}
+
 .article-advert {
+    margin-top: 0;
+    padding-bottom: 9px;
+    border-bottom: 1px dotted lightgray;
+
     width: 100%;
     text-align: center;
 }
@@ -879,16 +890,9 @@ iframe {
 }
 
 .side-advert:before {
-   content: "ADVERTISEMENT";
+    content: "ADVERTISEMENT";
+    padding-left: 30%;
 }
-
-@media (min-width: 992px) {
-    .side-advert:before {
-	margin-left: 0px;
-    }
-}
-
-
 
 .side-advert {
     margin-top: 0px;

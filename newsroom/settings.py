@@ -13,8 +13,8 @@ ARTICLE_PRIMARY_IMAGE_SIZE = getattr(settings,
                                      "extra_large")
 CACHE_PERIOD = getattr(settings, 'NEWSROOM_CACHE_PERIOD', 500)
 ADVERT_CODE = getattr(settings, 'NEWSROOM_ADVERT_CODE', '')
-ADVERT_CODE_1 = getattr(settings, 'NEWSROOM_ADVERT_CODE_1', '')
-ADVERT_CODE_2 = getattr(settings, 'NEWSROOM_ADVERT_CODE_2', '')
+# ADVERT_CODE_1 = getattr(settings, 'NEWSROOM_ADVERT_CODE_1', '')
+# ADVERT_CODE_2 = getattr(settings, 'NEWSROOM_ADVERT_CODE_2', '')
 SUPPORT_US_IMAGES = getattr(settings, 'NEWSROOM_SUPPORT_US_IMAGES', [])
 
 EDITOR = getattr(settings, 'ARTICLES_EDITOR', "")

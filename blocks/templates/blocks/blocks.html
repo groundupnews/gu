@@ -24,13 +24,17 @@ _Recommend
             {% elif b.name == "_Advert" %}
                 {% if not article.suppress_ads %}
 		    <aside class="side-advert">
-		        {% include "newsroom/advert.html" %}
+                        {% if ACME_ADS %}
+                            {% include "newsroom/advert_acme.html" %}
+                        {% elif GOOGLE_ADS %}
+		            {% include "newsroom/advert_google_responsive.html" %}
+                        {% endif %}
 		    </aside>
                 {% endif %}
             {% elif b.name == "_Tshirt" %}
                 {% if not article.suppress_ads %}
 		    <aside class="side-advert">
-		        {% include "newsroom/advert_article_side.html" %}
+		        {% include "newsroom/advert_tshirt.html" %}
 		    </aside>
                 {% endif %}
             {% elif b.name == "_Links" %}

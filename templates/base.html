@@ -63,16 +63,19 @@
 
 
         {% block top-js %}
-            <script
-                data-cfasync='false'
-                async='async'
-                src='https://www.googletagservices.com/tag/js/gpt.js'>
-            </script>
-            {% compress js %}
-            <script>
-                {% include "acme_head.js" %}
-            </script>
-            {% endcompress %}
+
+            {% if ACME_ADS %}
+                <script
+                    data-cfasync='false'
+                    async='async'
+                    src='https://www.googletagservices.com/tag/js/gpt.js'>
+                </script>
+                <script>
+                 {% compress js %}
+                 {% include "acme_head.js" %}
+                 {% endcompress %}
+                </script>
+            {% endif %}
         {% endblock %}
 
 

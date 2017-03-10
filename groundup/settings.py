@@ -278,21 +278,31 @@ LOGGING = {
 }
 
 # DEPRECATED BUT CODE MUST BE REMOVED FROM VIEW FIRST
-advert_code_file_1 = open(os.path.join(BASE_DIR,
-                                     "newsroom/templates/newsroom/advert_1.html"),
-                        "r")
-NEWSROOM_ADVERT_CODE_1 = advert_code_file_1.read()
-advert_code_file_2 = open(os.path.join(BASE_DIR,
-                                     "newsroom/templates/newsroom/advert_2.html"),
-                        "r")
-NEWSROOM_ADVERT_CODE_2 = advert_code_file_2.read()
+# advert_code_file_1 = open(os.path.join(BASE_DIR,
+#                              "newsroom/templates/newsroom/advert_1.html"),
+#                        "r")
+# NEWSROOM_ADVERT_CODE_1 = advert_code_file_1.read()
+# advert_code_file_2 = open(os.path.join(BASE_DIR,
+#                                "newsroom/templates/newsroom/advert_2.html"),
+#                        "r")
+# NEWSROOM_ADVERT_CODE_2 = advert_code_file_2.read()
 
 DONATE_PAGE = "/donate/"
 #############
 
-NEWSROOM_ADVERT_CODE = open(os.path.join(
-    BASE_DIR, "newsroom/templates/newsroom/advert_acme_responsive.html"),
-                            "r").read()
+ACME_ADS = False
+GOOGLE_ADS = True
+
+if ACME_ADS:
+    NEWSROOM_ADVERT_CODE = open(os.path.join(
+        BASE_DIR, "newsroom/templates/newsroom/advert_acme_responsive.html"),
+                                "r").read()
+elif GOOGLE_ADS:
+    NEWSROOM_ADVERT_CODE = open(os.path.join(
+        BASE_DIR, "newsroom/templates/newsroom/advert_google_responsive.html"),
+                                "r").read()
+else:
+    NEWSROOM_ADVERT_CODE = ""
 
 from .local_settings import *
 
