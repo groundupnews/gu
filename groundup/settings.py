@@ -33,7 +33,7 @@ try:
 except:
     DEBUG = True
 
-if DEBUG == False:
+if DEBUG is False:
     ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
 else:
     ALLOWED_HOSTS = []
@@ -292,8 +292,20 @@ DONATE_PAGE = "/donate/"
 
 ACME_ADS = False
 GOOGLE_ADS = True
+AMAZON_ADS = False
+AB_TEST_ADS = True
 
-if ACME_ADS:
+if AB_TEST_ADS:
+    ADVERT_CODE_ACME = open(os.path.join(
+        BASE_DIR, "newsroom/templates/newsroom/advert_acme.html"),
+                                "r").read()
+    ADVERT_CODE_GOOGLE = open(os.path.join(
+        BASE_DIR, "newsroom/templates/newsroom/advert_google_responsive.html"),
+                                "r").read()
+    ADVERT_CODE_AMAZON = open(os.path.join(
+        BASE_DIR, "newsroom/templates/newsroom/"
+        "advert_amazon_gift_responsive.html"), "r").read()
+elif ACME_ADS:
     NEWSROOM_ADVERT_CODE = open(os.path.join(
         BASE_DIR, "newsroom/templates/newsroom/advert_acme_responsive.html"),
                                 "r").read()

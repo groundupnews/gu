@@ -275,16 +275,17 @@ span.social-media-follow {
     background-color: red;
 }
 
-.article-advert-edit:before {
-    content: "ADVERTISEMENT";
-}
+/* .article-advert-edit:before { */
+/*     content: "ADVERTISEMENT"; */
+/* } */
 
-.article-advert:before {
-    margin-top: 0;
-    content: "ARTICLE CONTINUES AFTER ADVERTISEMENT";
-    font-size: 10px;
-    padding-bottom: 12px;
-}
+
+/* .article-advert:before { */
+/*     margin-top: 0; */
+/*     content: "ARTICLE CONTINUES AFTER ADVERTISEMENT"; */
+/*     font-size: 10px; */
+/*     padding-bottom: 12px; */
+/* } */
 
 .article-advert {
     margin-top: 0;
@@ -889,10 +890,18 @@ iframe {
     max-width: 100%;
 }
 
-.side-advert:before {
-    content: "ADVERTISEMENT";
-    padding-left: 30%;
+h3.advert-title {
+    font-size: 10px;
+    text-align: center;
+    font-color: gray;
+    text-transform: uppercase;
+    padding: 6px;
 }
+
+/* .side-advert:before { */
+/*     content: "ADVERTISEMENT"; */
+/*     padding-left: 30%; */
+/* } */
 
 .side-advert {
     margin-top: 0px;
