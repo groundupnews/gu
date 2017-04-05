@@ -166,11 +166,8 @@ def processAdverts(soup):
         aside['class'] = "article-advert"
         aside.string = ""
         if settings.AB_TEST_ADS is True:
-            r = randint(0, 2)
+            r = randint(0, 1)
             if r == 0:
-                advert = BeautifulSoup(settings.ADVERT_CODE_ACME,
-                                       "html.parser")
-            elif r == 1:
                 advert = BeautifulSoup(settings.ADVERT_CODE_GOOGLE,
                                        "html.parser")
             else:

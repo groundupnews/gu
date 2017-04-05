@@ -8,4 +8,4 @@ def newsroom_template_variables(request):
             'GOOGLE_ADS': settings.GOOGLE_ADS,
             'AMAZON_ADS': settings.AMAZON_ADS,
             'AB_TEST_ADS': settings.AB_TEST_ADS,
-            'AD_OPTIONS': random.randint(0, 2)}
+            'AD_OPTIONS': random.randint(0, 1)}
