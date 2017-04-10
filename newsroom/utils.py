@@ -163,19 +163,24 @@ def processSupportUs(soup):
 def processAdverts(soup):
     asides = soup.find_all('aside', {'class': "article-advert-edit"})
     for aside in asides:
-        aside['class'] = "article-advert"
+        aside['class'] = ""
         aside.string = ""
-        if settings.AB_TEST_ADS is True:
-            r = randint(0, 1)
-            if r == 0:
-                advert = BeautifulSoup(settings.ADVERT_CODE_GOOGLE,
-                                       "html.parser")
-            else:
-                advert = BeautifulSoup(settings.ADVERT_CODE_AMAZON,
-                                       "html.parser")
-        else:
-            advert = BeautifulSoup(ADVERT_CODE, "html.parser")
+        advert = BeautifulSoup("", "html.parser")
         aside.append(advert)
+    # for aside in asides:
+    #     aside['class'] = "article-advert"
+    #     aside.string = ""
+    #     if settings.AB_TEST_ADS is True:
+    #         r = randint(0, 1)
+    #         if r == 0:
+    #             advert = BeautifulSoup(settings.ADVERT_CODE_GOOGLE,
+    #                                    "html.parser")
+    #         else:
+    #             advert = BeautifulSoup(settings.ADVERT_CODE_AMAZON,
+    #                                    "html.parser")
+    #     else:
+    #         advert = BeautifulSoup(ADVERT_CODE, "html.parser")
+    #     aside.append(advert)
     return soup
 
 
