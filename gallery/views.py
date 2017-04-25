@@ -1,23 +1,24 @@
 
 from django.db.models import Q
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings as django_settings
+from django.utils import timezone
 from . import settings
 from . import models
 from newsroom.models import Author
 from blocks.models import Group
 
+
 def album_list(request):
     albums = models.Album.objects.all()
     return render(request, "gallery/album_list.html",
-                  {'albums':albums,})
+                  {'albums': albums, })
 
 
 def album_detail(request, pk):
     album = get_object_or_404(models.Album, pk=pk)
     return render(request, "gallery/album_detail.html",
-                  {'album':album,})
+                  {'album': album, })
 
 
 def photo_list(request, keyword=None):
@@ -46,6 +47,15 @@ def photo_list(request, keyword=None):
             photographer_string = request.GET["photographer"]
             photographer = Author.objects.get(pk=int(photographer_string))
             query = query & Q(photographer=photographer)
+        except:
+            pass
+
+    if "date" in request.GET:
+        list_all = False
+        try:
+            date_string = request.GET["date"]
+            date = timezone.datetime.strptime(date_string,"%Y%m%d")
+            query = query & Q(date_taken=date)
         except:
             pass
 

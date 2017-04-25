@@ -56,3 +56,5 @@ lib/
 pip-selfcheck.json
 share/
 db_backup*.sql
+groundup/local_settings_flymake.py
+

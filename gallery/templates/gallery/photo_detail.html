@@ -73,7 +73,11 @@
             <div class="col-xs-4">
                 <span class="photo-label">Date taken</span>
             </div>
-            <div class="col-xs-8">{{photo.date_taken|date:"j F Y"}}</div>
+            <div class="col-xs-8">
+                <a href="{% url 'photo.list' %}?date={{photo.date_taken|date:"Ymd"}}">
+                    {{photo.date_taken|date:"j F Y"}}
+                </a>
+            </div>
 
             <div class="col-xs-4"><span class="photo-label">Photo by</span></div>
             <div class="col-xs-8">
