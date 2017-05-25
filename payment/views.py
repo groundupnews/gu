@@ -20,7 +20,7 @@ from . import forms
 
 
 @login_required
-def invoice_list(request, year=None, month=None):
+def invoice_list(request, year=None, month=None, author=None):
     user = request.user
     if not user.is_authenticated():
         raise Http404
@@ -80,6 +80,12 @@ def invoice_list(request, year=None, month=None):
                year_month_begin.year == timezone.now().year:
                 query = query | Q(status__lte="3")
 
+        if author is not None and int(author) is not 0:
+            author = get_object_or_404(Author, pk=author)
+            query = query | Q(author=author)
+        else:
+            author = None
+
         invoices = models.Invoice.objects.filter(query)
         total_paid_for_month = invoices.filter(status="4").aggregate(
             amount_paid=Sum(F('amount_paid') + F('vat_paid') +
@@ -105,6 +111,7 @@ def invoice_list(request, year=None, month=None):
                    'this_month': year_month_begin,
                    'next_month': next_month,
                    'previous_month': previous_month,
+                   'author': author,
                    'staff_view': staff_view})
 
 

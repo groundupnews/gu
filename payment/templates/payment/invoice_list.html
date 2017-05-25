@@ -24,29 +24,32 @@
         <p>
             Paid: R{{total_paid_for_month|floatformat:"2"|intcomma}}
             {% if total_outstanding_for_month %}
-                | Outstanding: R{{total_outstanding_for_month|floatformat:"2"|intcomma}} |
+                | Outstanding: R{{total_outstanding_for_month|floatformat:"2"|intcomma}}
             {% endif %}
             {% if total_for_month %}
-                | Total:R{{total_for_month|floatformat:"2"|intcomma}}
+                | Total: R{{total_for_month|floatformat:"2"|intcomma}}
             {% endif %}
         </p>
         <p>
             {% if this_month %}
-                <a href="{% url "invoice.list" previous_month.year previous_month.month %}">
+                <a href="{% url "invoice.list" previous_month.year previous_month.month 0 %}">
                     Previous: {{previous_month|date:"F Y"}}
                 </a>
                 &nbsp;|&nbsp;
-                <a href="{% url "invoice.list" next_month.year next_month.month %}">
+                <a href="{% url "invoice.list" next_month.year next_month.month 0 %}">
                     Next: {{next_month|date:"F Y"}}
                 </a>
                 &nbsp;|&nbsp;
-                <a href="{% url "invoice.list" 0 0 %}">
+                <a href="{% url "invoice.list" 0 0 0 %}">
                     All
                 </a>
             {% else %}
-                <a href="{% url "invoice.list" next_month.year next_month.month %}">
+                <a href="{% url "invoice.list" next_month.year next_month.month 0 %}">
                     Go to latest month: {{next_month|date:"F Y"}}
                 </a>
+            {% endif %}
+            {% if author %}
+                &nbsp;&nbsp;&nbsp;&nbsp;Author: {{author}}
             {% endif %}
         </p>
     {% endif %}
@@ -89,7 +92,9 @@
                         <td>R{{payment.0|floatformat:2}}</td>
                         {% if staff_view %}
                             <td>
-                                {{invoice.author}}
+                                <a href="{%  url 'invoice.list' 0 0 invoice.author.pk %}">
+                                    {{invoice.author}}
+                                </a>
                             </td>
                         {% endif %}
                     </tr>

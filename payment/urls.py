@@ -5,7 +5,7 @@ urlpatterns = [
     url(r'^invoices/$', views.invoice_list,
         name="invoice.list"),
 
-    url(r'^invoices/([0-9]+)/([0-9]+)$', views.invoice_list,
+    url(r'^invoices/([0-9]+)/([0-9]+)/([0-9]+)$', views.invoice_list,
         name="invoice.list"),
 
     url(r'^invoices/([0-9]+)-([0-9]+)$', views.invoice_detail,
