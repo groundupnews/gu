@@ -106,7 +106,7 @@ def notify_freelancers():
                       exclude(commission_due=0.00)
         commissionformset = zip(commissions, range(len(commissions)))
 
-        subject = "Payment for work done for GroundUp"
+        subject = "Payment processed for work done for GroundUp"
         message = render_to_string('payment/invoice_paid.txt',
                                    {'invoice': invoice,
                                     'commissionformset': commissionformset,

@@ -8,8 +8,6 @@
 
     <body>
 
-
-
         <p>Dear {{invoice.author.first_names}} {{invoice.author.last_name}}</p>
 
         <p>
@@ -26,6 +24,9 @@
             <a href="http://{{site.domain}}{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}">Invoice
             {{invoice.short_string}}</a> has been paid to you.
         </p>
+
+        <p>Please note that it can take up to three working days for the
+        payment to appear in your account.</p>
 
         {% include "payment/invoice_common.txt" %}
 
