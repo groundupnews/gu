@@ -72,6 +72,8 @@ def process(days, max_posts):
         try:
             api.put_wall_post(message=message,
                               attachment=attachment)
+            print("message: {}".format(message))
+            print("attachment: {}".format(attachment))
             print("PostToFacebook: {}".format(article.title))
             successes = successes + 1
             article.facebook_send_status = "sent"
