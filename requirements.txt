@@ -31,3 +31,4 @@ django-debug-toolbar
 django-el-pagination
 csscompressor
 django-compressor
+django-recaptcha

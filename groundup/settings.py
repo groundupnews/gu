@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'compressor',
     'ajax_select',
     'el_pagination',
+    'captcha',
     'newsroom',
     'payment',
     'socialmedia',
