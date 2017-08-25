@@ -245,6 +245,9 @@ NEWSROOM_SUPPORT_US_IMAGES = [
 
 NEWSROOM_LOGO = 'newsroom/images/GroundUpLogo-20170216.png'
 
+# Spam prevention
+NOCAPTCHA = True
+
 # System now uses Postgres full text search. This is Only being kept live because of the
 
 HAYSTACK_CONNECTIONS = {
