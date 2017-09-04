@@ -87,7 +87,7 @@ class Invoice(models.Model):
                                         help_text="Unnecessary for Capitec, "
                                         "FNB, Standard, Nedbank and Absa")
     swift_code = models.CharField(max_length=12, blank=True,
-                                  help_text="Only relevant for banks"
+                                  help_text="Only relevant for banks "
                                   "outside SA")
     iban = models.CharField(max_length=34, blank=True,
                             help_text="Only relevant for banks outside SA")
