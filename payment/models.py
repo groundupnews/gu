@@ -1,9 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 from django.db.models import Max
-from decimal import *
+from decimal import Decimal
 from filebrowser.fields import FileBrowseField
 
 from newsroom.models import Author, Article
@@ -32,7 +31,6 @@ COMMISSION_DESCRIPTION_CHOICES = (
 )
 
 
-
 class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
 
@@ -40,10 +38,12 @@ class Fund(models.Model):
         return self.name.upper()
 
     class Meta:
-        ordering = ['name',]
+        ordering = ['name', ]
+
 
 EXTENSIONS = [".jpg", ".pdf", ".doc", ".docx", ".odt", ".xls", ".xlsx",
               ".zip", ".JPG", ".PDF", ".DOC", ".DOCX"]
+
 
 def set_corresponding_vals(fromobj, to):
     to.identification = fromobj.identification
@@ -59,12 +59,13 @@ def set_corresponding_vals(fromobj, to):
     to.tax_percent = fromobj.tax_percent
     to.vat = fromobj.vat
 
+
 class Invoice(models.Model):
     author = models.ForeignKey(Author)
     invoice_num = models.IntegerField(default=0)
     # Fields whose default values are taken from Author
-    identification = models.CharField(max_length=20, blank=True, help_text=
-                                      "SA ID, passport or some form "
+    identification = models.CharField(max_length=20, blank=True,
+                                      help_text="SA ID, passport or some form "
                                       "of official identification")
     dob = models.DateField(blank=True, null=True, verbose_name="date of birth",
                            help_text="Required by SARS")
@@ -86,9 +87,10 @@ class Invoice(models.Model):
                                         help_text="Unnecessary for Capitec, "
                                         "FNB, Standard, Nedbank and Absa")
     swift_code = models.CharField(max_length=12, blank=True,
-                                  help_text="Only relevant for banks outside SA")
+                                  help_text="Only relevant for banks"
+                                  "outside SA")
     iban = models.CharField(max_length=34, blank=True,
-                             help_text="Only relevant for banks outside SA")
+                            help_text="Only relevant for banks outside SA")
     tax_no = models.CharField(max_length=50, blank=True,
                               verbose_name="tax number",
                               help_text="Necessary for SARS.")
