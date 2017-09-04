@@ -51,7 +51,6 @@ def invoice_list(request, year=None, month=None, author=None):
                 raise Http404
         last_day = calendar.monthrange(year_month_begin.year,
                                        year_month_begin.month)[1]
-        print("D0: Last day: ", last_day)
         if year == 0:
             year_month_end = timezone.datetime(5000, 1, 1)
         else:
@@ -71,7 +70,6 @@ def invoice_list(request, year=None, month=None, author=None):
             previous_month = year_month_begin - \
                 relativedelta.relativedelta(months=1)
 
-            print("D1: Year month end ", year_month_end)
             query = (Q(date_time_processed__gte=year_month_begin) &
                      Q(date_time_processed__lte=year_month_end) &
                      Q(status="4") |
