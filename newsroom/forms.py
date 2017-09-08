@@ -1,7 +1,7 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from . import models
 from . import utils
+
 
 class ArticleListForm(forms.Form):
     date_from = forms.DateTimeField()
@@ -20,4 +20,4 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = models.Article
         fields = ['title', 'subtitle', 'use_editor',
-                  'primary_image_caption', 'body', 'user', 'version',]
+                  'primary_image_caption', 'body', 'user', 'version', ]

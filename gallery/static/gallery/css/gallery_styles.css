@@ -216,3 +216,32 @@
 .sidebar-block {
     max-width: 100%;
 }
+
+/* Adapted from https://www.w3schools.com/css/css_tooltip.asp */
+/* Tooltip container */
+
+.thumbnail {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.thumbnail .tooltiptext {
+    display: none;
+    position: relative;
+    top: -210px;
+    left: 0px;
+    padding-bottom: 0;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255, 255, 230, 0.7);
+    /* border-radius: 25px;*/
+    color: black;
+    font-size: 12px;
+    z-index: 1;
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.thumbnail:hover .tooltiptext {
+    display: flex;
+}

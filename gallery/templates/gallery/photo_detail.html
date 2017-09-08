@@ -27,10 +27,12 @@
 
 {% block gallery_above_line %}
 
-    <figure id="gallery-photo">
-        <img src="{% version photo.image 'extra_large' %}"
-             alt="{{photo.alt}}" />
-    </figure>
+    <div>
+        <figure id="gallery-photo">
+            <img src="{% version photo.image 'extra_large' %}"
+                 alt="{{photo.alt}}" />
+        </figure>
+    </div>
 
 {% endblock %}
 
