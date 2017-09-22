@@ -1,0 +1,247 @@
+/*********************/
+/* Gallery */
+/*********************/
+
+#gallery {
+    margin-bottom: 12px;
+}
+
+
+#gallery-logo {
+    position:relative;
+    z-index: 10000;
+    background-color: white;
+    top: -5px;
+    display: inline;
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 18px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+@media (min-width: 600px) {
+    #social-media .left a {
+        margin-left: 6px;
+    }
+}
+
+.gallery-block {
+    margin-top: 7px;
+    margin-bottom: 5px;
+}
+
+#gallery-breadcrumbs {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    font-size: 12px;
+}
+
+#gallery-name {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #26aae2;
+    color: white;
+}
+
+
+#gallery-name h1, #gallery-name h2 {
+    color: white;
+    text-align: center;
+    border-bottom: none;
+    margin-top: 0;
+}
+
+
+#gallery-how-to-use {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: #F1F2F2;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+#gallery-how-to-use img {
+    padding-left: 10px;
+    margin-top: 6px;
+    height: 64px;
+}
+
+#gallery-how-to-use h1 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+
+#gallery-how-to-use h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+#gallery-sidebar-advert {
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+#gallery-sidebar-advert h2 {
+    font-size: 10px;
+}
+
+#gallery-below-line-advert h2 {
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Thumbnails */
+
+
+#gallery-home-albums h2 {
+    margin-bottom: 0;
+}
+
+.thumbnail {
+    height: 222px;
+}
+
+@media (max-width: 380px) {
+    .thumbnail {
+        height: 160px;
+    }
+}
+
+
+.thumbnail a > img {
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 170px;
+}
+
+.thumbnail .caption {
+    padding-left: 0;
+    padding-right: 0;
+    height: 52px;
+    overflow: hidden;
+}
+
+.thumbnail .album-head {
+    height: 36px;
+}
+
+#gallery-photo-details h1 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#gallery-photo img {
+    max-width: 100%;
+}
+
+#gallery-photo-labels div {
+    padding-left: 0;
+    margin-bottom: 6px;
+}
+
+#gallery-sidebar-advert {
+    margin-bottom: 16px;
+}
+
+#gallery-sidebar-advert h2 {
+    margin-top:16px;
+}
+
+.photo-label {
+    display: inline-block;
+    width: 130px;
+    font-weight: bold;
+}
+
+.photo-label::after {
+    content: ":";
+}
+
+#gallery-photo-details .dropdown
+{
+    margin: 10px;
+    margin-left: 0;
+}
+
+#gallery-cc img  {
+    max-width: 170px;
+}
+
+#gallery-cc p {
+    padding-left: 20px;
+}
+
+#gallery-thumbnails .thumbnail {
+    height: 180px;
+}
+
+
+/* .gallery-logo { */
+/*     /\* font-family: "HelveticaNeue-CondensedBold", "HelveticaNeueBoldCondensed", "HelveticaNeue-Bold-Condensed", "Helvetica Neue Bold Condensed", "HelveticaNeueBold", "HelveticaNeue-Bold", "Helvetica Neue Bold", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosCnBold', "Helvetica", "Tahoma", "Geneva", "Arial Narrow", "Arial", sans-serif; *\/ */
+/*     font-weight: 600; */
+/*     font-stretch: condensed; */
+/*     font-size: 25px; */
+/*     color: black; */
+/* } */
+
+#gallery-logo a:hover {
+    text-decoration: none;
+}
+
+#gallery-menu ul {
+    padding-left: 0;
+}
+
+#gallery-menu li {
+    width: 150px;
+}
+
+#gallery-photo-details {
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.sidebar-block {
+    max-width: 100%;
+}
+
+/* Adapted from https://www.w3schools.com/css/css_tooltip.asp */
+/* Tooltip container */
+
+.thumbnail {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.thumbnail .tooltiptext {
+    display: none;
+    position: relative;
+    top: -210px;
+    left: 0px;
+    padding-bottom: 0;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255, 255, 230, 0.7);
+    /* border-radius: 25px;*/
+    color: black;
+    font-size: 12px;
+    z-index: 1;
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.thumbnail:hover .tooltiptext {
+    display: flex;
+}
