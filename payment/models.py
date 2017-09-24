@@ -112,9 +112,9 @@ class Invoice(models.Model):
     vat_paid = models.DecimalField(max_digits=8,
                                       decimal_places=2, default=0.00)
     invoice = FileBrowseField(max_length=200, directory="commissions/invoices/",
-                              blank=True, null=True, extensions=EXTENSIONS)
+                              blank=True, extensions=EXTENSIONS)
     proof = FileBrowseField(max_length=200, directory="commissions/proofs/",
-                            blank=True, null=True, extensions=EXTENSIONS)
+                            blank=True, extensions=EXTENSIONS)
     status = models.CharField(max_length=2, choices=INVOICE_STATUS_CHOICES,
                               default="-")
     notes = models.TextField(blank=True)

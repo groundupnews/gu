@@ -74,8 +74,7 @@ class Author(models.Model):
 
     ####
     email_is_private = models.BooleanField(default=True)
-    photo = FileBrowseField(max_length=200, directory="images/",
-                            blank=True, null=True, )
+    photo = FileBrowseField(max_length=200, directory="images/", blank=True)
     description = models.TextField(blank=True)
     website = models.URLField(blank=True)
     twitter = models.CharField(max_length=200, blank=True)
@@ -182,7 +181,7 @@ class Topic(models.Model):
                                     "the default template does not render any "
                                     "other fields before the article list.")
     icon = FileBrowseField("Image", max_length=200, directory="images/",
-                           blank=True, null=True)
+                           blank=True)
     template = models.CharField(max_length=200,
                                 default="newsroom/topic_detail.html")
 
@@ -252,7 +251,7 @@ class Article(models.Model):
     subtitle = models.CharField(max_length=250, blank=True)
     summary_image = FileBrowseField("Image", max_length=200,
                                     directory="images/",
-                                    blank=True, null=True)
+                                    blank=True)
     summary_image_size = models.CharField(
         default=settings.ARTICLE_SUMMARY_IMAGE_SIZE,
         max_length=20,
@@ -282,7 +281,7 @@ class Article(models.Model):
                               help_text="If this is not blank it "
                               "overrides the value of the author fields")
     primary_image = FileBrowseField(max_length=200, directory="images/",
-                                    blank=True, null=True)
+                                    blank=True)
     primary_image_size = models.CharField(
         default=settings.ARTICLE_PRIMARY_IMAGE_SIZE,
         max_length=20,
@@ -351,7 +350,7 @@ class Article(models.Model):
         "after publication "
         "till post.")
     facebook_image = FileBrowseField(
-        max_length=200, directory="images/", blank=True, null=True,
+        max_length=200, directory="images/", blank=True,
         verbose_name="image", help_text="Leave blank to use primary image.")
     facebook_image_caption = models.CharField(
         max_length=200, verbose_name="caption",

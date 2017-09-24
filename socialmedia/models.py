@@ -41,8 +41,7 @@ class Tweet(models.Model):
                               choices=SCHEDULE_RESULTS,
                               default="scheduled")
     tweet_text = models.CharField(max_length=117, blank=True)
-    image = FileBrowseField(max_length=200, directory="images/",
-                            blank=True, null=True)
+    image = FileBrowseField(max_length=200, directory="images/", blank=True)
     tag_accounts = models.ManyToManyField(TwitterHandle, blank=True)
     characters_left = models.IntegerField(default=116)
 
