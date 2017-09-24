@@ -5,8 +5,6 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'links', groups: [ 'links' ] },
 	{ name: 'insert', groups: [ 'insert' ] },
 	{ name: 'forms', groups: [ 'forms' ] },
-	{ name: 'tools', groups: [ 'tools' ] },
-	{ name: 'others', groups: [ 'others' ] },
 	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
 
@@ -14,16 +12,19 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'colors', groups: [ 'colors' ] },
 	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 	{ name: 'about', groups: [ 'about' ] },
-	{ name: 'tools', groups: [ 'tools' ] }
+	{ name: 'tools', groups: [ 'tools' ] },
+	{ name: 'others', groups: [ 'others' ] }
     ];
 
-    config.extraPlugins = 'find,sourcedialog,saveedits';
 
-    config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Table,Maximize,Strike,Outdent,Indent,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
+    config.extraPlugins = 'find,sourcearea,codemirror,wordcount';
+
+    config.removeButtons = 'Cut,Copy,Paste,PasteText,PasteFromWord';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';
     config.scayt_autoStartup = true;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
     config.allowedContent = true;
+    config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
 };

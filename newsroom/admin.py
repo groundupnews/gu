@@ -163,7 +163,7 @@ class ArticleAdmin(admin.ModelAdmin):
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
-            '//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js',
+            '//cdn.ckeditor.com/4.7.3/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
             '/static/newsroom/js/admin_enhance.js',
@@ -228,10 +228,11 @@ class FlatPageAdmin(FlatPageAdmin):
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
-            '//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js',
+            '//cdn.ckeditor.com/4.7.3/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
         ]
+
 
 # Re-register FlatPageAdmin
 admin.site.unregister(FlatPage)
