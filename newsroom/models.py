@@ -27,6 +27,12 @@ OVERRIDE_COMMISSION_CHOICES = (
 )
 
 
+BYLINE_CHOICES = (
+    ("ST", "Standard"),
+    ("TP", "Text By [First Author] Photos By [Second Author]"),
+)
+
+
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200)
@@ -280,6 +286,8 @@ class Article(models.Model):
                               verbose_name='customised byline',
                               help_text="If this is not blank it "
                               "overrides the value of the author fields")
+    byline_style = models.CharField(max_length=2, choices=BYLINE_CHOICES,
+                                    default="ST")
     primary_image = FileBrowseField(max_length=200, directory="images/",
                                     blank=True)
     primary_image_size = models.CharField(
@@ -441,17 +449,22 @@ class Article(models.Model):
                          for name in names if name is not None]
             else:
                 names = [str(name) for name in names if name is not None]
-        if len(names) == 0:
-            return ""
-        elif len(names) == 1:
-            return "By " + names[0]
-        elif len(names) == 2:
-            return "By " + names[0] + " and " + names[1]
+        # byline_style is Standard
+        if self.byline_style == "ST" or len(names) != 2:
+            if len(names) == 0:
+                return ""
+            elif len(names) == 1:
+                return "By " + names[0]
+            elif len(names) == 2:
+                return "By " + names[0] + " and " + names[1]
+            else:
+                names[-1] = " and " + names[-1]
+                names_middle = [", " + name for name in names[1:-1]]
+                names_string = names[0] + "".join(names_middle) + names[-1]
+                return "By " + names_string
+        # byline_style is TextByPhotoBy
         else:
-            names[-1] = " and " + names[-1]
-            names_middle = [", " + name for name in names[1:-1]]
-            names_string = names[0] + "".join(names_middle) + names[-1]
-            return "By " + names_string
+            return "Text by " + names[0] + ". Photos by " + names[1] + "."
 
     '''Used to generate the cached primary image upon model save, so
     there's less processing for website user requests.

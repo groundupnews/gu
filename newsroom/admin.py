@@ -34,7 +34,6 @@ figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (c
 
 
 class ArticleForm(forms.ModelForm):
-
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="medium")
     primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
@@ -98,7 +97,8 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Additional authors', {
             'classes': ('wide grp-collapse grp-closed',),
-            'fields': ('author_02', 'author_03', 'author_04', 'author_05',)
+            'fields': ('author_02', 'author_03', 'author_04', 'author_05',
+                       ('byline', 'byline_style', ))
         }),
         ('Primary Image', {
             'classes': ('wide',),
@@ -128,7 +128,7 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ('copyright', 'include_in_rss',
                        ('letters_on', 'comments_on', 'collapse_comments', ),
                        'stickiness', 'exclude_from_list_views',
-                       'byline', 'use_editor',
+                       'use_editor',
                        ('template', 'undistracted_layout', ),
                        'additional_head_scripts', 'additional_body_scripts',
                        'activate_slideshow',

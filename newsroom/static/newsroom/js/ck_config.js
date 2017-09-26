@@ -18,9 +18,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 
     config.extraPlugins = 'find,sourcearea,codemirror,wordcount';
-    config.codemirror = {
-        lineWrapping: true
-    };
 
     config.removeButtons = 'Cut,Copy,Paste,PasteText,PasteFromWord';
 
