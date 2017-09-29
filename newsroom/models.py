@@ -556,7 +556,7 @@ class Article(models.Model):
 
     def clean_typography(self, text):
         return smartypants.smartypants(text).\
-            replace("&nbsp;", "").\
+            replace("&nbsp;", " ").\
             replace("  ", " ").\
             replace(u'&#8217;', u'’').\
             replace(u'&#8220;', u'“').\

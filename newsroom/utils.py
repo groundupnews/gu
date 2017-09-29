@@ -37,7 +37,9 @@ that arise in the editor.
 blankpara_regex = re.compile(r'<p[^>]*?>\s*?</p>|<p[^>]*?>\s*?&nbsp;\s*?</p>')
 
 
-def remove_blank_paras(html):
+def remove_unnecessary_white_space(html):
+    html = re.sub('&nbsp;', ' ', html)
+    html = re.sub(' +', ' ', html)
     return blankpara_regex.sub(r'', html)
 
 
@@ -186,7 +188,7 @@ def processAdverts(soup):
 
 def replaceBadHtmlWithGood(html):
     html = html.replace('dir="ltr"', "")
-    html = remove_blank_paras(html)
+    html = remove_unnecessary_white_space(html)
     soup = BeautifulSoup(html, "html.parser")
     soup = replaceImgHeightWidthWithClass(soup)
     soup = replacePImgWithFigureImg(soup)
