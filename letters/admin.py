@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 
 from . import models
 
@@ -27,7 +28,22 @@ class ProcessedListFilter(admin.SimpleListFilter):
                 filter(rejected=False)
 
 
+class LetterForm(forms.ModelForm):
+
+    def clean(self):
+        cleaned_data = super(LetterForm, self).clean()
+        rejected = cleaned_data.get("rejected")
+        published = cleaned_data.get("published")
+
+        if rejected is True and published is not None:
+            raise forms.ValidationError(
+                "Please either check rejected or set a "
+                "publication date, but not both."
+            )
+
+
 class LetterAdmin(admin.ModelAdmin):
+    form = LetterForm
     list_display = ['article', 'byline', 'email', 'title',
                     'rejected', 'published', 'modified', ]
     date_hierarchy = 'modified'
@@ -35,6 +51,7 @@ class LetterAdmin(admin.ModelAdmin):
     search_fields = ['article__title', 'title', 'byline', 'email', ]
     ordering = ['-modified', '-position', ]
     raw_id_fields = ('article', )
+
 
 admin.site.register(models.Letter, LetterAdmin)
 

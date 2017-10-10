@@ -183,6 +183,7 @@ class TopicAdmin(admin.ModelAdmin):
     list_display = ('name', 'count_articles', )
     prepopulated_fields = {"slug": ("name", )}
 
+
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.UserEdit)
 admin.site.register(models.Category, CategoryAdmin)
@@ -194,6 +195,7 @@ class AuthorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AuthorForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
+
 
 class AuthorAdmin(admin.ModelAdmin):
     form = AuthorForm

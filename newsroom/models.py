@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.dispatch import receiver
+from django.conf import settings as django_settings
 from socialmedia.common import SCHEDULE_RESULTS
 from allauth.account.signals import password_changed
 from filebrowser.fields import FileBrowseField
@@ -14,6 +15,8 @@ import traceback
 import logging
 import datetime
 import smartypants
+from urllib.parse import urlparse
+
 from . import settings
 from . import utils
 
@@ -298,10 +301,12 @@ class Article(models.Model):
         max_length=200,
         blank=True,
         help_text="Description of image for assistive technology.")
-    external_primary_image = models.URLField(blank=True, max_length=500,
-                                             help_text="If the primary "
-                                             "image has a value, "
-                                             "it overrides this.")
+    external_primary_image = models.CharField(blank=True,
+                                              verbose_name="primary image URL",
+                                              max_length=500,
+                                              help_text="If the primary "
+                                              "image has a value, "
+                                              "it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
     body = models.TextField(blank=True)
     use_editor = models.BooleanField(default=True)
@@ -466,10 +471,19 @@ class Article(models.Model):
         else:
             return "Text by " + names[0] + ". Photos by " + names[1] + "."
 
+    '''Gets only the necessary part of primary image by URL. i.e. it removes
+    the domain if the domain is in ALLOWED_HOSTS.
+    '''
+    def get_necessary_url(self, url):
+        parsed_url = urlparse(url)
+        if parsed_url[1] in django_settings.ALLOWED_HOSTS:
+            return parsed_url[2]
+        else:
+            return url
+
     '''Used to generate the cached primary image upon model save, so
     there's less processing for website user requests.
     '''
-
     def calc_primary_image(self):
         if self.primary_image:
             if self.primary_image_size == "LEAVE":
@@ -477,7 +491,8 @@ class Article(models.Model):
             else:
                 return self.primary_image.version_generate(
                     self.primary_image_size).url
-        return self.external_primary_image
+        url = self.get_necessary_url(self.external_primary_image)
+        return url
 
     '''Used to generate the cached summary image upon model save, so
     there's less processing for website user requests.

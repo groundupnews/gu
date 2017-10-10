@@ -32,7 +32,7 @@ class Letter(models.Model):
     objects = LetterQuerySet.as_manager()
 
     def is_published(self):
-        return (self.published is not None) and \
+        return (self.rejected is False and self.published is not None) and \
             (self.published <= timezone.now())
 
     is_published.boolean = True

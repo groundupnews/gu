@@ -18,7 +18,7 @@ class HtmlCleanUp(TestCase):
         """HTML is correctly cleaned"""
 
         html = "<p class='plod'></p><p>Hello</p><p class=''> &nbsp; </p><p class='test'> Good bye </p>"
-        self.assertEqual(utils.remove_blank_paras(html),
+        self.assertEqual(utils.remove_unnecessary_white_space(html),
                          "<p>Hello</p><p class='test'> Good bye </p>")
 
         html = bs('<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>', "html.parser")
