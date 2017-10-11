@@ -302,10 +302,11 @@ class Article(models.Model):
         blank=True,
         help_text="Description of image for assistive technology.")
     external_primary_image = models.CharField(blank=True,
-                                              verbose_name="primary image URL",
+                                              verbose_name="alternative URL",
                                               max_length=500,
-                                              help_text="If the primary "
-                                              "image has a value, "
+                                              help_text="Use this instead "
+                                              "of primary. But note that "
+                                              "if primary image has a value, "
                                               "it overrides this.")
     primary_image_caption = models.CharField(max_length=600, blank=True)
     body = models.TextField(blank=True)
@@ -515,10 +516,7 @@ class Article(models.Model):
             else:
                 return self.primary_image.version_generate(image_size).url
 
-        if self.external_primary_image:
-            return self.external_primary_image
-
-        return ""
+        return self.cached_primary_image
 
     '''Used to generate the cached small image upon model save, so
     there's less processing for website user requests.

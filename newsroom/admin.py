@@ -103,11 +103,8 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Primary Image', {
             'classes': ('wide',),
             'fields': (('primary_image', 'primary_image_size', ),
+                       ('external_primary_image'),
                        'primary_image_caption', 'primary_image_alt', )
-        }),
-        ('External URL for primary image', {
-            'classes': ('grp-collapse grp-closed',),
-            'fields': ('external_primary_image', )
         }),
         ('Content', {
             'classes': ('wide',),
