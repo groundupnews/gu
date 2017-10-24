@@ -10,7 +10,7 @@
             {% if article.cached_primary_image %}
                 <div class="col-xs-6 left">
                     <a href="{{article.get_absolute_url}}">
-		        <img src="{% version article.primary_image 'medium' %}"
+		        <img src="{% if article.primary_image %}{% version article.primary_image 'medium' %}{% else %}{{ article.cached_primary_image }}{% endif %}"
 		             alt="{{article.primary_image_alt|addslashes}}" />
                     </a>
                 </div>
