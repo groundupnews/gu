@@ -97,7 +97,9 @@ datetime='{{ article.published|date:"Y-m-d" }}'>
 	     {% endif %}>
 	    {{article_body|safe}}
 	</div>
-
+        {% if article.main_topic %}
+            {% include "newsroom/read_similar.html" %}
+        {% endif %}
 	{% if can_edit %}
 	    <div style="display:none;">
 		<form action="{% url 'article.detail' article.slug %}"

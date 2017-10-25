@@ -193,6 +193,7 @@ class Topic(models.Model):
                            blank=True)
     template = models.CharField(max_length=200,
                                 default="newsroom/topic_detail.html")
+    newest_first = models.BooleanField(default=True)
 
     def count_articles(self):
         return Article.objects.filter(topics=self).count()
@@ -613,6 +614,12 @@ class Article(models.Model):
 
     def __str__(self):
         return str(self.pk) + " " + self.title
+
+    def get_related(self, num_to_choose=3):
+        return Article.objects.published().                         \
+            exclude(pk=self.pk). \
+            filter(topics__in=[self.main_topic]). \
+            exclude(recommended=False)[:num_to_choose]
 
     def get_recommended(self, num_to_choose=3, days_back=10):
         publication_date = timezone.make_aware(

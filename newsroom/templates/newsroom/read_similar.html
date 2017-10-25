@@ -1,0 +1,13 @@
+
+<div is="related">
+    <h2>On the same topic</h2>
+    <ul>
+        {% for article in related %}
+            <li>
+                <a href="{{article.get_absolute_url}}">
+                    {{article.title}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -20,7 +20,6 @@ from bs4 import BeautifulSoup
 
 import datetime
 import logging
-from random import randint
 
 from . import models
 from . import settings
@@ -179,8 +178,12 @@ class TopicDetail(ArticleList):
 
     def get_queryset(self):
         self.topic = get_object_or_404(models.Topic, slug=self.args[0])
-        return models.Article.objects.published(). \
-            filter(topics=self.topic)
+        if self.topic.newest_first is True:
+            return models.Article.objects.published(). \
+                filter(topics=self.topic)
+        else:
+            return models.Article.objects.published(). \
+                filter(topics=self.topic).order_by("published")
 
     def get_context_data(self, **kwargs):
         context = super(TopicDetail, self).get_context_data(**kwargs)
@@ -330,7 +333,7 @@ def article_detail(request, slug):
                     can_edit = False
 
             article_body = article.body
-            if can_edit == False:
+            if can_edit is False:
                 try:
                     soup = BeautifulSoup(article_body, "html.parser")
                     soup = utils.processSupportUs(soup)
@@ -345,17 +348,18 @@ def article_detail(request, slug):
                         '<aside class="supportus" style="display:none;">')
 
             date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
-            most_popular = models.MostPopular.get_most_popular_html()
+            # most_popular = models.MostPopular.get_most_popular_html()
             return render(request, article.template,
                           {'article': article,
                            'display_region': display_region,
-                           'recommended' : article.get_recommended(),
+                           'recommended': article.get_recommended(),
+                           'related': article.get_related,
                            'blocks': get_blocks('Article'),
                            'can_edit': can_edit,
                            'article_body': article_body,
                            'article_letters': article.letter_set.published(),
-                           'letters': Letter.objects.published().\
-                           filter(published__gte=date_from).\
+                           'letters': Letter.objects.published().
+                           filter(published__gte=date_from).
                            order_by('-published'),
                            'content_type': 'article',
                            'form': form})
