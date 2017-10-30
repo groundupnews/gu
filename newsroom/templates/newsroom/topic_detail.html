@@ -1,14 +1,19 @@
 {% extends 'newsroom/article_list.html' %}
 {% load staticfiles %}
 
+{% block title %}
+    {{block.super}}
+{% endblock %}
+
+
 {% block content-intro %}
 
 <div class="topic-intro">
 
 {% if topic.introduction %}
-{{topic.introduction|safe}}
+    {{topic.introduction|safe}}
 {% else %}
-<h1 id="topic-heading">{{ topic.name|upper }}</h1>
+    <h1 id="topic-heading">{{ topic.name|upper }}</h1>
 {% endif %}
 
 {% if topic.icon %}

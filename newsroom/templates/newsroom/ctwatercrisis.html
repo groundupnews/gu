@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block title %}
+    {{topic.name}} {{block.super}}
+{% endblock %}
+
+
 {% block content %}
 
     <h1 style="text-align:center">Cape Town's water crisis</h1>
