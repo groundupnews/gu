@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <h1 style="text-align:center">Cape Town's water crisis</h1>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                <p>What if we turn on the taps and nothing comes out? With dam levels at record lows and rain still not falling, this is a serious threat facing a city of four million people. GroundUp did an in-depth investigation of the water crisis.&nbsp;</p>
+                <h2>GroundUp's investigation into the water crisis</h2>
+                <ul>
+	            <li>15 May 2017: <a href="http://www.groundup.org.za/article/photos-cape-towns-water-crisis/">Water shortage in photos</a></li>
+	            <li>16 May 2017: <a href="http://www.groundup.org.za/article/whats-causing-cape-towns-water-crisis/">What&#39;s causing the problem</a></li>
+	            <li>17&nbsp;May 2017: <a href="http://www.groundup.org.za/article/heres-where-find-data-cape-towns-water-crisis/">Data and the water shortage</a></li>
+	            <li>18&nbsp;May 2017: <a href="http://www.groundup.org.za/article/what-needs-be-done-about-cape-towns-water-crisis/">What is being done and what needs to be done</a></li>
+	            <li>19 May 2017: <a href="http://www.groundup.org.za/article/what-happens-when-dams-run-dry/">What happens if the dams&nbsp;dry out</a></li>
+	            <li>21 July 2017: <a href="http://www.groundup.org.za/article/what-government-doing-about-cape-towns-water-crisis/">What&nbsp;government is doing</a></li>
+                </ul>
+
+                <p>Also see:</p>
+
+                <ul>
+	            <li><a href="http://www.groundup.org.za/article/cape-towns-precarious-struggle-water/">Cape Town&#39;s precarious water supply</a> (8 June 2016)</li>
+	            <li><a href="http://www.groundup.org.za/article/water-crisis-wont-be-cape-towns-last/">This water crisis will not be Cape Town&#39;s last</a> (17 Feb&nbsp;2017)</li>
+	            <li><a href="http://www.groundup.org.za/article/drought-cape-towns-taps-could-really-run-dry/">Cape Town&#39;s taps could really run dry</a> (3 April 2017)</li>
+	            <li><a href="http://www.groundup.org.za/article/drought-cape-town-may-ban-swimming-pool-top-ups/">Drought: Cape Town may ban swimming pool top-ups</a> &nbsp;(13 April 2017)</li>
+
+                </ul>
+                        <h2>Useful articles on other sites</h2>
+                        <p>The University of Cape Town has an <a href="https://www.news.uct.ac.za/news/cape-town-water-crisis/">excellent series on the Cape Town water crisis</a>.</p>
+                        <p>Also see:</p>
+                        <ul>
+	                    <li><a href="https://www.news.uct.ac.za/article/-2017-08-31-how-severe-is-the-droughta">How severe is the drought?</a>&nbsp;by&nbsp;Dr Piotr Wolski,&nbsp;UCT&rsquo;s Climate System Analysis Group</li>
+	                    <li><a href="http://www.capetown.gov.za/Family%20and%20home/residential-utility-services/residential-water-and-sanitation-services/2016-residential-water-restrictions-explained">Water restrictions explained</a>&nbsp;on City of Cape Town website</li>
+	                    <li><a href="http://www.capetown.gov.za/Family%20and%20home/residential-utility-services/residential-water-and-sanitation-services/this-weeks-dam-levels">Cape Town&#39;s weekly dam levels</a> on&nbsp;City of Cape Town website</li>
+                        </ul>
+                        <hr />
+                        <h1>
+                            Articles on Cape Town's water crisis
+                        </h1>
+                        {% include 'newsroom/list.html' with articles=article_list include_image="1" %}
+
+                        <p>
+                            <hr />
+                        </p>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block pagination %}
+    {% include 'paginator.html' %}
+{% endblock %}
