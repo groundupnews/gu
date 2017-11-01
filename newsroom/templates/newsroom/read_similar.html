@@ -8,8 +8,7 @@
         {% endif %}
         <li>
             <a href="{{rel_article.get_absolute_url}}">
-                {{rel_article.title}}
-            </a>
+                {{rel_article.title}}</a> - {{rel_article.published|date:"d F Y" }}
         </li>
         {% if forloop.last %}
             </ul>
