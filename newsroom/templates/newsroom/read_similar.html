@@ -1,13 +1,14 @@
 
 <div is="related">
-    {% for article in related %}
+    {% for rel_article in related %}
         {% if forloop.first %}
-            <h2>On the same topic</h2>
+            <h2>More about <a href="{% url 'topic.detail' article.main_topic.slug %}">
+                {{article.main_topic}}</a></h2>
             <ul>
         {% endif %}
         <li>
-            <a href="{{article.get_absolute_url}}">
-                {{article.title}}
+            <a href="{{rel_article.get_absolute_url}}">
+                {{rel_article.title}}
             </a>
         </li>
         {% if forloop.last %}
