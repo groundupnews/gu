@@ -1,5 +1,5 @@
 
-<div is="related">
+<div id="related">
     {% for rel_article in related %}
         {% if forloop.first %}
             <h2>More about <a href="{% url 'topic.detail' article.main_topic.slug %}">
@@ -8,7 +8,7 @@
         {% endif %}
         <li>
             <a href="{{rel_article.get_absolute_url}}">
-                {{rel_article.title}}</a> - {{rel_article.published|date:"d F Y" }}
+                {{rel_article.title}}</a> <span class="related-date">{{rel_article.published|date:"d F Y" }}</span>
         </li>
         {% if forloop.last %}
             </ul>
