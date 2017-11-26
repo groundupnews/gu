@@ -19,6 +19,12 @@ from . import models
 from . import forms
 
 
+'''There is business logic in this view that belongs in themodel.
+TO DO: Refactor by moving filtering by year and month, and calculations
+into model.
+'''
+
+
 @login_required
 def invoice_list(request, year=None, month=None, author=None):
     user = request.user
@@ -73,7 +79,7 @@ def invoice_list(request, year=None, month=None, author=None):
             query = (Q(date_time_processed__gte=year_month_begin) &
                      Q(date_time_processed__lte=year_month_end) &
                      Q(status="4") |
-                    (Q(created__gte=year_month_begin) &
+                     (Q(created__gte=year_month_begin) &
                      Q(created__lte=year_month_end) &
                      Q(status="5")))
             if year_month_begin.month == timezone.now().month and \
@@ -273,7 +279,8 @@ def commission_detail(request, pk=None):
                 if current_commission.invoice.author == author:
                     invoice = current_commission.invoice
                 else:
-                    invoice = models.Invoice.get_open_invoice_for_author(author)
+                    invoice = models.Invoice.\
+                              get_open_invoice_for_author(author)
                 commission = form.save(commit=False)
             commission.invoice = invoice
             commission.save()

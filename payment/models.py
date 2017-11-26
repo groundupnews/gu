@@ -94,10 +94,12 @@ class Invoice(models.Model):
     tax_no = models.CharField(max_length=50, blank=True,
                               verbose_name="tax number",
                               help_text="Necessary for SARS.")
-    tax_percent = models.DecimalField(max_digits=2, decimal_places=0, default=25,
+    tax_percent = models.DecimalField(max_digits=2, decimal_places=0,
+                                      default=25,
                                       verbose_name="PAYE %",
-                                      help_text="Unless you have a tax directive"
-                                      " we have to deduct 25% PAYE")
+                                      help_text="Unless you have "
+                                      "a tax directive "
+                                      "we have to deduct 25% PAYE")
     vat = models.DecimalField(max_digits=2, decimal_places=0, default=0,
                               verbose_name="VAT %",
                               help_text="If you are VAT regisered "
@@ -108,10 +110,11 @@ class Invoice(models.Model):
                                       decimal_places=2, default=0.00,
                                       verbose_name="amount")
     tax_paid = models.DecimalField(max_digits=8,
-                                      decimal_places=2, default=0.00)
+                                   decimal_places=2, default=0.00)
     vat_paid = models.DecimalField(max_digits=8,
-                                      decimal_places=2, default=0.00)
-    invoice = FileBrowseField(max_length=200, directory="commissions/invoices/",
+                                   decimal_places=2, default=0.00)
+    invoice = FileBrowseField(max_length=200,
+                              directory="commissions/invoices/",
                               blank=True, extensions=EXTENSIONS)
     proof = FileBrowseField(max_length=200, directory="commissions/proofs/",
                             blank=True, extensions=EXTENSIONS)
@@ -119,7 +122,8 @@ class Invoice(models.Model):
                               default="-")
     notes = models.TextField(blank=True)
     query = models.TextField(blank=True, max_length=3000,
-                             help_text="Explain your query here if you have one")
+                             help_text="Explain your query "
+                             "here if you have one")
     date_time_reporter_approved = models.DateTimeField(null=True, blank=True,
                                                        editable=False)
     date_time_editor_approved = models.DateTimeField(null=True, blank=True,
@@ -127,7 +131,7 @@ class Invoice(models.Model):
     date_time_processed = models.DateTimeField(null=True, blank=True,
                                                editable=False)
     date_notified_payment = models.DateTimeField(null=True, blank=True,
-                                               editable=False)
+                                                 editable=False)
     our_reference = models.CharField(max_length=20, blank=True)
     their_reference = models.CharField(max_length=20, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -157,26 +161,26 @@ class Invoice(models.Model):
             str(self.author) + " - " + self.get_status_display()
 
     def get_absolute_url(self):
-        return reverse('invoice.detail', args=[self.author.pk, self.invoice_num])
+        return reverse('invoice.detail', args=[self.author.pk,
+                                               self.invoice_num])
 
     def short_string(self):
         return str(self.author.pk) + "-" + str(self.invoice_num)
 
     def save(self, *args, **kwargs):
-        if self.status == "2": # Reporter has approved
+        if self.status == "2":  # Reporter has approved
             if self.date_time_reporter_approved is None:
                 self.date_time_reporter_approved = timezone.now()
-        if self.status == "3": # Editor has approved
+        if self.status == "3":  # Editor has approved
             if self.date_time_editor_approved is None:
                 self.date_time_editor_approved = timezone.now()
-        if self.status == "4": # Invoice has been paid
+        if self.status == "4":  # Invoice has been paid
             if self.date_time_processed is None:
                 self.date_time_processed = timezone.now()
         self.calc_payment()
         super(Invoice, self).save(*args, **kwargs)
         set_corresponding_vals(self, self.author)
         self.author.save()
-
 
     @staticmethod
     def create_invoice(author):
@@ -207,8 +211,8 @@ class Invoice(models.Model):
         return invoice
 
     class Meta:
-        ordering = ['status','-modified',]
-        unique_together = ['author', 'invoice_num',]
+        ordering = ['status', '-modified', ]
+        unique_together = ['author', 'invoice_num', ]
 
 
 class CommissionQuerySet(models.QuerySet):
@@ -218,7 +222,6 @@ class CommissionQuerySet(models.QuerySet):
 
     def for_authors(self):
         return self.for_staff().filter(fund__isnull=False)
-
 
 
 # Should have been named "Payment" hence the verbose_name
@@ -234,7 +237,8 @@ class Commission(models.Model):
                                    choices=COMMISSION_DESCRIPTION_CHOICES)
     notes = models.CharField(max_length=200, blank=True)
     fund = models.ForeignKey(Fund, blank=True, null=True,
-                             help_text="Selecting a fund approves the commission")
+                             help_text="Selecting a fund "
+                             "approves the commission")
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)
@@ -268,12 +272,11 @@ class Commission(models.Model):
             tax = Decimal(0.00)
         if self.vatable:
                 vat = (self.invoice.vat / Decimal(100.00)) * \
-                self.commission_due
+                      self.commission_due
         else:
             vat = Decimal(0.00)
         due = self.commission_due - tax + vat
         return (due, vat, tax, self.commission_due)
-
 
     def __str__(self):
         if self.invoice is not None and self.article is not None:
@@ -287,4 +290,4 @@ class Commission(models.Model):
             return str(self.pk)
 
     class Meta:
-        ordering = ['invoice', 'created',]
+        ordering = ['invoice', 'created', ]

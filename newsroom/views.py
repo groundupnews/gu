@@ -56,7 +56,8 @@ class ArticleList(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(ArticleList, self).get_context_data(**kwargs)
         context = get_blocks_in_context(context)
-        context['most_popular_html'] =  models.MostPopular.get_most_popular_html()
+        context['most_popular_html'] = \
+            models.MostPopular.get_most_popular_html()
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
         context['letters'] = Letter.objects.published().\
             filter(published__gte=date_from).order_by('-published')
@@ -79,16 +80,18 @@ class HomePage(ArticleList):
     # WHICH CODE NEEDS TO CHANGE URGENTLY.
 
     # def get(self, request, *args, **kwargs):
-           # Add messages here. E.g.
-           # messages.add_message(request, messages.INFO,
-           #                      "We're only publishing urgent "
-           #                      "news until 10 January. Have a "
-           #                      "safe holiday season.")
-           # request = super(HomePage, self).get(request, args, kwargs)
-           # return request
+    # Add messages here. E.g.
+    # messages.add_message(request, messages.INFO,
+    #                      "We're only publishing urgent "
+    #                      "news until 10 January. Have a "
+    #                      "safe holiday season.")
+    # request = super(HomePage, self).get(request, args, kwargs)
+    # return request
+
 
 home_page_view = HomePage.as_view()
 home_page_view = last_modified(last_article_modified)(home_page_view)
+
 
 class OpinionAnalysisList(ArticleList):
 
@@ -102,8 +105,10 @@ class OpinionAnalysisList(ArticleList):
         context['heading'] = "Opinion and Analysis"
         return context
 
+
 class AuthorList(generic.ListView):
     model = models.Author
+
 
 class AuthorDetail(ArticleList):
 
@@ -241,13 +246,15 @@ def check_concurrent_edit(request):
         raise Http404
 
 
-# These functions were originally two generic Django class views (DetailView and
-# UpdateView). But the logic was hidden behind Django's opaque and not very well
-# documented system. This might seem complex with lots of coding that Django
-# could take care of, but at least I can understand what's going on here without
-# having to search reams of documentation and StackOverview questions.
-#
-# Nevertheless, some refactoring needed here.
+'''These functions were originally two generic Django class views (DetailView
+and UpdateView). But the logic was hidden behind Django's opaque and not very
+well documented system. This might seem complex with lots of coding that Django
+could take care of, but at least I can understand what's going on here without
+having to search reams of documentation and StackOverview questions.
+Nevertheless, some refactoring needed here.
+
+'''
+
 
 def article_post(request, slug):
     form = ArticleForm(request.POST)
@@ -392,6 +399,7 @@ class RedirectOldImages(View):
         url = "/media/old/" + path
         return redirect(url)
 
+
 '''Redirect hand constructed features (mainly an old site phenomenon
 
 '''
@@ -402,6 +410,7 @@ class RedirectHandConstructedFeatures(View):
     def get(self, request, path):
         url = "/media/features/" + path
         return redirect(url)
+
 
 '''Redirect old /content/ articles to new /article/
 
@@ -458,19 +467,20 @@ def has_author(user):
     try:
         has_author = (user.author is not None)
     except models.Author.DoesNotExist:
-         pass
+        pass
     return has_author
 
+
 def account_profile(request):
-    if request.user.is_authenticated() == True:
+    if request.user.is_authenticated() is True:
         if has_author(request.user):
-            if request.user.author.password_changed == False:
+            if request.user.author.password_changed is False:
                 messages.add_message(request, messages.WARNING,
                                      "Please change your password.")
     return render(request, "newsroom/account_profile.html")
 
+
 def search(request):
-    articles = None
     query = request.GET.get('q')
     method = request.GET.get('method')
     if method is None:
@@ -482,7 +492,7 @@ def search(request):
                                             settings.SEARCH_CONFIG, False,
                                             "title", "subtitle",
                                             "cached_byline_no_links",
-                                            "body").published()\
+                                            "body").published() \
                                             [:settings.MAX_SEARCH_RESULTS]
         else:
             article_list = searchPostgresDB(query,
@@ -490,7 +500,7 @@ def search(request):
                                             settings.SEARCH_CONFIG, True,
                                             "title", "subtitle",
                                             "cached_byline_no_links",
-                                            "body").published()\
+                                            "body").published() \
                                             [:settings.MAX_SEARCH_RESULTS]
         paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
         page_num = request.GET.get('page')
