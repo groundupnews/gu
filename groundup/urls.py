@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
-from django.contrib.staticfiles import views
 from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
+from django.views.generic.base import RedirectView
 
 from django.contrib.flatpages.sitemaps import FlatPageSitemap
 from django.contrib.sitemaps import GenericSitemap
@@ -26,7 +26,6 @@ from django.contrib.sitemaps.views import sitemap
 
 from newsroom.models import Article
 from newsroom.models import Author
-from newsroom.views import account_profile
 
 from gallery.models import Photograph
 
@@ -53,6 +52,7 @@ urlpatterns = [
     url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'^admin/login/$', RedirectView.as_view(url='/accounts/login/')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^imagegallery/', include('gallery.urls')),
