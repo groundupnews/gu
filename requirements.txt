@@ -32,3 +32,5 @@ django-el-pagination
 csscompressor
 django-compressor
 django-recaptcha
+django-allauth-2fa
+

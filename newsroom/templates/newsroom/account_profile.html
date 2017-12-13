@@ -12,8 +12,15 @@
                 <a href='{% url "invoice.list" %}'>Invoices</a>
             </li>
         {% endif %}
-        <li><a href="{% url "account_change_password" %}">Change password</a></li>
-        <li><a href="{% url "account_logout" %}">Logout</a></li>
+        <li><a href="{% url "account_change_password" %}">
+            Change password</a>
+        </li>
+        <li><a href="{% url "two-factor-setup" %}">
+            Setup two-factor authentication</a>
+        </li>
+        <li><a href="{% url "account_logout" %}">
+            Logout</a>
+        </li>
     </ul>
 
 

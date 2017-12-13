@@ -72,4 +72,4 @@
 
 <li role="separator" class="divider"></li>
 
-<li><a href="{% url 'admin:logout' %}" class="admin-menu-item">Logout {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}</a></li>
+<li><a href="{% url 'user.profile' %}" class="admin-menu-item">{% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}'s Account</a></li>
