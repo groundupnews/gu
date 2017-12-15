@@ -3,7 +3,9 @@ import string
 import random
 from bs4 import BeautifulSoup
 from random import randint
-from newsroom.settings import SUPPORT_US_IMAGES, ADVERT_CODE
+from newsroom.settings import SUPPORT_US_IMAGES
+# from newsroom.settings import ADVERT_CODE
+from django.contrib.auth.password_validation import MinimumLengthValidator
 from django.conf import settings
 
 ''' Can be used to prevent staff from getting cached pages.
@@ -210,6 +212,7 @@ def get_edit_lock_msg(user):
 
 # Used to generate random passwords. Source:
 # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+
 
 def generate_pwd(size=12, chars=string.ascii_letters + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))

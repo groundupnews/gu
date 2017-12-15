@@ -72,6 +72,7 @@ INSTALLED_APPS = (
     'el_pagination',
     'captcha',
     'newsroom',
+    'security',
     'payment',
     'socialmedia',
     'republisher',
@@ -140,6 +141,28 @@ ACCOUNT_EMAIL_REQUIRED = True
 #ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 #ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/user/"
+
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'security.utils.StaffMinimumLengthValidator',
+        'OPTIONS': {
+            'staff_min_length': 10,
+            'other_min_length': 8
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+
 
 WSGI_APPLICATION = 'groundup.wsgi.application'
 
