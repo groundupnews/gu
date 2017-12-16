@@ -370,6 +370,9 @@ elif GOOGLE_ADS:
 else:
     NEWSROOM_ADVERT_CODE = ""
 
+PIWIK_SITEID = 1
+PIWIK_ENTRIES = 40
+
 from .local_settings import *
 
 if DEBUG is True:
