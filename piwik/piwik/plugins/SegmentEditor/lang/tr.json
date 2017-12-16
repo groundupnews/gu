@@ -1,8 +1,0 @@
-{
-    "SegmentEditor": {
-        "OperatorAND": "VE",
-        "OperatorOR": "VEYA",
-        "SaveAndApply": "Kaydet & Uygula",
-        "VisibleToAllUsers": "tüm kullanıcılar"
-    }
-}
