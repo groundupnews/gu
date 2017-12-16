@@ -47,7 +47,6 @@ def get_most_popular_urls(num_articles):
         path = urlparse(result["url"].replace("\\", "")).path
         if path[0:9].strip() == "/article/":
             slug = path[9:-1]
-            print("Slug: ", slug)
             try:
                 article = Article.objects.get(slug=slug)
                 if not article.is_published():
@@ -60,7 +59,6 @@ def get_most_popular_urls(num_articles):
                 continue
     mostpopular = MostPopular()
     mostpopular.article_list = "\n".join(article_list)
-    print(mostpopular.article_list)
     mostpopular.save()
 
 
