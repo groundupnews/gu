@@ -1,0 +1,23 @@
+{
+    "Login": {
+        "ConfirmationLinkSent": "Size onaylama bağlantısını içeren bir e-posta önderildi. Parola değişikliği isteğinizi onaylamak için e-postalarınıza bakın ve onaylama bağlantısını açın.",
+        "ContactAdmin": "Olası neden: Sunucunuzda mail() işlevi devre dışı bırakılmış olabilir. <br \/>Lütfen Piwik yöneticinizle görüşün.",
+        "ExceptionInvalidSuperUserAccessAuthenticationMethod": "Süper kullanıcı yetkileri olan bir kullanıcının kimliği '%s' yöntemi ile doğrulanamaz.",
+        "ExceptionPasswordMD5HashExpected": "Parola parametresinin parolanın MD5 yöntemi ile karılmış biçimi olması beklenir.",
+        "InvalidNonceOrHeadersOrReferrer": "Form güvenliği sağlanamadı. Lütfen formu tekrar yükleyin ve çerezlerin aktif olduğundan emin olun. Eğer bir proxy sunucusu kullanıyorsanız, %2$s proxy başlığını kabul etmek için Piwik'i %1$s olarak ayarlamalısınız. Bununla birlikte Referans başlaığınızın doğru gönderildiğini kontrol edin.",
+        "InvalidOrExpiredToken": "Güvenlik kodu yanlış yada süresi dolmuş.",
+        "InvalidUsernameEmail": "Kullanıcı adı ya da e-posta adresi geçersiz.",
+        "LogIn": "Oturum aç",
+        "LoginOrEmail": "Kullanıcı Adı ya da E-posta",
+        "LoginPasswordNotCorrect": "Kullanıcı adı ile parola uyuşmuyor.",
+        "LostYourPassword": "Parolamı unuttum",
+        "ChangeYourPassword": "Şifreni değiştir",
+        "MailTopicPasswordChange": "Parola Değişikliğini Onayla",
+        "NewPassword": "Yeni şifre",
+        "NewPasswordRepeat": "Yeni şifre (tekrar)",
+        "PasswordChanged": "Parolanız değiştirildi.",
+        "PasswordRepeat": "Parola onayı",
+        "PasswordsDoNotMatch": "Parola ve onayı aynı değil",
+        "RememberMe": "Beni Hatırla"
+    }
+}

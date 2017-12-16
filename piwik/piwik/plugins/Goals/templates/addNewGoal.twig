@@ -1,0 +1,22 @@
+{% if userCanEditGoals %}
+    {% set addNewGoalIntro %}
+        <p>{{ 'Goals_NewGoalIntro'|translate }}</p>
+        <p>{{ 'Goals_LearnMoreAboutGoalTrackingDocumentation'|translate("<a href='?module=Proxy&action=redirect&url=https://piwik.org/docs/tracking-goals-web-analytics/' target='_blank'>","</a>")|raw }}</p>
+    {% endset %}
+
+    {% include "@Goals/_addEditGoal.twig" %}
+
+    <br/><br/>
+
+{% else %}
+    <div piwik-content-block content-title="{{ 'Goals_AddNewGoal'|translate|e('html_attr') }}">
+        <p>
+            {{ 'Goals_NoGoalsNeedAccess'|translate|raw }}
+        </p>
+        <p>
+            {{ 'Goals_LearnMoreAboutGoalTrackingDocumentation'|translate("<a href='?module=Proxy&action=redirect&url=https://piwik.org/docs/tracking-goals-web-analytics/' target='_blank'>","</a>")|raw }}
+        </p>
+    </div>
+    {{ postEvent("Template.afterGoalCannotAddNewGoal") }}
+
+{% endif %}

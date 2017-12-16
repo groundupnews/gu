@@ -1,0 +1,32 @@
+{
+    "Live": {
+        "ConvertedNGoals": "Dönüştürülen %s Hedef",
+        "FirstVisit": "İlk ziyaret",
+        "GoalType": "Tür",
+        "HideMap": "haritayı gizle",
+        "LastHours": "Son %s saat",
+        "LastMinutes": "Son %s dakika",
+        "LastVisit": "Son ziyaret",
+        "LinkVisitorLog": "Ayrıntılı ziyaretçi kayitlari",
+        "LoadMoreVisits": "Daha fazla ziyaretçi yükle",
+        "NbVisitor": "1 ziyaretçi",
+        "NbVisitors": "%s ziyaretçi",
+        "NextVisitor": "Sonraki ziyaretçi",
+        "NoMoreVisits": "Bu ziyaretçi için daha fazla ziyaret bilgisi yok.",
+        "PreviousVisitor": "Önceki ziyaretçi",
+        "RealTimeVisitorCount": "Gerçek Zamanlı Ziyaretçi Sayacı",
+        "Referrer_URL": "Yönlendirme Siteleri",
+        "ShowMap": "haritayı göster",
+        "ActionsAndDuration": "%1$s işlem %2$s içinde",
+        "ViewVisitorProfile": "Ziyaretçi profiline bak",
+        "VisitedPages": "Ziyaret edilmiş sayfalar",
+        "RevisitedPages": "Sayfalar birden çok kez görüntülendi",
+        "VisitorLog": "Ziyaretçi kayıtları",
+        "VisitorProfile": "Ziyaretçi Profili",
+        "VisitorsInRealTime": "Gerçek Zamanlı Ziyaretçiler",
+        "VisitorsLastVisit": "Bu ziyaretçi %s gün önce ziyaret etmiş",
+        "RowActionTooltipTitle": "Bölüm ziyaretçi loglarını aç",
+        "OnClickPause": "%s başladı. Durdurmak için basın.",
+        "OnClickStart": "%s durduruldu. Başlatmak için basın."
+    }
+}
