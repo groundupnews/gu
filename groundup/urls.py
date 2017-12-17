@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^', include('newsroom.urls')),
     url(r'^', include('payment.urls')),
     url(r'^', include('letters.urls')),
+    url(r'^', include('security.urls')),
     url(r'^', include('allauth_2fa.urls')),
     url(r'^accounts/', include('allauth.urls')),
 

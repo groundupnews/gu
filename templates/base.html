@@ -26,8 +26,10 @@
 	{% endblock %}
 
 	{% block analytics %}
+            {% compress js %}
 	    {% include "google_analytics.html" %}
             {% include "piwik.html" %}
+            {% endcompress %}
 	{% endblock %}
 
 	{% block additional_head %}
