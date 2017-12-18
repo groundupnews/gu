@@ -91,8 +91,9 @@
 	 if( cur_src.indexOf( "http" ) !== -1 ) {
              $(this).attr("src", cur_src);
 	 } else {
-             $(this).attr("src", "http://" + "{{request.get_host}}"
-				+ cur_src);
+             $(this).attr("src",
+                          {% if request.is_secure %}"https"{% else %}"http"{% endif %}
+                          + "://{{request.get_host}}" + cur_src);
 	 }
      });
      $("a[href^='/']").each(function(){
@@ -100,8 +101,9 @@
 	 if( cur_href.indexOf( "http" ) !== -1 ) {
              $(this).attr("href", cur_href);
 	 } else {
-             $(this).attr("href", "http://" + "{{request.get_host}}"
-				+ cur_href);
+             $(this).attr("href",
+                          {% if request.is_secure %}"https"{% else %}"http"{% endif %}
+                          + "://{{request.get_host}}" + cur_href);
 	 }
      });
      var article_html = document.getElementById('article-html');
