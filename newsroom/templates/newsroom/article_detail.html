@@ -103,12 +103,12 @@
     {{article.additional_body_scripts|safe}}
 
     {% compress js %}
-    <script type="text/javascript">
+    <script>
      {% include "newsroom/article_detail.js" %}
     </script>
-    {% endcompress %}
     {% if article.activate_slideshow %}
 	<script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
 	<script>{% include 'newsroom/article_slider.js' %}</script>
     {% endif %}
+    {% endcompress %}
 {% endblock %}
