@@ -36,9 +36,7 @@
 	{% endblock %}
 
         {% block bootstrap-css %}
-            {% compress css %}
 	    {% include "bootstrap_css.html" %}
-            {% endcompress %}
 	{% endblock %}
 
         {% block newsroom-css %}
@@ -126,9 +124,7 @@
 
 
 	    {% block javascript-includes %}
-                {% compress js %}
 		{% include 'javascripts.html' %}
-                {% endcompress %}
 	    {% endblock %}
 
 	{% endblock %}
