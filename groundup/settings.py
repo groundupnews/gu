@@ -345,9 +345,9 @@ DONATE_PAGE = "/donate/"
 #############
 
 ACME_ADS = False
-GOOGLE_ADS = True
+GOOGLE_ADS = False
 AMAZON_ADS = False
-AB_TEST_ADS = True
+AB_TEST_ADS = False
 
 if AB_TEST_ADS:
     ADVERT_CODE_ACME = open(os.path.join(
