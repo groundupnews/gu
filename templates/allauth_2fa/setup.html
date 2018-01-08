@@ -4,6 +4,7 @@
 {% block head_title %}{% trans "Setup Two-Factor Authentication" %}{% endblock %}
 
 {% block content %}
+
 <h1>
   {% trans "Setup Two-Factor Authentication" %}
 </h1>
@@ -29,6 +30,7 @@
 <form method="post">
     {% csrf_token %}
     <p>
+        {{ form.errors }}
         {{ form.non_field_errors }}
     </p>
     <p>
