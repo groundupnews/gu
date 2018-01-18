@@ -283,7 +283,7 @@ NEWSROOM_ARTICLE_COPYRIGHT = '&copy; ' + str(datetime.date.today().year) + \
 
 
 NEWSROOM_SUPPORT_US_IMAGES = [
-    'newsroom/images/SupportGroundUpAdvert-20171009c.jpg',
+    'newsroom/images/SupportGroundUpAdvert-20180118.jpg',
 ]
 
 NEWSROOM_LOGO = 'newsroom/images/GroundUpLogo-20170216.png'
