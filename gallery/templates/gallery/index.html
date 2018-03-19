@@ -65,6 +65,9 @@
                 {% include "gallery/thumbnail.html" %}
             </div>
         {% endfor %}
+        <div class="col-xs-12">
+            <p><a href="{% url 'photo.list' %}">More photos</a></p>
+        </div>
     </div>
 
     <div class="row" id="gallery-content-blocks">
@@ -99,6 +102,9 @@
                 </div>
             </div>
         {% endfor %}
+        <div class="col-xs-12">
+            <p><a href="{% url 'album.list' %}">More albums</a></p>
+        </div>
     </div>
 
 {% endblock %}
