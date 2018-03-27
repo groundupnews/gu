@@ -102,8 +102,8 @@ class Invoice(models.Model):
                                       "we have to deduct 25% PAYE")
     vat = models.DecimalField(max_digits=2, decimal_places=0, default=0,
                               verbose_name="VAT %",
-                              help_text="If you are VAT regisered "
-                              "set this to 14 else leave at 0")
+                              help_text="If you are VAT registered "
+                              "set this to 15 else leave at 0")
     ####
     # paid = models.BooleanField(default=False)
     amount_paid = models.DecimalField(max_digits=8,

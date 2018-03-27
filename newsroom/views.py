@@ -109,7 +109,6 @@ class OpinionAnalysisList(ArticleList):
 class AuthorList(generic.ListView):
     model = models.Author
 
-
 class AuthorDetail(ArticleList):
 
     def get_queryset(self):
