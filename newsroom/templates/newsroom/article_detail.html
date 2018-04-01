@@ -17,22 +17,29 @@
     <meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
 
     {% comment %}Facebook{% endcomment %}
-    <meta name="description" content="{{article.cached_summary_text_no_html|truncatechars:190}}">
+    {% block meta_description_block %}
+        {% with article.cached_summary_text_no_html as desc %}
+            {{block.super}}
+        {% endwith %}
+    {% endblock %}
+
     <meta property="og:title" content="{{article.title}}"/>
     <meta property="og:type" content="article"/>
 
     {% comment %}Twitter and Facebook images{% endcomment %}
     {% with image_url=article.cached_primary_image %}
 	{% if image_url %}
-	    <meta property="og:image" content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
+	    <meta property="og:image" itemprop="image"
+                  content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
 	    <meta name="twitter:image" content="{% if image_url.0 == '/' %}http://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
 	    <meta name="twitter:image:alt" content="{{article.primary_image_alt}}" />
 	{% endif %}
     {% endwith %}
 
-    <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
-    <meta property="og:description"
-	  content="{{ article.cached_summary_text_no_html }}"/>
+    <meta property="article:published_time" content="{{article.published|date:'c'}}"/>
+    <meta property="article:modified_time" content="{{article.modified|date:'c'}}"/>
+    <meta property="og:updated_time" content="{{article.modified|date:'c'}}"/>
+    <meta name="author" content="{{ article.cached_byline_no_links }}">
 
 {% endblock %}
 
