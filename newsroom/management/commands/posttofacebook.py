@@ -47,7 +47,7 @@ def process(days, max_posts):
         if article.facebook_image_caption:
             caption = article.facebook_image_caption
         else:
-            caption = article.primary_image_caption
+            caption = article.subtitle
         if article.facebook_description:
             description = article.facebook_description
         else:
@@ -65,7 +65,7 @@ def process(days, max_posts):
         attachment = {
             'name': html.unescape(article.title).replace(u'\xa0',u''),
             'link': link,
-            # 'caption': html.unescape(caption).replace(u'\xa0',u''),
+            'caption': html.unescape(caption).replace(u'\xa0',u''),
             'description': html.unescape(description).replace(u'\xa0',u''),
             'picture': picture
         }
