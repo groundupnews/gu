@@ -69,21 +69,21 @@ def process(days, max_posts):
             'description': html.unescape(description).replace(u'\xa0',u''),
             'picture': picture
         }
-        try:
-            api.put_wall_post(message=message,
+        # try:
+        api.put_wall_post(message=message,
                               attachment=attachment)
-            print("message: {}".format(message))
-            print("attachment: {}".format(attachment))
-            print("PostToFacebook: {}".format(article.title))
-            successes = successes + 1
-            article.facebook_send_status = "sent"
-            article.save()
-        except:
-            failures = failures + 1
-            article.facebook_send_status = "failed"
-            print("PostToFacebook: Error: ", sys.exc_info()[0])
-            print("PostToFacebook: Failed post: {}".format(article.title))
-            article.save()
+        print("message: {}".format(message))
+        print("attachment: {}".format(attachment))
+        print("PostToFacebook: {}".format(article.title))
+        successes = successes + 1
+        article.facebook_send_status = "sent"
+        article.save()
+        # except:
+        #    failures = failures + 1
+        #    article.facebook_send_status = "failed"
+        #    print("PostToFacebook: Error: ", sys.exc_info()[0])
+        #    print("PostToFacebook: Failed post: {}".format(article.title))
+        #    article.save()
 
     return {"successes" : successes, "failures" : failures}
 
