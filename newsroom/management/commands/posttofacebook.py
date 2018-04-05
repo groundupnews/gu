@@ -63,11 +63,11 @@ def process(days, max_posts):
         if picture and picture[0] == "/":
             picture = url + picture
         attachment = {
-            'name': html.unescape(article.title).replace(u'\xa0',u''),
+            # 'name': html.unescape(article.title).replace(u'\xa0',u''),
             'link': link,
-            'caption': html.unescape(caption).replace(u'\xa0',u''),
-            'description': html.unescape(description).replace(u'\xa0',u''),
-            'picture': picture
+            # 'caption': html.unescape(caption).replace(u'\xa0',u''),
+            # 'description': html.unescape(description).replace(u'\xa0',u''),
+            # 'picture': picture
         }
         # try:
         api.put_wall_post(message=message,
