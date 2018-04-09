@@ -16,21 +16,19 @@
               type="image/x-icon"
 	      href="{% static  'newsroom/images/favicon.ico' %}" />
 
+        {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
+            {% block meta_description_block %}
+                <meta property="description"
+                      content="{{desc|truncatechars:190}}"/>
+	        <meta property="og:description" content="{{desc}}"/>
+            {% endblock %}
+        {% endwith %}
+
 	{% block seo_fields %}
-            {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
-                {% block meta_description_block %}
-                    <meta property="description"
-                          content="{{desc|truncatechars:190}}"/>
-	            <meta property="og:description" content="{{desc}}"/>
-                {% endblock %}
-            {% endwith %}
-
-
 	    {% block facebook-identifier %}
 	        <meta property="fb:app_id" content="794347254025697" />
 	    {% endblock %}
 
-            <meta property="og:type" content="website" />
             <meta property="og:site_name" content="GroundUp News" />
             <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
             <meta property="cache-time" content="{% now "c" %}" />

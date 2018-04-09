@@ -8,7 +8,15 @@
     {{article.title|striptags|safe}}{{block.super}}
 {% endblock %}
 
+{% block meta_description_block %}
+    {% with article.cached_summary_text_no_html as desc %}
+        {{block.super}}
+    {% endwith %}
+{% endblock %}
+
+
 {% block seo_fields %}
+    {{block.super}}
     {% comment %}Twitter Card{% endcomment %}
 
     <meta name="twitter:card" content="summary" />
@@ -17,11 +25,6 @@
     <meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
 
     {% comment %}Facebook{% endcomment %}
-    {% block meta_description_block %}
-        {% with article.cached_summary_text_no_html as desc %}
-            {{block.super}}
-        {% endwith %}
-    {% endblock %}
 
     <meta property="og:title" content="{{article.title}}"/>
     <meta property="og:type" content="article"/>
