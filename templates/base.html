@@ -31,7 +31,7 @@
 
             <meta property="og:site_name" content="GroundUp News" />
             <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
-            <meta property="cache-time" content="{% now "c" %}" />
+            <meta property="gu:cache-fetch" content="{% now "c" %}" />
 	{% endblock %}
 
 	{% block analytics %}
