@@ -18,7 +18,7 @@
 
         {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
             {% block meta_description_block %}
-                <meta property="description"
+                <meta name="description"
                       content="{{desc|truncatechars:190}}"/>
 	        <meta property="og:description" content="{{desc}}"/>
             {% endblock %}
