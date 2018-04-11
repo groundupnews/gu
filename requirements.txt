@@ -11,7 +11,7 @@ httplib2
 oauth2client
 oauthlib
 Pillow
-psycopg2
+psycopg2-binary
 pycrypto
 pytz
 requests

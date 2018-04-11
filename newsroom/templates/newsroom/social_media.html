@@ -1,31 +1,24 @@
-{% load staticfiles  %}
 <div id="social-media">
     <div class="row">
-        <div class="col-xs-8 left">
-            <span class="social-media-follow">
-                FOLLOW:
-            </span>
+
+        <div class="col-xs-7 left">
+            <a href="/feeds/">
+                {% include "insert_icon.html" with icon="icon-rss" %}
+            </a>
             <a href="https://www.facebook.com/GroundUpNews/"
                target="_blank" >
-                <i class="fa fa-facebook fa-2x"></i>
+                {% include "insert_icon.html" with icon="icon-facebook" %}
             </a>
-            &nbsp;
-            <a href="https://twitter.com/GroundUp_News"
-               target="_blank">
-                <i class="fa fa-twitter fa-2x"></i>
-            </a>
-            &nbsp;
             <a href="https://www.youtube.com/c/GroundUpNews"
                target="_blank">
-                <i class="fa fa-youtube fa-2x"></i>
+                {% include "insert_icon.html" with icon="icon-youtube" %}
             </a>
-            &nbsp;
-
-            <a href="/feeds/">
-                <i class="fa fa-rss fa-2x"></i>
+            <a href="https://twitter.com/GroundUp_News"
+               target="_blank">
+                {% include "insert_icon.html" with icon="icon-twitter" %}
             </a>
         </div>
-        <div class="col-xs-4 right">
+        <div class="col-xs-5 right get-newsletter">
 	    <a href="http://eepurl.com/Or2a9" target="_blank">
                 Get our newsletter
 	    </a>

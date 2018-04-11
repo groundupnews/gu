@@ -2,7 +2,6 @@
 
 {% load staticfiles %}
 {% load fb_versions %}
-{% load compress %}
 
 {% block title %}
     {{article.title|striptags|safe}}{{block.super}}
@@ -111,7 +110,6 @@
 
     {{article.additional_body_scripts|safe}}
 
-    {% compress js %}
     <script>
      {% include "newsroom/article_detail.js" %}
     </script>
@@ -119,5 +117,4 @@
 	<script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
 	<script>{% include 'newsroom/article_slider.js' %}</script>
     {% endif %}
-    {% endcompress %}
 {% endblock %}

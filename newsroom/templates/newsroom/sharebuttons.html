@@ -1,40 +1,43 @@
-{% load staticfiles %}
-
-{% if article.encourage_republish %}
-    <span id="republish">
-	<a href="{% url 'article.copy' article.slug %}"
-	   id="republish-article"
-	   target="_blank"
-	   title="Republish this article">
-	    <i class="fa fa-copy"></i>&nbsp;REPUBLISH
-	</a>
-    </span>
-{% endif %}
-
-
-<a id="facebook-share" href="#"
+{% include "insert_icon.html" with icon="icon-share" %} &nbsp;
+<a id="facebook-share"
+   href="https://www.facebook.com/sharer.php?u={{request.build_absolute_uri}}"
+   target="_blank"
    title="Share on Facebook">
-    <i class="fa fa-facebook"></i>
+    {% include "insert_icon.html" with icon="icon-facebook" %}
 </a>
 
-<a id="twitter-share" href="#" title="Share on Twitter">
-    <i class="fa fa-twitter"></i>
+<a id="twitter-share"
+   href="https://twitter.com/share?url={{request.build_absolute_uri}}&amp;text={{article.title|striptags|urlencode}}%20&dash;%20via%20@groundup_news"
+   target="_blank"
+   title="Share on Twitter">
+    {% include "insert_icon.html" with icon="icon-twitter" %}
 </a>
 
 
-<a id="whatsapp-share" href="#"
+<a id="whatsapp-share" href="whatsapp://send?text={{request.build_absolute_uri}}"
    data-action="share/whatsapp/share"
+   target="_blank"
    title="Share via WhatsApp">
-    <i class="fa fa-whatsapp"></i>
+    {% include "insert_icon.html" with icon="icon-whatsapp" %}
 </a>
 
 
-<a id="email-share" href="{{request.build_absolute_uri}}"
+<a id="email-share"
+   href="mailto:?Subject=I%20recommend%20an%20article%20published%20on%20GroundUp&amp;Body=Here%20is%20an%20article%20on%20GroundUp%20that%20I%20recommend:%20{{article.title}}%20{{request.build_absolute_uri|urlencode}}"
    title="Email">
-    <i class="fa fa-envelope"></i>
+    {% include "insert_icon.html" with icon="icon-mail" %}
 </a>
 
 <a id="print-article" href="#"
    title="Print">
-    <i class="fa fa-print"></i>
+    {% include "insert_icon.html" with icon="icon-print" %}
 </a>
+
+{% if article.encourage_republish %}
+    <a href="{% url 'article.copy' article.slug %}"
+       id="republish-article"
+       target="_blank"
+       title="Republish this article">
+        {% include "insert_icon.html" with icon="icon-copy" %}
+    </a>
+{% endif %}
