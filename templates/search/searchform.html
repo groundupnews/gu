@@ -3,12 +3,10 @@
       method="get" action="/search/">
     <div class="form-group">
 	<input type="text" class="form-control" name="q" id="id_q"
-	       placeholder="Search"
+	       placeholder="Search articles"
                value="{{query}}" />
         <button id="search-button" class="btn btn-default">
-            <span class="glyphicon glyphicon-search">
-      	        <span class="sr-only">Search</span>
-      	    </span>
+            {% include "insert_icon.html" with icon="icon-search" %}
         </button>
     </div>
 </form>

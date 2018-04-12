@@ -1054,6 +1054,10 @@ Single-colored icons can be modified like so:
     width: 1.3em;
 }
 
+.icon-search {
+    width: 1em;
+}
+
 .icon-share {
     width: 0.8em;
     border: none;
