@@ -1,7 +1,6 @@
 from django import forms
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.forms import ModelForm
-# from captcha.fields import ReCaptchaField
 from .models import Letter
 from time import time
 from django.core.exceptions import ValidationError
@@ -19,7 +18,6 @@ def check_submission_time(timestamp):
 
 
 class LetterForm(ModelForm):
-    # captcha = ReCaptchaField()
     title = forms.CharField(min_length=5, max_length=55,
                             label='Title of your letter',
                             help_text='At least 5 and no more than 55 '

@@ -68,7 +68,7 @@
 		    {{ form.as_p }}
                     <div id="human-button">
                         <input type="button" value="I am human"
-                               onclick="acceptHuman();" />
+                               onclick="setTimeout(acceptHuman, 500);" />
                         <span class="helptext">
                             When you click, this a submit button will
                             appear. Sorry for the inconvenience but it helps
@@ -76,7 +76,8 @@
                         </span>
                     </div>
 		    <input id="submit-button"
-                           type="Submit" value="Send letter" style="display:none;" />
+                           type="Submit" value="Send letter"
+                           style="display:none; color: red;" />
 		</form>
                 <p style="font-weight: bold; margin-top: 6px;">
                     Letters may be edited by GroundUp for typos, grammar and

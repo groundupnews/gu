@@ -6,6 +6,7 @@ from . import settings
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.template.loader import render_to_string
+from time import time
 
 from .forms import LetterForm
 from .models import Letter
@@ -16,9 +17,23 @@ def write_letter(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if article.letters_on is False:
         raise Http404
-    if request.method == 'POST':
+    dupkey = 'dup_' + str(article.pk)
+    duplicate = False
+    try:
+        last_accessed = float(request.session.get(dupkey))
+    except:
+        last_accessed = 0
+    if time() - last_accessed < 3600:
+        duplicate = True
+        messages.add_message(request, messages.ERROR,
+                             "You submitted a letter for this "
+                             "article very recently. "
+                             "Please wait a few hours "
+                             "before sending another one.")
+    if request.method == 'POST' and duplicate is False:
         form = LetterForm(request.POST)
         if form.is_valid():
+            request.session[dupkey] = str(time())
             letter = Letter()
             letter.article = article
             letter.title = form.cleaned_data['title']
