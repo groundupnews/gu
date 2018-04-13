@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+    Thank you for your letter
+{% endblock %}
+
 {% block content %}
     <div id="letters">
 	<div class="container">
@@ -13,9 +17,8 @@
 			publish it or not within two working days.
 		    </p>
 		    <p class="letter-thank-you">
-			If we publish the letter, it
-			may be edited for typos, grammar and style.
-		    </p>
+			If we publish the letter, it may be edited for typos,
+			grammar and style. The title may also be changed.</p>
 		    <p class="letter-thank-you">
 			We will communicate with you via the email address
 			{{letter.email}}.

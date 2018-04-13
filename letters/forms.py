@@ -1,12 +1,25 @@
 from django import forms
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.forms import ModelForm
-from captcha.fields import ReCaptchaField
+# from captcha.fields import ReCaptchaField
 from .models import Letter
+from time import time
+from django.core.exceptions import ValidationError
+
+
+def get_time():
+    return str(time())
+
+
+def check_submission_time(timestamp):
+    elapsed = time() - float(timestamp)
+    if elapsed < 20:
+        raise ValidationError(("Form submitted too quickly. "
+                               "Are you definitely human?"), )
 
 
 class LetterForm(ModelForm):
-    captcha = ReCaptchaField()
+    # captcha = ReCaptchaField()
     title = forms.CharField(min_length=5, max_length=55,
                             label='Title of your letter',
                             help_text='At least 5 and no more than 55 '
@@ -37,6 +50,11 @@ class LetterForm(ModelForm):
                                    validators=[MinLengthValidator(3),
                                                MaxLengthValidator(3)],
                                    required=True)
+    time_taken = forms.CharField(max_length=40,
+                                 initial=get_time,
+                                 widget=forms.HiddenInput,
+                                 validators=[check_submission_time, ],
+                                 required=True)
 
     class Meta:
         model = Letter

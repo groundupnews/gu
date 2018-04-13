@@ -10,7 +10,8 @@ The title of your letter is:
 A GroundUp editor will make a decision whether to publish it or not within two
 working days.
 
-If we publish the letter, it may be edited for typos, grammar and style.
+If we publish the letter, it may be edited for typos, grammar and style. The
+title may also be changed.
 
 We will communicate with you via this email address: {{letter.email}}.
 

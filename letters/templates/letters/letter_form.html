@@ -66,13 +66,30 @@
 		      method="post">
 		    {% csrf_token %}
 		    {{ form.as_p }}
-		    <input type="Submit" value="Send letter" />
+                    <div id="human-button">
+                        <input type="button" value="I am human"
+                               onclick="acceptHuman();" />
+                        <span class="helptext">
+                            When you click, this a submit button will
+                            appear. Sorry for the inconvenience but it helps
+                            reduce spam.
+                        </span>
+                    </div>
+		    <input id="submit-button"
+                           type="Submit" value="Send letter" style="display:none;" />
 		</form>
                 <p style="font-weight: bold; margin-top: 6px;">
-                    Letters may be edited by GroundUp for typos, grammar and style.
+                    Letters may be edited by GroundUp for typos, grammar and
+                    style. We also may change the title of the letter.
                 </p>
 		</div>
 	    </div>
 	</div>
     </div>
+    <script>
+     var acceptHuman = function() {
+         document.getElementById("human-button").style.display = "none";
+         document.getElementById("submit-button").style.display = "block";
+     }
+    </script>
 {% endblock %}
