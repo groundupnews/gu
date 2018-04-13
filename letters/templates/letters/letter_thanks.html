@@ -10,7 +10,7 @@
 	    <div class="row">
 		<div class="col-md-8">
 		    <p class="letter-thank-you">
-			Thank you for submitting your letter in response to the article: <em>{{letter.article.title|safe}}</em>.
+			Thank you for submitting your letter.
 		    </p>
 		    <p class="letter-thank-you">
 			A GroundUp editor will make a decision whether to
@@ -20,16 +20,8 @@
 			If we publish the letter, it may be edited for typos,
 			grammar and style. The title may also be changed.</p>
 		    <p class="letter-thank-you">
-			We will communicate with you via the email address
-			{{letter.email}}.
+			We will communicate with you via the email address you provided.
 		    </p>
-		    <p class="letter-thank-you">
-			Here is the text of your letter:
-		    </p>
-		    <p class="letter-salutation">Dear Editor</p>
-		    <p>{{letter.title}}</p>
-		    {{letter.text|urlize|linebreaks}}
-		    <p class="letter-byline">Sincerely<br />{{letter.byline}}</p>
 		</div>
 	    </div>
 	</div>

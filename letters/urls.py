@@ -1,7 +1,11 @@
 from django.conf.urls import url
-from .views import get_letter
+from django.views.generic.base import TemplateView
+from .views import write_letter
 
 
 urlpatterns = [
-    url(r'^letter/([0-9]+)/$', get_letter, name='letter_to_editor'),
+    url(r'^letter/([0-9]+)/$', write_letter, name='letter_to_editor'),
+    url(r'^thanks/$', TemplateView.as_view(
+        template_name='letters/letter_thanks.html'),
+        name='letter_thanks'),
 ]

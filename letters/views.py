@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.http import Http404
+from django.urls import reverse
 from . import settings
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -10,7 +12,7 @@ from .models import Letter
 from newsroom.models import Article
 
 
-def get_letter(request, pk):
+def write_letter(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if article.letters_on is False:
         raise Http404
@@ -33,8 +35,7 @@ def get_letter(request, pk):
                 settings.EDITOR,
                 [letter.email]
             )
-            return render(request, 'letters/letter_thanks.html',
-                          {'letter': letter})
+            return HttpResponseRedirect(reverse("letter_thanks"))
         else:
             messages.add_message(request, messages.ERROR,
                                  "Please fix the problems below.")
