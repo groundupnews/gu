@@ -12,7 +12,6 @@
 			       data-parent="#letter-accordion"
 			       href="#letter-{{forloop.counter}}"
 			       class="{{letter.css_classes}}">
-				<i class="fa fa-plus" aria-hidden="true"></i>
 				{{letter.title}}
 			    </a>
 			</h4>
@@ -22,6 +21,11 @@
 			<div class="panel-body">
 			    <div class="letter">
                                 {% include "letters/letter_text.html" %}
+                                {% if can_edit %}
+                                    <a href="{% url 'admin:letters_letter_change' letter.pk %}">
+                                        Edit letter
+                                    </a>
+                                {% endif %}
 			    </div>
 			</div>
 		    </div>
