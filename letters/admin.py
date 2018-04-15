@@ -22,10 +22,9 @@ class ProcessedListFilter(admin.SimpleListFilter):
         if self.value() == 'rejected':
             return queryset.filter(rejected=True)
         if self.value() == 'processed':
-            return queryset.published() | queryset.filter(rejected=True)
+            return queryset.processed()
         if self.value() == 'unprocessed':
-            return queryset.filter(published__isnull=True).\
-                filter(rejected=False)
+            return queryset.unprocessed()
 
 
 class LetterForm(forms.ModelForm):

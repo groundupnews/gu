@@ -4,93 +4,60 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-	<div class="row">
-	    <div class="col-xs-12 col-md-8">
-		<div id="letter-form">
-		    <div class="panel-group">
-			<div class="panel panel-default">
-			    <div class="panel-heading">
-				<h4 class="panel-title">
-				    <a data-toggle="collapse"
-				       href="#letter-tips-text">
-					<i class="fa fa-plus"
-					   aria-hidden="true"></i>
-					Tips for getting your letter published
-				    </a>
-				</h4>
-			    </div>
-			    <div id="letter-tips-text"
-				 class="panel-collapse collapse in">
-				<div class="panel-body">
-				    <p>
-					In contrast to comments, letters are
-					only published if approved by our
-					editors. Views expressed in letters are
-					not necessarily endorsed by GroundUp,
-					but they must meet our quality
-					requirements. Letters are given more
-					prominence than comments on the website.
-				    </p>
-				    <ol>
-					<li>Keep it short: 100 to 350 words.</li>
+        {% if problem == False %}
+	    <div class="row">
+	        <div class="col-xs-12 col-md-8">
+                    <div id="letter-tips">
+                        <h2>
+			    Tips for getting your letter published
+		        </h2>
 
-					<li>Provide relevant information or
-					    arguments.
-					</li>
-
-					<li>Be polite and respectful.
-					    No gratuitous insults.
-					</li>
-					<li>Do not rant.
-					    That's what comments are for.
-					</li>
-					<li>
-					    Use your real name(s) unless there
-					    are exceptional circumstances.
-					</li>
-					<li>
-					    Use <a href="http://www.plainenglish.co.uk/free-guides.html">plain English</a>.
-					</li>
-				    </ol>
-				</div>
-			    </div>
-			</div>
-		    </div>
-		    <p id="letter-form-salutation">Dear Editor</p>
-		    <p id="letter-form-article-title">
-			This is a letter in response to
-			<a href={% url 'article.detail' article.slug  %}>
-			    {{article.title|safe}}</a>.
-		</p>
-		<form action="{% url 'letter_to_editor' article.pk %}"
-		      method="post">
-		    {% csrf_token %}
-		    {{ form.as_p }}
-                    <div id="human-button">
-                        <input type="button" value="I am human"
-                               onclick="setTimeout(acceptHuman, 500);" />
-                        <span class="helptext">
-                            When you click, this a submit button will
-                            appear. Sorry for the inconvenience but it helps
-                            reduce spam.
-                        </span>
+			<p>
+			    Letters are only published if approved by our
+			    editors. Views expressed in letters are not
+			    necessarily endorsed by GroundUp.</p>
+			<ol>
+			    <li>Keep it short: 100 to 350 words.</li>
+			    <li>Provide relevant information or
+				arguments.
+			    </li>
+			    <li>Be polite and respectful.
+				No gratuitous insults.
+			    </li>
+			    <li>
+				Use your real name(s) unless there
+				are exceptional circumstances.
+			    </li>
+			    <li>
+				Use <a href="http://www.plainenglish.co.uk/free-guides.html">plain English</a>.
+			    </li>
+			</ol>
+                        <p style="font-weight: bold;">
+                            We may edit letters for typos, grammar and
+                            style. We also may change the title of the letter.
+                        </p>
                     </div>
-		    <input id="submit-button"
-                           type="Submit" value="Send letter"
-                           style="display:none; color: red;" />
-		</form>
-                <p style="font-weight: bold; margin-top: 6px;">
-                    Letters may be edited by GroundUp for typos, grammar and
-                    style. We also may change the title of the letter.
-                </p>
+                    <div id="letter-preview" style="display:none;">
+                        {% include "letters/letter_text.html" %}
+                    </div>
+		    <form id="letter-form"
+                          action="{% url 'letter_to_editor' article.pk %}"
+		          method="post">
+		        {% csrf_token %}
+                        <div id="letter-input-fields">
+		            <p id="letter-form-salutation">Dear Editor</p>
+		            <p id="letter-form-article-title">
+			        This is a letter in response to
+			        <a href={% url 'article.detail' article.slug  %}>
+			            {{article.title|safe}}</a>.
+		            </p>
+		            {{ form.as_p }}
+                        </div>
+		        <input id="submit-button"
+                               type="Submit" value="Send letter" />
+		    </form>
 		</div>
 	    </div>
-	</div>
+        {% endif %}
     </div>
-    <script>
-     var acceptHuman = function() {
-         document.getElementById("human-button").style.display = "none";
-         document.getElementById("submit-button").style.display = "block";
-     }
-    </script>
 {% endblock %}

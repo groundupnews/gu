@@ -1,0 +1,13 @@
+{% if letter.byline == "GroundUp Editor" %}
+    <p class="letter-salutation">GroundUp Editor's Response</p>
+{% else %}
+    <p class="letter-salutation">Dear Editor</p>
+{% endif %}
+<div class="letter-text">
+    {{letter.text|urlize|linebreaks}}
+</div>
+<p class="letter-byline">
+    Sincerely<br />
+    {{letter.byline}}<br />
+    {{letter.published|date:"j M Y"}}
+</p>

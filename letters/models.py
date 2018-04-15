@@ -11,6 +11,9 @@ class LetterQuerySet(models.QuerySet):
     def published(self):
         return self.filter(published__lte=timezone.now())
 
+    def unprocessed(self):
+        pks = [letter.pk for letter in Letter.objects.all() if letter.is_unprocessed()]
+        return self.filter(pk__in=pks)
 
 class Letter(models.Model):
     article = models.ForeignKey(Article)
@@ -37,6 +40,18 @@ class Letter(models.Model):
 
     is_published.boolean = True
     is_published.short_description = 'published'
+
+    def is_processed(self):
+        return (self.rejected is True) or (self.published is not None)
+
+    is_processed.boolean = True
+    is_processed.short_description = 'processed'
+
+    def is_unprocessed(self):
+        return not self.is_processed()
+
+    is_unprocessed.boolean = True
+    is_unprocessed.short_description = 'processed'
 
     def __str__(self):
         return self.title
