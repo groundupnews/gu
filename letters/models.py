@@ -12,8 +12,10 @@ class LetterQuerySet(models.QuerySet):
         return self.filter(published__lte=timezone.now())
 
     def unprocessed(self):
-        pks = [letter.pk for letter in Letter.objects.all() if letter.is_unprocessed()]
+        pks = [letter.pk for letter in Letter.objects.all()
+               if letter.is_unprocessed()]
         return self.filter(pk__in=pks)
+
 
 class Letter(models.Model):
     article = models.ForeignKey(Article)
@@ -25,6 +27,14 @@ class Letter(models.Model):
     note_to_writer = models.TextField(blank=True)
     notified_letter_writer = models.BooleanField(default=False)
     notified_editors = models.BooleanField(default=False)
+    replace_with_note = models.BooleanField(default=False,
+                                            help_text="If checked, then "
+                                            "the note to the writer "
+                                            "completely overrides the "
+                                            "standard response sent "
+                                            "to writer.")
+    notes_for_editors = models.TextField(blank=True)
+    being_dealt_with = models.BooleanField(default=False)
     css_classes = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)

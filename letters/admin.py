@@ -44,12 +44,26 @@ class LetterForm(forms.ModelForm):
 class LetterAdmin(admin.ModelAdmin):
     form = LetterForm
     list_display = ['article', 'byline', 'email', 'title',
-                    'rejected', 'published', 'modified', ]
+                    'rejected', 'published', 'being_dealt_with', ]
     date_hierarchy = 'modified'
     list_filter = [ProcessedListFilter, ]
     search_fields = ['article__title', 'title', 'byline', 'email', ]
     ordering = ['-modified', '-position', ]
     raw_id_fields = ('article', )
+    fieldsets = (
+        ('Main', {
+            'classes': ('wide',),
+            'fields': ('article', 'byline', 'email', 'title', 'text',
+                       ('note_to_writer', 'replace_with_note', ),
+                       'rejected', 'published'),
+        }),
+        ('Advanced', {
+            'classes': ('wide',),
+            'fields': ('notified_letter_writer', 'notified_editors',
+                       'notes_for_editors', 'being_dealt_with',
+                       'position', 'css_classes',)
+        })
+    )
 
 
 admin.site.register(models.Letter, LetterAdmin)

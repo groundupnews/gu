@@ -1,6 +1,6 @@
-{% if replace_with_note == True %}
+{% if letter.replace_with_note == True %}
 
-{{letter.note_to_writer|safe|linebreaks}}
+    {{letter.note_to_writer|safe|linebreaks}}
 
 {% else %}
 
@@ -19,14 +19,14 @@ The title of your letter is:<br />
 </p>
 
 <p>
-After carefully considering your letter, we regret that we have decided not to
-publish it.
+We are pleased to inform you that it has been published. You can find it here:<br/>
+{{base_url}}{{letter.get_absolute_url}}
 </p>
 
 {{letter.note_to_writer|safe|linebreaks}}
 
 <p>
-Regards<br/>
+Regards<br />
 GroundUp Editors
 </p>
 {% endif %}

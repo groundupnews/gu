@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.http import Http404
-from django.http import JsonResponse
 from django.urls import reverse
 from . import settings
 from django.core.mail import send_mail
+from django.utils.html import strip_tags
 from django.contrib import messages
 from django.template.loader import render_to_string
 from time import time
@@ -82,13 +82,16 @@ def write_letter(request, pk):
                 letter.email = form.cleaned_data['email']
                 letter.save()
                 subject = "Thank you for submitting a letter to GroundUp"
-                message = render_to_string('letters/acknowledge_letter.txt',
-                                           {'letter': letter})
+                html_message = render_to_string(
+                    'letters/acknowledge_letter.html',
+                    {'letter': letter})
+                message = strip_tags(html_message)
                 send_mail(
                     subject,
                     message,
                     settings.EDITOR,
-                    [letter.email]
+                    [letter.email],
+                    html_message=html_message
                 )
                 return HttpResponseRedirect(reverse("letter_thanks"))
             else:

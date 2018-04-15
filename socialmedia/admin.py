@@ -14,7 +14,7 @@ class TweetAdmin(admin.ModelAdmin):
 
 class TwitterHandleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name", )}
-
+    search_fields = ['slug', 'name', ]
 
 admin.site.register(models.Tweet, TweetAdmin)
 admin.site.register(models.TwitterHandle, TwitterHandleAdmin)

@@ -1,3 +1,6 @@
+{% if letter.replace_with_note %}
+{{letter.note_to_writer}}
+{% else }
 Dear {{letter.byline}}
 
 You wrote a letter to GroundUp in response to the article:
@@ -13,3 +16,4 @@ We are pleased to inform you that it has been published. You can find it here:
 
 Regards
 GroundUp Editors
+{% endif %}
