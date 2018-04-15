@@ -44,7 +44,7 @@ class LetterForm(forms.ModelForm):
 class LetterAdmin(admin.ModelAdmin):
     form = LetterForm
     list_display = ['article', 'byline', 'email', 'title',
-                    'rejected', 'published', 'being_dealt_with', ]
+                    'being_dealt_with', 'rejected', 'published', ]
     date_hierarchy = 'modified'
     list_filter = [ProcessedListFilter, ]
     search_fields = ['article__title', 'title', 'byline', 'email', ]

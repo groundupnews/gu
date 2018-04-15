@@ -11,6 +11,11 @@ class LetterQuerySet(models.QuerySet):
     def published(self):
         return self.filter(published__lte=timezone.now())
 
+    def processed(self):
+        pks = [letter.pk for letter in Letter.objects.all()
+               if letter.is_processed()]
+        return self.filter(pk__in=pks)
+
     def unprocessed(self):
         pks = [letter.pk for letter in Letter.objects.all()
                if letter.is_unprocessed()]
