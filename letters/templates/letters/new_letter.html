@@ -1,0 +1,36 @@
+<p>
+Dear Editors
+</p>
+
+<p>
+The following new letters require your attention:
+</p>
+
+{% for letter in letters %}
+
+    <p>
+        {{forloop.counter}}: In response to:
+        {{letter.article}}
+    </p>
+
+    <p>
+        Title: {{letter.title}}
+    </p>
+
+    <p>
+        Text of letter:
+    </p>
+
+    {{letter.text|linebreaks}}
+
+    <p>
+        Byline: {{letter.byline}}
+    </p>
+
+    <p>
+        {{base_url}}{% url 'admin:letters_letter_change' letter.pk %}
+    </p>
+
+    <hr />
+
+{% endfor %}

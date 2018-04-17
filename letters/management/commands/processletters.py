@@ -61,7 +61,7 @@ def process():
     new_letters = Letter.objects.filter(notified_editors=False)
     if len(new_letters) > 0:
         subject = "New letters received on " + Site.objects.all()[0].name
-        html_message = render_to_string('letters/new_letter.txt',
+        html_message = render_to_string('letters/new_letter.html',
                                         {'letters': new_letters,
                                          'base_url': base_url})
         message = strip_tags(html_message)
