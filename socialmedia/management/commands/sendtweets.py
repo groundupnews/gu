@@ -7,6 +7,7 @@ import sys
 import tweepy
 from socialmedia.settings import TIME_BETWEEN_TWEETS
 from newsroom.models import Article
+import traceback
 
 
 def get_api(cfg):
@@ -26,7 +27,9 @@ def process(days, max_tweets):
     failures = 0
     try:
         api = get_api(cfg)
-    except:
+    except Exception as e:
+        print("Exception message:", e)
+        traceback.print_exc()
         print("Sendtweets: Accessing Twitter failed.")
         print("Sendtweets: Error: ", sys.exc_info()[0])
         return
@@ -73,7 +76,9 @@ def process(days, max_tweets):
                     article.save()
                     successes = successes + 1
                     break  # Maximum of one successful tweet per article
-                except:
+                except Exception as e:
+                    print("Exception message:", e)
+                    traceback.print_exc()
                     failures = failures + 1
                     tweet.status = "failed"
                     print("Sendtweets: Error: ", sys.exc_info()[0])

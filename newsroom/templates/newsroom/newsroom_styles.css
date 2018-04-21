@@ -364,9 +364,10 @@ span.social-media-follow {
 }
 
 
-li {
+#article_body li {
     margin-top: 6px;
     margin-bottom: 6px;
+    font-size: 18px;
 }
 
 #list-header {
