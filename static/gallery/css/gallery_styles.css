@@ -245,3 +245,8 @@
 .thumbnail:hover .tooltiptext {
     display: flex;
 }
+
+.tooltiptext a {
+    color: black;
+    text-decoration: none;
+}

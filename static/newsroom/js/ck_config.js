@@ -19,7 +19,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.extraPlugins = 'find,sourcearea,codemirror,wordcount';
 
-    config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,Undo,Redo,HorizontalRule,Strike,Outdent,Indent,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
+    config.removeButtons = 'Cut,Copy,Paste,PasteText,PasteFromWord';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';

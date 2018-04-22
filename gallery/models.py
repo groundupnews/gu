@@ -65,7 +65,8 @@ class PhotographQuerySet(models.QuerySet):
 class Photograph(models.Model):
     image = FileBrowseField(max_length=200, directory=settings.DIRECTORY)
     albums = models.ManyToManyField(Album, blank=True)
-    photographer = models.ForeignKey(Author, blank=True, null=True)
+    photographer = models.ForeignKey(Author, blank=True, null=True,
+                                     on_delete=models.CASCADE)
     suggested_caption = models.CharField(max_length=600, blank=True)
     alt = models.CharField(max_length=600, blank=True,
                            verbose_name="short title",
@@ -114,7 +115,7 @@ without having to write a fancy widget to do it.
 
 
 class Duplicate(models.Model):
-    photograph = models.ForeignKey(Photograph)
+    photograph = models.ForeignKey(Photograph, on_delete=models.CASCADE)
     image = FileBrowseField(max_length=200, directory=settings.DIRECTORY)
     processed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)

@@ -1,6 +1,8 @@
+import random
+
 from django.conf import settings
 from newsroom import settings as newsroom_settings
-import random
+
 
 def newsroom_template_variables(request):
     return {'logo': newsroom_settings.LOGO,

@@ -1,12 +1,14 @@
+import random
 import re
 import string
-import random
-from bs4 import BeautifulSoup
 from random import randint
-from newsroom.settings import SUPPORT_US_IMAGES
+
+from bs4 import BeautifulSoup
+from django.conf import settings
 # from newsroom.settings import ADVERT_CODE
 from django.contrib.auth.password_validation import MinimumLengthValidator
-from django.conf import settings
+from newsroom.settings import SUPPORT_US_IMAGES
+
 
 ''' Can be used to prevent staff from getting cached pages.
 '''

@@ -6,11 +6,9 @@ To activate your index dashboard add the following to your settings.py::
     GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 """
 
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
-
-from grappelli.dashboard import modules, Dashboard
-from grappelli.dashboard.utils import get_admin_site_name
+from grappelli.dashboard import Dashboard, modules
 
 
 class CustomIndexDashboard(Dashboard):
@@ -19,8 +17,6 @@ class CustomIndexDashboard(Dashboard):
     """
 
     def init_with_context(self, context):
-        site_name = get_admin_site_name(context)
-
         # append a group for "Administration" & "Applications"
         # self.children.append(modules.Group(
         #     _('Group: Administration & Applications'),

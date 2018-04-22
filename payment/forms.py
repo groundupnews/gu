@@ -1,9 +1,8 @@
+from ajax_select.fields import AutoCompleteSelectField
 from django import forms
 from django.forms import ModelForm
 from newsroom.models import Article, Author
-from payment.models import Invoice, Commission
-from ajax_select.fields import AutoCompleteSelectField
-
+from payment.models import Commission, Invoice
 
 BIRTH_YEAR_CHOICES = range(1920,2016)
 

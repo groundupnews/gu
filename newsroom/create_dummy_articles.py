@@ -1,6 +1,8 @@
-from django.utils.text import slugify
-from .models import Article
 from django.utils import timezone
+from django.utils.text import slugify
+
+from .models import Article
+
 
 def create_articles(num):
     article = Article.objects.all()[0]

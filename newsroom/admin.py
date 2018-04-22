@@ -1,21 +1,19 @@
-from django.contrib import admin
-from django import forms
-from django.contrib.flatpages.admin import FlatPageAdmin
-from django.contrib.flatpages.models import FlatPage
-from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
-from payment.admin import InvoiceInline, CommissionInline
 import re
 
-from . import models
-from . import utils
-
+from django import forms
+from django.contrib import admin
+from django.contrib.flatpages.admin import FlatPageAdmin
+from django.contrib.flatpages.models import FlatPage
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
+from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
+from letters.admin import LetterInline
+from payment.admin import CommissionInline, InvoiceInline
+from republisher.admin import RepublisherInline
 from socialmedia.admin import TweetInline
 from socialmedia.common import SCHEDULE_RESULTS
-from republisher.admin import RepublisherInline
-from letters.admin import LetterInline
 
-from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
+from . import models, utils
 
 # Used to select sizes of images
 IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)

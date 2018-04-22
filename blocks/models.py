@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Block(models.Model):
     name = models.CharField(max_length=200, unique=True)
     html = models.TextField(blank=True)
@@ -11,7 +12,7 @@ class Block(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name',]
+        ordering = ['name', ]
 
 
 class Group(models.Model):
@@ -32,7 +33,8 @@ class Group(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name',]
+        ordering = ['name', ]
+
 
 class BlockGroup(models.Model):
     block = models.ForeignKey(Block, on_delete=models.CASCADE,
@@ -44,4 +46,4 @@ class BlockGroup(models.Model):
         return str(self.group) + ":" + str(self.block)
 
     class Meta:
-        ordering = ['position',]
+        ordering = ['position', ]

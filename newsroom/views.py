@@ -1,34 +1,28 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.core.urlresolvers import reverse
-from django.http import Http404
-from django.http import HttpResponseRedirect
-from django.views import generic
-from django.views.generic import View
-from django.db.models import Q
-from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.sites.models import Site
-from django.utils.html import strip_tags
-from django.http import HttpResponseForbidden
-from django.views.decorators.http import last_modified
-from django.utils import timezone
-from django.http import JsonResponse
-from pgsearch.utils import searchPostgresDB
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from bs4 import BeautifulSoup
-
 import datetime
 import logging
 
-from . import models
-from . import settings
-from letters.settings import DAYS_AGO
-from . import utils
-from .forms import ArticleListForm, ArticleForm
-
-from letters.models import Letter
 from blocks.models import Group
+from bs4 import BeautifulSoup
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.sites.models import Site
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
+from django.http import (Http404, HttpResponseForbidden, HttpResponseRedirect,
+                         JsonResponse)
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.html import strip_tags
+from django.views import generic
+from django.views.decorators.http import last_modified
+from django.views.generic import View
+from letters.models import Letter
+from letters.settings import DAYS_AGO
+from pgsearch.utils import searchPostgresDB
+
+from . import models, settings, utils
+from .forms import ArticleForm, ArticleListForm
 
 logger = logging.getLogger(__name__)
 
@@ -471,7 +465,7 @@ def has_author(user):
 
 
 def account_profile(request):
-    if request.user.is_authenticated() is True:
+    if request.user.is_authenticated is True:
         if has_author(request.user):
             if request.user.author.password_changed is False:
                 messages.add_message(request, messages.WARNING,

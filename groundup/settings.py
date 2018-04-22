@@ -82,7 +82,7 @@ INSTALLED_APPS = (
     'pgsearch',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,7 +97,8 @@ MIDDLEWARE_CLASSES = (
     # entering two-factor credentials.
     'allauth_2fa.middleware.AllauthTwoFactorMiddleware',
 
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # SessionAuthenticationMiddleware is deprecated
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -376,5 +377,5 @@ from .local_settings import *
 
 if DEBUG is True:
     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
-    MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
+    MIDDLEWARE = MIDDLEWARE + \
         ('debug_toolbar.middleware.DebugToolbarMiddleware',)

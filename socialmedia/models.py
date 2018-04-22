@@ -33,7 +33,7 @@ def calc_chars_left(tweet_text, image, tags):
 
 
 class Tweet(models.Model):
-    article = models.ForeignKey(Article)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     wait_time = models.PositiveIntegerField(help_text="Number of minutes "
                                             "after publication "
                                             "till tweet.")

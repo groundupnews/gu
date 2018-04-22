@@ -1,6 +1,7 @@
-from ajax_select import register, LookupChannel
-from newsroom.models import Article, Author
+from ajax_select import LookupChannel, register
 from django.db.models import Q
+from newsroom.models import Article, Author
+
 
 @register('articles')
 class ArticleLookup(LookupChannel):

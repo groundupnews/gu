@@ -1,11 +1,11 @@
-from django.db import models
-from django.utils import timezone
-from django.core.urlresolvers import reverse
-from django.db.models import Max
 from decimal import Decimal
-from filebrowser.fields import FileBrowseField
 
-from newsroom.models import Author, Article
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models import Max
+from django.utils import timezone
+from filebrowser.fields import FileBrowseField
+from newsroom.models import Article, Author
 
 INVOICE_STATUS_CHOICES = (
     ("-", "Invoice being prepared by editor"),
@@ -61,7 +61,7 @@ def set_corresponding_vals(fromobj, to):
 
 
 class Invoice(models.Model):
-    author = models.ForeignKey(Author)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     invoice_num = models.IntegerField(default=0)
     # Fields whose default values are taken from Author
     identification = models.CharField(max_length=20, blank=True,
@@ -226,19 +226,17 @@ class CommissionQuerySet(models.QuerySet):
 
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
-    invoice = models.ForeignKey(Invoice)
-    # The author field is now deprecated and must be removed
-    # once all legacy payments are processed
-    # author = models.ForeignKey(Author, blank=True, null=True)
-
-    article = models.ForeignKey(Article, blank=True, null=True)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, blank=True, null=True,
+                                on_delete=models.CASCADE)
     description = models.CharField(max_length=50, blank=True,
                                    default="Article author",
                                    choices=COMMISSION_DESCRIPTION_CHOICES)
     notes = models.CharField(max_length=200, blank=True)
     fund = models.ForeignKey(Fund, blank=True, null=True,
                              help_text="Selecting a fund "
-                             "approves the commission")
+                             "approves the commission",
+                             on_delete=models.CASCADE)
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)

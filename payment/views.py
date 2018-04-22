@@ -1,22 +1,18 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import Http404
-from django.db.models import Q
-from django.db.models import F, Sum
-from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.sites.models import Site
-from django.utils import timezone
-from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory
-
-
-from dateutil import relativedelta
 import calendar
 
+from dateutil import relativedelta
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
+from django.db.models import F, Q, Sum
+from django.forms import modelformset_factory
+from django.http import Http404
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from newsroom.models import Author
 
-from . import models
-from . import forms
+from . import forms, models
 
 
 '''There is business logic in this view that belongs in themodel.
@@ -28,7 +24,7 @@ into model.
 @login_required
 def invoice_list(request, year=None, month=None, author=None):
     user = request.user
-    if not user.is_authenticated():
+    if not user.is_authenticated:
         raise Http404
     staff_view = False
     year_month_begin = None
@@ -126,7 +122,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
     user = request.user
     can_edit = False
 
-    if not user.is_authenticated():
+    if not user.is_authenticated:
         raise Http404
     staff_view = False
 

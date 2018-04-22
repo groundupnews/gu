@@ -1,6 +1,6 @@
 from django import forms
-from . import models
-from . import utils
+
+from . import models, utils
 
 
 class ArticleListForm(forms.Form):

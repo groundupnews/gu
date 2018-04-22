@@ -1,17 +1,13 @@
-from django.test import TestCase
+from decimal import *
 
-from django.test import TestCase
-from django.test import Client
+from django.contrib.auth.models import User
 from django.core import mail
 from django.db import IntegrityError
+from django.test import Client, TestCase
 from django.utils import timezone
+from newsroom.models import Article, Author, Category, Topic
+from payment.models import Commission, Fund, Invoice
 
-from newsroom.models import Article, Topic, Category, Author
-
-from payment.models import Invoice, Commission, Fund
-from django.contrib.auth.models import User
-
-from decimal import *
 
 class InvoiceTest(TestCase):
 

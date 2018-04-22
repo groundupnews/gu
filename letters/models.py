@@ -23,7 +23,7 @@ class LetterQuerySet(models.QuerySet):
 
 
 class Letter(models.Model):
-    article = models.ForeignKey(Article)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     byline = models.CharField(max_length=200)
     email = models.EmailField()
     title = models.CharField(max_length=200)

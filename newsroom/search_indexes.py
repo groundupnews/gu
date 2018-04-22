@@ -1,4 +1,5 @@
 import datetime
+
 from haystack import indexes
 from newsroom.models import Article
 

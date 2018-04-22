@@ -1,16 +1,17 @@
-from django.test import TestCase
-from django.test import Client
+import datetime
+from decimal import *
+
+from bs4 import BeautifulSoup as bs
+from django.contrib.auth.models import User
 from django.core import mail
 from django.db import IntegrityError
+from django.test import Client, TestCase
 from django.utils import timezone
-import datetime
-from newsroom.models import Article, Topic, Category, Author
-from newsroom import utils
-from bs4 import BeautifulSoup as bs
 from letters.models import Letter
-from decimal import *
-from django.contrib.auth.models import User
+from newsroom import utils
+from newsroom.models import Article, Author, Category, Topic
 from pgsearch.utils import searchPostgresDB
+
 
 class HtmlCleanUp(TestCase):
 

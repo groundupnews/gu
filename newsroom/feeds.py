@@ -1,18 +1,19 @@
-from django.contrib.syndication.views import Feed
-from django.utils.feedgenerator import Atom1Feed
-from django.core.urlresolvers import reverse
-from .models  import Article
-from django.contrib.sites.models import Site
-from django.conf import settings
-
 import os
 
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.contrib.syndication.views import Feed
+from django.utils.feedgenerator import Atom1Feed
 from newsroom.settings import LOGO
+
+from .models import Article
+
 
 class LatestArticlesRssFeed(Feed):
     title = "GroundUp News"
     link = "/feeds/"
-    description = "Original news, features and opinion, mostly related to human rights, from South Africa."
+    description = "Original news, features and opinion, "
+    "mostly related to human rights, from South Africa."
 
     def items(self):
         return Article.objects.published()[:15]
@@ -21,7 +22,7 @@ class LatestArticlesRssFeed(Feed):
         return article.title
 
     def item_pubdate(self, article):
-       return article.published
+        return article.published
 
     def item_copyright(self, article):
         return article.copyright
@@ -67,6 +68,7 @@ class LatestArticlesRssFeed(Feed):
                 return "image/jpeg"
         except:
             return "image/png"
+
 
 class LatestArticlesAtomFeed(LatestArticlesRssFeed):
     feed_type = Atom1Feed

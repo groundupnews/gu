@@ -1,24 +1,24 @@
-from django.db import models
-from django.utils import timezone
-from django.core.urlresolvers import reverse
-from django.utils.html import strip_tags
-from django.contrib.auth.models import User
-from django.template.loader import render_to_string
-from django.contrib.sites.models import Site
-from django.core.mail import send_mail
-from django.dispatch import receiver
-from django.conf import settings as django_settings
-from socialmedia.common import SCHEDULE_RESULTS
-from allauth.account.signals import password_changed
-from filebrowser.fields import FileBrowseField
-import traceback
-import logging
 import datetime
-import smartypants
+import logging
+import traceback
 from urllib.parse import urlparse
 
-from . import settings
-from . import utils
+import smartypants
+from allauth.account.signals import password_changed
+from django.conf import settings as django_settings
+from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
+from django.db import models
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.html import strip_tags
+from filebrowser.fields import FileBrowseField
+from socialmedia.common import SCHEDULE_RESULTS
+
+from . import settings, utils
 
 logger = logging.getLogger("django")
 
@@ -89,7 +89,8 @@ class Author(models.Model):
     twitter = models.CharField(max_length=200, blank=True)
     facebook = models.CharField(max_length=200, blank=True)
     googleplus = models.CharField(max_length=200, blank=True)
-    user = models.OneToOneField(User, null=True, blank=True)
+    user = models.OneToOneField(User, null=True, blank=True,
+                                on_delete=models.CASCADE)
     password_changed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -273,19 +274,24 @@ class Article(models.Model):
     summary_text = models.TextField(blank=True)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_01",
-                                  verbose_name="first author")
+                                  verbose_name="first author",
+                                  on_delete=models.CASCADE)
     author_02 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_02",
-                                  verbose_name="second author")
+                                  verbose_name="second author",
+                                  on_delete=models.CASCADE)
     author_03 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_03",
-                                  verbose_name="third author")
+                                  verbose_name="third author",
+                                  on_delete=models.CASCADE)
     author_04 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_04",
-                                  verbose_name="fourth author")
+                                  verbose_name="fourth author",
+                                  on_delete=models.CASCADE)
     author_05 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_05",
-                                  verbose_name="fifth author")
+                                  verbose_name="fifth author",
+                                  on_delete=models.CASCADE)
     byline = models.CharField(max_length=200, blank=True,
                               verbose_name='customised byline',
                               help_text="If this is not blank it "
@@ -315,7 +321,8 @@ class Article(models.Model):
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
     recommended = models.BooleanField(default=True)
-    category = models.ForeignKey(Category, default=4)
+    category = models.ForeignKey(Category, default=4,
+                                 on_delete=models.CASCADE)
     region = models.ForeignKey(Region, blank=True, null=True)
     topics = models.ManyToManyField(Topic, blank=True)
     main_topic = models.ForeignKey(Topic, blank=True,
@@ -388,7 +395,8 @@ class Article(models.Model):
     # Logging
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True,
+                             on_delete=models.CASCADE)
     version = models.PositiveIntegerField(default=0)
 
     # Author notifications and payments
@@ -633,8 +641,8 @@ class Article(models.Model):
 
 
 class UserEdit(models.Model):
-    article = models.ForeignKey(Article)
-    user = models.ForeignKey(User)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     changed = models.BooleanField(default=False)
     edit_time = models.DateTimeField(auto_now=True)
 
