@@ -41,6 +41,10 @@ body {
 
 }
 
+.navbar-nav {
+    margin-top: 8px;
+}
+
 .navbar-brand img {
     /*height: 135%;*/
     padding-bottom: 8px;
