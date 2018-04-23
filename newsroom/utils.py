@@ -195,7 +195,9 @@ def replaceBadHtmlWithGood(html):
     html = remove_unnecessary_white_space(html)
     soup = BeautifulSoup(html, "html.parser")
     soup = replaceImgHeightWidthWithClass(soup)
-    soup = replacePImgWithFigureImg(soup)
+    # While nice to make images into figures, it is a real struggle for
+    # users of CKEditor.
+    # soup = replacePImgWithFigureImg(soup)
     soup = fixEditorSummary(soup)
     soup = removeGoogleDocsSpans(soup)
     soup = processDashes(soup)
