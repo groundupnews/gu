@@ -21,6 +21,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.base import RedirectView
 
 from django.contrib.flatpages.sitemaps import FlatPageSitemap
+from django.contrib.flatpages import views
+
 from django.contrib.sitemaps import GenericSitemap
 from django.contrib.sitemaps.views import sitemap
 
@@ -54,7 +56,6 @@ urlpatterns = [
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^admin/login/$', RedirectView.as_view(url='/accounts/login/')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^imagegallery/', include('gallery.urls')),
     url(r'^', include('newsroom.urls')),
     url(r'^', include('payment.urls')),
@@ -93,3 +94,7 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
+
+urlpatterns += [
+    url(r'^(?P<url>.*/)$', views.flatpage),
+]
