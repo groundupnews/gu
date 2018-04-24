@@ -141,13 +141,13 @@ figcaption {
 }
 
 #article-dateline {
-    margin-top: 3px;
+    margin-top: 6px;
     margin-bottom: 12px;
     color: #adadad;
     font-size: 14px;
 }
 
-article p {
+article p, article li {
     font-size: 18px;
     margin-top: 14px;
     margin-bottom: 14px;
@@ -367,12 +367,6 @@ span.social-media-follow {
     line-height: 160%;
 }
 
-
-#article_body li {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    font-size: 18px;
-}
 
 #list-header {
     margin: 7px;
