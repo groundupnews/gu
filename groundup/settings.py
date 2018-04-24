@@ -278,8 +278,27 @@ GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 
 GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 
-NEWSROOM_ARTICLE_COPYRIGHT = '&copy; ' + str(datetime.date.today().year) + \
-                             ' GroundUp. <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="/static/newsroom/images/cc.png" /></a><br />This article is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.<p>You may republish this article, so long as you credit the authors and GroundUp, and do not change the text. Please include a link back to the original article.</p>'
+NEWSROOM_ARTICLE_COPYRIGHT = '<p>&copy; ' + str(datetime.date.today().year) + \
+                             ' GroundUp.' \
+                             '<a rel="license"' \
+                             '   href="http://creativecommons.org/licenses/by-nd/4.0/">' \
+                             '    <svg viewBox="0 0 100 100"' \
+                             '         class="icon icon-creative-commons">' \
+                             '        <use xlink:href="#icon-creative-commons">' \
+                             '        </use>' \
+                             '    </svg>' \
+                             '</a><br />This article is licensed under a ' \
+                             '<a rel="license"' \
+                             '   href="http://creativecommons.org/licenses/by-nd/4.0/">' \
+                             'Creative Commons Attribution-NoDerivatives 4.0 ' \
+                             'International License' \
+                             '</a>.</p>' \
+                             '<p>You may republish this article, ' \
+                             'so long as you credit the authors and ' \
+                             'GroundUp, and do not change the text. ' \
+                             'Please include a link back to the original ' \
+                             'article.' \
+                             '</p>'
 
 
 NEWSROOM_SUPPORT_US_IMAGES = [
