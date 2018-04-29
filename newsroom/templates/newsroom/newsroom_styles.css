@@ -72,12 +72,20 @@ header {
     font-family: Verdana, Arial, sans-serif;
 }
 
-nav ul ul li {
-    padding: 3px;
-}
-
 nav .active {
     background-color: lightGray;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: none;
+}
+
+nav li.drop > a:after {
+    content: "↓";
 }
 
 @media (max-width: 699px) {
@@ -94,11 +102,6 @@ nav .active {
         top: 16%;
     }
 
-    #hamburger {
-        /* margin: 0; */
-        /* padding: 0; */
-    }
-
     nav {
         list-style:none;
         margin:0;
@@ -107,10 +110,6 @@ nav .active {
         z-index: 1000;
         display: inline-block;
         border-top:  1px lightGray dotted;
-    }
-
-    nav a:hover {
-        text-decoration: none;
     }
 
     #menu_search  {
@@ -130,11 +129,17 @@ nav .active {
         text-align: left;
         margin-left: 7px;
         margin-right: 15px;
+        margin-bottom: 12px;
         padding-left: 0;
     }
     nav ul ul {
-        padding-left: 15px;
+        padding-left: 5px;
     }
+
+    nav ul ul li {
+        padding-left: 5px;;
+    }
+
     #search-form {
         margin-top: 12px;
         margin-bottom: 12px;
@@ -147,9 +152,8 @@ nav .active {
     nav li a {
         display: inline-block;
         width: 100%;
-        line-height: 35px;
+        line-height: 100%;
         padding: 0;
-        text-decoration: none;
         color: black;
     }
 }
@@ -172,6 +176,11 @@ nav .active {
         padding-left: 0;
         display: inline;
     }
+
+    nav ul ul li {
+        padding: 3px;
+    }
+
 
     nav li {
         display: inline-block;

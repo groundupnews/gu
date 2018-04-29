@@ -16,7 +16,7 @@
                     <a href="{% url 'photo.list' %}">Photos</a>
                 </li>
             {% else %}
-                <li class="drop"><a href="#">News&nbsp;↓</a>
+                <li class="drop"><a href="#">News</a>
 	            <ul>
                         {% url 'home' as home_url %}
                         <li {% if path == home_url %}class='active'{% endif %}>
@@ -48,7 +48,7 @@
         {% endwith %}
         {% if request.user.is_staff %}
 	    <li class="drop">
-	        <a class="admin-menu-item" href="#">Admin&nbsp;↓</a>
+	        <a class="admin-menu-item" href="#">Admin</a>
 	        <ul>
                     {% include 'newsroom/staff_menu.html' %}
 	        </ul>

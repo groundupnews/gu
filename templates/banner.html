@@ -9,7 +9,7 @@
 
         <div id="hamburger_menu_search">
             <button id="hamburger" onclick="toggleMenu()">
-                {% include 'insert_icon.html' with icon="icon-menu" %}
+                ☰
             </button>
 
             <div id="menu_search">
@@ -24,13 +24,19 @@
     </div>
     <script>
      var menu_clicked = false;
+     var drop_clicked;
      var toggleMenu = function() {
+         menu_search = document.getElementById("menu_search");
          if (menu_clicked) {
              menu_search.style.display = "none";
+             document.getElementById("hamburger").innerHTML = "☰";
          } else {
              menu_search.style.display = "block";
+             document.getElementById("hamburger").innerHTML = "X";
+             drop_clicked = false;
          }
          menu_clicked = !menu_clicked;
      }
+
     </script>
 </header>
