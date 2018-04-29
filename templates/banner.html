@@ -8,10 +8,9 @@
 
 
         <div id="hamburger_menu_search">
-            <input id="mobile_menu_checkbox" class="hamburger" type="checkbox" />
-            <label for="mobile_menu_checkbox" class="hamburger" id="mobile_menu_label">
+            <button id="hamburger" onclick="toggleMenu()">
                 {% include 'insert_icon.html' with icon="icon-menu" %}
-            </label>
+            </button>
 
             <div id="menu_search">
                 {% block searchform %}
@@ -23,4 +22,15 @@
             </div>
         </div>
     </div>
+    <script>
+     var menu_clicked = false;
+     var toggleMenu = function() {
+         if (menu_clicked) {
+             menu_search.style.display = "none";
+         } else {
+             menu_search.style.display = "block";
+         }
+         menu_clicked = !menu_clicked;
+     }
+    </script>
 </header>
