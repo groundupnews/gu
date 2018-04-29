@@ -54,8 +54,8 @@
 	        </ul>
 	    </li>
         {% elif request.user.is_authenticated %}
-	    <li class="drop">
-	        <a href="{% url 'user.profile' %}" class="admin-menu-item">My account</a>
+	    <li>
+	        <a href="{% url 'user.profile' %}" class="admin-menu-item">Account</a>
 	    </li>
         {% endif %}
     </ul>
