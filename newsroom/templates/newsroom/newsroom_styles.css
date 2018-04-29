@@ -21,7 +21,8 @@ body {
 
 @media (max-width: 382px) {
     body {
-        font-size: 1.35rem;
+        /* font-size: 1.35rem;*/
+        font-size: 1.53rem;
     }
 }
 
@@ -489,7 +490,8 @@ span.social-media-follow {
 /******************************************/
 
 #article-category {
-    font-size: 1.35rem;
+    /* font-size: 1.35rem;*/
+    font-size: 1.53rem;
 }
 
 #article-copyright {
@@ -497,7 +499,8 @@ span.social-media-follow {
     margin-bottom: 12px;
     padding: 12px;
     background-color: #F1F2F2;
-    font-size: 1.35rem;
+    /* font-size: 1.35rem;*/
+    font-size: 1.53rem;
 }
 
 
