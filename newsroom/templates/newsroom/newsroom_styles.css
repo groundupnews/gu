@@ -102,6 +102,16 @@ nav li.drop > a:after {
         top: 16%;
     }
 
+    #hamburger {
+        position: fixed;
+        top: 0;
+        right: 25px;
+        top: 10px;
+        font-size: 16px;
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
     nav {
         list-style:none;
         margin:0;
@@ -152,7 +162,7 @@ nav li.drop > a:after {
     nav li a {
         display: inline-block;
         width: 100%;
-        line-height: 100%;
+        line-height: 115%;
         padding: 0;
         color: black;
     }
