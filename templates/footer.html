@@ -1,70 +1,39 @@
-<div id="footer">
-    <div class="container">
-	<div class="row">
-	    <div class="col-xs-12 col-sm-4">
-		<div class="row">
-		    <div class="col-xs-2 col-sm-1">
-			<p>
-                            {% include "insert_icon.html" with icon="icon-copyright" %}
-			</p>
-		    </div>
-		    <div class="col-xs-10 col-sm-11">
-			<p>
-			    2012-{% now "Y" %} GroundUp. See copyright notice on articles for terms.
-			</p>
-		    </div>
-		</div>
-	    </div>
-	    <div class="col-xs-12 col-sm-8">
-		<address>
+<footer>
+    <div id="footer-container">
+        <div id="copyright">
+            <h2>Copyright</h2>
+            <p>
+                {% include "insert_icon.html" with icon="icon-copyright" %}
+	        2012-{% now "Y" %} GroundUp. See copyright notice on
+                articles for terms.
+            </p>
+        </div>
+        <address>
+            <h2>Address</h2>
+	    <p>
+	        Suite 08SB, 1st&nbsp;floor<br>South&nbsp;
+                Block, Tannery&nbsp;Park<br />
+                21 Belmont Road<br>Rondebosch<br />
+                Cape Town 7700</p>
+            <p>
+                {% include "insert_icon.html" with icon="icon-location" %}
+                <a href="https://goo.gl/a7ybi4" target="_blank">Google Maps</a>&nbsp;
+                <a href="https://www.openstreetmap.org/search?query=23%20Belmont%20Road%20Rondebosch#map=19/-33.96195/18.47122&layers=NDG"
+                   target="_blank">OpenStreetMap
+                </a>
+	    </p>
+        </address>
+        <div id="contact">
+            <h2>Contact us</h2>
+	    <p>
+                {% include "insert_icon.html" with icon="icon-phone" %}
+	        +27 (0) 21 788 9163
+	    </p>
+	    <p>
+                {% include "insert_icon.html" with icon="icon-mail" %}
+	        <a href="mailto:info@groundup.org.za">info@groundup.org.za</a>
+	    </p>
+        </div>
 
-		    <div class="row">
-			<div class="col-xs-12 col-sm-6">
-			    <div class="row">
-				<div class="col-xs-2 col-sm-1">
-				    <p>
-                                        {% include "insert_icon.html" with icon="icon-location" %}
-				    </p>
-				</div>
-				<div class="col-xs-10 col-sm-11">
-				    <p>
-					Suite 08SB, 1st&nbsp;floor, South&nbsp;Block, Tannery&nbsp;Park<br />21 Belmont Road, Rondebosch<br />Cape Town 7700<br /><a href="https://www.google.co.za/maps/place/Tannery+Park/@-33.9600692,18.471663,319m/data=!3m1!1e3!4m7!1m4!3m3!1s0x1dcc5d2793ff705d:0x305d546814818e1!2s21+Belmont+Rd,+Rosebank,+Cape+Town,+7700!3b1!3m1!1s0x0000000000000000:0xafb31595aba3fa10?hl=en">(Google Map)</a>
-				    </p>
-				</div>
-			    </div>
-			</div>
-			<div class="col-xs-12 col-sm-6">
-			    <div class="row">
-				<div class="col-xs-2 col-sm-1">
-				    <p>
-                                        {% include "insert_icon.html" with icon="icon-phone" %}
-				    </p>
-				</div>
-				<div class="col-xs-10 col-sm-11">
-				    <p>
-				    +27 (0) 21 788 9163
-				    </p>
-				</div>
-			    </div>
-
-			    <div class="row">
-				<div class="col-xs-2 col-sm-1">
-				    <p>
-                                        {% include "insert_icon.html" with icon="icon-mail" %}
-				    </p>
-				</div>
-				<div class="col-xs-10 col-sm-11">
-				    <p>
-				    <a href="mailto:info@groundup.org.za">info@groundup.org.za</a>
-				    </p>
-				</div>
-			    </div>
-			</div>
-		    </div>
-
-		</address>
-
-	    </div>
-	</div>
     </div>
-</div>
+</footer>

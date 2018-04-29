@@ -14,7 +14,7 @@
 	<div class="row">
 	    <div class="col-xs-12 col-md-8">
 		{% if query %}
-		    <h2>Search results</h2>
+		    <h1>Search results</h1>
                     <p>
                         {% if method == "DATE" %}
                             Results are sorted by publication date.
@@ -29,9 +29,9 @@
                         {% endif %}
                     </p>
 		    {% for article in page.object_list %}
-			<h4>
+			<h2>
 			    <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
-			</h4>
+			</h2>
 			<p>
 			   {{article.published|date:"j M Y"}}
 			</p>

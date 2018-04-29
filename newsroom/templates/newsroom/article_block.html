@@ -20,11 +20,11 @@
                     {% endif %} >{{ article.title|safe}}
 	        </h1>
 	        {% if article.subtitle %}
-	            <h2 id="article_subtitle"
+	            <p id="article_subtitle"
 	    	        {% if can_edit %}
 contenteditable="true"
 		        {% endif %} >{{ article.subtitle|safe }}
-	            </h2>
+	            </p>
 	        {% else %}
 	            {% comment %}Subtitle must always be visible for editors
 	            {% endcomment %}
@@ -78,19 +78,19 @@ contenteditable="true">
 	    </figure>
 	{% endif %}
 
-	<div id="article-byline">
+	<p id="article-byline">
 
 	    {{ article.cached_byline|safe }} &nbsp; &nbsp;
 
-	</div>
-	<div id="article-dateline">
+	</p>
+	<p id="article-dateline">
 
 	    <time
 datetime='{{ article.published|date:"Y-m-d" }}'>
 		{{ article.published|date:"j F Y"}}
 	    </time>
 
-	</div>
+	</p>
 
 	<div id="article_body"
 	     {% if can_edit %} contenteditable="true"

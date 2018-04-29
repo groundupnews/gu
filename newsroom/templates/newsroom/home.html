@@ -19,15 +19,13 @@
 		    {% else  %}
 			{% with article_list.0 as article %}
 			    <div id="top-article">
-				<h2 class="first-summary-title
-					   summary-title">
+				<h2 class="first-summary-title">
 				    <a href="{{article.get_absolute_url}}">
 					{{article.title|safe }}
 				    </a>
 				</h2>
 
-				<div class="first-summary-text
-					    summary-text">
+				<div class="first-summary-text">
 				    <a href="{{article.get_absolute_url}}">
 					{{article.cached_summary_text|safe}}
 				    </a>
@@ -47,6 +45,7 @@
 			    {% include 'newsroom/list.html' with articles=articlelist include_image="1" include_summary="1" md_size="12" %}
 			{% endwith %}
 		    {% endif %}
+                    {% include 'paginator.html' %}
 		</div>
 		<div class="col-xs-12 col-md-4">
 		    <div id="sidebar">

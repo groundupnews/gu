@@ -1,12 +1,10 @@
 
-<form id="search-form" class="navbar-form navbar-right"
-      method="get" action="/search/">
-    <div class="form-group">
-	<input type="text" class="form-control" name="q" id="id_q"
-	       placeholder="Search articles"
-               value="{{query}}" />
-        <button id="search-button" class="btn btn-default">
-            {% include "insert_icon.html" with icon="icon-search" %}
-        </button>
-    </div>
+<form id="search-form" method="get"
+      action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
+    <input type="text" class="form-control" name="q" id="id_q"
+	   placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
+           value="{{query}}" />
+    <button id="search-button">
+        {% include "insert_icon.html" with icon="icon-search" %}
+    </button>
 </form>

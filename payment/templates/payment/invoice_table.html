@@ -1,4 +1,4 @@
-<table cellpadding="10" class="table table-bordered table-condensed">
+<table id="invoice-table" cellpadding="10" class="table table-bordered table-condensed">
     <tr>
         <th>Article</th>
         <th>Description</th>
@@ -8,8 +8,8 @@
         <th>Due</th>
         {% if staff_view %}<th>Fund</th>{% endif %}
         {% if can_edit_commissions and staff_view %}
-            <th><i class="fa fa-eraser"></i></th>
-            <th><i class="fa fa-edit"></i></th>
+            <th>&#x232B;</th>
+            <th>&#x1F58B;</th>
         {% endif %}
     </tr>
 
@@ -48,7 +48,7 @@
                         {{payment.3|floatformat:0}}
                     {% endif %}
                 </td>
-                <td align="right">{% if payment.2 > 0.00 %}-{%endif %}{{payment.2|floatformat:0}}
+                <td align="right">{{payment.2|floatformat:0}}
                     {% if can_edit_commissions %}
                         <div class="tax-input">
                             {{ form.taxable }}
@@ -88,9 +88,7 @@
                             <a href="
                                      {% url 'commissions.detail' commission.pk %}
                                      "
-                               target="_blank">
-                                <i class="fa fa-edit"></i>
-                            </a>
+                               target="_blank">&#x1F58B;</a>
                         </td>
                     {% endif %}
                 {% endif %}

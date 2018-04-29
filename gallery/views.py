@@ -32,8 +32,8 @@ def photo_list(request, keyword=None):
     else:
         query = Q()
 
-    if "search-photos" in request.GET:
-        search_string = request.GET["search-photos"]
+    if "q" in request.GET:
+        search_string = request.GET["q"]
         search_query = Q(suggested_caption__icontains=search_string) | \
                        Q(photographer__last_name__icontains=search_string) | \
                        Q(photographer__first_names__icontains=search_string) | \

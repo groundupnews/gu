@@ -1,83 +1,62 @@
-<ul class="nav navbar-nav">
-    {% with path=request.get_full_path %}
-        <li class="Dropdown">
-	    <a href="#" class="dropdown-toggle"
-               data-toggle="dropdown"
-               role="button"
-               aria-haspopup="true"
-               aria-expanded="false">News<span
-                                             style="color:#26aae2 !important;">
-                <span class="caret"></span></span></a>
-	    <ul class="dropdown-menu">
-                <li {% if path == '/' %}
-                    class='active'
-                {% endif %}><a href="/">Front page</a></li>
-	        <li role="separator" class="divider"></li>
-                <li><a href="/category/Feature/">Features</a></li>
-                <li role="separator" class="divider"></li>
-	        <li><a href="/spotlight-social-grants/">Social Grants</a></li>
-	        <li><a href="/topic/housing">Housing</a></li>
-	        <li><a href="/topic/health">Health</a></li>
-	        <li><a href="/topic/education">Education</a></li>
-	        <li><a href="/topic/immigration">Immigration</a></li>
-                <li><a href="/topic/policing">Policing</a></li>
-	        <li><a href="/topic/labour">Labour</a></li>
-	        <li role="separator" class="divider"></li>
-	        <li><a href="/silicosis-court-case/">Silicosis class action</a></li>
-	        <li><a href="/ctwatercrisis/">Cape Town's water crisis</a></li>
-                <li><a href="/topic/vigilante-quest-legitimacy/">Vigilantes battle for legitimacy</a></li>
-	    </ul>
-        </li>
+<nav>
 
-        <li class="Dropdown">
-	    <a href="#" class="dropdown-toggle"
-               data-toggle="dropdown"
-               role="button"
-               aria-haspopup="true"
-               aria-expanded="false">Images<span
-                                               style="color:#26aae2 !important;">
-                <span class="caret"></span></span></a>
-	    <ul class="dropdown-menu">
-                <li {% if path == '/imagegallery/' %}
-                    class='active'
-                {% endif %}><a href="{% url 'gallery.front' %}">Gallery</a></li>
-                <li {% if path == '/imagegallery/albums/' %}
-                    class='active'
-                {% endif %}><a href="{% url 'album.list' %}">Albums</a></li>
-                <li {% if path == '/imagegallery/photos/' %}
-                    class='active'
-                {% endif %}><a href="{% url 'photo.list' %}">Photos</a></li>
-                <li {% if path == '/imagegallery/photos/?featured' %}
-                    class='active'
-                {% endif %}><a href="{% url 'photo.list' %}?featured">Featured photos</a></li>
-	    </ul>
-        </li>
+    <ul>
+        {% with path=request.get_full_path %}
+            {% if gallery %}
+                {% url home as home_url %}
+                <li {% if path == home_url %}class='active'{% endif %}>
+                    <a href="/">Home</a>
+                </li>
+                {% url 'album.list' as album_list_url %}
+                <li {% if path == album_list_url %}class='active'{% endif %}>
+                    <a href="{% url 'album.list' %}">Albums</a>
+                </li>
+                {% url 'photo.list' as photo_list_url %}
+                <li {% if path == photo_list_url %} class='active'{% endif %}>
+                    <a href="{% url 'photo.list' %}">Photos</a>
+                </li>
+            {% else %}
+                <li class="drop"><a href="#">News&nbsp;↓</a>
+	            <ul>
+                        {% url 'home' as home_url %}
+                        <li {% if path == home_url %}class='active'{% endif %}>
+                            <a href="/">Home</a>
+                        </li>
+	                <li class="divider"></li>
+                        <li><a href="/category/Feature/">Features</a></li>
+                        <li class="divider"></li>
+	                <li><a href="/spotlight-social-grants/">Social Grants</a></li>
+	                <li><a href="/topic/housing">Housing</a></li>
+	                <li><a href="/topic/health">Health</a></li>
+	                <li><a href="/topic/education">Education</a></li>
+	                <li><a href="/topic/immigration">Immigration</a></li>
+                        <li><a href="/topic/policing">Policing</a></li>
+	                <li><a href="/topic/labour">Labour</a></li>
+	            </ul>
+                </li>
 
-
-
-	<li  {% if path == '/about/' %} class='active' {% endif %} >
-	    <a href="/about/">About</a>
-	</li>
-	<li {% if path == '/donate/' %} class='active' {% endif %}>
-	    <a href="/donate/">Donate</a>
-	</li>
-    {% endwith %}
-
-    {% if request.user.is_staff %}
-	<li class="Dropdown">
-	    <a href="#" class="dropdown-toggle admin-menu-item"
-	       data-toggle="dropdown"
-	       role="button"
-	       aria-haspopup="true"
-	       aria-expanded="false">Admin<span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-                {% include 'newsroom/staff_menu.html' %}
-	    </ul>
-	</li>
-    {% elif request.user.is_authenticated %}
-	<li class="Dropdown">
-	    <a href="{% url 'user.profile' %}"
-               class="dropdown-toggle admin-menu-item">My account</a>
-	</li>
-    {% endif %}
-</ul>
+                <li>
+                    <a href="/imagegallery/">Gallery</a>
+                </li>
+	        <li  {% if path == '/about/' %} class='active' {% endif %}>
+	            <a href="/about/">About</a>
+	        </li>
+	        <li {% if path == '/donate/' %} class='active' {% endif %}>
+	            <a href="/donate/">Donate</a>
+	        </li>
+            {% endif %}
+        {% endwith %}
+        {% if request.user.is_staff %}
+	    <li class="drop">
+	        <a class="admin-menu-item" href="#">Admin&nbsp;↓</a>
+	        <ul>
+                    {% include 'newsroom/staff_menu.html' %}
+	        </ul>
+	    </li>
+        {% elif request.user.is_authenticated %}
+	    <li class="drop">
+	        <a href="{% url 'user.profile' %}" class="admin-menu-item">My account</a>
+	    </li>
+        {% endif %}
+    </ul>
+</nav>

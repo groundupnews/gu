@@ -94,12 +94,11 @@
 		        </div>
 		    {% endif %}
 	        {% endblock %}
-
-	        {% block footer %}
-		    {% include 'footer.html' %}
-	        {% endblock %}
             </div>
 
+	    {% block footer %}
+		{% include 'footer.html' %}
+	    {% endblock %}
 
 	    {% block javascript-includes %}
 		{% include 'javascripts.html' %}

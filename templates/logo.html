@@ -1,10 +1,21 @@
 {% load staticfiles %}
 
-    <a class="navbar-brand" href="/" title="Click to go to home page">
-	<img src=
+<span id="logo">
+    {% if gallery %}
+        <a href="{% url 'gallery.front' %}">
+            <h2 class="gallery">Gallery</h2></a>
+            {% comment %}
+            <img src=
+                 "{% static logo %}"
+                 alt="GroundUp Logo" />
+        </a><br />
+        {% endcomment %}
+    {% else %}
+    <a href="{% url 'home' %}">
+        <img src=
              "{% static logo %}"
-             alt="GroundUp Logo" />
-        {% if gallery %}
-            <div id="gallery-logo">IMAGES</div>
-        {% endif %}
+             alt="GroundUp Logo"
+        />
     </a>
+    {% endif %}
+</span>

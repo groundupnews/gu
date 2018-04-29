@@ -29,7 +29,11 @@
 	    <div class="row">
 		<div class="col-xs-12 col-md-8">
 		    {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
+
+	            {% include 'paginator.html' %}
+
 		</div>
+
 		<div class="col-xs-12 col-md-4">
 		    <div id="sidebar">
                         {% include 'blocks/blocks.html' %}
@@ -37,9 +41,6 @@
 		</div>
 	    </div>
 	</div>
-    {% endblock %}
-    {% block pagination %}
-	{% include 'paginator.html' %}
     {% endblock %}
 
 {% endblock %}
