@@ -113,6 +113,7 @@ nav a:hover {
 
     #menu_search  {
         position: fixed;
+        height:100vh;
         left: 700px;
         top: 50px;
         width: 100%;
