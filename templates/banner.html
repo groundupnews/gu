@@ -1,25 +1,23 @@
 {% load staticfiles %}
 
 <header>
+    <span id="hamburger" onclick="toggleMenu()">
+        ☰
+    </span>
+
     <div class="container">
         {% block logo %}
             {% include logo_template|default:"logo.html" %}
         {% endblock %}
 
 
-        <div id="hamburger_menu_search">
-            <button id="hamburger" onclick="toggleMenu()">
-                ☰
-            </button>
-
-            <div id="menu_search">
-                {% block searchform %}
-                    {% include searchform_template|default:"search/searchform.html" %}
-                {% endblock %}
-                {% block mainmenu %}
-                    {% include menu_template|default:"menu.html" %}
-                {% endblock %}
-            </div>
+        <div id="menu_search">
+            {% block searchform %}
+                {% include searchform_template|default:"search/searchform.html" %}
+            {% endblock %}
+            {% block mainmenu %}
+                {% include menu_template|default:"menu.html" %}
+            {% endblock %}
         </div>
     </div>
     <script>
@@ -28,10 +26,10 @@
      var toggleMenu = function() {
          menu_search = document.getElementById("menu_search");
          if (menu_clicked) {
-             menu_search.style.display = "none";
+             menu_search.style.left = "700px";
              document.getElementById("hamburger").innerHTML = "☰";
          } else {
-             menu_search.style.display = "block";
+             menu_search.style.left = "0";
              document.getElementById("hamburger").innerHTML = "X";
              drop_clicked = false;
          }

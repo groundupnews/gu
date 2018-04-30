@@ -85,10 +85,6 @@ nav a:hover {
     text-decoration: none;
 }
 
-nav li.drop > a:after {
-    content: "↓";
-}
-
 @media (max-width: 699px) {
     #logo {
         display: inline-block;
@@ -96,19 +92,11 @@ nav li.drop > a:after {
         padding-right: 21px;
     }
 
-    #hamburger_menu_search {
-        position: absolute;
-        top: 0;
-        left: 80%;
-        top: 16%;
-    }
-
     #hamburger {
-        position: fixed;
-        top: 0;
+        position: absolute;
         right: 23px;
         top: 10px;
-        font-size: 16px;
+        font-size: 2rem;
         padding-left: 6px;
         padding-right: 6px;
     }
@@ -124,14 +112,14 @@ nav li.drop > a:after {
     }
 
     #menu_search  {
-        display: none;
         position: fixed;
-        left: 0;
+        left: 700px;
         top: 50px;
         width: 100%;
         z-index: 1000;
         background-color: #FCFCFC;
         border-bottom: 1px solid lightGray;
+        transition: left 0.5s ease-in;
     }
 
     nav ul {
@@ -165,6 +153,8 @@ nav li.drop > a:after {
         width: 100%;
         line-height: 115%;
         padding: 0;
+    }
+    nav li.drop > a {
         color: black;
     }
 }
@@ -181,6 +171,10 @@ nav li.drop > a:after {
         text-align:center;
         z-index: 1000;
         display: inline-block;
+    }
+
+    nav li.drop > a:after {
+        content: "↓";
     }
 
     nav ul {
