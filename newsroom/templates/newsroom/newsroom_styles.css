@@ -112,9 +112,9 @@ nav a:hover {
     }
 
     #menu_search  {
-        position: fixed;
+        position: absolute;
         min-height:100vh;
-        overflow: auto;
+        overflow: scroll;
         left: 700px;
         top: 50px;
         width: 100%;
@@ -224,23 +224,12 @@ nav a:hover {
         position: absolute;
         padding: 0px;
         left: 0;
-        display: block;
-        visibility: hidden;
-        opacity: 0;
+        display: none;
         background-color: #f2f2f2;
-        transition: all 0.5s ease-out;
-        -webkit-transition: all 0.5s ease-out;
-        -moz-transition: all 0.5s ease-out;
-        -o-transition: all 0.5s ease-out;
     }
 
     nav li.drop:hover ul {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    nav li.drop:active ul {
-        -webkit-transition: opacity 0.5s ease-out;
+        display: block;
     }
 
     nav li.drop:hover > a {
