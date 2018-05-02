@@ -60,6 +60,10 @@ p {
     max-width: 38em;
 }
 
+p.full-width {
+    max-width: 750px;
+}
+
 /****************** HEADER *******************/
 
 header {
