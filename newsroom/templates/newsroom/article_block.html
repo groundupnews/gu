@@ -45,10 +45,12 @@ contenteditable="true"
 	{% if article.cached_primary_image %}
 	    <figure id="article-primary-image">
 		{% if article.primary_image %}
-		    <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}">
+		    <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}"
+                       target="_blank">
 			<img src="{{article.cached_primary_image|iriencode}}"
 			     alt="{{article.primary_image_alt|addslashes}}"
-                             class="webfeedsFeaturedVisual" />
+                             class="webfeedsFeaturedVisual"
+                        />
 		    </a>
 		{% else %}
 		    <img src="{{article.cached_primary_image|iriencode}}"
