@@ -6,7 +6,6 @@ from random import randint
 from bs4 import BeautifulSoup
 from django.conf import settings
 # from newsroom.settings import ADVERT_CODE
-from django.contrib.auth.password_validation import MinimumLengthValidator
 from newsroom.settings import SUPPORT_US_IMAGES
 
 
@@ -190,6 +189,43 @@ def processAdverts(soup):
     return soup
 
 
+def linkImages(soup):
+    soup_copy = soup
+    try:
+        images = soup.find_all('img')
+        # Exclude images with class leave
+        images = [i for i in images if not (i.has_attr("class") and
+                                            "leave" in i["class"])]
+        # Exclude if not a versioned image
+        images = [i for i in images if i.has_attr("src") and
+                  i["src"].find("_versions/") > 0 and
+                  i["src"].find("_extra_large") > 0]
+        lenVersions = len("_versions/")
+        lenExtra = len("_extra_large")
+        for img in images:
+            url = img["src"]
+            vBegin = url.find("_versions/")
+            vEnd = vBegin + lenVersions
+            eBegin = url.find("_extra_large")
+            eEnd = eBegin + lenExtra
+            urlnew = url[:vBegin] + "uploads/" + url[vEnd:eBegin] + url[eEnd:]
+            if img.parent.name == 'a':
+                img.parent["href"] = urlnew
+                img.parent["class"] = "bigger-image"
+                img.parent["target"] = "_blank"
+            else:
+                link = soup.new_tag("a")
+                link["href"] = urlnew
+                link["target"] = "_blank"
+                link["class"] = "bigger-image"
+                img.wrap(link)
+        return soup
+    # This code is not important enough to be worth crashing the sav on
+    # an exception
+    except:
+        return soup_copy
+
+
 def replaceBadHtmlWithGood(html):
     html = html.replace('dir="ltr"', "")
     html = remove_unnecessary_white_space(html)
@@ -203,6 +239,7 @@ def replaceBadHtmlWithGood(html):
     soup = processDashes(soup)
     soup = processYouTubeDivs(soup)
     soup = processSoundCloudDivs(soup)
+    soup = linkImages(soup)
     return str(soup)
 
 
