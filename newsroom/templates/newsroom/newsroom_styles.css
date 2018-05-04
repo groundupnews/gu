@@ -119,14 +119,12 @@ nav a:hover {
         position: absolute;
         min-height:100vh;
         overflow: scroll;
-        left: 700px;
-        visibility: hidden;
+        display: none;
         top: 50px;
         width: 100%;
         z-index: 1000;
         background-color: #FCFCFC;
         border-bottom: 1px solid lightGray;
-        transition: left 0.5s ease-in;
     }
 
     nav ul {

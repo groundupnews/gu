@@ -25,13 +25,12 @@
      var toggleMenu = function() {
          menu_search = document.getElementById("menu_search");
          if (menu_clicked) {
-             menu_search.style.left = "700px";
-             menu_search.style.visibility = "none";
+             menu_search.style.display = "none";
              document.getElementById("hamburger").innerHTML = "☰";
          } else {
              menu_search.style.left = "0";
              document.getElementById("hamburger").innerHTML = "X";
-             menu_search.style.visibility = "visible";
+             menu_search.style.display = "block";
          }
          menu_clicked = !menu_clicked;
      }
