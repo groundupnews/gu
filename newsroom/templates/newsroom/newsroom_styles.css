@@ -120,7 +120,7 @@ nav a:hover {
         min-height:100vh;
         overflow: scroll;
         left: 700px;
-        visibility: none;
+        visibility: hidden;
         top: 50px;
         width: 100%;
         z-index: 1000;
