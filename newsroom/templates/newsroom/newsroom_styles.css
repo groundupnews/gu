@@ -116,7 +116,7 @@ nav a:hover {
     }
 
     #menu_search  {
-        position: absolute;
+        position: fixed;
         height: 800px;
         max-height: 800px;
         overflow-y: scroll;
