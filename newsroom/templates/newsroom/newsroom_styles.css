@@ -124,10 +124,10 @@ nav a:hover {
         margin-top: 40px;
         display: none;
         top: 50px;
-        width: 100%;
+        /* width: 100%;*/
         z-index: 1000;
         background-color: #FCFCFC;
-        border-bottom: 1px solid lightGray;
+        overflow-y:scroll;
     }
 
     nav ul {
@@ -139,6 +139,7 @@ nav a:hover {
         margin-bottom: 12px;
         padding-left: 0;
     }
+
     nav ul ul {
         padding-left: 15px;
     }
@@ -305,6 +306,14 @@ article li {
     margin-bottom: 9px;
 }
 
+article p {
+    margin-top: 12px;
+}
+
+article p > img {
+    margin-top: 14px;
+}
+
 /**************************/
 
 
@@ -335,6 +344,12 @@ figcaption {
 
 article p.intro {
     font-weight: bold;
+}
+
+#article-topics {
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid #ebebe0;
 }
 
 a {
@@ -685,8 +700,10 @@ article {
 
 div.editor-summary {
     background-color: #E6E7E8;
-    padding: 10px;
+    padding: 12px;
 }
+
+
 
 @media (max-width: 699px) {
     #footer-container {
