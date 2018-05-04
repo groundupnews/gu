@@ -117,7 +117,7 @@ nav a:hover {
 
     #menu_search  {
         position: absolute;
-        min-height:100vh;
+        /* min-height:100vh;*/
         overflow: scroll;
         display: none;
         top: 50px;
