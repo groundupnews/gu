@@ -8,10 +8,10 @@
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>
-	    {% block title %} | GroundUp{% endblock %}
+	  {% block title %} | GroundUp{% endblock %}
 	</title>
 	<link rel="shortcut icon"
-              type="image/x-icon"
+        type="image/x-icon"
 	      href="{% static  'newsroom/images/favicon.ico' %}" />
 
         {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
@@ -45,9 +45,10 @@
 
         {% block newsroom-css %}
 
-            <style>
-             {% include "newsroom/newsroom_styles.css" %}
-            </style>
+          <style>
+           {% include "newsroom/newsroom_styles.css" %}
+           {% include "newsroom/header.css" %}
+          </style>
 
 	{% endblock %}
 
