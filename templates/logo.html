@@ -1,13 +1,13 @@
 {% load staticfiles %}
 
-<span id="logo">
+<span class="header__logo" id="logo">
     {% if gallery %}
         <a href="{% url 'gallery.front' %}">
             <h2 class="gallery">Gallery</h2></a>
             {% comment %}
             <img src=
                  "{% static logo %}"
-                 alt="GroundUp Logo" />
+                 oalt="GroundUp Logo" />
         </a><br />
         {% endcomment %}
     {% else %}
@@ -19,3 +19,6 @@
     </a>
     {% endif %}
 </span>
+
+
+

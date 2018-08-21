@@ -67,7 +67,6 @@ p.full-width {
 /****************** HEADER *******************/
 
 header {
-    padding: 8px 0 8px 0;
     margin-bottom: 16px;
     background-color: #FCFCFC;
     position: sticky;
@@ -90,19 +89,9 @@ nav a:hover {
 }
 
 @media (max-width: 699px) {
-    #logo {
-        display: inline-block;
-        float: left;
-        padding-right: 21px;
-    }
 
     #hamburger {
-        position: absolute;
-        right: 23px;
-        top: 10px;
         font-size: 2rem;
-        padding-left: 6px;
-        padding-right: 6px;
     }
 
     nav {
@@ -121,7 +110,7 @@ nav a:hover {
         max-height: 800px;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;*/
-        margin-top: 40px;
+        margin-top: 10px;
         display: none;
         top: 50px;
         /* width: 100%;*/

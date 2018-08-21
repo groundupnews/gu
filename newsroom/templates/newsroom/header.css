@@ -1,3 +1,67 @@
-body {
-    background-color: #fff !important;
+/* COLOURS */
+/* PRIMARY */
+
+bunker = #151F22 (Dark Gray)
+cerulean = #00B1F0 (Dark Cyan)
+mishka = #D6D6DA (Light Gray)
+white = #ffffff (White)
+
+/* SECONDARY */
+
+tundora = #4D4D4D (Dark Gray)
+sirocco = #738588 (Grayish)
+fountain_blue = #59BABB
+athens_gray = #F0F0F2
+
+
+@media screen and (max-width:768px) {
+    .header__logo img {
+        height: 40px;
+    }
+
+    .header__logo {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10%;
+        display: none !important;
+    }
+}
+
+.header {
+    background-color: #151F22;
+    display: flex;
+}
+
+.header__burger-menu-icon {
+    background-color: #4D4D4D;
+    justify-self: flex-start;
+    color: #fff;
+    flex-basis: 15%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__container {
+    display: flex;
+}
+
+.header__logo {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10%;
+}
+
+.header__logo img {
+    height: 40px;
+}
+
+.header__search-form {
+    display: flex
+}
+
+.header__search-form input {
+    display: flex;
+    flex: 1;
 }

@@ -1,39 +1,38 @@
 {% load staticfiles %}
 
-<header>
-    <span id="hamburger" onclick="toggleMenu()">
-        ☰
-    </span>
+<header class="header">
+  <span class="header__burger-menu-icon" id="hamburger" onclick="toggleMenu()">
+    ☰
+  </span>
 
-    <div class="container">
-        {% block logo %}
-            {% include logo_template|default:"logo.html" %}
-        {% endblock %}
-
-
-        <div id="menu_search">
-            {% block searchform %}
-                {% include searchform_template|default:"search/searchform.html" %}
-            {% endblock %}
-            {% block mainmenu %}
-                {% include menu_template|default:"menu.html" %}
-            {% endblock %}
-        </div>
-    </div>
-    <script>
-     var menu_clicked = false;
-     var toggleMenu = function() {
-         menu_search = document.getElementById("menu_search");
-         if (menu_clicked) {
-             menu_search.style.display = "none";
-             document.getElementById("hamburger").innerHTML = "☰";
-         } else {
-             menu_search.style.left = "0";
-             document.getElementById("hamburger").innerHTML = "X";
-             menu_search.style.display = "block";
-         }
-         menu_clicked = !menu_clicked;
-     }
-
-    </script>
+  {% block logo %}
+    {% include logo_template|default:"logo.html" %}
+  {% endblock %}
+  
 </header>
+<div id="menu_search">
+  {% block searchform %}
+    {% include searchform_template|default:"search/searchform.html" %}
+  {% endblock %}
+  {% block mainmenu %}
+    {% include menu_template|default:"menu.html" %}
+  {% endblock %}
+</div>
+
+
+<script>
+ var menu_clicked = false;
+ var toggleMenu = function() {
+     menu_search = document.getElementById("menu_search");
+     if (menu_clicked) {
+         menu_search.style.display = "none";
+         document.getElementById("hamburger").innerHTML = "☰";
+     } else {
+         menu_search.style.left = "0";
+         document.getElementById("hamburger").innerHTML = "X";
+         menu_search.style.display = "block";
+     }
+     menu_clicked = !menu_clicked;
+ }
+
+</script>
