@@ -80,6 +80,10 @@ header {
     border-radius: 0px;
 }
 
+.header__search-form {
+    display: flex;
+}
+
 nav .active {
     background-color: lightGray;
 }
@@ -295,6 +299,9 @@ nav .divider {
 button#search-button {
     border: 1px solid black;
     background-color: #00B1F0;
+    color: #fff;
+    width: 36px;
+    height: 36px;
 }
 
 button#search-button:hover {
