@@ -305,7 +305,7 @@ NEWSROOM_SUPPORT_US_IMAGES = [
     'newsroom/images/SupportGroundUpAdvert-20180411.jpg',
 ]
 
-NEWSROOM_LOGO = 'newsroom/images/GroundUpLogo-20170216.png'
+NEWSROOM_LOGO = 'newsroom/images/Logo_white.png'
 
 # Spam prevention
 NOCAPTCHA = True

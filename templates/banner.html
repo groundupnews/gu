@@ -1,39 +1,49 @@
 {% load staticfiles %}
 
-<header>
-    <span id="hamburger" onclick="toggleMenu()">
-        ☰
-    </span>
-
-    <div class="container">
-        {% block logo %}
-            {% include logo_template|default:"logo.html" %}
-        {% endblock %}
-
-
-        <div id="menu_search">
-            {% block searchform %}
-                {% include searchform_template|default:"search/searchform.html" %}
-            {% endblock %}
-            {% block mainmenu %}
-                {% include menu_template|default:"menu.html" %}
-            {% endblock %}
-        </div>
-    </div>
-    <script>
-     var menu_clicked = false;
-     var toggleMenu = function() {
-         menu_search = document.getElementById("menu_search");
-         if (menu_clicked) {
-             menu_search.style.display = "none";
-             document.getElementById("hamburger").innerHTML = "☰";
-         } else {
-             menu_search.style.left = "0";
-             document.getElementById("hamburger").innerHTML = "X";
-             menu_search.style.display = "block";
-         }
-         menu_clicked = !menu_clicked;
-     }
-
-    </script>
+<header class="header">
+  <span class="header__burger-menu-icon" id="hamburger" onclick="toggleMenu()">
+    <i id="burger_menu" class="fas fa-bars fa-lg"></i>
+  </span>
+  <span class="header__logo" id="logo">
+    {% if gallery %}
+      <a href="{% url 'gallery.front' %}">
+        <h2 class="gallery">Gallery</h2></a>
+    {% else %}
+        <a href="{% url 'home' %}">
+          <img src="{% static logo %}" alt="GroundUp Logo" />
+        </a>
+    {% endif %}
+  </span>
+  {% block mainmenu %}
+    {% include menu_template|default:"menu.html" %}
+  {% endblock %}
+  {% block searchform %}
+    {% include searchform_template|default:"search/searchform.html" %}
+  {% endblock %}
 </header>
+
+<div class="header__nav--mobile" id="menu_search">
+  <div class="header__nav__drop-down">
+    {% block searchform_mobile %}
+      {% include searchform_template|default:"search/searchform.html" %}
+    {% endblock %}
+    {% block mainmenu_mobile %}
+      {% include menu_template|default:"menu.html" %}
+    {% endblock %}
+  </div>
+</div>
+
+
+<script>
+ var toggleMenu = function() {
+     menu_search = $("#menu_search");
+     burger_menu = $("#burger_menu")
+     if (burger_menu.hasClass("fa-bars")) {
+         menu_search.show()
+         burger_menu.toggleClass("fa-bars fa-times");
+     } else {
+         menu_search.hide()
+         burger_menu.toggleClass("fa-times fa-bars");
+     }
+ }
+</script>
