@@ -2,37 +2,179 @@
 
 <header class="header">
   <span class="header__burger-menu-icon" id="hamburger" onclick="toggleMenu()">
-    ☰
+    <i id="burger_menu" class="fas fa-bars fa-lg"></i>
   </span>
+  <span class="header__logo" id="logo">
+    {% if gallery %}
+      <a href="{% url 'gallery.front' %}">
+        <h2 class="gallery">Gallery</h2></a>
+    {% else %}
+        <a href="{% url 'home' %}">
+          <img src="{% static logo %}" alt="GroundUp Logo" />
+        </a>
+    {% endif %}
+  </span>
+    <nav>
+      <ul>
+        {% with path=request.get_full_path %}
+          {% if gallery %}
+            {% url home as home_url %}
+            <li {% if path == home_url %}class='active'{% endif %}>
+              <a href="/">Home</a>
+            </li>
+            {% url 'album.list' as album_list_url %}
+            <li {% if path == album_list_url %}class='active'{% endif %}>
+              <a href="{% url 'album.list' %}">Albums</a>
+            </li>
+            {% url 'photo.list' as photo_list_url %}
+            <li {% if path == photo_list_url %} class='active'{% endif %}>
+              <a href="{% url 'photo.list' %}">Photos</a>
+            </li>
+          {% else %}
+            <li class="drop"><a href="#">News</a>
+	            <ul>
+                {% url 'home' as home_url %}
+                <li {% if path == home_url %}class='active'{% endif %}>
+                  <a href="/">Home</a>
+                </li>
+	              <li class="divider"></li>
+                <li><a href="/category/Feature/">Features</a></li>
+                <li class="divider"></li>
+	              <li><a href="/spotlight-social-grants/">Social Grants</a></li>
+	              <li><a href="/topic/housing">Housing</a></li>
+	              <li><a href="/topic/health">Health</a></li>
+	              <li><a href="/topic/education">Education</a></li>
+	              <li><a href="/topic/immigration">Immigration</a></li>
+                <li><a href="/topic/policing">Policing</a></li>
+	              <li><a href="/topic/labour">Labour</a></li>
+	            </ul>
+            </li>
 
-  {% block logo %}
-    {% include logo_template|default:"logo.html" %}
-  {% endblock %}
-  
+            <li>
+              <a href="/imagegallery/">Gallery</a>
+            </li>
+	          <li  {% if path == '/about/' %} class='active' {% endif %}>
+	            <a href="/about/">About</a>
+	          </li>
+	          <li {% if path == '/donate/' %} class='active' {% endif %}>
+	            <a href="/donate/">Donate</a>
+	          </li>
+          {% endif %}
+        {% endwith %}
+        {% if request.user.is_staff %}
+	        <li class="drop">
+	          <a class="admin-menu-item" href="#">Admin</a>
+	          <ul>
+              {% include 'newsroom/staff_menu.html' %}
+	          </ul>
+	        </li>
+        {% elif request.user.is_authenticated %}
+	        <li>
+	          <a href="{% url 'user.profile' %}" class="admin-menu-item">Account</a>
+	        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <form class="header__search-form" id="search-form" method="get"
+          action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
+      <input type="text" class="form-control header__search__input" name="q" id="id_q"
+	           placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
+             value="{{query}}" />
+      <button id="search-button">
+        {% include "insert_icon.html" with icon="icon-search" %}
+      </button>
+    </form>
 </header>
-<div id="menu_search">
-  {% block searchform %}
-    {% include searchform_template|default:"search/searchform.html" %}
-  {% endblock %}
-  {% block mainmenu %}
-    {% include menu_template|default:"menu.html" %}
-  {% endblock %}
+
+
+
+
+<div class="header__nav--mobile" id="menu_search">
+  <div class="header__nav__drop-down">
+    <form class="header__search-form" id="search-form" method="get"
+          action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
+      <input type="text" class="form-control header__search__input" name="q" id="id_q"
+	           placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
+             value="{{query}}" />
+    <button id="search-button">
+      {% include "insert_icon.html" with icon="icon-search" %}
+    </button>
+  </form>
+  <nav>
+    <ul>
+      {% with path=request.get_full_path %}
+        {% if gallery %}
+          {% url home as home_url %}
+          <li {% if path == home_url %}class='active'{% endif %}>
+            <a href="/">Home</a>
+          </li>
+          {% url 'album.list' as album_list_url %}
+          <li {% if path == album_list_url %}class='active'{% endif %}>
+            <a href="{% url 'album.list' %}">Albums</a>
+          </li>
+          {% url 'photo.list' as photo_list_url %}
+          <li {% if path == photo_list_url %} class='active'{% endif %}>
+            <a href="{% url 'photo.list' %}">Photos</a>
+          </li>
+        {% else %}
+          <li class="drop"><a href="#">News</a>
+	          <ul>
+              {% url 'home' as home_url %}
+              <li {% if path == home_url %}class='active'{% endif %}>
+                <a href="/">Home</a>
+              </li>
+	            <li class="divider"></li>
+              <li><a href="/category/Feature/">Features</a></li>
+              <li class="divider"></li>
+	            <li><a href="/spotlight-social-grants/">Social Grants</a></li>
+	            <li><a href="/topic/housing">Housing</a></li>
+	            <li><a href="/topic/health">Health</a></li>
+	            <li><a href="/topic/education">Education</a></li>
+	            <li><a href="/topic/immigration">Immigration</a></li>
+              <li><a href="/topic/policing">Policing</a></li>
+	            <li><a href="/topic/labour">Labour</a></li>
+	          </ul>
+          </li>
+
+          <li>
+            <a href="/imagegallery/">Gallery</a>
+          </li>
+	        <li  {% if path == '/about/' %} class='active' {% endif %}>
+	          <a href="/about/">About</a>
+	        </li>
+	        <li {% if path == '/donate/' %} class='active' {% endif %}>
+	          <a href="/donate/">Donate</a>
+	        </li>
+        {% endif %}
+      {% endwith %}
+      {% if request.user.is_staff %}
+	      <li class="drop">
+	        <a class="admin-menu-item" href="#">Admin</a>
+	        <ul>
+            {% include 'newsroom/staff_menu.html' %}
+	        </ul>
+	      </li>
+      {% elif request.user.is_authenticated %}
+	      <li>
+	        <a href="{% url 'user.profile' %}" class="admin-menu-item">Account</a>
+	      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  </div>
 </div>
 
 
 <script>
- var menu_clicked = false;
  var toggleMenu = function() {
-     menu_search = document.getElementById("menu_search");
-     if (menu_clicked) {
-         menu_search.style.display = "none";
-         document.getElementById("hamburger").innerHTML = "☰";
+     menu_search = $("#menu_search");
+     burger_menu = $("#burger_menu")
+     if (burger_menu.hasClass("fa-bars")) {
+         menu_search.show()
+         burger_menu.toggleClass("fa-bars fa-times");
      } else {
-         menu_search.style.left = "0";
-         document.getElementById("hamburger").innerHTML = "X";
-         menu_search.style.display = "block";
+         menu_search.hide()
+         burger_menu.toggleClass("fa-times fa-bars");
      }
-     menu_clicked = !menu_clicked;
  }
-
 </script>

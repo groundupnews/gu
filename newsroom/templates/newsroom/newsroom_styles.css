@@ -67,13 +67,17 @@ p.full-width {
 /****************** HEADER *******************/
 
 header {
-    margin-bottom: 16px;
     background-color: #FCFCFC;
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px lightGray solid;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.header__search__input {
+    border-radius: 0px;
 }
 
 nav .active {
@@ -90,8 +94,23 @@ nav a:hover {
 
 @media (max-width: 699px) {
 
-    #hamburger {
-        font-size: 2rem;
+    .header__logo {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10%;
+        margin-left: auto;
+        margin-right: auto;
+        flex-basis: 85%;
+    }
+
+    .header__nav__drop-down {
+        display: flex;
+        flex-direction: column;
+        background-color: #4D4D4D;
+    }
+    
+    header nav, header .header__search-form {
+        display: none;
     }
 
     nav {
@@ -99,21 +118,13 @@ nav a:hover {
         margin:0;
         padding:0;
         width: 100%;
-        z-index: 1000;
         display: inline-block;
         border-top:  1px lightGray dotted;
     }
 
     #menu_search  {
-        /* position: fixed;
-        height: 800px;
-        max-height: 800px;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;*/
-        margin-top: 10px;
         display: none;
         top: 50px;
-        /* width: 100%;*/
         z-index: 1000;
         background-color: #FCFCFC;
         overflow-y:scroll;
@@ -159,9 +170,26 @@ nav a:hover {
 
 
 @media (min-width: 700px) {
+
+    .header {
+        justify-content: space-around;
+        align-items: center;
+    }
+    
+    .header__logo {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
     #hamburger {
         display: none;
     }
+
+    .header__nav {
+        display: flex;
+        align-items: center;
+    }
+    
     nav {
         list-style:none;
         margin:0;
@@ -196,7 +224,7 @@ nav a:hover {
         line-height: 35px;
         padding: 0;
         text-decoration: none;
-        color: black;
+        color: #fff;
     }
 
     nav li a:hover {
@@ -241,7 +269,6 @@ nav a:hover {
     #logo {
         display: inline-block;
         float: left;
-        padding-right: 21px;
     }
 
     #logo a {
@@ -267,8 +294,7 @@ nav .divider {
 
 button#search-button {
     border: 1px solid black;
-    border-radius: 5px;
-    background-color: #F0F0F0;
+    background-color: #00B1F0;
 }
 
 button#search-button:hover {
