@@ -353,12 +353,6 @@ img.summary-image {
     margin: 0;
 }
 
-div.summary-image-container {
-    height: 105px;
-    overflow: hidden;
-}
-
-
 .panel-title > a:nth-child(1) {
     font-weight: bold;
     margin-left: 20px;
@@ -404,10 +398,6 @@ div.summary-image-container {
     .summary-dateline,
     .summary-category {
         font-size: 12px;
-    }
-    div.summary-image-container {
-        height: 180px;
-        overflow: hidden;
     }
 }
 
@@ -499,7 +489,7 @@ div.editor-summary {
 
 
 footer {
-    background-color: #4D4D4D;
+    background-color: #151F22;
     color: white;
 }
 

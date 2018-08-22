@@ -90,6 +90,28 @@
     display: none;
 }
 
+.home__top-article {
+    margin-bottom: 60px;
+}
+
+.home__articles {
+    display: flex;
+    flex-direction: column;
+}
+
+.home__articles__article {
+    display: flex;
+}
+
+.home__articles__article__image {
+
+}
+
+.home__articles__article__text {
+
+}
+
+
 @media (max-width: 768px) {
 .home__top-article {
     display: flex;
@@ -126,8 +148,8 @@
 }
 
 .home__top-article_text__summary {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 24px;
     padding-top: 2%;
     padding-bottom: 2%;
 }
@@ -150,6 +172,13 @@
 
 .home__top-article_text__details-mobile {
     display: flex;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.home__articles__article {
+    display: flex;
+    flex-direction: column;
 }
 
 }

@@ -1,57 +1,36 @@
-<div class="thumbnail">
-    <div class="row article-summary
-		{% if include_image == '1' %}
-		with-image
-		{% else %}
-		with-no-image
-		{% endif %}
-		{% if include_summary == '1' %}
-		with-summary-text
-		{% else %}
-		with-no-summary-text
-		{% endif %}
-		">
-
-	{% if include_image == "1" and article.cached_summary_image %}
-	    <div class="col-xs-6 col-sm-5 summary-image-container">
-		<a href="{{article.get_absolute_url}}">
-		    <img class="summary-image"
-			 src="{{ article.cached_summary_image }}"
-			 alt="{{ article.summary_image_alt }}"/>
-		</a>
+<div class="home__articles__article">
+	  {% if article.cached_summary_image %}
+	    <div class="home__articles__article__image summary-image-container">
+		    <a href="{{article.get_absolute_url}}">
+		      <img class="summary-image"
+			         src="{{ article.cached_summary_image }}"
+			         alt="{{ article.summary_image_alt }}"/>
+		    </a>
 	    </div>
-	{% endif %}
+	  {% endif %}
 
-
-	<div class="
-		    {% if include_image == "1" and article.cached_summary_image %}
-		    col-xs-6
-		    col-sm-7
-		    {% else %}
-		    col-xs-12
-		    {% endif %}">
+	  <div class="home__articles__article__text">
 	    <h2 class="summary-title">
-		<a href="{{article.get_absolute_url}}">
-		    {{article.title|safe }}
-		</a>
+		    <a href="{{article.get_absolute_url}}">
+		      {{article.title|safe }}
+		    </a>
 	    </h2>
 	    {% if include_summary == "1" %}
-		<a href="{{article.get_absolute_url}}">
-		    <p class="summary-text">
-			{{article.cached_summary_text|safe}}
-		    </p>
-		</a>
+		    <a href="{{article.get_absolute_url}}">
+		      <p class="summary-text">
+			      {{article.cached_summary_text|safe}}
+		      </p>
+		    </a>
 	    {% endif %}
 	    <p class="summary-byline">
-		<a href="{{article.get_absolute_url}}">
-		    {{article.cached_byline_no_links|safe|striptags}}
-		</a>
+		    <a href="{{article.get_absolute_url}}">
+		      {{article.cached_byline_no_links|safe|striptags}}
+		    </a>
 	    </p>
 	    <a href="{{article.get_absolute_url}}">
-		<p class="summary-dateline">
-		    {{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;{{article.category|upper}}
-		</p>
+		    <p class="summary-dateline">
+		      {{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;{{article.category|upper}}
+		    </p>
 	    </a>
-	</div>
-    </div>
+	  </div>
 </div>

@@ -50,16 +50,13 @@
                   </div>
                   <div class="home__top-article_text__details-mobile">
                     <a href="{{article.get_absolute_url}}">
-		                  {{article.cached_byline_no_links|safe|striptags}}
-		                </a>
+                      {{article.cached_byline_no_links|safe|striptags}}
+		                </a> - {{article.published|date:"j F Y"}}
                   </div>
                   </div>
                 </div>
 			        </div>
 			      {% endwith %}
-			      <h2 class="article-list-heading">
-			        Latest stories
-			      </h2>
 			      {% with article_list|slice:"1:" as articlelist %}
 			        {% include 'newsroom/list.html' with articles=articlelist include_image="1" include_summary="1" md_size="12" %}
 			      {% endwith %}
