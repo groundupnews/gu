@@ -1,0 +1,22 @@
+.home {
+    background-color: #F0F0F2;
+    display: flex;
+    justify-content: center;
+}
+
+.home_container {
+    background-color: #fff;
+    flex-basis: 90%;
+    margin-top: 30px;
+    display: flex;
+}
+
+.home__top-article {
+    display: flex;
+    flex-basis: 90%;
+}
+
+.home__article-list {
+    /* display: flex; */
+    /* flex-direction: column; */
+}
