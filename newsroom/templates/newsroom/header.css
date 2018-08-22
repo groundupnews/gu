@@ -28,7 +28,7 @@ nav a:hover {
     text-decoration: none;
 }
 
-@media (max-width: 699px) {
+@media (max-width: 768px) {
 
     .header__logo {
         padding-top: 10px;
@@ -105,7 +105,7 @@ nav a:hover {
 }
 
 
-@media (min-width: 700px) {
+@media (min-width: 769px) {
 
     .header {
         justify-content: space-around;

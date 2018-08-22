@@ -6,7 +6,7 @@
 
 .home_container {
     background-color: #fff;
-    flex-basis: 80%;
+    flex-basis: 75%;
     margin-top: 30px;
     display: flex;
     justify-content: center;
@@ -23,18 +23,133 @@
 }
 
 .home__top-article_image {
-    flex: 2;
+    flex: 3;
 }
 
 .home__top-article_text {
     background-color: #151F22;
-    flex: 1;
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.home__top-article_text__box {
+    flex-basis: 90%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    display: flex;
+    flex-direction: column;
 }
 
 .home__top-article_text__title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 32px;
+    line-height: 41px;
+    padding-top: 5%;
+}
+
+.home__top-article_text__title a {
     color: #fff;
+    text-decoration: none;
+}
+
+.home__top-article_text__title a:hover {
 }
 
 .home__top-article_text__summary {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+    flex-grow: 1;
+    padding-top: 5%;
+}
+
+.home__top-article_text__summary a {
     color: #fff;
+    text-decoration: none;
+}
+
+.home__top-article_text__summary a:hover {
+}
+
+.home__top-article_text__date {
+    color: #fff;
+    padding-bottom: 30px;
+}
+
+.home__top-article_text__category {
+    color: #00b1F0;
+}
+
+.home__top-article_text__byline a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.home__top-article_text__details-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+.home__top-article {
+    display: flex;
+    flex-basis: 90%;
+    flex-direction: column;
+}
+
+.home_container {
+    flex-basis: 100%;
+    margin-top: 0px;
+}
+
+.home__article-list {
+    margin-top: 40px;
+    flex-basis: 80%;
+}
+
+.home__top-article_text__date {
+    color: #fff;
+    padding-bottom: 0px;
+}
+
+.home__top-article_text {
+    background-color: #fff;
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.home__top-article_text__title {
+    font-size: 28px;
+    line-height: 31px;
+    padding-top: 0px;
+}
+
+.home__top-article_text__summary {
+    font-size: 14px;
+    line-height: 22px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.home__top-article_text__title a {
+    color: #000;
+}
+
+.home__top-article_text__summary a {
+    color: #000;
+}
+
+.home__top-article_text__date {
+    display: none;
+}
+
+.home__top-article_text__byline {
+    display: none;
+}
+
+.home__top-article_text__details-mobile {
+    display: flex;
+}
+
 }
