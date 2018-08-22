@@ -6,9 +6,15 @@
 
 .home_container {
     background-color: #fff;
-    flex-basis: 90%;
+    flex-basis: 80%;
     margin-top: 30px;
     display: flex;
+    justify-content: center;
+}
+
+.home__article-list {
+    margin-top: 30px;
+    flex-basis: 95%;
 }
 
 .home__top-article {
@@ -16,7 +22,19 @@
     flex-basis: 90%;
 }
 
-.home__article-list {
-    /* display: flex; */
-    /* flex-direction: column; */
+.home__top-article_image {
+    flex: 2;
+}
+
+.home__top-article_text {
+    background-color: #151F22;
+    flex: 1;
+}
+
+.home__top-article_text__title {
+    color: #fff;
+}
+
+.home__top-article_text__summary {
+    color: #fff;
 }

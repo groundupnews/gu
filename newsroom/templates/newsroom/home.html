@@ -7,11 +7,9 @@
 {% block article-list %}
   <div class="home" id="list-content">
 	  <div class="home_container">
-        <div class="col-xs-12">
 		      <div>
 			      {% include 'blocks/blocks.html' with blocks=topblocks%}
 		      </div>
-        </div>
 		    <div  class="home__article-list">
 		      {% if page_obj.has_previous or article_list.0.stickiness == 0 %}
 			      {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
@@ -26,13 +24,13 @@
 					               alt="{{ article.summary_image_alt }}"/>
 				          </a>
                 </div>
-                <div class="home__top-article_image">
-				          <h2 class="first-summary-title">
+                <div class="home__top-article_text">
+				          <h2 class="home__top-article_text__title">
 				            <a href="{{article.get_absolute_url}}">
 					            {{article.title|safe }}
 				            </a>
 				          </h2>
-				          <div class="first-summary-text">
+				          <div class="home__top-article_text__summary">
 				            <a href="{{article.get_absolute_url}}">
 					            {{article.cached_summary_text|safe}}
 				            </a>
@@ -48,9 +46,9 @@
 			      {% endwith %}
 		      {% endif %}
           {% include 'paginator.html' %}
-		    </div>
-		    <div id="sidebar">
-			    {% include 'blocks/blocks.html' %}
+          <div id="sidebar">
+			      {% include 'blocks/blocks.html' %}
+		      </div>
 		    </div>
 	  </div>
   </div>
