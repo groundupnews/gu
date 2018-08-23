@@ -16,10 +16,6 @@ header {
     display: flex;
 }
 
-nav .active {
-    background-color: lightGray;
-}
-
 nav a {
     text-decoration: none;
 }
@@ -33,11 +29,71 @@ nav {
     flex: 3;
 }
 
+
+nav .divider {
+    width: 100%;
+    border-bottom: 1px lightGray solid;
+}
+
+button#search-button {
+    border: none;
+    background-color: #00B1F0;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+}
+
+button#search-button:hover {
+    background-color: lightgray;
+}
+
+
+
+a.admin-menu-item {
+    color: red;
+}
+
+.header {
+    background-color: #151F22;
+    display: flex;
+}
+
+.header__burger-menu-icon {
+    background-color: #4D4D4D;
+    justify-self: flex-start;
+    color: #fff;
+    flex-basis: 15%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__container {
+    display: flex;
+}
+
+
+.header__logo img {
+    height: 40px;
+}
+
+.header__search-form {
+    display: flex
+}
+
+.header__search__input {
+    display: flex;
+    flex: 1;
+    height: 36px;
+}
+
+.header__nav--mobile {
+    display: none;
+}
+
+
 @media (max-width: 768px) {
-    #search-form {
-        display: flex;
-        flex: 3;
-    }
 
     .header__logo {
         padding-top: 10px;
@@ -46,6 +102,7 @@ nav {
         margin-left: auto;
         margin-right: auto;
         flex-basis: 85%;
+        flex: 1;
     }
 
     .header__nav__drop-down {
@@ -98,7 +155,6 @@ nav {
         margin-bottom: 12px;
     }
     #search-form input {
-        margin-left: 5px;
         display: inline;
         width: 200px;
     }
@@ -110,6 +166,11 @@ nav {
     }
     nav li.drop > a {
         color: black;
+    }
+
+    .search-form {
+        display: flex;
+        justify-content: center;
     }
 }
 
@@ -124,6 +185,9 @@ nav {
     .header__logo {
         padding-top: 20px;
         padding-bottom: 20px;
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
     }
     
     #hamburger {
@@ -141,7 +205,7 @@ nav {
         padding:0;
         text-align:center;
         z-index: 1000;
-        display: inline-block;
+        padding-left: 2%;
     }
 
     nav li.drop > a:after {
@@ -211,93 +275,10 @@ nav {
         opacity: 1;
     }
 
-    #logo {
-        display: inline-block;
-        float: left;
-    }
-
     #logo a {
         text-decoration: none;
     }
-
-    #search-form {
-        display: inline-block;
-        float: right;
-    }
-
-    #search-form input {
-        display: inline;
-        width: 193px;
-    }
-
-    #logo {
-        display: flex;
-        flex: 1;
-        justify-content: flex-end;
-        padding-left: 2%;
-    }
     
-}
-
-nav .divider {
-    width: 100%;
-    border-bottom: 1px lightGray solid;
-}
-
-button#search-button {
-    border: 1px solid black;
-    background-color: #00B1F0;
-    color: #fff;
-    width: 36px;
-    height: 36px;
-}
-
-button#search-button:hover {
-    background-color: lightgray;
-}
-
-
-
-a.admin-menu-item {
-    color: red;
-}
-
-.header {
-    background-color: #151F22;
-    display: flex;
-}
-
-.header__burger-menu-icon {
-    background-color: #4D4D4D;
-    justify-self: flex-start;
-    color: #fff;
-    flex-basis: 15%;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.header__container {
-    display: flex;
-}
-
-
-.header__logo img {
-    height: 40px;
-}
-
-.header__search-form {
-    display: flex
-}
-
-.header__search__input {
-    display: flex;
-    flex: 1;
-}
-
-.header__nav--mobile {
-    display: none;
 }
 
 @media screen and (max-width:769px) {

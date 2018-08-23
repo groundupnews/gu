@@ -1,10 +1,12 @@
 
-<form class="header__search-form" id="search-form" method="get"
-      action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
+<div class="search-form">
+  <form class="header__search-form" id="search-form" method="get"
+        action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
     <input type="text" class="form-control header__search__input" name="q" id="id_q"
-	   placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
+	         placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
            value="{{query}}" />
     <button id="search-button">
       <i class="fas fa-search"></i>
     </button>
-</form>
+  </form>
+</div>
