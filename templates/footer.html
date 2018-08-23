@@ -7,12 +7,12 @@
         <a href="{% url 'home' %}">
           <img class="footer-logo-img" src="{% static logo %}" alt="GroundUp Logo" />
         </a>
-        <h2>Copyright</h2>
         <p>
-          {% include "insert_icon.html" with icon="icon-copyright" %}
-	        2012-{% now "Y" %} GroundUp. See copyright notice on
-          articles for terms.
+          Copyright <svg viewBox="0 0 20 20" class="icon icon-copyright">
+          <use xlink:href="#icon-copyright"></use></svg>
+	        2012-{% now "Y" %} GroundUp. 
         </p>
+        <p>See copyright notice on articles for terms.</p>
       </div>
     </div>
       <nav class="footer-nav">
