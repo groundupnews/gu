@@ -22,6 +22,10 @@
 .footer-nav__links {
     display: flex;
     flex-direction: column;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    flex: 1;
+
 }
 
 .footer-nav__links a {
