@@ -32,6 +32,10 @@
     text-decoration: none;
 }
 
+.footer-nav__links li {
+    
+}
+
 .footer-contact {
     display: flex;
     justify-content: center;

@@ -234,15 +234,6 @@ a.admin-menu-item {
         position: relative;
     }
 
-    nav li a {
-        display: inline-block;
-        width: 73px;
-        line-height: 35px;
-        padding: 0;
-        text-decoration: none;
-        color: #fff;
-    }
-
     nav li a:hover {
         background: #39A8E7;
         text-decoration: none;
