@@ -39,6 +39,7 @@
      menu_search = $("#menu_search");
      burger_menu = $("#burger_menu")
      if (burger_menu.hasClass("fa-bars")) {
+         window.scrollTo(0, 0);
          menu_search.show()
          burger_menu.toggleClass("fa-bars fa-times");
      } else {

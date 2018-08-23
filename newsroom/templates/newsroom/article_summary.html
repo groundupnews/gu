@@ -12,7 +12,7 @@
 	<div class="home__articles__article__text">
     <div class="home__articles__article__text__box">
       <a href="{{article.get_absolute_url}}">
-		    <p class="home__articles__article__text__date">
+		    <p class="home__articles__article__text__category">
 		      {{article.category|upper}}
 		    </p>
 	    </a>
@@ -38,6 +38,11 @@
 		      {{article.cached_byline_no_links|safe|striptags}}
 		    </a>
 	    </p>
+      <div class="home__articles_article__details-mobile">
+        <a href="{{article.get_absolute_url}}">
+          {{article.cached_byline_no_links|safe|striptags}}
+		    </a> - {{article.published|date:"j F Y"}}
+      </div>
     </div>
 	</div>
 </div>

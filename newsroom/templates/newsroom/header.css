@@ -28,7 +28,16 @@ nav a:hover {
     text-decoration: none;
 }
 
+nav {
+    display: flex;
+    flex: 3;
+}
+
 @media (max-width: 768px) {
+    #search-form {
+        display: flex;
+        flex: 3;
+    }
 
     .header__logo {
         padding-top: 10px;
@@ -221,6 +230,13 @@ nav a:hover {
         width: 193px;
     }
 
+    #logo {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        padding-left: 2%;
+    }
+    
 }
 
 nav .divider {
@@ -282,7 +298,6 @@ a.admin-menu-item {
 
 .header__nav--mobile {
     display: none;
-    position: sticky;
 }
 
 @media screen and (max-width:769px) {
