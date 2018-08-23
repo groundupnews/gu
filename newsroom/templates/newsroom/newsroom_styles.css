@@ -2,67 +2,6 @@ html {
     font-size: 62.5%;
 }
 
-body {
-    font-family: sans-serif;
-    font-size: 1.8rem;
-    line-height: 1.618;
-    margin-top: 0;
-    padding-top: 0;
-    color: #121212;
-    background-color: white;
-}
-
-
-@media (max-width: 684px) {
-    body {
-        font-size: 1.53rem;
-    }
-}
-
-@media (max-width: 382px) {
-    body {
-        /* font-size: 1.35rem;*/
-        font-size: 1.53rem;
-    }
-}
-
-h1, h2, h3, h4, h5, h6 {
-    line-height: 1.2;
-    font-family: Verdana, Geneva, sans-serif;
-    font-weight: 700;
-}
-
-h1 {
-    font-size: 2.35rem;
-}
-
-h2 {
-    font-size: 2rem;
-}
-
-h3 {
-    font-size: 1.75rem;
-}
-
-h4 {
-    font-size: 1.5rem;
-}
-
-h5 {
-    font-size: 1.25rem;
-}
-
-h6 {
-    font-size: 1rem;
-}
-
-p {
-    max-width: 38em;
-}
-
-p.full-width {
-    max-width: 750px;
-}
 
 /****************** HEADER *******************/
 

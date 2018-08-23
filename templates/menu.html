@@ -1,63 +1,62 @@
 {% load staticfiles %}
 
-<nav>
-  <ul>
-        {% with path=request.get_full_path %}
-            {% if gallery %}
-                {% url home as home_url %}
-                <li {% if path == home_url %}class='active'{% endif %}>
-                    <a href="/">Home</a>
-                </li>
-                {% url 'album.list' as album_list_url %}
-                <li {% if path == album_list_url %}class='active'{% endif %}>
-                    <a href="{% url 'album.list' %}">Albums</a>
-                </li>
-                {% url 'photo.list' as photo_list_url %}
-                <li {% if path == photo_list_url %} class='active'{% endif %}>
-                    <a href="{% url 'photo.list' %}">Photos</a>
-                </li>
-            {% else %}
-                <li class="drop"><a href="#">News</a>
-	            <ul>
-                        {% url 'home' as home_url %}
-                        <li {% if path == home_url %}class='active'{% endif %}>
-                            <a href="/">Home</a>
-                        </li>
-	                <li class="divider"></li>
-                        <li><a href="/category/Feature/">Features</a></li>
-                        <li class="divider"></li>
-	                <li><a href="/spotlight-social-grants/">Social Grants</a></li>
-	                <li><a href="/topic/housing">Housing</a></li>
-	                <li><a href="/topic/health">Health</a></li>
-	                <li><a href="/topic/education">Education</a></li>
-	                <li><a href="/topic/immigration">Immigration</a></li>
-                        <li><a href="/topic/policing">Policing</a></li>
-	                <li><a href="/topic/labour">Labour</a></li>
-	            </ul>
-                </li>
-
-                <li>
-                    <a href="/imagegallery/">Gallery</a>
-                </li>
-	        <li  {% if path == '/about/' %} class='active' {% endif %}>
-	            <a href="/about/">About</a>
-	        </li>
-	        <li {% if path == '/donate/' %} class='active' {% endif %}>
-	            <a href="/donate/">Donate</a>
-	        </li>
-            {% endif %}
-        {% endwith %}
-        {% if request.user.is_staff %}
-	    <li class="drop">
-	        <a class="admin-menu-item" href="#">Admin</a>
-	        <ul>
-                    {% include 'newsroom/staff_menu.html' %}
+<nav class="header__nav">
+  <ul class="header__nav__links">
+    {% with path=request.get_full_path %}
+      {% if gallery %}
+        {% url home as home_url %}
+        <li {% if path == home_url %}class='active'{% endif %}>
+          <a href="/">Home</a>
+        </li>
+        {% url 'album.list' as album_list_url %}
+        <li {% if path == album_list_url %}class='active'{% endif %}>
+          <a href="{% url 'album.list' %}">Albums</a>
+        </li>
+        {% url 'photo.list' as photo_list_url %}
+        <li {% if path == photo_list_url %} class='active'{% endif %}>
+          <a href="{% url 'photo.list' %}">Photos</a>
+        </li>
+      {% else %}
+        <li class="drop"><a href="#">News</a>
+	        <ul class="header__nav__drop-down">
+            {% url 'home' as home_url %}
+            <span class="header__nav__drop-down__spacer"></span>
+            <li {% if path == home_url %}class='active'{% endif %}>
+              <a href="/">Home</a>
+            </li>
+            <li><a href="/category/Feature/">Features</a></li>
+	          <li><a href="/spotlight-social-grants/">Social Grants</a></li>
+	          <li><a href="/topic/housing">Housing</a></li>
+	          <li><a href="/topic/health">Health</a></li>
+	          <li><a href="/topic/education">Education</a></li>
+	          <li><a href="/topic/immigration">Immigration</a></li>
+            <li><a href="/topic/policing">Policing</a></li>
+	          <li><a href="/topic/labour">Labour</a></li>
 	        </ul>
+        </li>
+
+        <li>
+          <a href="/imagegallery/">Gallery</a>
+        </li>
+	      <li  {% if path == '/about/' %} class='active' {% endif %}>
+	        <a href="/about/">About</a>
+	      </li>
+	      <li {% if path == '/donate/' %} class='active' {% endif %}>
+	        <a href="/donate/">Donate</a>
+	      </li>
+      {% endif %}
+    {% endwith %}
+    {% if request.user.is_staff %}
+	    <li class="drop">
+	      <a class="admin-menu-item" href="#">Admin</a>
+	      <ul class="header__nav__drop-down">
+          {% include 'newsroom/staff_menu.html' %}
+	      </ul>
 	    </li>
-        {% elif request.user.is_authenticated %}
+    {% elif request.user.is_authenticated %}
 	    <li>
-	        <a href="{% url 'user.profile' %}" class="admin-menu-item">Account</a>
+	      <a href="{% url 'user.profile' %}" class="admin-menu-item">Account</a>
 	    </li>
-        {% endif %}
-    </ul>
+    {% endif %}
+  </ul>
 </nav>

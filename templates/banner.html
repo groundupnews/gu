@@ -14,9 +14,11 @@
         </a>
     {% endif %}
   </span>
-  {% block mainmenu %}
-    {% include menu_template|default:"menu.html" %}
-  {% endblock %}
+  <div class="header__menu__container">
+    {% block mainmenu %}
+      {% include menu_template|default:"menu.html" %}
+    {% endblock %}
+  </div>
   <div class="header__search-form__container">
     {% block searchform %}
       {% include searchform_template|default:"search/searchform.html" %}
@@ -27,13 +29,15 @@
 <div class="header__nav--mobile" id="menu_search">
   <div class="header__nav__drop-down">
     <div class="header__search-form--mobile">
-    {% block searchform_mobile %}
-      {% include searchform_template|default:"search/searchform.html" %}
-    {% endblock %}
+      {% block searchform_mobile %}
+        {% include searchform_template|default:"search/searchform.html" %}
+      {% endblock %}
     </div>
+    <div class="header__menu__container--mobile">
     {% block mainmenu_mobile %}
       {% include menu_template|default:"menu.html" %}
     {% endblock %}
+    </div>
   </div>
 </div>
 
