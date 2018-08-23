@@ -1,0 +1,41 @@
+.footer-container {
+    display: flex;
+    justify-content: center;
+}
+
+.footer-logo {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.footer-logo-img {
+    width: 245px;
+    padding-top: 5%;
+}
+
+.footer-nav {
+    display: flex;
+    flex: 1;
+}
+
+.footer-nav__links {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-nav__links a {
+    text-decoration: none;
+}
+
+.footer-contact {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+@media (max-width: 425px) {
+    .footer-container {
+        flex-direction: column;
+    }    
+}

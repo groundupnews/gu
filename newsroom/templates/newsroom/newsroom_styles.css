@@ -503,11 +503,6 @@ footer a {
     color: white;
 }
 
-footer a:link {
-    text-decoration: underline;
-}
-
-
 .subtitle {
     font-size: 24px;
     margin-top: 12px;
