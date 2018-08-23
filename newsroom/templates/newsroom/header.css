@@ -282,6 +282,7 @@ a.admin-menu-item {
 
 .header__nav--mobile {
     display: none;
+    position: sticky;
 }
 
 @media screen and (max-width:769px) {
