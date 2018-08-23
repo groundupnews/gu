@@ -3,113 +3,113 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-	<meta charset="utf-8">
-	<meta content="IE=edge" http-equiv="X-UA-Compatible">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>
-	  {% block title %} | GroundUp{% endblock %}
-	</title>
-  <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
-	<link rel="shortcut icon"
-        type="image/x-icon"
-	      href="{% static  'newsroom/images/favicon.ico' %}" />
+  <head>
+	  <meta charset="utf-8">
+	  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <title>
+	    {% block title %} | GroundUp{% endblock %}
+	  </title>
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
+	  <link rel="shortcut icon"
+          type="image/x-icon"
+	        href="{% static  'newsroom/images/favicon.ico' %}" />
 
-        {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
-            {% block meta_description_block %}
-                <meta name="description"
-                      content="{{desc|truncatechars:190}}"/>
-	        <meta property="og:description" content="{{desc}}"/>
-            {% endblock %}
-        {% endwith %}
+    {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
+      {% block meta_description_block %}
+        <meta name="description"
+              content="{{desc|truncatechars:190}}"/>
+	      <meta property="og:description" content="{{desc}}"/>
+      {% endblock %}
+    {% endwith %}
 
-	{% block seo_fields %}
+	  {% block seo_fields %}
 	    {% block facebook-identifier %}
-	        <meta property="fb:app_id" content="794347254025697" />
+	      <meta property="fb:app_id" content="794347254025697" />
 	    {% endblock %}
-            <meta property="og:site_name" content="GroundUp News" />
-            <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
-            <meta property="og:updated_time" content="{% now "c" %}" />
-	{% endblock %}
+      <meta property="og:site_name" content="GroundUp News" />
+      <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+      <meta property="og:updated_time" content="{% now "c" %}" />
+	  {% endblock %}
 
-	{% block analytics %}
-            {% include "piwik.html" %}
-	{% endblock %}
+	  {% block analytics %}
+      {% include "piwik.html" %}
+	  {% endblock %}
 
-	{% block additional_head %}
-	{% endblock %}
+	  {% block additional_head %}
+	  {% endblock %}
 
-        {% block bootstrap-css %}
+    {% block bootstrap-css %}
 	    {% include "bootstrap_css.html" %}
-	{% endblock %}
+	  {% endblock %}
 
-        {% block newsroom-css %}
+    {% block newsroom-css %}
 
-          <style>
-           {% include "newsroom/newsroom_styles.css" %}
-           {% include "newsroom/home.css" %}
-           {% include "newsroom/header.css" %}
-          </style>
+      <style>
+       {% include "newsroom/newsroom_styles.css" %}
+       {% include "newsroom/home.css" %}
+       {% include "newsroom/header.css" %}
+      </style>
 
-	{% endblock %}
+	  {% endblock %}
 
-	{% block css-override %}
-	{% endblock %}
-
-
-        {% block top-js %}
-        {% endblock %}
+	  {% block css-override %}
+	  {% endblock %}
 
 
-    </head>
+    {% block top-js %}
+    {% endblock %}
 
-    <body>
 
-	{% block body %}
-            {% include 'icons.svg' %}
+  </head>
+
+  <body>
+
+	  {% block body %}
+      {% include 'icons.svg' %}
 
 	    {% block banner %}
-		{% include 'banner.html' %}
+		    {% include 'banner.html' %}
 	    {% endblock %}
 
-            <div id="BelowTheBanner" class="{{content_type}}">
-	        {% block messages %}
-		    {% include 'messages.html' %}
+      <div id="BelowTheBanner" class="{{content_type}}">
+	      {% block messages %}
+		      {% include 'messages.html' %}
+	      {% endblock %}
+
+	      {% block content-header %}
+	      {% endblock %}
+
+        {% block content-wrapper %}
+	        {% block content %}
 	        {% endblock %}
+        {% endblock %}
 
-	        {% block content-header %}
-	        {% endblock %}
-
-                {% block content-wrapper %}
-	            {% block content %}
-	            {% endblock %}
-                {% endblock %}
-
-	        {% block admin-area %}
-		    {% if request.user.is_staff %}
+	      {% block admin-area %}
+		      {% if request.user.is_staff %}
 		        <div id="admin-area">
-			    <div id="admin-user">
-			        {{request.user}}
-			    </div>
-			    {% block admin-area-additional %}
-			    {% endblock %}
+			        <div id="admin-user">
+			          {{request.user}}
+			        </div>
+			        {% block admin-area-additional %}
+			        {% endblock %}
 		        </div>
-		    {% endif %}
-	        {% endblock %}
-            </div>
+		      {% endif %}
+	      {% endblock %}
+      </div>
 
 	    {% block footer %}
-		{% include 'footer.html' %}
+		    {% include 'footer.html' %}
 	    {% endblock %}
 
 	    {% block javascript-includes %}
-		{% include 'javascripts.html' %}
+		    {% include 'javascripts.html' %}
 	    {% endblock %}
 
-	{% endblock %}
+	  {% endblock %}
 
-    </body>
+  </body>
 
 </html>
