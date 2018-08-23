@@ -1,5 +1,4 @@
 
-<div class="search-form">
   <form class="header__search-form" id="search-form" method="get"
         action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
     <input type="text" class="form-control header__search__input" name="q" id="id_q"
@@ -9,4 +8,3 @@
       <i class="fas fa-search"></i>
     </button>
   </form>
-</div>

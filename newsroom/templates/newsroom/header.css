@@ -172,6 +172,11 @@ a.admin-menu-item {
         display: flex;
         justify-content: center;
     }
+
+    .header__search-form--mobile {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 
@@ -277,6 +282,11 @@ a.admin-menu-item {
 
     #logo a {
         text-decoration: none;
+    }
+    
+    .header__search-form__container {
+        flex: 1;
+        display: flex;
     }
     
 }
