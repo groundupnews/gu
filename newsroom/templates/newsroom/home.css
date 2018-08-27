@@ -3,14 +3,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 65%;
     flex-direction: column;
     margin: 0 auto;
 }
 
 .home_container {
     background-color: #fff;
-    flex-basis: 80%;
     margin-top: 30px;
     margin-bottom: 30px;
     display: flex;
@@ -153,7 +152,7 @@
 
 .home__articles__article__text__title {
     font-family: 'Roboto Slab', serif;
-    font-size: 32px;
+    font-size: 2.8rem;
     line-height: 41px;
 }
 
@@ -165,8 +164,8 @@
 
 .home__articles__article__text__byline {
     font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
-    line-height: 27px;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .more_articles {
@@ -188,6 +187,26 @@
 }
 
 @media (max-width: 768px) {
+    .home {
+        width: 100%;
+    }
+    
+    .more_articles {
+        flex-direction: column;
+    }
+
+    
+    .more_articles__popular {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .more_articles__letters {
+        flex: 1;
+        padding: 10px;
+        margin-top: 4%;
+    }
+    
     .home__top-article {
         display: flex;
         flex-basis: 90%;
