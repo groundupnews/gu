@@ -21,27 +21,43 @@
 	  <ul class="header__nav__drop-down">
             {% url 'home' as home_url %}
             <span class="header__nav__drop-down__spacer"></span>
-            <li {% if path == home_url %}class='active header__nav__link'{% endif %}>
+            <li {% if path == home_url %}class='active header__nav__link header__nav__link--drop'{% endif %}>
               <a href="/">Home</a>
             </li>
-            <li class="header__nav__link"><a href="/category/Feature/">Features</a></li>
-	    <li class="header__nav__link"><a href="/spotlight-social-grants/">Social Grants</a></li>
-	    <li class="header__nav__link"><a href="/topic/housing">Housing</a></li>
-	    <li class="header__nav__link"><a href="/topic/health">Health</a></li>
-	    <li class="header__nav__link"><a href="/topic/education">Education</a></li>
-	    <li class="header__nav__link"><a href="/topic/immigration">Immigration</a></li>
-            <li class="header__nav__link"><a href="/topic/policing">Policing</a></li>
-	    <li class="header__nav__link"><a href="/topic/labour">Labour</a></li>
+            <li class="header__nav__link header__nav__link--drop">
+              <a href="/category/Feature/">Features</a>
+            </li>
+	    <li class="header__nav__link header__nav__link--drop">
+              <a href="/spotlight-social-grants/">Social Grants</a>
+            </li>
+	    <li class="header__nav__link header__nav__link--drop">
+              <a href="/topic/housing">Housing</a>
+            </li>
+	    <li class="header__nav__link header__nav__link--drop">
+              <a href="/topic/health">Health</a>
+            </li>
+	    <li class="header__nav__link header__nav__link--drop">
+              <a href="/topic/education">Education</a>
+            </li>
+	    <li class="header__nav__link header__nav__link--drop">
+              <a href="/topic/immigration">Immigration</a>
+            </li>
+            <li class="header__nav__link header__nav__link--drop">
+              <a href="/topic/policing">Policing</a>
+            </li>
+	    <li class="header__nav__link header__nav__link--drop">
+              <a href="/topic/labour">Labour</a>
+            </li>
 	  </ul>
         </li>
 
         <li class="header__nav__link">
           <a href="/imagegallery/">Gallery</a>
         </li>
-	<li  {% if path == '/about/' %} class='active header__nav__link' {% endif %}>
+	<li class='header__nav__link {% if path == '/about/' %} active {% endif %}'>
 	  <a href="/about/">About</a>
 	</li>
-	<li {% if path == '/donate/' %} class='active header__nav__link' {% endif %}>
+	<li class='header__nav__link {% if path == '/donate/' %} active {% endif %}'>
 	  <a href="/donate/">Donate</a>
 	</li>
       {% endif %}
