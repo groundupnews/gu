@@ -1,4 +1,6 @@
 header {
+    background-color: #151F22;
+    display: flex;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -51,11 +53,6 @@ button#search-button:hover {
 
 a.admin-menu-item {
     color: red;
-}
-
-.header {
-    background-color: #151F22;
-    display: flex;
 }
 
 .header__burger-menu-icon {
@@ -291,10 +288,6 @@ a.admin-menu-item {
     nav li.drop:hover ul {
         visibility: visible;
         opacity: 1;
-    }
-
-    #logo a {
-        text-decoration: none;
     }
     
     .header__search-form__container {
