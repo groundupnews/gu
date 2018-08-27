@@ -1,9 +1,9 @@
 {% load staticfiles %}
 
 <footer>
-  <div class="footer-container">
+  <div class="footer-container">    
     <div class="footer-logo">
-      <div id="copyright">
+      <div class="copyright">
         <a href="{% url 'home' %}">
           <img class="footer-logo-img" src="{% static logo %}" alt="GroundUp Logo" />
         </a>
@@ -15,40 +15,52 @@
     </div>
     <nav class="footer-nav">
       <ul class="footer-nav__links">
-        <li><a href="/about/">About</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="/donate/">Donate</a></li>
-        <li><a href="#">Copyright policy</a></li>
-        <li><a href="#">Privacy</a></li>
+        <li class="footer-nav__link"><a href="/about/">About</a></li>
+        <li class="footer-nav__link"><a href="#">News</a></li>
+        <li class="footer-nav__link"><a href="/donate/">Donate</a></li>
+        <li class="footer-nav__link"><a href="#">Copyright policy</a></li>
+        <li class="footer-nav__link"><a href="#">Privacy</a></li>
+        <a class="footer-nav__link footer-nav__link--newsletter" href="#">Newsletter Sign Up </a>
       </ul>
     </nav>
     <div class="footer-contact">
-      <div id="contact">
-        <h2>Contact us</h2>
-	      <p>
-          {% include "insert_icon.html" with icon="icon-phone" %}
-	        +27 (0) 21 788 9163
-	      </p>
+      <div class="contact">
+        <h2 class="footer-contact__header">Contact us</h2>
+        <p>
+          <a class="footer-contact-link" href="tel:+27217889163">+27 (0) 21 788 9163</a><br />
+	  <a class="footer-contact-link" href="mailto:info@groundup.org.za">info@groundup.org.za</a>
+	</p>
         <address>
-          <h2>Address</h2>
-	        <p>
-	          Suite 08SB, 1st&nbsp;floor<br>South&nbsp;
+	  <p>
+	    Suite 08SB, 1st&nbsp;floor<br>South&nbsp;
             Block, Tannery&nbsp;Park<br />
             21 Belmont Road<br>Rondebosch<br />
             Cape Town 7700</p>
           <p>
-            {% include "insert_icon.html" with icon="icon-location" %}
-            <a href="https://goo.gl/a7ybi4" target="_blank">Google Maps</a>&nbsp;
-            <a href="https://www.openstreetmap.org/search?query=23%20Belmont%20Road%20Rondebosch#map=19/-33.96195/18.47122&layers=NDG"
+            <a class="footer-contact-link" href="https://goo.gl/a7ybi4" target="_blank">Google Maps</a><br />
+            <a class="footer-contact-link" href="https://www.openstreetmap.org/search?query=23%20Belmont%20Road%20Rondebosch#map=19/-33.96195/18.47122&layers=NDG"
                target="_blank">OpenStreetMap
             </a>
-	        </p>
+	  </p>
         </address>
-	      <p>
-          {% include "insert_icon.html" with icon="icon-mail" %}
-	        <a href="mailto:info@groundup.org.za">info@groundup.org.za</a>
-	      </p>
+        <p>Stay Updated:</p>
+        <div class="footer-social">
+          <a class="footer-social-icon" href="https://www.facebook.com/GroundUpNews/" target="_blank">
+            <img src="{% static 'newsroom/images/Graphics/Footer_facebook.svg' %}" alt="Facebook" />
+          </a>
+          <a class="footer-social-icon" href="https://twitter.com/GroundUp_News" target="_blank">
+            <img src="{% static 'newsroom/images/Graphics/footer_twitter-01.svg' %}" alt="Twitter" />
+          </a>
+          <a class="footer-social-icon" href="#" target="_blank">
+            <img src="{% static 'newsroom/images/Graphics/Footer_RSS-01.svg' %}" alt="RSS" />
+          </a>
+          <a class="footer-social-icon" href="https://www.youtube.com/c/GroundUpNews" target="_blank">
+            <img src="{% static 'newsroom/images/Graphics/Footer_youtube-01.svg' %}" alt="Youtube" />
+          </a>
+        </div>
       </div>
     </div>
+
+    
   </div>
 </footer>

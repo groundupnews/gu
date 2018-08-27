@@ -1,22 +1,33 @@
 .footer-container {
     display: flex;
     justify-content: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.copyright {
+    flex-basis: 80%;
 }
 
 .footer-logo {
     display: flex;
     justify-content: center;
     flex: 1;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 .footer-logo-img {
-    width: 245px;
-    padding-top: 5%;
+    width: 70%;
+    padding-bottom: 5%;
 }
 
 .footer-nav {
     display: flex;
     flex: 1;
+    justify-content: center;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 .footer-nav__links {
@@ -24,12 +35,20 @@
     flex-direction: column;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    flex: 1;
+    flex-basis: 80%;
+    justify-content: space-between;
 
 }
 
 .footer-nav__links a {
     text-decoration: none;
+    font-size: 1.7rem;
+}
+
+.footer-nav__links a:hover {
+    text-decoration: none;
+    font-size: 1.7rem;
+    color: #00B1F0;
 }
 
 .footer-nav__links li {
@@ -40,10 +59,70 @@
     display: flex;
     justify-content: center;
     flex: 1;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.footer-contact__header {
+    font-family: 'Roboto Slab', serif;
+    font-size: 28px;
+    line-height: 32px;
+    margin-top: 0px;
+}
+
+.contact {
+    flex-basis: 80%;
+}
+
+.footer-contact-link {
+    color: #00B1F0;
+}
+
+.footer-nav__link a:hover {
+    color: #00B1F0;
+}
+
+
+.footer-nav__link--newsletter {
+    text-align: center;
+    color: white;
+    background-color: #00B1F0;
+    line-height: 4rem;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.footer-nav__link--newsletter:hover {
+    color: #151F22 !important;
+}
+
+.footer-social {
+    display: flex;
+    height: 40px;
+}
+
+.footer-social-icon {
+    width: 64px;
+    padding-right: 5%;
 }
 
 @media (max-width: 425px) {
+    .footer-logo-img {
+        padding-top: 5%;
+        padding-bottom: 5%;
+    }
+    
     .footer-container {
         flex-direction: column;
-    }    
+    }
+
+    .footer-nav__links {
+        height: 200px;
+    }
+
+    .footer-social {
+        justify-content: center;
+        margin-bottom: 20px;
+    }
 }
