@@ -169,6 +169,24 @@
     line-height: 27px;
 }
 
+.more_articles {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.more_articles__popular {
+    background-color: #fff;
+    flex-basis: 70%;
+    padding: 10px;
+}
+
+.more_articles__letters {
+    background-color: #fff;
+    flex-basis: 28%;
+    padding: 10px;
+}
+
 @media (max-width: 768px) {
     .home__top-article {
         display: flex;
