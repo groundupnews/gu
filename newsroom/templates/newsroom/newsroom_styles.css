@@ -1,3 +1,6 @@
+body {
+    background-color: #F0F0F2;
+}
 
 
 /****************** HEADER *******************/
@@ -96,35 +99,6 @@ a {
 
 /* sidebar social media */
 
-#social-media {
-    border-top: 1px solid #D3D3D3;
-    border-bottom: 1px solid #D3D3D3;
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
-#social-media .left {
-    padding-top: 8px;
-}
-
-span.social-media-follow {
-    vertical-align: 3px;
-}
-
-#social-media .left a {
-    color: black;
-}
-
-
-#social-media .right {
-    border-left: 1px solid #D3D3D3;
-    font-size: 1.53rem;
-    text-transform: uppercase;
-}
-
-#social-media .right a {
-    color: black;
-}
 
 /**************/
 

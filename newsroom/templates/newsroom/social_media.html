@@ -1,27 +1,26 @@
-<div id="social-media">
-    <div class="row">
+{% load staticfiles %}
 
-        <div class="col-xs-7 left">
-            <a href="/feeds/">
-                {% include "insert_icon.html" with icon="icon-rss" %}
-            </a>
-            <a href="https://www.facebook.com/GroundUpNews/"
-               target="_blank" >
-                {% include "insert_icon.html" with icon="icon-facebook" %}
-            </a>
-            <a href="https://www.youtube.com/c/GroundUpNews"
-               target="_blank">
-                {% include "insert_icon.html" with icon="icon-youtube" %}
-            </a>
-            <a href="https://twitter.com/GroundUp_News"
-               target="_blank">
-                {% include "insert_icon.html" with icon="icon-twitter" %}
-            </a>
-        </div>
-        <div class="col-xs-5 right get-newsletter">
-	    <a href="http://eepurl.com/Or2a9" target="_blank">
-                Get our newsletter
-	    </a>
-        </div>
-    </div>
+<div class="social-media">
+  <div class="social-media__newsletter">
+    <a href="http://eepurl.com/Or2a9" target="_blank">
+      <h1>Get our newsletter</h1>
+    </a>
+  </div>
+  <div class="social-media__icons">
+    <a class="social-media__icon" href="https://www.facebook.com/GroundUpNews/"
+       target="_blank" >
+      <img src="{% static 'newsroom/images/Banners/Facebookdesktop.jpg' %}" alt="Facebook" />
+    </a>
+    <a class="social-media__icon" href="https://twitter.com/GroundUp_News"
+       target="_blank">
+      <img src="{% static 'newsroom/images/Banners/Twitterdesktop.jpg' %}" alt="Twitter" />
+    </a>
+    <a class="social-media__icon" href="https://www.youtube.com/c/GroundUpNews"
+       target="_blank">
+      <img src="{% static 'newsroom/images/Banners/Youtubedesktop.jpg' %}" alt="Youtube" />
+    </a>
+    <a class="social-media__icon" href="/feeds/">
+      <img src="{% static 'newsroom/images/Banners/Rssdesktop.jpg' %}" alt="Rss" />
+    </a>
+  </div>
 </div>

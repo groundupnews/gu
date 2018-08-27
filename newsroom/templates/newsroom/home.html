@@ -6,63 +6,64 @@
 
 {% block article-list %}
   <div class="home" id="list-content">
-	  <div class="home_container">
-		      <div>
-			      {% include 'blocks/blocks.html' with blocks=topblocks%}
-		      </div>
-		    <div  class="home__article-list">
-		      {% if page_obj.has_previous or article_list.0.stickiness == 0 %}
-			      {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
-		      {% else  %}
-			      {% with article_list.0 as article %}
-			        <div class="home__top-article" id="top-article">
-                <div class="home__top-article_image">
-				          <a href="{{article.get_absolute_url}}">
-				            <img class="first-summary-image
-						                    summary-image"
-					               src="{{ article.cached_primary_image }}"
-					               alt="{{ article.summary_image_alt }}"/>
-				          </a>
-                </div>
+    <div class="home_container">
+      <div>
+	{% include 'blocks/blocks.html' with blocks=topblocks%}
+      </div>
+      <div  class="home__article-list">
+	{% if page_obj.has_previous or article_list.0.stickiness == 0 %}
+	  {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
+	{% else  %}
+	  {% with article_list.0 as article %}
+	    <div class="home__top-article" id="top-article">
+              <div class="home__top-article_image">
+		<a href="{{article.get_absolute_url}}">
+		  <img class="first-summary-image
+			      summary-image"
+		       src="{{ article.cached_primary_image }}"
+		       alt="{{ article.summary_image_alt }}"/>
+		</a>
+              </div>
 
-                <div class="home__top-article_text">
-                  <div class="home__top-article_text__box">
-                    <div class="home__top-article_text__category">
+              <div class="home__top-article_text">
+                <div class="home__top-article_text__box">
+                  <div class="home__top-article_text__category">
                     {{article.category|upper}}
                   </div>
                   <div class="home__top-article_text__date">
                     {{article.published|date:"j F Y"}}
                   </div>
-				          <h2 class="home__top-article_text__title">
-				            <a href="{{article.get_absolute_url}}">
-					            {{article.title|safe }}
-				            </a>
-				          </h2>
-				          <div class="home__top-article_text__summary">
-				            <a href="{{article.get_absolute_url}}">
-					            {{article.cached_summary_text|safe}}
-				            </a>
-				          </div>
+		  <h2 class="home__top-article_text__title">
+		    <a href="{{article.get_absolute_url}}">
+		      {{article.title|safe }}
+		    </a>
+		  </h2>
+		  <div class="home__top-article_text__summary">
+		    <a href="{{article.get_absolute_url}}">
+		      {{article.cached_summary_text|safe}}
+		    </a>
+		  </div>
                   <div class="home__top-article_text__byline">
                     <a href="{{article.get_absolute_url}}">
-		                  {{article.cached_byline_no_links|safe|striptags}}
-		                </a>
+		      {{article.cached_byline_no_links|safe|striptags}}
+		    </a>
                   </div>
                   <div class="home__top-article_text__details-mobile">
                     <a href="{{article.get_absolute_url}}">
                       {{article.cached_byline_no_links|safe|striptags}}
-		                </a> - {{article.published|date:"j F Y"}}
-                  </div>
+		    </a> - {{article.published|date:"j F Y"}}
                   </div>
                 </div>
-			        </div>
-			      {% endwith %}
-			      {% with article_list|slice:"1:" as articlelist %}
-			        {% include 'newsroom/list.html' with articles=articlelist include_image="1" include_summary="1" md_size="12" %}
-			      {% endwith %}
-		      {% endif %}
-          {% include 'paginator.html' %}
-		    </div>
-	  </div>
+              </div>
+	    </div>
+	  {% endwith %}
+	  {% with article_list|slice:"1:" as articlelist %}
+	    {% include 'newsroom/list.html' with articles=articlelist include_image="1" include_summary="1" md_size="12" %}
+	  {% endwith %}
+	{% endif %}
+        {% include 'paginator.html' %}
+      </div>
+    </div>
+    {% include 'newsroom/social_media.html' %}
   </div>
 {% endblock %}

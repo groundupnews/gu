@@ -2,11 +2,15 @@
     background-color: #F0F0F2;
     display: flex;
     justify-content: center;
+    align-items: center;
+    width: 80%;
+    flex-direction: column;
+    margin: 0 auto;
 }
 
 .home_container {
     background-color: #fff;
-    flex-basis: 75%;
+    flex-basis: 80%;
     margin-top: 30px;
     margin-bottom: 30px;
     display: flex;
