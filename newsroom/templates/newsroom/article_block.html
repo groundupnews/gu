@@ -14,8 +14,43 @@
       </div>
     </div>
     <h2 class="article__subtitle" {% if can_edit %} contenteditable="true" {% endif %}>
-	{{ article.subtitle|safe }}
+      {{ article.subtitle|safe }}
     </h2>
+    <div class="article__image__box">
+      <div class="article__image__container">
+        {% if article.primary_image %}
+	  <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}" target="_blank">
+	    <img src="{{article.cached_primary_image|iriencode}}"
+		 alt="{{article.primary_image_alt|addslashes}}"
+                 class="webfeedsFeaturedVisual article__image"
+            />
+	  </a>
+	{% else %}
+	  <img src="{{article.cached_primary_image|iriencode}}"
+	       alt="{{article.primary_image_alt|addslashes}}"
+               class="webfeedsFeaturedVisual article__image"/>
+	{% endif %}
+      </div>
+      <div class="article__image__caption">
+        {% if article.primary_image_caption %}
+	  <figcaption id="article_primary_image_caption"
+		      {% if can_edit %}
+		      contenteditable="true"
+		      {% endif %} >
+	    {{article.primary_image_caption|safe}}
+	  </figcaption>
+	{% else %}
+	  {% comment %}Editors must have empty caption to edit
+	  {% endcomment %}
+	  {% if can_edit %}
+	    <figcaption id="article_primary_image_caption"
+                        contenteditable="true">
+	      {{article.primary_image_caption|safe}}
+	    </figcaption>
+	  {% endif %}
+        {% endif %}
+      </div>
+    </div>
     {{ article_body|safe }}
   </div>
   <div class="article__sidebar">
