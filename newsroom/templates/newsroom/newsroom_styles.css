@@ -14,54 +14,12 @@ aside {
     margin-bottom: 12px;
 }
 
-article li {
-    margin-bottom: 9px;
-}
-
-article p {
-    margin-top: 12px;
-}
-
-article p > img {
-    margin-top: 14px;
-}
-
 /**************************/
 
 
 #letter-tips {
     border-bottom: 1px solid black;
     margin-bottom: 12px;
-}
-
-article figure, article p.caption {
-    padding-bottom: 6px;
-    border-bottom: 1px solid #ebebe0;
-    margin-bottom: 15px;
-    font-style: italic;
-}
-
-article figure img, article p img {
-    width: 100%;
-}
-
-figcaption {
-    margin-top: 6px;
-}
-
-
-#article-dateline {
-    color: #adadad;
-}
-
-article p.intro {
-    font-weight: bold;
-}
-
-#article-topics {
-    padding-top: 12px;
-    margin-top: 12px;
-    border-top: 1px solid #ebebe0;
 }
 
 a {
