@@ -14,12 +14,54 @@ aside {
     margin-bottom: 12px;
 }
 
+article li {
+    margin-bottom: 9px;
+}
+
+article p {
+    margin-top: 12px;
+}
+
+article p > img {
+    margin-top: 14px;
+}
+
 /**************************/
 
 
 #letter-tips {
     border-bottom: 1px solid black;
     margin-bottom: 12px;
+}
+
+article figure, article p.caption {
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ebebe0;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+article figure img, article p img {
+    width: 100%;
+}
+
+figcaption {
+    margin-top: 6px;
+}
+
+
+#article-dateline {
+    color: #adadad;
+}
+
+article p.intro {
+    font-weight: bold;
+}
+
+#article-topics {
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid #ebebe0;
 }
 
 a {
@@ -152,15 +194,6 @@ a {
 #article-category {
     font-size: 1.35rem;
     /* font-size: 1.53rem;*/
-}
-
-#article-copyright {
-    margin-top: 12px;
-    margin-bottom: 12px;
-    padding: 12px;
-    background-color: #F1F2F2;
-    /* font-size: 1.35rem;*/
-    font-size: 1.53rem;
 }
 
 
@@ -448,11 +481,6 @@ div#article-share-bottom {
     padding-top: 15px;
 }
 
-blockquote {
-    padding: 0 0 0 12px;
-    margin: 6px 0 6px 0;
-}
-
 #article-list p.intro {
     font-weight: normal;
     font-size: 18px;
@@ -462,20 +490,6 @@ blockquote {
 p.author-description, p.disclaimer, p.correction {
     font-style: italic;
 }
-
-
-.pquote {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    line-height: 150%;
-    color: #26abe2;
-    font-size: 21px;
-}
-
 
 #clear-cache-form {
     margin-bottom: 10px;
@@ -522,9 +536,6 @@ p.author-description, p.disclaimer, p.correction {
     }
     .pquote {
         font-size: 20px;
-    }
-    blockquote {
-        font-size: 18px;
     }
     #content-extra {
         padding-top: 6px;

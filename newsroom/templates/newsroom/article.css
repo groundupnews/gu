@@ -9,21 +9,21 @@
     margin-bottom: 30px;
 }
 
-.article {
-
-}
-
 .article__title {
     font-family: 'Roboto Slab', serif;
     font-size: 3.4rem;
-    line-height: 41px;    
+    line-height: 41px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #000;
 }
 
 .article__subtitle {
     font-family: 'Open Sans', sans-serif;
-    font-size: 2rem;
-    line-height: 34px;
-    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 28px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .article__container {
@@ -71,6 +71,7 @@
 .article__image__box {
     display: flex;
     flex-direction: column;
+    margin-bottom: 50px;
 }
 
 .article__image {
@@ -87,6 +88,64 @@
     padding: 30px;
 }
 
+.article img {
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+.article blockquote {
+    font-family: 'Roboto slab', sans-serif;
+    border-left: 5px solid #00b1F0;
+    padding: 0 0 0 12px;
+    margin: 6px 0 6px 0;
+    padding-left: 20px;
+    font-size: 2rem;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.pquote {
+    font-family: 'Roboto slab', sans-serif;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 150%;
+    font-size: 2.4rem;
+    display: flex;
+}
+
+.pquote:before {
+    content: "\201D";
+    font-size: 90px;
+    padding-top: 30px;
+    padding-right: 20px;
+    font-family: sans-serif;
+    color: #00b1F0;
+    font-weight: 600;
+}
+
+.article p {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.subheading {
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.article__copyright {
+    background-color: #fff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 160%;
+
+}
+
 @media (max-width: 786px) {
     .article-content {
         width: 100%;
@@ -100,6 +159,7 @@
 
     .article__content {
         margin-right: 0px;
+        margin-bottom: 30px;
     }
 
     .article__title {
@@ -124,5 +184,27 @@
 
     .article__details__share {
         width: 100%;
+    }
+
+    .article blockquote {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .pquote {
+        font-size: 2rem;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .pquote:before {    
+        font-size: 70px;
+        padding-top: 23px;
+        padding-right: 15px;
+    }
+
+    .subheading {
+        margin-top: 30px;
+        margin-bottom: 20px;
     }
 }
