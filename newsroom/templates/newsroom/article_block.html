@@ -94,9 +94,12 @@
     {% include 'newsroom/article_comments.html' %}
   </div>
   <div class="article__sidebar">
-    {% if article.main_topic %}
-      {% include "newsroom/read_similar.html" %}
-    {% endif %}
+    <div id="most-popular">
+      <h2>Related</h2>
+    </div>
+    <div id="most-popular">
+      <h2>Most Read Stories</h2>
+    </div>
   </div>
 </div>
 <div class="article__extra-content">

@@ -264,6 +264,11 @@
         flex-direction: column;
     }    
 
+    .article__sidebar {
+        align-self: stretch;
+        margin-bottom: 30px;
+    }
+    
     .article__content {
         margin-right: 0px;
         margin-bottom: 30px;
