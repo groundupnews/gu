@@ -35,8 +35,8 @@
     {% endif %}
 
     {% if article.letters_on %}
-	<div id="write-letter">
-	    <a href="{% url "letter_to_editor" article.pk %}">
+	<div class="article__letter__button">
+	  <a class="article__letter__link" href="{% url "letter_to_editor" article.pk %}">
 		Write a letter in response to this article
 	    </a>
 	</div>

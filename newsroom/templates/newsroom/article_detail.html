@@ -81,26 +81,10 @@
 	  {% include "newsroom/article_block.html" %}
 	{% endblock %}
       </article>
-
-      <div class="row">
-	{% if article.copyright %}
-	  <div class="col-xs-12 col-md-8
-                      {% if article.undistracted_layout %}
-                      col-md-offset-1
-                      {% endif %}">
-	    <div id="article-copyright">
-	      {{article.copyright|safe}}
-	    </div>
-	  </div>
-	{% endif %}
-      </div>
-
-      <div class="row">
-	<div class="col-xs-12 col-md-8">
-	  {% if article.comments_on %}
-	    {% include 'newsroom/article_comments.html' %}
-	  {% endif %}
-	</div>
+    </div>
+    <div class="article-social">
+      <div class="article-social-container">
+        {% include 'newsroom/social_media.html' %}
       </div>
     </div>
   </div>

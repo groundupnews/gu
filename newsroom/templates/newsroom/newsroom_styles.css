@@ -58,12 +58,6 @@ article p.intro {
     font-weight: bold;
 }
 
-#article-topics {
-    padding-top: 12px;
-    margin-top: 12px;
-    border-top: 1px solid #ebebe0;
-}
-
 a {
     color: #26aae2;
 }
@@ -170,19 +164,6 @@ a {
 }
 */
 /* Letter writing */
-
-#write-letter {
-    background-color: #26aae2;
-    color: white;
-    text-align: center;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    font-size: 18px;
-}
-
-#write-letter a {
-    color: white;
-}
 
 #related .related-date {
     font-size: 75%;

@@ -1,0 +1,11 @@
+<div class="article__topics">
+  <span class="article__topics__header">TOPICS:&nbsp;</span>
+  {% with topics_all=article.topics.all %}
+    {% if topics_all|length  %}
+      {% for topic in topics_all %}
+	<a class="article__topic" href="{% url 'topic.detail' topic.slug %}">
+          {{ topic.name|capfirst }}</a>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>

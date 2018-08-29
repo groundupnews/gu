@@ -1,14 +1,14 @@
 <div id="comments">
     <div class="panel-group">
-	<div class="panel panel-default">
-	    <div class="panel-heading">
-		<h4 class="panel-title">
-		    <a data-toggle="collapse" href="#collapse1">
-			<i class="fa fa-plus" aria-hidden="true"></i>
-			Reader comments
-		    </a>
-		</h4>
-	    </div>
+      <div class="panel panel-default">
+        <a class="article__comment__link" data-toggle="collapse" href="#collapse1">
+	  <div class="panel-heading article__comment__button">
+	    <h2 class="panel-title article__comment__title">
+	      <i class="fa fa-plus" aria-hidden="true"></i>
+	      Reader comments
+	    </h2>
+	  </div>
+        </a>
 	    <div id="collapse1" class="panel-collapse
 				       {% if article.collapse_comments %}
 				       collapse {% endif %}">
