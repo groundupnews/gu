@@ -146,6 +146,13 @@
 
 }
 
+.article .social-media__icon {
+    flex: none;
+    width: 50%;
+}
+
+
+
 @media (max-width: 786px) {
     .article-content {
         width: 100%;
