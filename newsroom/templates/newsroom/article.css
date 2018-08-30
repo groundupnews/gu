@@ -33,14 +33,14 @@
 
 .article__content {
     background-color: #fff;
-    flex: 3;
+    flex-basis: 70%;
     padding: 30px;
     margin-right: 30px;
 }
 
 .article__sidebar {
     background-color: #fff;
-    flex: 1;
+    flex-basis: 30%;
     padding: 30px;
     align-self: flex-start;
 }
@@ -253,6 +253,22 @@
     border-color: #00B1F0;
 }
 
+.article__extra-content {
+    display: flex;
+}
+
+.extra-content__related-stories {
+    flex-basis: 70%;
+    margin-top: 30px;
+    margin-right: 30px;
+    background-color: #fff;
+    padding: 30px;
+}
+
+.extra-content__spacer {
+    flex-basis: 30%;
+}
+
 @media (max-width: 786px) {
     .article-content {
         width: 100%;
@@ -279,6 +295,7 @@
         font-size: 2.8rem;
         line-height: 34px;    
     }
+
 
     .article__subtitle {
         font-size: 1.5rem;
@@ -333,5 +350,9 @@
     .article-container .social-media__icon {
         flex: none;
         width: 50%;
+    }
+
+    .article__extra-content {
+        display: none;
     }
 }

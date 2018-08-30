@@ -99,11 +99,10 @@
 </div>
 <div class="article__extra-content">
   <div class="extra-content__related-stories">
-    {% if article.main_topic %}
-      {% include "newsroom/read_similar.html" %}
-    {% endif %}
+    {% include "newsroom/read_next.html" %}
   </div>
-  <div class="extra-content__same-category"></div>
+  <div class="extra-content__spacer">
+  </div>
 </div>
 
 {% if can_edit %}

@@ -75,7 +75,11 @@ _Recommend
                 {% endif %}
             {% elif b.name == "_Recommend" %}
 	        <div id="read-next">
-	            {% include 'newsroom/read_next.html' %}
+	          {% include 'newsroom/read_next.html' %}
+	        </div>
+            {% elif b.name == "_Topic" %}
+	        <div id="topic">
+	          {% include 'newsroom/article_topics.html' %}
 	        </div>
             {% else %}
                 {{b.html|safe}}

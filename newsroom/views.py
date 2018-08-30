@@ -353,11 +353,12 @@ def article_detail(request, slug):
                           {'article': article,
                            'display_region': display_region,
                            'recommended': article.get_recommended(),
-                           'related': article.get_related,
+                           'related': article.get_related(),
                            'blocks': get_blocks('Article'),
                            'can_edit': can_edit,
                            'article_body': article_body,
                            'article_letters': article.letter_set.published(),
+                           'most_popular_html': models.MostPopular.get_most_popular_html(),
                            'letters': Letter.objects.published().
                            filter(published__gte=date_from).
                            order_by('-published'),
