@@ -35,3 +35,7 @@
     font-family: 'Open Sans', sans-serif;
     color: #151F22;
 }
+
+.article__sidebar .recommended {
+    padding: 30px;
+}

@@ -1,0 +1,25 @@
+#most-popular.most-popular {
+    display: flex;
+    flex-direction: column;
+}
+
+.article__sidebar #most-popular {
+    padding: 30px;
+}
+
+#most-popular h2 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+#most-popular ol li a {
+    font-family: 'Open Sans', sans-serif;
+    color: #151F22;
+    font-weight: 400;
+    font-size: 1.7rem;
+    line-height: 1.9rem;
+}
+
+

@@ -39,10 +39,13 @@
 }
 
 .article__sidebar {
-    background-color: #fff;
     flex-basis: 30%;
-    padding: 30px;
     align-self: flex-start;
+}
+
+.article__sidebar .sidebar-block {
+    margin-bottom: 30px;
+    background-color: #fff;
 }
 
 .article__details {
@@ -245,6 +248,7 @@
     padding: 10px;
     border-radius: 10px;
     margin: 5px 5px;
+    text-transform: capitalize;
 }
 
 .article__topic:hover {
