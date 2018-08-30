@@ -469,17 +469,13 @@ p.author-description, p.disclaimer, p.correction {
 }
 
 
-#see-also img, #read-next img {
+#see-also img {
     width:100%;
     height:100%;
 }
 
-#see-also h2, #read-next h2 {
+#see-also h2 {
     margin-bottom: 6px;
-}
-
-#read-next p {
-    font-weight: bold;
 }
 
 #most-popular, #latest-letters {

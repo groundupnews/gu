@@ -2,4 +2,36 @@
 }
 
 .recommended__header {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.recommended__article-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.recommended__article {
+    display: flex;    
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.recommended__article__img-container {
+    flex-basis: 33%;
+}
+
+.recommended__article__img {
+    width: 100%;
+}
+
+.recommended__article__text-container {
+    flex-basis: 65%;
+}
+
+.recommended__article__text {
+    font-family: 'Open Sans', sans-serif;
+    color: #151F22;
 }

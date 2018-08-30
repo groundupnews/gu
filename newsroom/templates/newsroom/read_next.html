@@ -1,34 +1,33 @@
 {% load fb_versions %}
 
 {% if recommended %}
-    <div class="recommended">
-      <h2 class="recommended__header">You might like</h2>
+  <div class="recommended">
+    <h2 class="recommended__header">You might like</h2>
 
-    {% for article in recommended %}
-
-      <div class="recommended__article-list">
+    <div class="recommended__article-list">
+      {% for article in recommended %}
         <div class="recommended__article">
-            {% if article.cached_primary_image %}
-                <div class="recommended__article__img-container">
-                  <a href="{{article.get_absolute_url}}">
-		    <img class="recommended__article__img"
-                         src="{% if article.primary_image %}
-                                {% version article.primary_image 'medium' %}
-                         {% else %}
-                                {{ article.cached_primary_image }}
-                         {% endif %}"
-		         alt="{{article.primary_image_alt|addslashes}}" />
-                    </a>
-                </div>
-            {% endif %}
-            <div class="recommended__article__text-container">
-              <a class="recommended__article__text" href="{{article.get_absolute_url}}">
-                <h3 class="recommended__article__title">{{article.title}}</h3>
-                <h4 class="recommended__article__date">{{article.published|date:"Y-m-d"}}</h4>
-                </a>
+          {% if article.cached_primary_image %}
+            <div class="recommended__article__img-container">
+              <a href="{{article.get_absolute_url}}">
+		<img class="recommended__article__img"
+                     src="{% if article.primary_image %}
+                            {% version article.primary_image 'medium' %}
+                     {% else %}
+                            {{ article.cached_primary_image }}
+                     {% endif %}"
+		     alt="{{article.primary_image_alt|addslashes}}" />
+              </a>
             </div>
+          {% endif %}
+          <div class="recommended__article__text-container">
+            <a class="recommended__article__text" href="{{article.get_absolute_url}}">
+              <h3 class="recommended__article__title">{{article.title}}</h3>
+              <h4 class="recommended__article__date">{{article.published|date:"Y-m-d"}}</h4>
+            </a>
+          </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
     </div>
+  </div>
 {% endif %}
