@@ -8,6 +8,15 @@
     margin: 0 auto;
 }
 
+.home > .sidebar-block {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.home > .sidebar-block img {
+    width: 100%;
+}
+
 .home_container {
     background-color: #fff;
     margin-top: 30px;
@@ -189,6 +198,10 @@
 @media (max-width: 768px) {
     .home {
         width: 100%;
+    }
+
+    .home > .sidebar-block {
+        margin-top: 0px;
     }
     
     .more_articles {
