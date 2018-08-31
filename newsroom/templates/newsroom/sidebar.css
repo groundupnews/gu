@@ -1,0 +1,31 @@
+.article__sidebar {}
+
+.article__sidebar #most-popular ol {
+    list-style: none;
+    counter-reset: item;
+    padding-left: 0px;
+}
+
+.article__sidebar ol li {
+    counter-increment: item;
+    display: flex;
+    width: 100%;
+    font-size: 0.8rem;
+    margin-bottom: 30px;
+}
+
+.article__sidebar ol li:before {
+    content: counter(item);
+    font-weight: bold;
+    font-size: 3rem;
+    font-family: 'Roboto Slab', serif;
+    line-height: 1;
+    width: 10%;
+}
+
+.article__sidebar ol li a {
+    width: 90%;
+    padding-left: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+}

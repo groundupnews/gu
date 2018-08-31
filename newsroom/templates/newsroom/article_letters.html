@@ -1,44 +1,44 @@
-<div id="letters">
-    {% if article_letters %}
-	<a name="letters-to-editor"></a>
-	<h2>Letters</h2>
-	<div class="panel-group" id="letter-accordion">
-	    {% for letter in article_letters %}
-		<a name="letter-{{letter.pk}}"></a>
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-			<h4 class="panel-title">
-			    <a data-toggle="collapse"
-			       data-parent="#letter-accordion"
-			       href="#letter-{{forloop.counter}}"
-			       class="{{letter.css_classes}}">
-				{{letter.title}}
-			    </a>
-			</h4>
-		    </div>
-		    <div id="letter-{{forloop.counter}}"
-			 class="panel-collapse collapse in">
-			<div class="panel-body">
-			    <div class="letter">
-                                {% include "letters/letter_text.html" %}
-                                {% if can_edit %}
-                                    <a href="{% url 'admin:letters_letter_change' letter.pk %}">
-                                        Edit letter
-                                    </a>
-                                {% endif %}
-			    </div>
-			</div>
-		    </div>
-		</div>
-	    {% endfor %}
-	</div>
-    {% endif %}
-
+<div class="letters" id="letters">
     {% if article.letters_on %}
 	<div class="article__letter__button">
 	  <a class="article__letter__link" href="{% url "letter_to_editor" article.pk %}">
-		Write a letter in response to this article
-	    </a>
+	    Write a letter in response to this article
+	  </a>
 	</div>
+    {% endif %}
+
+    {% if article_letters %}
+      <a name="letters-to-editor"></a>
+      <h2 class="letters-header">Letters</h2>
+      <div class="panel-group" id="letter-accordion">
+	{% for letter in article_letters %}
+	  <a name="letter-{{letter.pk}}"></a>
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+		<a data-toggle="collapse"
+		   data-parent="#letter-accordion"
+		   href="#letter-{{forloop.counter}}"
+		   class="{{letter.css_classes}}">
+		  {{letter.title}}
+		</a>
+	      </h4>
+	    </div>
+	    <div id="letter-{{forloop.counter}}"
+		 class="panel-collapse collapse in">
+	      <div class="panel-body">
+		<div class="letter">
+                  {% include "letters/letter_text.html" %}
+                  {% if can_edit %}
+                    <a href="{% url 'admin:letters_letter_change' letter.pk %}">
+                      Edit letter
+                    </a>
+                  {% endif %}
+		</div>
+	      </div>
+	    </div>
+	  </div>
+	{% endfor %}
+      </div>
     {% endif %}
 </div>
