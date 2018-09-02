@@ -318,6 +318,20 @@
     color: #fff;
 }
 
+article figure, article p.caption {
+    border-bottom: none;
+}
+
+#article_body p:nth-child(2):first-letter {
+    color: #00B1F0;
+    font-size: 62px;
+    line-height: .7;
+    float: left;
+    font-weight: 600;
+    padding-right: 6px;
+    font-family: 'Roboto Slab', serif;
+}
+
 @media (max-width: 786px) {
     .article-content {
         width: 100%;
@@ -423,4 +437,21 @@
         width: 75%;
         align-self: center;
     }
+}
+
+/* Preferable drop-case code that doesn't seem to be working at present */
+
+@supports (initial-letter: 7) or (-webkit-initial-letter: 7) {
+    #article_body p:nth-child(3):first-letter {
+        font-family: 'Roboto Slab', serif;
+        font-weight: 600;
+        color: #00B1F0;
+        font-size: 62px;
+        line-height: .7;
+        intial-letter: 7;
+        -webkit-initial-letter: 7;
+    }
+}
+
+@supports (not(initial-letter: 5)) and (not(-webkit-initial-letter: 5)) {
 }
