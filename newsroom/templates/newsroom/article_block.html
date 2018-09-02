@@ -1,5 +1,5 @@
-<div class="article__container">
-  <div class="article__content">
+<div class="article__container {% if article.undistracted_layout %} article__container--undistracted {% endif %}">
+  <div class="article__content {% if article.undistracted_layout %} article__content--undistracted {% endif %}">
     <a class="article__category" href="{%  url 'category.detail' article.category.name %}">
       {{article.category|upper}}
     </a>
@@ -92,11 +92,11 @@
     {% include 'newsroom/article_topics.html' %}
     {% include 'newsroom/article_letters.html' %}
   </div>
-  <div class="article__sidebar">
+  <div class="article__sidebar {% if article.undistracted_layout %} article__sidebar--undistracted {% endif %}">
     {% include 'blocks/blocks.html' %}
   </div>
 </div>
-<div class="article__extra-content">
+<div class="article__extra-content {% if article.undistracted_layout %} article__extra-content--undistracted {% endif %}">
   <div class="extra-content__related-stories">
     {% include "newsroom/read_next.html" %}
   </div>

@@ -1,7 +1,11 @@
-<div class="{% if article.undistracted_layout %}
-            {% endif %}">
-  {% if article.cached_primary_image %}
+
+<div class="row">
+  <div class="col-xs-12">
     <div class="row">
+      <div class="col-xs-12 col-md-8
+                  {% if article.undistracted_layout %}
+                  col-md-offset-1
+                  {% endif %}">
 	<div id="article-category" class="category-{{article.category|lower}}">
 	  <a href="{%  url 'category.detail' article.category.name %}">{{article.category|upper}}</a>
 	  {% if display_region %}
@@ -29,7 +33,16 @@
                 contenteditable="true">{{ article.subtitle|safe }}</h2>
 	  {% endif %}
 	{% endif %}
-      
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-xs-12 col-md-8
+              {% if article.undistracted_layout %}
+              col-md-offset-1
+              {% endif %}">
+    {% if article.cached_primary_image %}
       <figure id="article-primary-image">
 	{% if article.primary_image %}
 	  <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}"
@@ -47,9 +60,9 @@
 
 	{% if article.primary_image_caption %}
 	  <figcaption id="article_primary_image_caption"
-		      {% if can_edit %}
-		      contenteditable="true"
-		      {% endif %} >
+			  {% if can_edit %}
+			  contenteditable="true"
+			  {% endif %} >
 	    {{article.primary_image_caption|safe}}
 	  </figcaption>
 	{% else %}
@@ -65,88 +78,91 @@
 
 
       </figure>
-  {% endif %}
+    {% endif %}
 
-  <p id="article-byline">
+    <p id="article-byline">
 
-    {{ article.cached_byline|safe }} &nbsp; &nbsp;
+      {{ article.cached_byline|safe }} &nbsp; &nbsp;
 
-  </p>
-  <p id="article-dateline">
+    </p>
+    <p id="article-dateline">
 
-    <time
-        datetime='{{ article.published|date:"Y-m-d" }}'>
-      {{ article.published|date:"j F Y"}}
-    </time>
+      <time
+          datetime='{{ article.published|date:"Y-m-d" }}'>
+	{{ article.published|date:"j F Y"}}
+      </time>
 
-  </p>
+    </p>
 
-  <div id="article_body"
-       {% if can_edit %} contenteditable="true"
-       {% endif %}>
-    {{article_body|safe}}
+    <div id="article_body"
+	 {% if can_edit %} contenteditable="true"
+	 {% endif %}>
+      {{article_body|safe}}
+    </div>
+    {% if article.main_topic %}
+      {% include "newsroom/read_similar.html" %}
+    {% endif %}
+    {% if can_edit %}
+      <div style="display:none;">
+	<form action="{% url 'article.detail' article.slug %}"
+              id="article_form"
+	      method="post">{% csrf_token %}
+	  {{form.as_p}}
+	  <input id="input-is-published"
+		 value="{{article.is_published}}"
+		 name="is_published">
+	  <input id="input-top-story"
+		 value="NO"
+		 name="input_top_story">
+	  <input id="input-unsticky"
+		 value="NO"
+		 name="input_unsticky">
+	  <input id="saveedits" type="submit"
+		 value="Save">
+	</form>
+      </div>
+    {% endif %}
+    <div id="article-meta">
+      <div id="article-misc">
+        <div class="row">
+	  {% with topics_all=article.topics.all %}
+	    {% if topics_all|length  %}
+
+              <div class="col-xs-12">
+
+		<div id="article-topics">
+
+		  <span id="article-topics-name">Topics:&nbsp;</span>
+		  {% for topic in topics_all %}
+		    <a href="{% url 'topic.detail' topic.slug %}">
+                      {{ topic.name|capfirst }}</a>{% if forloop.last == False %},&nbsp;{% endif %}
+                  {% endfor %}
+
+		</div>
+              </div>
+
+	    {% endif %}
+	  {% endwith %}
+        </div>
+        <div class="row">
+          <div id="sharing" class="col-xs-12">
+	    {% include 'newsroom/sharebuttons.html' %}
+	  </div>
+        </div>
+      </div>
+      {% include 'newsroom/article_letters.html' %}
+    </div>
   </div>
-  {% if article.main_topic %}
-    {% include "newsroom/read_similar.html" %}
-  {% endif %}
-  {% if can_edit %}
-    <div style="display:none;">
-      <form action="{% url 'article.detail' article.slug %}"
-            id="article_form"
-	    method="post">{% csrf_token %}
-	{{form.as_p}}
-	<input id="input-is-published"
-	       value="{{article.is_published}}"
-	       name="is_published">
-	<input id="input-top-story"
-	       value="NO"
-	       name="input_top_story">
-	<input id="input-unsticky"
-	       value="NO"
-	       name="input_unsticky">
-	<input id="saveedits" type="submit"
-	       value="Save">
-      </form>
+
+  <div class="col-xs-12
+	      {% if article.undistracted_layout %}
+	      col-md-8
+              col-md-offset-1
+	      {% else %}
+	      col-md-4
+	      {% endif %}">
+    <div id="sidebar">
+      {% include 'newsroom/sidebar.html' %}
     </div>
-  {% endif %}
-  <div id="article-meta">
-    <div id="article-misc">
-      <div class="row">
-	{% with topics_all=article.topics.all %}
-	  {% if topics_all|length  %}
-
-            <div class="col-xs-12">
-
-	      <div id="article-topics">
-
-		<span id="article-topics-name">Topics:&nbsp;</span>
-		{% for topic in topics_all %}
-		  <a href="{% url 'topic.detail' topic.slug %}">
-                    {{ topic.name|capfirst }}</a>{% if forloop.last == False %},&nbsp;{% endif %}
-                {% endfor %}
-
-	      </div>
-            </div>
-
-	  {% endif %}
-	{% endwith %}
-      </div>
-      <div class="row">
-        <div id="sharing" class="col-xs-12">
-	  {% include 'newsroom/sharebuttons.html' %}
-	</div>
-      </div>
-    </div>
-    {% include 'newsroom/article_letters.html' %}
   </div>
-    </div>
-
-    <div class="{% if article.undistracted_layout %}
-	        {% else %}
-                article-sidebar
-	        {% endif %}">
-      <div id="sidebar">
-        {% include 'newsroom/sidebar.html' %}
-      </div>
-    </div>
 </div>
