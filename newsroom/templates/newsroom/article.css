@@ -111,6 +111,17 @@
     padding: 30px;
 }
 
+#article_body .caption {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #D6D6DA;
+    color: #4b5253;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    padding: 30px;
+    margin-top: -20px;
+}
+
 .article__content img {
     max-width: 100%;
 }

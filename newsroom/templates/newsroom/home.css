@@ -185,14 +185,73 @@
 
 .more_articles__popular {
     background-color: #fff;
-    flex-basis: 70%;
+    flex-basis: 65%;
     padding: 10px;
 }
 
 .more_articles__letters {
     background-color: #fff;
-    flex-basis: 28%;
+    flex-basis: 32%;
     padding: 10px;
+}
+
+.home .more_articles__popular {
+    padding: 30px;
+}
+
+.home .more_articles__popular h2 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.home .more_articles__letters {
+    padding: 30px;
+}
+
+.home .more_articles__letters h2 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.home .more_articles__popular ol {
+    list-style: none;
+    counter-reset: item;
+    padding-left: 0px;
+}
+
+.home .more_articles__popular ol li {
+    counter-increment: item;
+    display: flex;
+    width: 100%;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+}
+
+.home .more_articles__popular ol li:before {
+    content: counter(item);
+    font-weight: bold;
+    font-size: 3rem;
+    font-family: 'Roboto Slab', serif;
+    line-height: 1;
+    width: 5%;
+}
+
+.home .more_articles__popular ol li a {
+    width: 90%;
+    padding-left: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: #333;
+    font-size: 1.6rem;
+}
+
+.home .more_articles__popular ol li a:hover {
+    text-decoration: none;
+    color: #00b1F0;
 }
 
 @media (max-width: 768px) {
