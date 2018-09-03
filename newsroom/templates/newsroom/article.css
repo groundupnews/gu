@@ -119,6 +119,7 @@ div.editor-summary {
     font-family: 'Open Sans', sans-serif;
     background-color: #D6D6DA;
     padding-left: 30px;
+    font-size: 1.6rem;
 }
 
 #article_body .editor-summary:first-of-type {
@@ -342,6 +343,11 @@ article figure, article p.caption {
     font-weight: 600;
     padding-right: 6px;
     font-family: 'Roboto Slab', serif;
+}
+
+
+#article_body .editor-summary:last-of-type {
+    margin-bottom: 50px;
 }
 
 @media (max-width: 786px) {
