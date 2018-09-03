@@ -195,22 +195,34 @@
     padding: 10px;
 }
 
-.home .more_articles__popular {
+.home .more_articles__letters {
     padding: 30px;
 }
 
-.home .more_articles__popular h2 {
+.home .more_articles__letters h2 {
     font-family: 'Roboto Slab', serif;
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 40px;
 }
 
-.home .more_articles__letters {
+.home .more_articles__letters h3 {
+    font-family: 'Roboto Slab', serif;
+    font-size: 2rem;
+}
+
+#latest-letters p {
+    font-family: 'Open Sans', sans-serif;
+    border-bottom: 2px solid #D6D6DA;
+    padding-top: 5px;
+    padding-bottom: 30px;
+}
+
+.home .more_articles__popular {
     padding: 30px;
 }
 
-.home .more_articles__letters h2 {
+.home .more_articles__popular h2 {
     font-family: 'Roboto Slab', serif;
     font-weight: 600;
     margin-top: 10px;
