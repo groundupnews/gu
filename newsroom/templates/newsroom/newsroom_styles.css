@@ -884,3 +884,9 @@ Single-colored icons can be modified like so:
     background-color: #00B1F0;
     border-color: #00B1F0;
 }
+
+/*** Pages with List Content ***/
+
+#list-content .row:nth-child(2) {
+    background-color: #fff;
+}

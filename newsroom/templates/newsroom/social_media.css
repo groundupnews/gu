@@ -49,6 +49,15 @@
     color: #00B1F0;
 }
 
+#list-content .social-media__icon {
+    flex: none;
+    width: 50%;
+}
+
+#list-content .row:nth-child(2) > div:first-child {
+    border-right: 2px solid #D6D6DA;
+}
+
 @media (max-width: 786px) {
     .social-media__icon {
         width: 50%;

@@ -1,0 +1,10 @@
+#flatpage > div {
+    background-color: #fff;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
+#flatpage .panel-title a {
+    color: #333;
+}
