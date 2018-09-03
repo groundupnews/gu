@@ -80,6 +80,7 @@
 
 .article__details__date-by {
     flex-basis: 70%;
+    padding-top: 6px;
 }
 
 .article__details__share {
@@ -93,6 +94,7 @@
     font-weight: 600;
     margin-right: 15px;
     color: #999;
+    padding-top: 6px;
 }
 
 .article__image__box {
