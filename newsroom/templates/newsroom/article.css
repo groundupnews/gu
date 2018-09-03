@@ -74,6 +74,10 @@
     align-items: center;
 }
 
+.article__details a {
+    line-height: 0px;
+}
+
 .article__details__date-by {
     flex-basis: 70%;
 }

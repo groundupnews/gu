@@ -768,22 +768,34 @@ Single-colored icons can be modified like so:
 }
 
 .icon-print {
-    width: 1.5em;
-    color: black;
+    width: 3rem;
+    background-color: #fff;
+    color: #4D4D4D;
+}
+
+.icon-print:hover {
+    color: #00B1F0;
 }
 
 
 .icon-twitter {
-    width: 1.5em;
-    background-color: #1da1f2;
-    color: white;
+    width: 3rem;
+    background-color: #fff;
+    color: #4D4D4D;
+}
+
+.icon-twitter:hover {
+    color: #00B1F0;
 }
 
 .icon-facebook {
-    width: 1.5em;
-    background-color: #3b5998;
-    color: white;
-    paddiing: 2px;
+    width: 3rem;
+    background-color: #fff;
+    color: #4D4D4D;
+}
+
+.icon-facebook:hover {
+    color: #00B1F0;
 }
 
 .icon-rss {
@@ -801,8 +813,13 @@ Single-colored icons can be modified like so:
 }
 
 .icon-copy {
-    width: 1.5em;
-    color: black;
+    width: 3rem;
+    background-color: #fff;
+    color: #4D4D4D;
+}
+
+.icon-copy:hover {
+    color: #00B1F0;
 }
 
 .icon-whatsapp {
@@ -813,7 +830,13 @@ Single-colored icons can be modified like so:
 }
 
 .icon-mail {
-    width: 1.5em;
+    width: 3rem;
+    background-color: #fff;
+    color: #4D4D4D;
+}
+
+.icon-mail:hover {
+    color: #00B1F0;
 }
 
 .icon-home {
