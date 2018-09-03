@@ -115,6 +115,18 @@
     max-width: 100%;
 }
 
+div.editor-summary {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #D6D6DA;
+    padding-left: 30px;
+}
+
+#article_body .editor-summary:first-of-type {
+    font-family: 'Roboto slab', sans-serif;
+    font-weight: 600;
+    font-size: 3rem;
+}
+
 .article blockquote {
     font-family: 'Roboto slab', sans-serif;
     border-left: 5px solid #00b1F0;
@@ -322,7 +334,7 @@ article figure, article p.caption {
     border-bottom: none;
 }
 
-#article_body p:nth-child(2):first-letter {
+#article_body p:nth-of-type(2):first-letter {
     color: #00B1F0;
     font-size: 62px;
     line-height: .7;
