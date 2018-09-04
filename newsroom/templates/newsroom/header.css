@@ -342,4 +342,8 @@ button#search-button:hover {
         display: flex;
         flex-basis: 90%;
     }
+
+    .header__nav__link--drop a {
+        line-height: 2.5rem;
+    }
 }

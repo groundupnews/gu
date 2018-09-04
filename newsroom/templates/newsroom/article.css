@@ -474,6 +474,17 @@ article figure, article p.caption {
     }
 }
 
+
+@media (min-width: 769px) and (max-width: 1440px) {
+    .article-content {
+        width: 90%;
+    }
+
+    .article__details__share a {
+        padding: 1px;
+    }
+}
+
 /* Preferable drop-case code that doesn't seem to be working at present */
 
 @supports (initial-letter: 7) or (-webkit-initial-letter: 7) {

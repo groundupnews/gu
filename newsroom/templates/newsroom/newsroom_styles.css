@@ -611,7 +611,7 @@ p.author-description, p.disclaimer, p.correction {
 #admin-area {
     position: fixed;
     top: 80px;
-    right: 40px;
+    right: 10vw;
     margin-bottom: 20px;
 }
 
