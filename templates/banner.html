@@ -5,14 +5,9 @@
     <i id="burger_menu" class="fas fa-bars fa-lg"></i>
   </span>
   <span class="header__logo" id="logo">
-    {% if gallery %}
-      <a href="{% url 'gallery.front' %}">
-        <h2 class="gallery">Gallery</h2></a>
-    {% else %}
-        <a href="{% url 'home' %}">
-          <img class="header__logo__img" src="{% static logo %}" alt="GroundUp Logo" />
-        </a>
-    {% endif %}
+    <a href="{% url 'home' %}">
+      <img class="header__logo__img" src="{% static logo %}" alt="GroundUp Logo" />
+    </a>
   </span>
   <div class="header__menu__container">
     {% block mainmenu %}

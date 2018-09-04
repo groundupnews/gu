@@ -3,20 +3,6 @@
 <nav class="header__nav">
   <ul class="header__nav__links">
     {% with path=request.get_full_path %}
-      {% if gallery %}
-        {% url home as home_url %}
-        <li {% if path == home_url %}class='active header__nav__link'{% endif %}>
-          <a href="/">Home</a>
-        </li>
-        {% url 'album.list' as album_list_url %}
-        <li {% if path == album_list_url %}class='active header__nav__link'{% endif %}>
-          <a href="{% url 'album.list' %}">Albums</a>
-        </li>
-        {% url 'photo.list' as photo_list_url %}
-        <li {% if path == photo_list_url %} class='active header__nav__link'{% endif %}>
-          <a href="{% url 'photo.list' %}">Photos</a>
-        </li>
-      {% else %}
         <li class="drop header__nav__link"><a href="#">News</a>
 	  <ul class="header__nav__drop-down">
             {% url 'home' as home_url %}
@@ -60,7 +46,6 @@
 	<li class='header__nav__link {% if path == '/donate/' %} active {% endif %}'>
 	  <a href="/donate/">Donate</a>
 	</li>
-      {% endif %}
     {% endwith %}
     {% if request.user.is_staff %}
       <li class="drop header__nav__link">
