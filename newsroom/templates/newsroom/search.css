@@ -1,0 +1,10 @@
+.search-page {
+    background-color: #fff;
+}
+
+@media (min-width:787px) {
+    .search-page {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }    
+}
