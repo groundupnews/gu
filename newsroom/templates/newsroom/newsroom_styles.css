@@ -616,7 +616,9 @@ p.author-description, p.disclaimer, p.correction {
 }
 
 @media (max-width: 768px) {
-    top: 58px;    
+    #admin-area {
+        top: 58px;
+    }
 }
 
 #admin-user, .editing-user {
