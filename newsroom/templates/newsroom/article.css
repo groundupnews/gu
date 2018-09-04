@@ -352,7 +352,7 @@ article figure, article p.caption {
     border-bottom: none;
 }
 
-#article_body p:nth-of-type(2):first-letter {
+.article-drop-cap:first-letter {
     color: #00B1F0;
     font-size: 62px;
     line-height: .7;

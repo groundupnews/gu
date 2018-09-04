@@ -30,4 +30,6 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
       attributes: { 'class': 'supportus-edit'} },
     { name: 'Advert', element: 'aside',
       attributes: { 'class': 'article-advert-edit' } },
+    { name: 'Drop Caps', element: 'p',
+      attributes: { 'class': 'article-drop-cap' } },    
 ] );
