@@ -29,3 +29,23 @@
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
 }
+
+.article-content .social-media__icon {
+    flex: none;
+    width: 50%;
+}
+
+#sidebar .social-media__icon {
+    flex: none;
+    width: 50%;
+}
+
+.article__sidebar--undistracted .social-media {
+    display: none;
+}
+
+@media (max-width: 786px) {
+    .article-content .social-media {
+        display: none;
+    }
+}

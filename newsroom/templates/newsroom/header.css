@@ -328,3 +328,18 @@ button#search-button:hover {
         flex-basis: 18%;
     }
 }
+
+@media (min-width: 769px) and (max-width: 1440px) {
+    .header__logo {
+        padding-left: 15px;
+    }
+
+    .header__menu__container {
+        flex: 2;
+    }
+
+    .header__nav__links {
+        display: flex;
+        flex-basis: 90%;
+    }
+}

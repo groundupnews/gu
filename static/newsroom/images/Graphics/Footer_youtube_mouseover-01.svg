@@ -1,52 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 48.4 48.3" style="enable-background:new 0 0 48.4 48.3;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FFFFFF;}
-	.st1{fill:#BE1E2D;}
-</style>
-<g>
-	<path class="st0" d="M0.3,48.4c15.9,0,31.9,0,47.8,0c0.1,0,0.3,0,0.4-0.1c0-16.2,0-32.3,0-48.5c-16.2,0-32.4,0-48.6,0
-		c0,16.2,0,32.3,0,48.5c0.1,0,0.2,0.1,0.3,0.1C0.2,48.4,0.3,48.4,0.3,48.4z M17.5,20.1c1,0,2,0,3,0c0.2,0,0.2-0.1,0.2-0.2
-		c0-1.3,0-2.6,0-3.9c0-0.8,0.1-1.6,0.4-2.3c0.6-1.7,1.8-2.9,3.5-3.5c0.9-0.3,1.8-0.5,2.7-0.5c0.9,0,1.7,0,2.6,0
-		c0.4,0,0.7,0.1,1.1,0.1c0.2,0,0.2,0.1,0.2,0.2c0,0.7,0,1.4,0,2.1c0,0.5,0,1,0,1.4c0,0.2,0,0.4,0,0.6c0,0.2-0.1,0.3-0.2,0.3
-		c-0.7,0-1.3,0-2,0c-0.6,0-1.1,0-1.7,0.1c-0.8,0.1-1.3,0.6-1.3,1.4c0,0.7,0,1.4-0.1,2c0,0.7,0,1.3,0,2c0,0.3,0,0.3,0.2,0.3
-		c1.6,0,3.2,0,4.7,0c0.3,0,0.3,0,0.3,0.3c0,1-0.1,2.1-0.1,3.1c0,0.4,0,0.8,0,1.2c0,0.3-0.3,0.3-0.3,0.3l-4.4,0c0,0-0.4,0-0.4,0.3
-		c0,4.3,0,8.6,0,12.9c0,0.4,0,0.5-0.5,0.5c-1.5,0-2.9,0-4.4,0c-0.3,0-0.4,0-0.4-0.4c0-2.2,0-4.3,0-6.5c0,0,0,0,0,0
-		c0-2.1,0-4.3,0-6.4c0-0.4-0.4-0.4-0.4-0.4s-1.9,0-2.9,0c-0.3,0-0.3,0-0.3-0.3c0-1.4,0-2.8,0-4.3C17.1,20.2,17.2,20.1,17.5,20.1z"/>
-</g>
-<g>
-	<path class="st1" d="M-0.4,48.6c0-16.4,0-32.8,0-49.1c16.4,0,32.8,0,49.1,0c0,16.4,0,32.8,0,49.1C32.3,48.6,15.9,48.6-0.4,48.6z
-		 M24.1,42.5c3.2,0,6.4,0,9.6,0c3.1,0,5.3-2.1,5.3-5.2c0-3.1,0-6.1,0-9.2c0-3-2.1-5.2-5.1-5.2c-6.5,0-13,0-19.5,0
-		c-2.9,0-5.1,2.2-5.1,5c0,3.2,0,6.5,0,9.7c0,2.8,2.2,4.9,5,4.9C17.6,42.5,20.8,42.5,24.1,42.5z M22.4,5.7c-0.7,0-1.2,0-1.8,0
-		c-0.4,0-0.6,0.1-0.6,0.5c-0.1,0.5-0.3,1.1-0.5,1.6c-0.3,1.1-0.7,2.2-1,3.4c-0.1-0.3-0.2-0.4-0.2-0.6c-0.5-1.5-0.9-3-1.4-4.4
-		c-0.1-0.2-0.2-0.5-0.4-0.5c-0.7-0.1-1.4,0-2.1,0c0.1,0.2,0.1,0.3,0.1,0.4c0.6,1.6,1.1,3.2,1.7,4.7c0.7,1.9,1.4,3.9,1.2,6
-		c-0.1,1.2,0,2.3,0,3.5c0.7,0,1.4,0,2.1,0c0-0.3,0-0.5,0-0.7c0-1.7,0-3.3,0-5c0-0.3,0.1-0.7,0.2-1c0.6-1.7,1.2-3.4,1.8-5.2
-		C21.7,7.7,22,6.7,22.4,5.7z M27.3,15.2c-0.1-1.3-0.1-2.4-0.3-3.5c-0.2-1.6-1.2-2.6-2.6-2.6c-1.5,0-2.5,0.7-2.8,2.4
-		c-0.4,2.3-0.4,4.7,0,7c0.3,1.5,1.2,2.3,2.6,2.3c1.4,0,2.4-0.7,2.7-2.2C27.1,17.4,27.2,16.2,27.3,15.2z M28.4,9.5c0,3.2,0,6.3,0,9.4
-		c0,0.2,0.1,0.4,0.1,0.6c0.2,0.6,0.6,1.1,1.3,1.2c0.8,0.1,1.4-0.1,1.9-0.7c0.1-0.1,0.2-0.2,0.3-0.4c0,0.3,0,0.6,0.1,0.8
-		c0.6,0,1.2,0,1.9,0c0-3.7,0-7.3,0-10.9c-0.6,0-1.2,0-1.9,0c0,0.3,0,0.5,0,0.7c0,2,0,4.1,0,6.1c0,0.6,0,1.1-0.2,1.7
-		c-0.1,0.3-0.5,0.6-0.8,0.5c-0.2,0-0.5-0.4-0.7-0.6c-0.1-0.1-0.1-0.3-0.1-0.4c0-2.4,0-4.8-0.1-7.2c0-0.2,0-0.5,0-0.7
-		C29.6,9.5,29,9.5,28.4,9.5z"/>
-	<path class="st1" d="M26.5,29.8c0.4-0.3,0.6-0.5,0.9-0.7c0.7-0.3,1.6-0.1,1.8,0.7c0.3,0.8,0.5,1.7,0.5,2.5c0.1,1.4,0,2.8-0.1,4.2
-		c0,0.5-0.2,1-0.4,1.5c-0.6,1.1-1.8,1.2-2.5,0.2c0-0.1-0.1-0.1-0.2-0.2c0,0.3-0.1,0.4-0.1,0.6c-0.5,0-1,0-1.5,0c0-4.1,0-8.3,0-12.4
-		c0.5,0,1,0,1.6,0C26.5,27.4,26.5,28.6,26.5,29.8z M26.4,34c0.1,0.8,0.1,1.6,0.2,2.4c0,0.4,0.3,0.8,0.7,0.7c0.3-0.1,0.6-0.5,0.6-0.7
-		c0.1-1.6,0.1-3.1,0-4.7c0-0.4-0.2-0.8-0.7-0.7c-0.3,0.1-0.6,0.4-0.7,0.7C26.5,32.4,26.5,33.2,26.4,34z"/>
-	<path class="st1" d="M35.9,34.3c-1,0-1.9,0-2.8,0c-0.4,0-0.6,0.1-0.5,0.5c0.1,0.6,0,1.1,0.1,1.7c0.1,0.3,0.4,0.5,0.7,0.8
-		c0.2-0.3,0.6-0.5,0.7-0.8c0.1-0.3,0.1-0.6,0.2-1c0.5,0,1,0,1.5,0c0,0.9,0,1.8-0.5,2.5c-0.8,1.2-3.2,1.2-3.8-0.2
-		c-0.4-0.7-0.5-1.6-0.6-2.4c0-1.5,0-3.1,0.2-4.6c0.2-1.3,1.1-1.9,2.4-1.9c1.2,0,2,0.6,2.2,1.9C35.8,32,35.8,33.1,35.9,34.3z
-		 M32.5,32.7c1.7,0.2,1.9,0,1.6-1.4c0,0,0,0,0-0.1c-0.2-0.2-0.4-0.5-0.6-0.5c-0.2,0-0.6,0.2-0.7,0.4C32.6,31.7,32.6,32.2,32.5,32.7z
-		"/>
-	<path class="st1" d="M21.7,29.3c0.5,0,0.9,0,1.3,0c0.1,0,0.3,0.2,0.3,0.3c0,3,0,6,0,8.9c0,0,0,0-0.1,0.1c-0.4,0-0.9,0-1.4,0
-		c0-0.2-0.1-0.4-0.2-0.6c-0.2,0.2-0.3,0.3-0.4,0.5c-0.7,0.7-1.9,0.5-2.3-0.5c-0.2-0.5-0.3-1-0.3-1.5c0-2.2,0-4.4,0-6.5
-		c0-0.6,0.2-0.8,0.8-0.7c0.1,0,0.2,0,0.3,0c0.5-0.1,0.6,0.1,0.6,0.6c0,2,0,3.9,0,5.9c0,0.3,0,0.6,0.1,0.8c0.1,0.2,0.4,0.5,0.6,0.5
-		c0.2,0,0.5-0.2,0.6-0.4c0.1-0.3,0.2-0.6,0.2-0.9C21.7,33.6,21.7,31.5,21.7,29.3z"/>
-	<path class="st1" d="M12.8,26.2c2,0,3.9,0,5.8,0c0,0.7,0,1.3,0,2c-0.5,0-0.9,0-1.4,0c-0.5,0-0.6,0.1-0.6,0.6c0,3,0,6,0,9
-		c0,0.2,0,0.5,0,0.8c-0.6,0-1.2,0-1.8,0c0-0.2,0-0.5,0-0.7c0-3,0-6,0-9c0-0.6-0.2-0.7-0.7-0.7c-0.4,0-0.8,0-1.3,0
-		C12.8,27.6,12.8,26.9,12.8,26.2z"/>
-	<path class="st1" d="M25.2,14.9c0,0.7,0,1.5,0,2.2c0,0.3,0,0.7-0.2,1c-0.2,0.3-0.5,0.6-0.8,0.6c-0.3,0-0.6-0.3-0.7-0.6
-		c-0.2-0.3-0.2-0.7-0.2-1c0-1.5,0-2.9,0-4.4c0-0.4,0.1-0.8,0.3-1.1c0.3-0.6,1.1-0.7,1.4,0c0.2,0.4,0.3,0.8,0.3,1.2
-		C25.2,13.5,25.2,14.2,25.2,14.9z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="213" height="213" viewBox="0 0 213 213">
+  <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c140 79.160451, 2017/05/06-01:08:21        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""/>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?></metadata>
+<image x="4" y="4" width="205" height="205" xlink:href="data:img/png;base64,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"/>
 </svg>
