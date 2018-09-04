@@ -610,9 +610,13 @@ p.author-description, p.disclaimer, p.correction {
 
 #admin-area {
     position: fixed;
-    top: 50px;
+    top: 80px;
     right: 40px;
     margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    top: 58px;    
 }
 
 #admin-user, .editing-user {
