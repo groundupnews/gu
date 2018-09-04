@@ -10,7 +10,7 @@
 
 .home > .sidebar-block {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .home > .sidebar-block img {
@@ -19,15 +19,16 @@
 
 .home_container {
     background-color: #fff;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 30px;
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .home__article-list {
-    margin-top: 30px;
-    flex-basis: 95%;
+    flex-basis: 100%;
+    padding: 0px 20px 20px 20px;
 }
 
 .home__top-article {
@@ -105,7 +106,8 @@
 }
 
 .home__top-article {
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .home__articles {
@@ -184,6 +186,7 @@
     width: 100%;
     justify-content: space-between;
     margin-bottom: 30px;
+    align-items: flex-start;
 }
 
 .more_articles__popular {
@@ -287,6 +290,7 @@
     .more_articles__popular {
         flex: 1;
         padding: 10px;
+        margin-right: 0px;
     }
 
     .more_articles__letters {
@@ -307,8 +311,7 @@
     }
 
     .home__article-list {
-        margin-top: 40px;
-        flex-basis: 80%;
+        flex-basis: 100%;
     }
 
     .home__top-article_text__box {
