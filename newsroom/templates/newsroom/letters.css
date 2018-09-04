@@ -1,0 +1,10 @@
+.letter-form-page {
+    background-color: #fff;
+}
+
+@media (min-width:787px) {
+    .letter-form-page {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }    
+}

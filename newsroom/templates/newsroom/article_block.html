@@ -12,18 +12,12 @@
     <h1 id="article_title" class="article__title" {% if can_edit %} contenteditable="true" {% endif %} >
       {{ article.title|safe }}
     </h1>
-    <div class="article__details">
+    <div class="article__details--desktop article__details--desktop-by">
       <div class="article__details__date-by">
         <time datetime='{{ article.published|date:"Y-m-d" }}'>
-          Published {{ article.published|date:"j F Y"}}
+          {{ article.published|date:"j F Y"}} - 
         </time>
         {{ article.cached_byline|safe }}
-      </div>
-      <div class="article__details__share">
-        <span class="article__details__share__text">
-          SHARE
-        </span>
-        {% include "newsroom/sharebuttons.html" %}
       </div>
     </div>
     {% if article.subtitle %}
@@ -80,6 +74,14 @@
         </div>
       </figure>
     {% endif %}
+    <div class="article__details--mobile article__details--mobile-by">
+      <div class="article__details__date-by">
+        <time datetime='{{ article.published|date:"Y-m-d" }}'>
+          {{ article.published|date:"j F Y"}} - 
+        </time>
+        {{ article.cached_byline|safe }}
+      </div>
+    </div>
     <div id="article_body"
          {% if can_edit %}
          contenteditable="true"
@@ -88,6 +90,11 @@
     </div>
     <div class="article__copyright" id="article-copyright">
       {{article.copyright|safe}}
+    </div>
+    <div class="article__details--desktop article__details--desktop-share">
+      <div class="article__details__share">
+        {% include "newsroom/sharebuttons.html" %}
+      </div>
     </div>
     {% include 'newsroom/article_topics.html' %}
     {% include 'newsroom/article_letters.html' %}

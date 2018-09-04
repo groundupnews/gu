@@ -65,7 +65,7 @@
     background-color: #fff;
 }
 
-.article__details {
+.article__details--desktop {
     border-top: 2px solid #D6D6DA;
     border-bottom: 2px solid #D6D6DA;
     padding-top: 15px;
@@ -74,7 +74,12 @@
     align-items: center;
 }
 
-.article__details a {
+.article__details--desktop-share {
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.article__details--desktop a {
     line-height: 0px;
 }
 
@@ -109,7 +114,7 @@
 
 .article__image__caption {
     font-family: 'Open Sans', sans-serif;
-    background-color: #D6D6DA;
+    background-color: #EFEFEF;
     color: #4b5253;
     font-weight: 600;
     font-size: 14px;
@@ -367,6 +372,10 @@ article figure, article p.caption {
     margin-bottom: 50px;
 }
 
+.article__details--mobile {
+    display: none;
+}
+
 @media (max-width: 786px) {
     .article-content {
         width: 100%;
@@ -398,11 +407,28 @@ article figure, article p.caption {
         font-size: 1.5rem;
         line-height: 28px;
     }    
-    
-    .article__details {
-        flex-direction: column;
+
+    .article__details--mobile {
+        border-top: 2px solid #D6D6DA;
+        border-bottom: 2px solid #D6D6DA;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        display: flex;
+        align-items: center;
     }
 
+    .article__image__box {
+        margin-bottom: 15px;
+    }
+    
+    .article__details--desktop-by {
+        display: none;
+    }
+
+    .article__details--desktop .article__details__share {
+        flex-basis: 90%;
+    }
+    
     .article__details__date-by {
         width: 100%;
         margin-bottom: 5px;
@@ -410,7 +436,6 @@ article figure, article p.caption {
 
     .article__details__share {
         width: 100%;
-        justify-content: end;
     }
 
     .article__details__share > * {
