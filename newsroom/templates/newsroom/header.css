@@ -89,6 +89,10 @@ button#search-button:hover {
     color: #fff;
 }
 
+.header__nav__link a.admin-nav-item {
+    color: red;
+}
+
 .header__nav__links {
     display: flex;
 }

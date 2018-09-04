@@ -1,76 +1,76 @@
 <span class="header__nav__drop-down__spacer"></span>
 {% if article.pk and perms.newsroom.change_article %}
-    <li><a href="{% url 'admin:newsroom_article_change' article.pk %}"
-	   class="admin-menu-item">Edit in admin</a></li>
-    {% if not article.is_published %}
-	<li id="publish-now"><a href="#"
-	       class="admin-menu-item">Publish</a></li>
-    {% endif %}
-    <li id="make-top-story"><a href="#"
-			       class="admin-menu-item"
-			    >Make top story</a></li>
-    {% if article.stickiness > 0 %}
-	<li id="make-unsticky"><a href="#"
-				   class="admin-menu-item"
-				>Unsticky</a></li>
-    {% endif %}
-    {% if request.GET.edit != "no" %}
-	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}?edit=no">Edit off</a></li>
-    {% else %}
-	<li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}">Edit on</a></li>
-    {% endif %}
-    <li role="separator" class="divider"></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:newsroom_article_change' article.pk %}"
+	                                                   class="admin-menu-item">Edit in admin</a></li>
+  {% if not article.is_published %}
+    <li class="header__nav__link header__nav__link--drop" id="publish-now"><a href="#"
+	                                                                      class="admin-menu-item">Publish</a></li>
+  {% endif %}
+  <li id="make-top-story"><a href="#"
+			     class="admin-menu-item"
+			  >Make top story</a></li>
+  {% if article.stickiness > 0 %}
+    <li id="make-unsticky"><a href="#"
+			      class="admin-menu-item"
+			   >Unsticky</a></li>
+  {% endif %}
+  {% if request.GET.edit != "no" %}
+    <li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}?edit=no">Edit off</a></li>
+  {% else %}
+    <li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}">Edit on</a></li>
+  {% endif %}
+  <li role="separator" class="divider"></li>
 {% endif %}
 
 {% if photo.pk and perms.gallery.change_photograph %}
-    <li><a href="{% url 'admin:gallery_photograph_change' photo.pk %}"
-	   class="admin-menu-item">Edit photo</a>
-    </li>
+  <li><a href="{% url 'admin:gallery_photograph_change' photo.pk %}"
+	 class="admin-menu-item">Edit photo</a>
+  </li>
 {% endif %}
 
 {% if album.pk and perms.gallery.change_album %}
-    <li><a href="{% url 'admin:gallery_album_change' album.pk %}"
-	   class="admin-menu-item">Edit album</a>
-    </li>
+  <li><a href="{% url 'admin:gallery_album_change' album.pk %}"
+	 class="admin-menu-item">Edit album</a>
+  </li>
 {% endif %}
 
 
 
 {% if flatpage.url and perms.flatpages.flatpage_change %}
-<li><a href="
-   {% url 'admin:flatpages_flatpage_change' flatpage.pk %}"
-       class="admin-menu-item">Edit</a></li>
+  <li><a href="
+               {% url 'admin:flatpages_flatpage_change' flatpage.pk %}"
+         class="admin-menu-item">Edit</a></li>
 {% endif %}
 
 
 {% if perms.newsroom.add_article %}
-<li><a href="{% url 'admin:newsroom_article_add' %}" class="admin-menu-item">New article</a></li>
-<li><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Articles</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:newsroom_article_add' %}" class="admin-menu-item">New article</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Articles</a></li>
 {% endif %}
 {% if perms.letters.add_letter %}
-    <li><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
 {% endif %}
 {% if perms.newsroom.change_author %}
-    <li><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>
 {% endif %}
 {% if perms.payment.change_invoice or perms.payment.change_commission %}
-    <li role="separator" class="divider"></li>
+  <li class="header__nav__link header__nav__link--drop" role="separator" class="divider"></li>
 {% endif %}
 {% if perms.payment.change_invoice %}
-    <li><a href="{% url 'invoice.list' %}" class="admin-menu-item">Invoices</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'invoice.list' %}" class="admin-menu-item">Invoices</a></li>
 {% endif %}
 {% if perms.payment.change_commission %}
-    <li><a href="{% url 'commissions.detail.add' %}" class="admin-menu-item">Add commission</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'commissions.detail.add' %}" class="admin-menu-item">Add commission</a></li>
 {% endif %}
 
+<li class="header__nav__link header__nav__link--drop" role="separator" class="divider"></li>
+
+<li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
+<li class="header__nav__link header__nav__link--drop"><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
+  files</a></li>
+<li class="header__nav__link header__nav__link--drop"><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Generate article list</a></li>
+<li class="header__nav__link header__nav__link--drop"><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
+
 <li role="separator" class="divider"></li>
 
-<li><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
-<li><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
-    files</a></li>
-<li><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Generate article list</a></li>
-<li><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
-
-<li role="separator" class="divider"></li>
-
-<li><a href="{% url 'user.profile' %}" class="admin-menu-item">{% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}'s Account</a></li>
+<li class="header__nav__link header__nav__link--drop"><a href="{% url 'user.profile' %}" class="admin-menu-item">{% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}'s Account</a></li>

@@ -64,7 +64,7 @@
     {% endwith %}
     {% if request.user.is_staff %}
       <li class="drop header__nav__link">
-	<a class="admin-menu-item" href="#">Admin</a>
+	<a class="admin-menu-item admin-nav-item" href="#">Admin</a>
 	<ul class="header__nav__drop-down">
           {% include 'newsroom/staff_menu.html' %}
 	</ul>
