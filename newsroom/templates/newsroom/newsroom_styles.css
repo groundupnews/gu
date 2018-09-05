@@ -829,10 +829,13 @@ Single-colored icons can be modified like so:
 }
 
 .icon-whatsapp {
-    width: 1.5em;
-    background-color: #25d366;
-    color: white;
-    padding: 2px;
+    width: 3rem;
+    background-color: #fff;
+    color: #4D4D4D;
+}
+
+.icon-whatsapp:hover {
+    color: #00B1F0;
 }
 
 .icon-mail {
