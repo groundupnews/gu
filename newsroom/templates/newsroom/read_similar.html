@@ -1,4 +1,5 @@
 
+{% if related %}
 <div id="related">
     {% for rel_article in related %}
         {% if forloop.first %}
@@ -15,3 +16,4 @@
         {% endif %}
     {% endfor %}
 </div>
+{% endif %}
