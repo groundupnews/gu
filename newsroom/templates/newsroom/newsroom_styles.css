@@ -352,6 +352,8 @@ div.editor-summary {
 footer {
     background-color: #151F22;
     color: white;
+    justify-self: flex-end;
+    flex-grow: 0;
 }
 
 #footer-container {
@@ -915,11 +917,23 @@ Single-colored icons can be modified like so:
 /*** Sticky Footer ***/
 
 @media (min-width: 769px) {
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    
+    .header {
+        flex-grow: 0;
+    }
+    
     #BelowTheBanner {
-        min-height: calc(100vh - 35vh - 80px);
+        flex-grow: 1;
     }
     
     footer {
-        height: 35vh;
+        justify-self: flex-end;
+        flex-grow: 0;
     }
 }
