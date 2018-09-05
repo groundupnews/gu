@@ -2,7 +2,6 @@ body {
     background-color: #F0F0F2;
 }
 
-
 /****************** HEADER *******************/
 
 /*********************************************/
@@ -911,4 +910,16 @@ Single-colored icons can be modified like so:
     margin-top: 10px;
     font-family: 'Roboto Slab', serif;
     text-align: center;
+}
+
+/*** Sticky Footer ***/
+
+@media (min-width: 769px) {
+    #BelowTheBanner {
+        min-height: calc(100vh - 35vh - 80px);
+    }
+    
+    footer {
+        height: 35vh;
+    }
 }
