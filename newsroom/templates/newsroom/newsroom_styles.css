@@ -904,9 +904,11 @@ Single-colored icons can be modified like so:
 .topic-intro {
     background-color: #fff;
     padding: 15px;
-    margin: 15px 0px 15px 0px;
+    margin: 15px -15px 15px -15px;
 }
 
 .topic-intro h1, .topic-intro h2 {
+    margin-top: 10px;
+    font-family: 'Roboto Slab', serif;
     text-align: center;
 }
