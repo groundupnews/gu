@@ -211,6 +211,9 @@ div.editor-summary {
     font-weight: 600;
 }
 
+.article__copyright p img {
+    max-width: 100px;
+}
 .article-container .social-media__icon {
     flex: none;
     width: 25%;
@@ -408,16 +411,16 @@ article figure, article p.caption {
         margin-top: 0px;
         margin-bottom: 0px;
     }
-    
+
     .article__container {
         flex-direction: column;
-    }    
+    }
 
     .article__sidebar {
         align-self: stretch;
         margin-bottom: 30px;
     }
-    
+
     .article__content {
         margin-right: 0px;
         margin-bottom: 30px;
@@ -436,7 +439,7 @@ article figure, article p.caption {
         line-height: 28px;
         margin-top: 15px;
         margin-bottom: 15px;
-    }    
+    }
 
     .article__details--mobile {
         border-top: 2px solid #D6D6DA;
@@ -450,7 +453,7 @@ article figure, article p.caption {
     .article__image__box {
         margin-bottom: 15px;
     }
-    
+
     .article__details--desktop-by {
         display: none;
     }
@@ -458,7 +461,7 @@ article figure, article p.caption {
     .article__details--desktop .article__details__share {
         flex-basis: 90%;
     }
-    
+
     .article__details__date-by {
         width: 100%;
         margin-bottom: 5px;
@@ -476,19 +479,19 @@ article figure, article p.caption {
         padding-left: 0px;
         padding-right: 0px;
     }
-    
+
     .article blockquote {
         margin-top: 30px;
         margin-bottom: 30px;
     }
-    
+
     .pquote {
         font-size: 2rem;
         margin-top: 30px;
         margin-bottom: 30px;
     }
 
-    .pquote:before {    
+    .pquote:before {
         font-size: 70px;
         padding-top: 23px;
         padding-right: 15px;
@@ -508,7 +511,7 @@ article figure, article p.caption {
         margin-top: 0px;
     }
 
-    
+
     .article__extra-content {
         display: none;
     }
@@ -516,7 +519,7 @@ article figure, article p.caption {
     .article #related ul {
         padding-left: 25px;
     }
-    
+
 }
 
 @media (min-width: 787px) {
