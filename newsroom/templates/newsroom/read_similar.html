@@ -2,8 +2,8 @@
 <div id="related">
     {% for rel_article in related %}
         {% if forloop.first %}
-            <h2>More about <a href="{% url 'topic.detail' article.main_topic.slug %}">
-                {{article.main_topic}}</a></h2>
+            <h3>More about <a href="{% url 'topic.detail' article.main_topic.slug %}">
+                {{article.main_topic}}</a></h3>
             <ul>
         {% endif %}
         <li>

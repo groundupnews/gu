@@ -376,6 +376,32 @@ article figure, article p.caption {
     display: none;
 }
 
+.article #related {
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #EEE;
+}
+
+.article #related a {
+    color: #00B1F0;
+}
+.article #related h3 {
+    font-family: 'Roboto Slab', serif;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.article #related ul a {
+    font-size: 1.6rem;
+}
+
+.article #related .related-date {
+    font-size: 75%;
+    color: #333;
+}
+
 @media (max-width: 786px) {
     .article-content {
         width: 100%;
@@ -486,6 +512,11 @@ article figure, article p.caption {
     .article__extra-content {
         display: none;
     }
+
+    .article #related ul {
+        padding-left: 25px;
+    }
+    
 }
 
 @media (min-width: 787px) {
