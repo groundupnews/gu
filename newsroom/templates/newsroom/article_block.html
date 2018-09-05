@@ -88,6 +88,9 @@
          {% endif %}>
       {{article_body|safe}}
     </div>
+    {% if article.main_topic %}
+      {% include "newsroom/read_similar.html" %}
+    {% endif %}
     <div class="article__copyright" id="article-copyright">
       {{article.copyright|safe}}
     </div>
@@ -115,6 +118,10 @@
   <div style="display:none;">
     <form action="{% url 'article.detail' article.slug %}"
           id="article_form"
+
+
+
+
 	  method="post">{% csrf_token %}
       {{form.as_p}}
       <input id="input-is-published"
