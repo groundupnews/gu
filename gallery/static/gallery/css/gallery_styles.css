@@ -10,6 +10,10 @@ h2.gallery {
     margin-top: 6px;
 }
 
+#gallery {
+    margin-bottom: 30px;
+}
+
 #gallery .caption, #gallery-photo-details {
     font-size: 1.35rem;
 }

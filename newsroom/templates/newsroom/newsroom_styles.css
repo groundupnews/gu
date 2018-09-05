@@ -899,3 +899,13 @@ Single-colored icons can be modified like so:
 #list-content .row:nth-child(2) {
     background-color: #fff;
 }
+
+.topic-intro {
+    background-color: #fff;
+    padding: 15px;
+    margin: 15px 0px 15px 0px;
+}
+
+.topic-intro h1, .topic-intro h2 {
+    text-align: center;
+}
