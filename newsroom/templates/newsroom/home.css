@@ -288,11 +288,11 @@
         padding-top: 15px;
         padding-bottom: 15px;
     }
-    
+
     .more_articles {
         flex-direction: column;
     }
-    
+
     .more_articles__popular {
         flex: 1;
         padding: 10px;
@@ -304,7 +304,7 @@
         padding: 10px;
         margin-top: 4%;
     }
-    
+
     .home__top-article {
         display: flex;
         flex-basis: 90%;
@@ -336,7 +336,7 @@
         line-height: 16px;
         padding-top: 20px;
     }
-    
+
     .home__top-article_text {
         background-color: #fff;
         flex: 2;
@@ -380,6 +380,11 @@
         line-height: 16px;
     }
 
+    .home__top-article_text__details-mobile a {
+        color: #000;
+        text-decoration: none;
+    }
+
     .home__articles__article {
         display: flex;
         flex-direction: column;
@@ -420,12 +425,12 @@
 @media (min-width: 769px) {
 
     /*** Fixed height homepage images ***/
-    
+
     /* .home__articles__article__image { */
     /*     overflow: hidden; */
     /*     height: 220px; */
     /* } */
-    
+
     /* .home__articles img.summary-image { */
     /*     bottom: 20%; */
     /*     height: 150%; */

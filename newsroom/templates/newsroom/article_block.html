@@ -15,7 +15,7 @@
     <div class="article__details--desktop article__details--desktop-by">
       <div class="article__details__date-by">
         <time datetime='{{ article.published|date:"Y-m-d" }}'>
-          {{ article.published|date:"j F Y"}} - 
+          {{ article.published|date:"j F Y"}} &nbsp;
         </time>
         {{ article.cached_byline|safe }}
       </div>
@@ -77,7 +77,7 @@
     <div class="article__details--mobile article__details--mobile-by">
       <div class="article__details__date-by">
         <time datetime='{{ article.published|date:"Y-m-d" }}'>
-          {{ article.published|date:"j F Y"}} - 
+          {{ article.published|date:"j F Y"}} -
         </time>
         {{ article.cached_byline|safe }}
       </div>
