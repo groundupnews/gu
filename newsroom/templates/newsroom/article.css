@@ -72,6 +72,7 @@
     padding-bottom: 15px;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .article__details--desktop-share {
