@@ -105,7 +105,7 @@
 .article__image__box {
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .article__image {
