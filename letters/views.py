@@ -90,7 +90,7 @@ def write_letter(request, pk):
                     subject,
                     message,
                     settings.EDITOR,
-                    [letter.email,settings.EDITOR],
+                    [letter.email],
                     html_message=html_message
                 )
                 return HttpResponseRedirect(reverse("letter_thanks"))

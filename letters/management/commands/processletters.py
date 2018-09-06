@@ -26,7 +26,7 @@ def process():
                 subject,
                 message,
                 settings.EDITOR,
-                [letter.email],
+                [letter.email, settings.EDITOR],
                 html_message=html_message
             )
         except SMTPException as err:
@@ -48,7 +48,7 @@ def process():
                 subject,
                 message,
                 settings.EDITOR,
-                [letter.email],
+                [letter.email, settings.EDITOR],
                 html_message=html_message
             )
         except SMTPException as err:
