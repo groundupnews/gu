@@ -544,7 +544,7 @@ article figure, article p.caption {
 }
 
 /* Preferable drop-case code that doesn't seem to be working at present */
-
+/*
 @supports (initial-letter: 7) or (-webkit-initial-letter: 7) {
     #article_body p:nth-child(3):first-letter {
         font-family: 'Roboto Slab', serif;
@@ -559,3 +559,4 @@ article figure, article p.caption {
 
 @supports (not(initial-letter: 5)) and (not(-webkit-initial-letter: 5)) {
 }
+*/
