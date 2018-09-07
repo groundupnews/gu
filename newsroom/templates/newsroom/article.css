@@ -145,7 +145,8 @@ div.editor-summary {
     font-size: 1.6rem;
 }
 
-#article_body .editor-summary:first-of-type {
+
+#article_body .editor-summary h2 {
     font-family: 'Roboto slab', sans-serif;
     font-weight: 600;
     font-size: 3rem;
