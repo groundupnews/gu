@@ -145,13 +145,6 @@ div.editor-summary {
     font-size: 1.6rem;
 }
 
-
-#article_body .editor-summary h2 {
-    font-family: 'Roboto slab', sans-serif;
-    font-weight: 600;
-    font-size: 3rem;
-}
-
 .article blockquote {
     font-family: 'Roboto slab', sans-serif;
     border-left: 5px solid #00b1F0;
@@ -184,14 +177,14 @@ div.editor-summary {
     font-weight: 600;
 }
 
-.article p {
+.article p, .article ul li {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.8rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
 
-.subheading {
+.subheading, #article_body .editor-summary h2 {
     font-family: 'Roboto slab', sans-serif;
     margin-top: 50px;
     margin-bottom: 30px;
