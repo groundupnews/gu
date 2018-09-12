@@ -640,6 +640,7 @@ class Article(models.Model):
         ordering = ["-stickiness", "-published", ]
 
 
+
 class UserEdit(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
