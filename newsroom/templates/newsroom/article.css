@@ -192,10 +192,10 @@ div.editor-summary {
 
 .article__copyright {
     margin-top: 20px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px;*/
     padding: 16px;
     border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #eee;*/
 }
 
 .article__copyright p {

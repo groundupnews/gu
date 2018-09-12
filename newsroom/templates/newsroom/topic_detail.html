@@ -7,21 +7,21 @@
 
 
 {% block content-intro %}
+    <div class="article-list-top">
+        <div class="topic-intro">
 
-<div class="topic-intro">
+            {% if topic.introduction %}
+                {{topic.introduction|safe}}
+            {% else %}
+                <h1 id="topic-heading">{{ topic.name|upper }}</h1>
+            {% endif %}
 
-{% if topic.introduction %}
-    {{topic.introduction|safe}}
-{% else %}
-    <h1 id="topic-heading">{{ topic.name|upper }}</h1>
-{% endif %}
-
-{% if topic.icon %}
-    <div id="topic-icon">
-	<img src="{{ MEDIA_URL}}{{topic.icon }}" alt="" />
-    </div>
-{% endif %}
-
+            {% if topic.icon %}
+                <div id="topic-icon">
+	            <img src="{{ MEDIA_URL}}{{topic.icon }}" alt="" />
+                </div>
+            {% endif %}
+        </div>
 </div>
 
 {% endblock %}

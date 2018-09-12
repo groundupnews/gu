@@ -902,10 +902,17 @@ Single-colored icons can be modified like so:
     margin-bottom: 30px;
 }
 
-.topic-intro {
+.article-list-top {
+    width: 100%;
     background-color: #fff;
+    margin: 15px;
+}
+
+.topic-intro {
+    /* background-color: #fff;*/
     padding: 15px;
-    margin: 15px -15px 15px -15px;
+    max-width: 500px;
+    margin: 15px auto 15px auto;
 }
 
 .topic-intro h1, .topic-intro h2 {

@@ -49,7 +49,7 @@ class ArticleList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticleList, self).get_context_data(**kwargs)
-        context = get_blocks_in_context(context)
+        #  context = get_blocks_in_context(context)
         context['most_popular_html'] = \
             models.MostPopular.get_most_popular_html()
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
