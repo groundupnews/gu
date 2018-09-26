@@ -186,8 +186,8 @@ div.editor-summary {
 
 .subheading, #article_body .editor-summary h2 {
     font-family: 'Roboto slab', sans-serif;
-    margin-top: 50px;
-    margin-bottom: 30px;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 .article__copyright {
