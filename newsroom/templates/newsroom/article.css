@@ -177,7 +177,7 @@ div.editor-summary {
     font-weight: 600;
 }
 
-.article p, .article ul li {
+.article p, .article ul li, .article ol li {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.8rem;
     margin-top: 2rem;
@@ -366,7 +366,7 @@ article figure, article p.caption {
 }
 
 
-#article_body .editor-summary:last-of-type {
+#article_body  {
     margin-bottom: 50px;
 }
 

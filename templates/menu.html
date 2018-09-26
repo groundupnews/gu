@@ -3,7 +3,7 @@
 <nav class="header__nav">
   <ul class="header__nav__links">
     {% with path=request.get_full_path %}
-        <li class="drop header__nav__link"><a href="#">News</a>
+        <li class="drop header__nav__link"><a href="{% url 'home' %}">News</a>
 	  <ul class="header__nav__drop-down">
             {% url 'home' as home_url %}
             <span class="header__nav__drop-down__spacer"></span>
