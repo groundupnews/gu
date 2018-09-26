@@ -38,6 +38,7 @@
 
 .home__top-article_image {
     flex: 3;
+    background-color: #000;
 }
 
 .home__top-article_text {
