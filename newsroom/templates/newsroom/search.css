@@ -18,12 +18,17 @@
 }
 
 .adv-filter-heading {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .adv-filter-form__row {
     display: flex;
     margin-bottom: 10px;
+}
+
+.adv-filter-header {
+    display: flex;
+    align-items: center;
 }
 
 /*Advanced Filter Field*/
@@ -103,4 +108,9 @@
 
 .adv-filter__item select, .adv-filter__item input {
     flex-basis: 65%;
+}
+
+.adv-filter-arrow {
+    cursor: pointer;
+    color: #00B1F0;
 }

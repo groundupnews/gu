@@ -1,0 +1,38 @@
+<div class="adv-filter-box">
+  <div class="adv-filter-header">
+    <h3 class="adv-filter-heading">
+      Advanced Search <i class="adv-filter-arrow fas fa-angle-up fa-lg"></i>
+    </h3>
+  </div>
+  <form class="adv-filter-form">
+    <div class="adv-filter-form__row">
+      <div class="adv-filter__item adv-filter__search-box">
+        {{ adv_search_form.adv_search }}
+      </div>
+      <div class="adv-filter__item adv-filter__search-type-box">
+        {{ adv_search_form.search_type }}
+      </div>
+    </div>
+    <div class="adv-filter-form__row">
+      <div class="adv-filter__item adv-filter__category-box">
+        <label for="{{ adv_search_form.category.id_for_label }}" >Category:</label>
+        {{ adv_search_form.category }}
+      </div>
+      <div class="adv-filter__item adv-filter__topics-box">
+        <label for="{{ adv_search_form.topics.id_for_label }}" >Topics:</label>
+        {{ adv_search_form.topics }}
+      </div>
+    </div>
+    <div class="adv-filter-form__row">
+      <div class="adv-filter__item adv-filter__date-from-box">
+        <label for="{{ adv_search_form.date_from.id_for_label }}" >Date From:</label>
+        <input type="text" name="date_from" required="" id="id_date_from" data-toggle="datepicker">
+      </div>
+      <div class="adv-filter__item adv-filter__date-to-box">
+        <label for="{{ adv_search_form.date_to.id_for_label }}" >Date To:</label>
+        <input type="text" name="date_to" required="" id="id_date_to" data-toggle="datepicker">
+      </div>
+    </div>
+    <button class="adv-filter-submit" type="submit">SEARCH</button>
+  </form>
+</div>
