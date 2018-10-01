@@ -12,7 +12,8 @@
 
     <div class="container search-page">
 	    <div class="search-results">
-		{% if query %}
+	      {% if query %}
+                <div class="search-results__header">
 		    <h1>Search results</h1>
                     <p>
                         {% if method == "DATE" %}
@@ -23,10 +24,12 @@
                         {% else %}
                             Results are sorted by relevance.
                             <a href="?q={{query}}&page={{page.number}}&method=DATE">
-                                Sort by publication date.
+                              Sort by publication date.
                             </a>
                         {% endif %}
                     </p>
+                </div>
+                <div class="search-results__body">
 		    {% for article in page.object_list %}
 			<h2>
 			    <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
@@ -45,11 +48,15 @@
 
 
 		    {% block pagination %}
-			{% include 'paginator.html' with page_obj=page query=query %}
+		      {% include 'paginator.html' with page_obj=page query=query %}
 		    {% endblock %}
-                {% else %}
-                    <h2>Please enter text to search for.</h2>
-		{% endif %}
+                </div>
+              {% else %}
+                <div class="search-results__body">
+                  <h2>Please enter text to search for.</h2>
+                </div>
+	      {% endif %}
+                </div>
 	    </div>
     </div>
 {% endblock %}
