@@ -21,3 +21,7 @@ class ArticleForm(forms.ModelForm):
         model = models.Article
         fields = ['title', 'subtitle', 'use_editor',
                   'primary_image_caption', 'body', 'user', 'version', ]
+
+
+class AdvancedSearchForm(forms.Form):
+    search = forms.CharField()

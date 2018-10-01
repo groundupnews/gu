@@ -4,59 +4,78 @@
 {% block search %} {% endblock %}
 
 {% block title %}
-    Search {{block.super}}
+  Search {{block.super}}
 {% endblock %}
 
 
 {% block content %}
 
-    <div class="container search-page">
-	    <div class="search-results">
-	      {% if query %}
-                <div class="search-results__header">
-		    <h1>Search results</h1>
-                    <p>
-                        {% if method == "DATE" %}
-                            Results are sorted by publication date.
-                            <a href="?q={{query}}&page={{page.number}}&method=RELEVANCE">
-                                Sort by relevance.
-                            </a>
-                        {% else %}
-                            Results are sorted by relevance.
-                            <a href="?q={{query}}&page={{page.number}}&method=DATE">
-                              Sort by publication date.
-                            </a>
-                        {% endif %}
-                    </p>
-                </div>
-                <div class="search-results__body">
-		    {% for article in page.object_list %}
-			<h2>
-			    <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
-			</h2>
-			<p>
-			   {{article.published|date:"j M Y"}}
-			</p>
-                        <p>
-                            {% with article.body|safe as body %}
-			        {% highlight body with query %}
-			    {% endwith %}
-                        </p>
-		    {% empty %}
-			<p>No results found.</p>
-		    {% endfor %}
+  <div class="container search-page">
+    <div class="search-results">
+      {% if query %}
+        <div class="search-results__header">
+	  <h1>Search results</h1>
+          <p>
+            {% if method == "DATE" %}
+              Results are sorted by publication date.
+              <a href="?q={{query}}&page={{page.number}}&method=RELEVANCE">
+                Sort by relevance.
+              </a>
+            {% else %}
+              Results are sorted by relevance.
+              <a href="?q={{query}}&page={{page.number}}&method=DATE">
+                Sort by publication date.
+              </a>
+            {% endif %}
+          </p>
+        </div>
+        <div class="adv-filter-box">
+          {{ adv_search_form }}
+          <div>
+            <label for="adv-search__text-input">Search</label>
+            <input type="text" id="adv-search__text-input" placeholder="Search" />
+          </div>
+          <div>
+            <input type="checkbox" id="adv-search__check-article" />
+            <label>Articles</label>
+          </div>
+          <div>
+            <input type="checkbox" id="adv-search__check-images" />
+            <label>Images</label>
+          </div>
+          <div>
+            <input type="checkbox" id="adv-search__first-author" />
+            <label>First Author Only</label>
+          </div>
+        </div>
+        <div class="search-results__body">
+	  {% for article in page.object_list %}
+	    <h2>
+	      <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
+	    </h2>
+	    <p>
+	      {{article.published|date:"j M Y"}}
+	    </p>
+            <p>
+              {% with article.body|safe as body %}
+		{% highlight body with query %}
+	      {% endwith %}
+            </p>
+	  {% empty %}
+	    <p>No results found.</p>
+	  {% endfor %}
 
 
-		    {% block pagination %}
-		      {% include 'paginator.html' with page_obj=page query=query %}
-		    {% endblock %}
-                </div>
-              {% else %}
-                <div class="search-results__body">
-                  <h2>Please enter text to search for.</h2>
-                </div>
-	      {% endif %}
-                </div>
-	    </div>
+	  {% block pagination %}
+	    {% include 'paginator.html' with page_obj=page query=query %}
+	  {% endblock %}
+        </div>
+      {% else %}
+        <div class="search-results__body">
+          <h2>Please enter text to search for.</h2>
+        </div>
+      {% endif %}
     </div>
+  </div>
+  </div>
 {% endblock %}

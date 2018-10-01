@@ -22,7 +22,7 @@ from letters.settings import DAYS_AGO
 from pgsearch.utils import searchPostgresDB
 
 from . import models, settings, utils
-from .forms import ArticleForm, ArticleListForm
+from .forms import ArticleForm, ArticleListForm, AdvancedSearchForm
 
 logger = logging.getLogger(__name__)
 
@@ -477,6 +477,7 @@ def account_profile(request):
 def search(request):
     query = request.GET.get('q')
     method = request.GET.get('method')
+    adv_search_form = AdvancedSearchForm()
     if method is None:
         method = "DATE"
     if query:
@@ -512,7 +513,8 @@ def search(request):
         method = None
     return render(request, 'search/search.html', {'method': method,
                                                   'page': page,
-                                                  'query': query})
+                                                  'query': query,
+                                                  'adv_search_form': adv_search_form})
 
 
 ''' Used to test logging
