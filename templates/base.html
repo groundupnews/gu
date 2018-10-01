@@ -4,46 +4,46 @@
 
 <html lang="en">
   <head>
-	  <meta charset="utf-8">
-	  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <title>
-	    {% block title %} | GroundUp{% endblock %}
-	  </title>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %} | GroundUp{% endblock %}
+    </title>
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
-	  <link rel="shortcut icon"
+    <link rel="shortcut icon"
           type="image/x-icon"
-	        href="{% static  'newsroom/images/favicon-201809.ico' %}" />
+	  href="{% static  'newsroom/images/favicon-201809.ico' %}" />
 
     {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
       {% block meta_description_block %}
         <meta name="description"
               content="{{desc|truncatechars:190}}"/>
-	      <meta property="og:description" content="{{desc}}"/>
+	<meta property="og:description" content="{{desc}}"/>
       {% endblock %}
     {% endwith %}
 
-	  {% block seo_fields %}
-	    {% block facebook-identifier %}
-	      <meta property="fb:app_id" content="794347254025697" />
-	    {% endblock %}
+    {% block seo_fields %}
+      {% block facebook-identifier %}
+	<meta property="fb:app_id" content="794347254025697" />
+      {% endblock %}
       <meta property="og:site_name" content="GroundUp News" />
       <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
       <meta property="og:updated_time" content="{% now "c" %}" />
-	  {% endblock %}
+    {% endblock %}
 
-	  {% block analytics %}
+    {% block analytics %}
       {% include "piwik.html" %}
-	  {% endblock %}
+    {% endblock %}
 
-	  {% block additional_head %}
-	  {% endblock %}
+    {% block additional_head %}
+    {% endblock %}
 
     {% block bootstrap-css %}
-	    {% include "bootstrap_css.html" %}
-	  {% endblock %}
+      {% include "bootstrap_css.html" %}
+    {% endblock %}
 
     {% block newsroom-css %}
 
@@ -62,10 +62,10 @@
        {% include "newsroom/letters.css" %}
       </style>
 
-	  {% endblock %}
+    {% endblock %}
 
-	  {% block css-override %}
-	  {% endblock %}
+    {% block css-override %}
+    {% endblock %}
 
 
     {% block top-js %}
@@ -76,49 +76,64 @@
 
   <body>
 
-	  {% block body %}
+    {% block body %}
       {% include 'icons.svg' %}
 
-	    {% block banner %}
-		    {% include 'banner.html' %}
-	    {% endblock %}
+      {% block banner %}
+	{% include 'banner.html' %}
+      {% endblock %}
 
       <div id="BelowTheBanner" class="{{content_type}}">
-	      {% block messages %}
-		      {% include 'messages.html' %}
-	      {% endblock %}
+	{% block messages %}
+	  {% include 'messages.html' %}
+	{% endblock %}
 
-	      {% block content-header %}
-	      {% endblock %}
+	{% block content-header %}
+	{% endblock %}
 
         {% block content-wrapper %}
-	        {% block content %}
-	        {% endblock %}
+	  {% block content %}
+	  {% endblock %}
         {% endblock %}
 
-	      {% block admin-area %}
-		      {% if request.user.is_staff and can_edit %}
-		        <div id="admin-area">
-			        <div id="admin-user">
-			          {{request.user}}
-			        </div>
-			        {% block admin-area-additional %}
-			        {% endblock %}
-		        </div>
-		      {% endif %}
+	{% block admin-area %}
+	  {% if request.user.is_staff and can_edit %}
+	    <div id="admin-area">
+	      <div id="admin-user">
+		{{request.user}}
+	      </div>
+	      {% block admin-area-additional %}
 	      {% endblock %}
+	    </div>
+	  {% endif %}
+	{% endblock %}
       </div>
 
-	    {% block footer %}
-		    {% include 'footer.html' %}
-	    {% endblock %}
+      {% block footer %}
+	{% include 'footer.html' %}
+      {% endblock %}
 
-	    {% block javascript-includes %}
-		    {% include 'javascripts.html' %}
-	    {% endblock %}
+      {% block javascript-includes %}
+	{% include 'javascripts.html' %}
+      {% endblock %}
 
-	  {% endblock %}
+    {% endblock %}
 
   </body>
+  <script>
+
+   $( document ).ready(function() {
+       var search_input = $('.header__search__input')
+       var advanced_search_box = $('.advanced-search-box')
+       var header_bar = $('.header')
+       search_input.on('focus', function() {
+           advanced_search_box.slideDown('slow')
+       })
+       header_bar.on('mouseleave', function() {
+           advanced_search_box.slideUp('slow')
+       })
+   });
+   
+  </script>
 
 </html>

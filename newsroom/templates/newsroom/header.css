@@ -24,7 +24,18 @@ header a:hover {
 
 .header__search-form {
     display: flex;
+    flex-direction: column;
     flex-basis: 90%;
+}
+
+.header__search__input-box {
+    display: flex;
+}
+
+.advanced-search-box {
+    display: none;
+    text-align: center;
+    padding-bottom: 5px;
 }
 
 nav {
