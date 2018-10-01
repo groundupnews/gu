@@ -3,8 +3,8 @@ from django import forms
 from . import models, utils
 
 
-SEARCH_TYPES=[('article', 'Article'),
-             ('image', 'Image'),
+SEARCH_TYPES=[('article', 'Articles'),
+             ('image', 'Images'),
              ('both', 'Both')]
 
 class ArticleListForm(forms.Form):

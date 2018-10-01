@@ -30,7 +30,40 @@
           </p>
         </div>
         <div class="adv-filter-box">
-          {{ adv_search_form }}
+          <form class="adv-filter-form">
+            <div class="adv-filter-form__row">
+              <div class="adv-filter__item adv-filter__search-box">
+                {{ adv_search_form.adv_search }}
+              </div>
+            </div>
+            <div class="adv-filter-form__row">
+              <div class="adv-filter__item adv-filter__search-type-box">
+                <label for="{{ adv_search_form.search_type.id_for_label }}" >Search Type:</label>
+                {{ adv_search_form.search_type }}
+              </div>
+            </div>
+              <div class="adv-filter-form__row">
+              <div class="adv-filter__item adv-filter__category-box">
+                <label for="{{ adv_search_form.category.id_for_label }}" >Category:</label>
+                {{ adv_search_form.category }}
+              </div>
+              <div class="adv-filter__item adv-filter__topics-box">
+                <label for="{{ adv_search_form.topics.id_for_label }}" >Topics:</label>
+                {{ adv_search_form.topics }}
+              </div>
+            </div>
+            <div class="adv-filter-form__row">
+              <div class="adv-filter__item adv-filter__date-from-box">
+                <label for="{{ adv_search_form.date_from.id_for_label }}" >Date From:</label>
+                {{ adv_search_form.date_from }}
+              </div>
+              <div class="adv-filter__item adv-filter__date-to-box">
+                <label for="{{ adv_search_form.date_to.id_for_label }}" >Date To:</label>
+                {{ adv_search_form.date_to }}
+              </div>
+            </div>
+            <button class="adv-filter-submit" type="submit">Apply</button>
+          </form>
         </div>
         <div class="search-results__body">
 	  {% for article in page.object_list %}

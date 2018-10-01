@@ -11,6 +11,38 @@
     background-color: #fff;
     margin-bottom: 15px;
     padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.adv-filter-form__row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/*Advanced Filter Field*/
+.adv-filter__item {
+    flex-basis: 50%;
+    display: flex;
+}
+
+.adv-filter-form {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 80%;
+}
+
+.adv-filter-form label {
+    flex-basis: 28%;
+}
+
+.adv-filter__search-type-box ul {
+    display: flex;
+    list-style: none;
+}
+
+.adv-filter__search-type-box li {
+    padding-right: 5%;
 }
 
 .search-results__body {
