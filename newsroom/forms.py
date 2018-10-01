@@ -28,7 +28,8 @@ class ArticleForm(forms.ModelForm):
 
 
 class AdvancedSearchForm(forms.Form):
-    adv_search = forms.CharField(label="Search")
+    adv_search = forms.CharField(label="Search",
+                                widget=forms.TextInput(attrs={'placeholder': 'Search...'}))
     search_type = forms.ChoiceField(choices=SEARCH_TYPES, widget=forms.RadioSelect())
     category = forms.ModelChoiceField(queryset=models.Category.objects.all())
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all())
