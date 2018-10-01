@@ -3,6 +3,10 @@ from django import forms
 from . import models, utils
 
 
+SEARCH_TYPES=[('article', 'Article'),
+             ('image', 'Image'),
+             ('both', 'Both')]
+
 class ArticleListForm(forms.Form):
     date_from = forms.DateTimeField()
     date_to = forms.DateTimeField(required=False)
@@ -24,4 +28,9 @@ class ArticleForm(forms.ModelForm):
 
 
 class AdvancedSearchForm(forms.Form):
-    search = forms.CharField()
+    adv_search = forms.CharField(label="Search")
+    search_type = forms.ChoiceField(choices=SEARCH_TYPES, widget=forms.RadioSelect())
+    category = forms.ModelChoiceField(queryset=models.Category.objects.all())
+    topics = forms.ModelChoiceField(queryset=models.Topic.objects.all())
+    date_from = forms.DateTimeField()
+    date_to = forms.DateTimeField()

@@ -31,22 +31,6 @@
         </div>
         <div class="adv-filter-box">
           {{ adv_search_form }}
-          <div>
-            <label for="adv-search__text-input">Search</label>
-            <input type="text" id="adv-search__text-input" placeholder="Search" />
-          </div>
-          <div>
-            <input type="checkbox" id="adv-search__check-article" />
-            <label>Articles</label>
-          </div>
-          <div>
-            <input type="checkbox" id="adv-search__check-images" />
-            <label>Images</label>
-          </div>
-          <div>
-            <input type="checkbox" id="adv-search__first-author" />
-            <label>First Author Only</label>
-          </div>
         </div>
         <div class="search-results__body">
 	  {% for article in page.object_list %}
