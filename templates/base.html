@@ -124,13 +124,13 @@
 
    $( document ).ready(function() {
        var search_input = $('.header__search__input')
-       var advanced_search_box = $('.advanced-search-box')
+       var advanced_search = $('.advanced-search')
        var header_bar = $('.header')
        search_input.on('focus', function() {
-           advanced_search_box.slideDown('slow')
+           advanced_search.slideDown('slow')
        })
        header_bar.on('mouseleave', function() {
-           // advanced_search_box.slideUp('slow')
+           advanced_search.slideUp('slow')
        })
    });
    

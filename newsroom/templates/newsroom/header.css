@@ -33,8 +33,14 @@ header a:hover {
 }
 
 .advanced-search-box {
-    text-align: center;
-    padding-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+    flex-basis: 40%;
+}
+
+.advanced-search {
+    display: none;
+    padding-right: 24px;
 }
 
 nav {
@@ -335,7 +341,7 @@ button#search-button:hover {
     }
 
     .header__nav__link {
-        flex-basis: 18%;
+        flex-basis: 20%;
     }
 }
 
