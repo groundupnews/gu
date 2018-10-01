@@ -1,8 +1,5 @@
 <form class="header__search-form" id="search-form" method="get"
       action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
-  <div class="advanced-search-box">
-    <a class="advanced-search" href="{% url 'article.search' %}">Advanced Search</a>
-  </div>
   <div class="header__search__input-box">
     <input type="text" class="form-control header__search__input" name="q" id="id_q"
 	   placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
