@@ -171,5 +171,5 @@ def searchArticlesAndPhotos(search_string=None,
         result = articles
     elif photos:
         result = photos
-        
+    
     return result

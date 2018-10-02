@@ -31,7 +31,8 @@
         </div>
         {% include "search/advanced_search.html" %}
         <div class="search-results__body">
-          {{page.object_list}}
+          {{articles.count}}
+          {{page.object_list.count}}
 	  {% for article in page.object_list %}
             {% if article.obj_type == 1 %}
               <h1>Image</h1>

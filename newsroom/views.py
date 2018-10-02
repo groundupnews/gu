@@ -561,7 +561,8 @@ def advanced_search(request):
     return render(request, 'search/search.html', {'method': method,
                                                   'query': query,
                                                   'page': page,
-                                                  'adv_search_form': adv_search_form})
+                                                  'adv_search_form': adv_search_form,
+                                                  'articles': article_list})
 
 
 ''' Used to test logging
