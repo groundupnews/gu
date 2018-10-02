@@ -15,11 +15,11 @@
     </div>
     <div class="adv-filter-form__row">
       <div class="adv-filter__item adv-filter__category-box">
-        <label for="{{ adv_search_form.category.id_for_label }}" >Category:</label>
+        {{ adv_search_form.category.label_tag }}
         {{ adv_search_form.category }}
       </div>
       <div class="adv-filter__item adv-filter__topics-box">
-        <label for="{{ adv_search_form.topics.id_for_label }}" >Topics:</label>
+        {{ adv_search_form.topics.label_tag }}
         {{ adv_search_form.topics }}
       </div>
     </div>
