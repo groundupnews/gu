@@ -33,6 +33,7 @@ class AdvancedSearchForm(forms.Form):
                                  required=False)
     search_type = forms.ChoiceField(choices=SEARCH_TYPES, widget=forms.RadioSelect(),
                                     required=False)
+    first_author = forms.BooleanField(required=False)
     category = forms.ModelChoiceField(queryset=models.Category.objects.all(),
                                       required=False)
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(),

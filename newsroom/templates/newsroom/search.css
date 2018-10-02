@@ -46,12 +46,11 @@
 }
 
 .adv-filter__search-box {
-    flex-basis: 70%; 
-    padding-right: 5%;
+    flex-basis: 100%; 
 }
 
-.adv-filter__search-type-box {
-    flex-basis: 30%;
+.adv-filter__first-author {
+    flex-basis: 50%;
 }
 
 .adv-filter-form label {
@@ -61,7 +60,7 @@
 .adv-filter__search-type-box ul {
     display: flex;
     list-style: none;
-    width: 100%;
+    width: 66%;
     padding-left: 0px;
     margin-bottom: 0px;
     align-items: center;
@@ -113,4 +112,9 @@
 .adv-filter-arrow {
     cursor: pointer;
     color: #00B1F0;
+}
+
+#id_first_author {
+    flex-basis: 4%;
+    margin-top: 0px;
 }
