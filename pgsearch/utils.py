@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F
 from newsroom.models import Article, Author, Category, Topic
 from gallery.models import Photograph
 from django.utils import timezone
@@ -163,7 +163,7 @@ def searchArticlesAndPhotos(search_string=None,
         photos = searchPhotos(search_string, author_pk,
                               from_date, to_date).extra(select = {'obj_type': 1}). \
                               values("pk", "suggested_caption", "alt", "image",
-                                     "date_taken", "obj_type")
+                                     "obj_type").annotate(published=F("date_taken"))
 
     if articles and photos:
         result = articles.union(photos).order_by('-published')
@@ -171,5 +171,5 @@ def searchArticlesAndPhotos(search_string=None,
         result = articles
     elif photos:
         result = photos
-
+        
     return result

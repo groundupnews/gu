@@ -14,6 +14,8 @@ urlpatterns = [
 
     url(r'^search/', views.search, name='article.search'),
 
+    url(r'^advanced_search/', views.advanced_search, name='advanced.search'),
+
     url(r'^category/opinion_and_analysis/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.OpinionAnalysisList.as_view()),

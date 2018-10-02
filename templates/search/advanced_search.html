@@ -4,7 +4,8 @@
       Advanced Search <i class="adv-filter-arrow fas fa-angle-up fa-lg"></i>
     </h3>
   </div>
-  <form action="/search/" class="adv-filter-form">
+  <form action="/advanced_search/" class="adv-filter-form" method="GET">
+    {% csrf_token %}
     <div class="adv-filter-form__row">
       <div class="adv-filter__item adv-filter__search-box">
         {{ adv_search_form.adv_search }}

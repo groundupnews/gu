@@ -31,7 +31,11 @@
         </div>
         {% include "search/advanced_search.html" %}
         <div class="search-results__body">
+          {{page.object_list}}
 	  {% for article in page.object_list %}
+            {% if article.obj_type == 1 %}
+              <h1>Image</h1>
+            {% endif %}
 	    <h2>
 	      <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
 	    </h2>

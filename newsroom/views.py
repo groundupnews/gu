@@ -19,7 +19,7 @@ from django.views.decorators.http import last_modified
 from django.views.generic import View
 from letters.models import Letter
 from letters.settings import DAYS_AGO
-from pgsearch.utils import searchPostgresDB
+from pgsearch.utils import searchPostgresDB, searchArticlesAndPhotos
 
 from . import models, settings, utils
 from .forms import ArticleForm, ArticleListForm, AdvancedSearchForm
@@ -514,6 +514,53 @@ def search(request):
     return render(request, 'search/search.html', {'method': method,
                                                   'page': page,
                                                   'query': query,
+                                                  'adv_search_form': adv_search_form})
+
+def advanced_search(request):
+    adv_search_form = AdvancedSearchForm(request.GET or None, initial={'search_type': 'both'})
+    method = request.GET.get('method')
+    query = request.GET.get('adv_search')
+    search_type = request.GET.get('search_type')
+    inc_articles = True if search_type == 'article' or search_type == 'both' else None
+    inc_photos = True if search_type == 'image' or search_type == 'both' else None
+    first_author = request.GET.get('first_author')
+    category_pk = request.GET.get('category')
+    topic_pk = request.GET.get('topics')
+    
+    from_date = request.GET.get('from_date')
+    if from_date:
+        from_date = datetime.datetime.strptime(from_date, '%d/%m/%Y')
+    to_date = request.GET.get('to_date')
+    if to_date:
+        to_date = datetime.datetime.strptime(to_date, '%d/%m/%Y')
+        
+    if query or category_pk or topic_pk:
+        article_list = searchArticlesAndPhotos(query,
+                                               inc_articles,
+                                               inc_photos,
+                                               first_author,
+                                               category_pk,
+                                               topic_pk,
+                                               from_date,
+                                               to_date)
+        paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
+        page_num = request.GET.get('page')
+        if page_num is None:
+            page_num = 1
+            try:
+                page = paginator.page(page_num)
+            except PageNotAnInteger:
+                page = paginator.page(1)
+            except EmptyPage:
+                page = paginator.page(paginator.num_pages)
+    else:
+        query = ""
+        page = None
+        method = None
+    
+    return render(request, 'search/search.html', {'method': method,
+                                                  'query': query,
+                                                  'page': page,
                                                   'adv_search_form': adv_search_form})
 
 
