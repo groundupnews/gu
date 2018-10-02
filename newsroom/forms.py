@@ -29,9 +29,11 @@ class ArticleForm(forms.ModelForm):
 
 class AdvancedSearchForm(forms.Form):
     adv_search = forms.CharField(label="Search",
-                                widget=forms.TextInput(attrs={'placeholder': 'Search...'}))
-    search_type = forms.ChoiceField(choices=SEARCH_TYPES, widget=forms.RadioSelect())
-    category = forms.ModelChoiceField(queryset=models.Category.objects.all())
-    topics = forms.ModelChoiceField(queryset=models.Topic.objects.all())
-    date_from = forms.DateTimeField()
-    date_to = forms.DateTimeField()
+                                 widget=forms.TextInput(attrs={'placeholder': 'Search...'}),
+                                 required=False)
+    search_type = forms.ChoiceField(choices=SEARCH_TYPES, widget=forms.RadioSelect(),
+                                    required=False)
+    category = forms.ModelChoiceField(queryset=models.Category.objects.all(), required=False)
+    topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
+    date_from = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}), required=False)
+    date_to = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}), required=False)

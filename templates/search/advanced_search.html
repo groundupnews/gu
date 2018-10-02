@@ -4,7 +4,7 @@
       Advanced Search <i class="adv-filter-arrow fas fa-angle-up fa-lg"></i>
     </h3>
   </div>
-  <form class="adv-filter-form">
+  <form action="/search/" class="adv-filter-form">
     <div class="adv-filter-form__row">
       <div class="adv-filter__item adv-filter__search-box">
         {{ adv_search_form.adv_search }}
@@ -26,11 +26,11 @@
     <div class="adv-filter-form__row">
       <div class="adv-filter__item adv-filter__date-from-box">
         <label for="{{ adv_search_form.date_from.id_for_label }}" >Date From:</label>
-        <input type="text" name="date_from" required="" id="id_date_from" data-toggle="datepicker">
+        {{ adv_search_form.date_from }}
       </div>
       <div class="adv-filter__item adv-filter__date-to-box">
         <label for="{{ adv_search_form.date_to.id_for_label }}" >Date To:</label>
-        <input type="text" name="date_to" required="" id="id_date_to" data-toggle="datepicker">
+        {{ adv_search_form.date_to }}
       </div>
     </div>
     <button class="adv-filter-submit" type="submit">SEARCH</button>

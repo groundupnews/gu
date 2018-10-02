@@ -477,7 +477,7 @@ def account_profile(request):
 def search(request):
     query = request.GET.get('q')
     method = request.GET.get('method')
-    adv_search_form = AdvancedSearchForm(initial={'search_type': 'both'})
+    adv_search_form = AdvancedSearchForm(request.GET or None, initial={'search_type': 'both'})
     if method is None:
         method = "DATE"
     if query:
