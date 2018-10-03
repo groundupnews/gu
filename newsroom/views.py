@@ -477,7 +477,7 @@ def account_profile(request):
 def search(request):
     query = request.GET.get('q')
     method = request.GET.get('method')
-    adv_search_form = AdvancedSearchForm(request.GET or None, initial={'search_type': 'both'})
+    adv_search_form = AdvancedSearchForm(initial={'adv_search': query, 'search_type': 'both'})
     if method is None:
         method = "DATE"
     if query:
@@ -517,21 +517,25 @@ def search(request):
                                                   'adv_search_form': adv_search_form})
 
 def advanced_search(request):
-    adv_search_form = AdvancedSearchForm(request.GET or None, initial={'search_type': 'both'})
+    adv_search_form = AdvancedSearchForm(request.GET or None,
+                                         initial={'search_type': 'both'})
+    
     method = request.GET.get('method')
     query = request.GET.get('adv_search')
     search_type = request.GET.get('search_type')
-    inc_articles = True if search_type == 'article' or search_type == 'both' else None
-    inc_photos = True if search_type == 'image' or search_type == 'both' else None
     author = request.GET.get('author')
     first_author = request.GET.get('first_author')
     first_author_only = True if first_author == "on" else False    
     category_pk = request.GET.get('category')
     topic_pk = request.GET.get('topics')
     from_date = request.GET.get('date_from')
+    to_date = request.GET.get('date_to')
+
+    inc_articles = True if search_type == 'article' or search_type == 'both' else False
+    inc_photos = True if search_type == 'image' or search_type == 'both' else False
+    
     if from_date:
         from_date = datetime.datetime.strptime(from_date, '%d/%m/%Y')
-    to_date = request.GET.get('date_to')
     if to_date:
         to_date = datetime.datetime.strptime(to_date, '%d/%m/%Y')
         
@@ -545,8 +549,7 @@ def advanced_search(request):
                                                topic_pk,
                                                from_date,
                                                to_date)
-
-        paginator = Paginator(article_list, 100)
+        paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
         page_num = request.GET.get('page')
         if page_num is None:
             page_num = 1
@@ -564,8 +567,7 @@ def advanced_search(request):
     return render(request, 'search/search.html', {'method': method,
                                                   'query': query,
                                                   'page': page,
-                                                  'adv_search_form': adv_search_form,
-                                                  'articles': article_list})
+                                                  'adv_search_form': adv_search_form})
 
 
 ''' Used to test logging

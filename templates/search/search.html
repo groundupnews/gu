@@ -31,7 +31,7 @@
         </div>
         {% include "search/advanced_search.html" %}
         <div class="search-results__body">
-	  {% for article in articles %}
+	  {% for article in page.object_list %}
             {% if article.obj_type == 0 %}
               <div class="search-result">
                 <div class="search-result__image">
@@ -45,8 +45,14 @@
               </div>
             {% elif article.obj_type == 1 %}
               <div class="search-result">
-                <h3>Image</h3>
-                {{ article }}
+                <div class="search-result__image">
+                  <img src="{{ article.image }}" alt="{{ article.alt }}" />
+                </div>
+                <div class="search-result__details">
+                  <p>{{article.published|date:"j F Y"}}</p>
+                  <a href=""><h2>{{ article.suggested_caption|safe }}</h2></a>
+                  <h3>{{ article.subtitle|safe }}</h3>
+                </div>
               </div>
             {%  else %}
 	      <h2>
