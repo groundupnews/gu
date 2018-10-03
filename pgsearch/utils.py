@@ -157,14 +157,14 @@ def searchArticlesAndPhotos(search_string=None,
         articles = searchArticles(search_string, author_pk, first_author,
                                   category_pk, topic_pk,
                                   from_date, to_date).extra(select = {'obj_type': 0}). \
-                                  values("pk", "title", "subtitle", "primary_image",
-                                         "published", "obj_type")
+                                  values("pk", "title", "subtitle", "cached_summary_image",
+                                         "published", "obj_type", "slug")
 
     if inc_photos:
         photos = searchPhotos(search_string, author_pk,
                               from_date, to_date).extra(select = {'obj_type': 1}). \
                               values("pk", "suggested_caption", "alt", "image",
-                                     "obj_type").annotate(published=F("date_taken"))
+                                     "obj_type", "credit").annotate(published=F("date_taken"))
 
     if articles and photos:
         result = articles.union(photos).order_by('-published')
@@ -172,5 +172,5 @@ def searchArticlesAndPhotos(search_string=None,
         result = articles
     elif photos:
         result = photos
-    
+        
     return result

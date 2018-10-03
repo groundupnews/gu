@@ -88,7 +88,7 @@
     margin-right: 29px;
 }
 
-#id_topics {
+#id_topics, #id_author {
     width: 65%;
 }
 
@@ -118,4 +118,28 @@
 #id_first_author {
     flex-basis: 4%;
     margin-top: 0px;
+}
+
+/* Article List */
+
+.search-results__body {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-result {
+    display: flex;
+    padding: 15px;
+}
+
+.search-result__image {
+    flex: 1;
+}
+
+.search-result__image img {
+    width: 90%;
+}
+
+.search-result__details {
+    flex: 2;
 }

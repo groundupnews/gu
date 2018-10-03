@@ -31,27 +31,39 @@
         </div>
         {% include "search/advanced_search.html" %}
         <div class="search-results__body">
-          {{articles.count}}
-          {{page.object_list.count}}
-	  {% for article in page.object_list %}
-            {% if article.obj_type == 1 %}
-              <h1>Image</h1>
+	  {% for article in articles %}
+            {% if article.obj_type == 0 %}
+              <div class="search-result">
+                <div class="search-result__image">
+                  <img src="{{ article.cached_summary_image }}" />
+                </div>
+                <div class="search-result__details">
+                  <p>{{article.published|date:"j F Y"}}</p>
+                  <a href="{% url "article.detail" article.slug %}"><h2>{{ article.title|safe }}</h2></a>
+                  <h3>{{ article.subtitle|safe }}</h3>
+                </div>
+              </div>
+            {% elif article.obj_type == 1 %}
+              <div class="search-result">
+                <h3>Image</h3>
+                {{ article }}
+              </div>
+            {%  else %}
+	      <h2>
+		<a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
+	      </h2>
+	      <p>
+		{{article.published|date:"j M Y"}}
+	      </p>
+              <p>
+                {% with article.body|safe as body %}
+		  {% highlight body with query %}
+		{% endwith %}
+              </p>
             {% endif %}
-	    <h2>
-	      <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
-	    </h2>
-	    <p>
-	      {{article.published|date:"j M Y"}}
-	    </p>
-            <p>
-              {% with article.body|safe as body %}
-		{% highlight body with query %}
-	      {% endwith %}
-            </p>
 	  {% empty %}
 	    <p>No results found.</p>
 	  {% endfor %}
-
 
 	  {% block pagination %}
 	    {% include 'paginator.html' with page_obj=page query=query %}
@@ -61,8 +73,8 @@
         <div class="search-results__header">
           <h2>Please enter text to search for.</h2>
         </div>
-          <div class="search-results__body">
-            {% include "search/advanced_search.html" %}
+        <div class="search-results__body">
+          {% include "search/advanced_search.html" %}
         </div>
       {% endif %}
     </div>
