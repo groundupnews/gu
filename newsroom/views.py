@@ -523,21 +523,23 @@ def advanced_search(request):
     search_type = request.GET.get('search_type')
     inc_articles = True if search_type == 'article' or search_type == 'both' else None
     inc_photos = True if search_type == 'image' or search_type == 'both' else None
+    author = request.GET.get('author')
     first_author = request.GET.get('first_author')
     category_pk = request.GET.get('category')
     topic_pk = request.GET.get('topics')
     
-    from_date = request.GET.get('from_date')
+    from_date = request.GET.get('date_from')
     if from_date:
         from_date = datetime.datetime.strptime(from_date, '%d/%m/%Y')
-    to_date = request.GET.get('to_date')
+    to_date = request.GET.get('date_to')
     if to_date:
         to_date = datetime.datetime.strptime(to_date, '%d/%m/%Y')
         
-    if query or category_pk or topic_pk:
+    if query or author or category_pk or topic_pk:
         article_list = searchArticlesAndPhotos(query,
                                                inc_articles,
                                                inc_photos,
+                                               author,
                                                first_author,
                                                category_pk,
                                                topic_pk,

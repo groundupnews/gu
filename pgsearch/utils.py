@@ -151,6 +151,7 @@ def searchArticlesAndPhotos(search_string=None,
                             author_pk=None, first_author=False,
                             category_pk=None, topic_pk=None,
                             from_date=None, to_date=None):
+
     articles = photos = result = []
     if inc_articles:
         articles = searchArticles(search_string, author_pk, first_author,

@@ -46,7 +46,7 @@
 }
 
 .adv-filter__search-box {
-    flex-basis: 100%; 
+    flex-basis: 50%; 
 }
 
 .adv-filter__first-author {
@@ -85,6 +85,7 @@
 #id_adv_search {
     flex-basis: 100%;    
     padding-left: 5px;
+    margin-right: 29px;
 }
 
 #id_topics {
