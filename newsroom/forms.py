@@ -38,6 +38,8 @@ class AdvancedSearchForm(forms.Form):
     category = forms.ModelChoiceField(queryset=models.Category.objects.all(), required=False)
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
     date_from = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
-                                    required=False)
+                                    required=False,
+                                    input_formats='%d/%m/%Y')
     date_to = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
-                                  required=False)
+                                  required=False,
+                                  input_formats='%d/%m/%Y')
