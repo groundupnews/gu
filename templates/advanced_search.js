@@ -4,14 +4,16 @@ $( document ).ready(function() {
     var header_bar = $('.header')
     var adv_arrow = $('.adv-filter-arrow')
     var adv_form = $('.adv-filter-form')
-    
-    search_input.on('focus', function() {
-        advanced_search.slideDown('slow')
-    })
-    header_bar.on('mouseleave', function() {
-        advanced_search.slideUp('slow')
-    })
 
+    if ($(window).width() > 768) {
+        search_input.on('focus', function() {
+            advanced_search.slideDown('slow')
+        })
+        header_bar.on('mouseleave', function() {
+            advanced_search.slideUp('slow')
+        })
+    }
+        
     adv_arrow.on('click', function() {
         var icon = $(this)
         if (icon.hasClass('fa-angle-up')) {

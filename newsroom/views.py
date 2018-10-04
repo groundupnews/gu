@@ -511,6 +511,7 @@ def search(request):
         query = ""
         page = None
         method = None
+        
     return render(request, 'search/search.html', {'method': method,
                                                   'page': page,
                                                   'query': query,
@@ -518,7 +519,8 @@ def search(request):
 
 def advanced_search(request):
     adv_search_form = AdvancedSearchForm(request.GET or None,
-                                         initial={'search_type': 'both'})
+                                         initial={'adv_search': request.GET.get('q'),
+                                                  'search_type': 'both'})
     
     method = request.GET.get('method')
     query = request.GET.get('adv_search')
@@ -563,7 +565,7 @@ def advanced_search(request):
         query = ""
         page = None
         method = None
-        
+
     return render(request, 'search/search.html', {'method': method,
                                                   'query': query,
                                                   'page': page,

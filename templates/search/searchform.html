@@ -3,7 +3,7 @@
   <div class="header__search__input-box">
     <input type="text" class="form-control header__search__input" name="q" id="id_q"
 	   placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
-           value="{{query}}" />
+           value="{{query|default:""}}" />
     <button id="search-button">
       <i class="fas fa-search"></i>
     </button>

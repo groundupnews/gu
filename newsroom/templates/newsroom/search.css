@@ -143,3 +143,9 @@
 .search-result__details {
     flex: 2;
 }
+
+@media (max-width: 768px) {
+    .adv-filter-box {
+        display: none;
+    }
+}
