@@ -158,7 +158,7 @@ def searchArticlesAndPhotos(search_string=None,
                                   category_pk, topic_pk,
                                   from_date, to_date).extra(select = {'obj_type': 0}). \
                                   values("pk", "title", "subtitle", "cached_summary_image",
-                                         "published", "obj_type", "slug")
+                                         "obj_type", "slug", "published")
 
     if inc_photos:
         photos = searchPhotos(search_string, author_pk,
