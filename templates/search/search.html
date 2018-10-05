@@ -57,18 +57,6 @@
                   </a>
                 </div>
               </div>
-            {%  else %}
-	      <h2>
-		<a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
-	      </h2>
-	      <p>
-		{{article.published|date:"j M Y"}}
-	      </p>
-              <p>
-                {% with article.body|safe as body %}
-		  {% highlight body with query %}
-		{% endwith %}
-              </p>
             {% endif %}
 	  {% empty %}
 	    <p>No results found.</p>

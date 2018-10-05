@@ -473,56 +473,6 @@ def account_profile(request):
                                      "Please change your password.")
     return render(request, "newsroom/account_profile.html")
 
-
-def search(request):
-    query = request.GET.get('q')
-    method = request.GET.get('method')
-    adv_search_form = AdvancedSearchForm(initial={'adv_search': query, 'search_type': 'both'})
-    
-    if "gallery" in request.GET:
-        print("image search")
-    elif "article" in request.GET:
-        print("article search")
-
-    if method is None:
-        method = "DATE"
-    if query:
-        if method == "DATE":
-            article_list = searchPostgresDB(query,
-                                            models.Article,
-                                            settings.SEARCH_CONFIG, False,
-                                            "title", "subtitle",
-                                            "cached_byline_no_links",
-                                            "body").published() \
-                                            [:settings.MAX_SEARCH_RESULTS]
-        else:
-            article_list = searchPostgresDB(query,
-                                            models.Article,
-                                            settings.SEARCH_CONFIG, True,
-                                            "title", "subtitle",
-                                            "cached_byline_no_links",
-                                            "body").published() \
-                                            [:settings.MAX_SEARCH_RESULTS]
-        paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
-        page_num = request.GET.get('page')
-        if page_num is None:
-            page_num = 1
-        try:
-            page = paginator.page(page_num)
-        except PageNotAnInteger:
-            page = paginator.page(1)
-        except EmptyPage:
-            page = paginator.page(paginator.num_pages)
-    else:
-        query = ""
-        page = None
-        method = None
-        
-    return render(request, 'search/search.html', {'method': method,
-                                                  'page': page,
-                                                  'query': query,
-                                                  'adv_search_form': adv_search_form})
-
 def advanced_search(request):
     
     query = request.GET.get('adv_search')
@@ -555,15 +505,9 @@ def advanced_search(request):
         to_date = datetime.datetime.strptime(to_date, '%d/%m/%Y')
         
     if True:
-        article_list = searchArticlesAndPhotos(query,
-                                               inc_articles,
-                                               inc_photos,
-                                               author,
-                                               first_author_only,
-                                               category_pk,
-                                               topic_pk,
-                                               from_date,
-                                               to_date)
+        article_list = searchArticlesAndPhotos(query, inc_articles, inc_photos, author, first_author_only,
+                                               category_pk, topic_pk, from_date, to_date)
+        
         paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
         page_num = request.GET.get('page')
         if page_num is None:
@@ -579,8 +523,7 @@ def advanced_search(request):
         page = None
         method = None
 
-    return render(request, 'search/search.html', {'method': method,
-                                                  'query': query,
+    return render(request, 'search/search.html', {'query': query,
                                                   'page': page,
                                                   'adv_search_form': adv_search_form})
 
