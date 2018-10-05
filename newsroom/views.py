@@ -498,16 +498,10 @@ def advanced_search(request):
         inc_photos = True if search_type == 'image' or search_type == 'both' else False
         
     adv_search_form = AdvancedSearchForm(request.GET or None)
-    
-    if from_date:
-        from_date = datetime.datetime.strptime(from_date, '%d/%m/%Y')
-    if to_date:
-        to_date = datetime.datetime.strptime(to_date, '%d/%m/%Y')
         
-    if True:
+    if query:
         article_list = searchArticlesAndPhotos(query, inc_articles, inc_photos, author, first_author_only,
                                                category_pk, topic_pk, from_date, to_date)
-        
         paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
         page_num = request.GET.get('page')
         if page_num is None:
@@ -522,7 +516,7 @@ def advanced_search(request):
         query = ""
         page = None
         method = None
-
+        
     return render(request, 'search/search.html', {'query': query,
                                                   'page': page,
                                                   'adv_search_form': adv_search_form})

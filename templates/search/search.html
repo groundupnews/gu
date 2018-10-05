@@ -39,9 +39,15 @@
                   <img src="{{ article.cached_summary_image }}" />
                 </div>
                 <div class="search-result__details">
-                  <p>{{article.published|date:"j F Y"}}</p>
-                  <a href="{% url "article.detail" article.slug %}"><h2>{{ article.title|safe }}</h2></a>
-                  <h3>{{ article.subtitle|safe }}</h3>
+                  <p class="search-result__pub-date">{{article.published|date:"j F Y"}}</p>
+                  <h2 class="search-result__title">
+                    <a href="{% url "article.detail" article.slug %}">
+                      {{ article.title|safe }}
+                    </a>
+                  </h2>
+                  <h3 class="search-result__sub-title">
+                    {{ article.subtitle|safe }}
+                  </h3>
                 </div>
               </div>
             {% elif article.obj_type == 1 %}
@@ -51,9 +57,9 @@
                        alt="{{ article.subtitle }}" />
                 </div>
                 <div class="search-result__details">
-                  <p>{{article.published|date:"j F Y"}}</p>
+                  <p class="search-result__pub-date">{{article.published|date:"j F Y"}}</p>
                   <a href="{% url "photo.detail" article.pk %}">
-                    <h2>{{ article.title|safe }}</h2>
+                    <h2 class="search-result__title">{{ article.title|safe }}</h2>
                   </a>
                 </div>
               </div>

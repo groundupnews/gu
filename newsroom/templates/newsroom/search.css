@@ -130,6 +130,7 @@
 .search-result {
     display: flex;
     padding: 15px;
+    border-bottom: 2px solid #D6D6DA;
 }
 
 .search-result__image {
@@ -148,4 +149,24 @@
     .adv-filter-box {
         display: none;
     }
+}
+
+.search-result__title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 2.2rem;
+    line-height: 30px;
+    margin-top: 5px;
+}
+
+.search-result__sub-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+}
+
+.search-result__pub-date {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 16px;
+    color: #666;
 }
