@@ -478,6 +478,12 @@ def search(request):
     query = request.GET.get('q')
     method = request.GET.get('method')
     adv_search_form = AdvancedSearchForm(initial={'adv_search': query, 'search_type': 'both'})
+    
+    if "gallery" in request.GET:
+        print("image search")
+    elif "article" in request.GET:
+        print("article search")
+
     if method is None:
         method = "DATE"
     if query:
@@ -518,11 +524,7 @@ def search(request):
                                                   'adv_search_form': adv_search_form})
 
 def advanced_search(request):
-    adv_search_form = AdvancedSearchForm(request.GET or None,
-                                         initial={'adv_search': request.GET.get('q'),
-                                                  'search_type': 'both'})
     
-    method = request.GET.get('method')
     query = request.GET.get('adv_search')
     search_type = request.GET.get('search_type')
     author = request.GET.get('author')
@@ -532,9 +534,20 @@ def advanced_search(request):
     topic_pk = request.GET.get('topics')
     from_date = request.GET.get('date_from')
     to_date = request.GET.get('date_to')
-
-    inc_articles = True if search_type == 'article' or search_type == 'both' else False
-    inc_photos = True if search_type == 'image' or search_type == 'both' else False
+    
+    if request.GET.get('search_type') == 'article':
+        inc_articles = True
+        inc_photos = False
+    else:
+        inc_articles = True if search_type == 'article' or search_type == 'both' else False
+ 
+    if request.GET.get('search_type') == 'image':
+        inc_photos = True
+        inc_articles = False
+    else:
+        inc_photos = True if search_type == 'image' or search_type == 'both' else False
+        
+    adv_search_form = AdvancedSearchForm(request.GET or None)
     
     if from_date:
         from_date = datetime.datetime.strptime(from_date, '%d/%m/%Y')

@@ -12,7 +12,7 @@ urlpatterns = [
         (views.home_page_view),
         name='home'),
 
-    url(r'^search/$', views.search, name='article.search'),
+    # url(r'^search/$', views.search, name='article.search'),
 
     url(r'^advanced_search/$', views.advanced_search, name='advanced.search'),
 
