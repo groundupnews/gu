@@ -145,12 +145,6 @@
     flex: 2;
 }
 
-@media (max-width: 768px) {
-    .adv-filter-box {
-        display: none;
-    }
-}
-
 .search-result__title {
     font-family: 'Roboto Slab', serif;
     font-size: 2.2rem;
@@ -169,4 +163,18 @@
     font-size: 14px;
     line-height: 16px;
     color: #666;
+}
+
+@media (max-width: 768px) {
+    .adv-filter-box {
+        display: none;
+    }
+
+    .search-result {
+        flex-direction: column;
+    }
+    
+    .search-result__image img {
+        width: 100%;
+    }
 }
