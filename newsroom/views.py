@@ -516,10 +516,18 @@ def advanced_search(request):
         query = ""
         page = None
         method = None
+
+    versions = {key: value for (key, value) in
+                django_settings.FILEBROWSER_VERSIONS.items()
+                if not key.startswith("admin")}
+
+    versions = sorted(versions.items(),key=lambda x: x[1]["width"])
+
         
     return render(request, 'search/search.html', {'query': query,
                                                   'page': page,
-                                                  'adv_search_form': adv_search_form})
+                                                  'adv_search_form': adv_search_form,
+                                                  'versions': versions})
 
 
 ''' Used to test logging

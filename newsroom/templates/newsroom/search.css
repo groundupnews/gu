@@ -146,13 +146,19 @@
 }
 
 .search-result__title {
+    color: #000;
     font-family: 'Roboto Slab', serif;
     font-size: 2.2rem;
     line-height: 30px;
     margin-top: 5px;
 }
 
+.search-result__title a {
+    color: #000;
+}
+
 .search-result__sub-title {
+    color: #000;
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
     line-height: 27px;
