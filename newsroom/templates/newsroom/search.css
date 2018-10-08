@@ -31,7 +31,6 @@
     align-items: center;
 }
 
-/*Advanced Filter Field*/
 .adv-filter__item {
     flex-basis: 50%;
     display: flex;
@@ -45,12 +44,8 @@
     width: 80%;
 }
 
-.adv-filter__search-box {
+.adv-filter__search-box, .adv-filter__first-author {
     flex-basis: 50%; 
-}
-
-.adv-filter__first-author {
-    flex-basis: 50%;
 }
 
 .adv-filter-form label {
@@ -73,13 +68,6 @@
 .search-results__body {
     background-color: #fff;
     padding: 15px;
-}
-
-@media (min-width:787px) {
-    .search-page {
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }    
 }
 
 #id_adv_search {
@@ -119,8 +107,6 @@
     flex-basis: 4%;
     margin-top: 0px;
 }
-
-/* Article List */
 
 .search-results__body {
     display: flex;
@@ -171,6 +157,17 @@
     color: #666;
 }
 
+.dropdown {
+    padding-top: 15px;
+}
+
+@media (min-width:787px) {
+    .search-page {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }    
+}
+
 @media (max-width: 768px) {
     .adv-filter-box {
         display: none;
@@ -182,5 +179,20 @@
     
     .search-result__image img {
         width: 100%;
+    }
+
+    .search-result__pub-date {
+        padding-top: 15px;
+    }
+    
+    .search-result__title {
+        font-size: 20px;
+        line-height: 28px;
+        margin-top: 5px;
+    }
+    .search-result__sub-title {
+        font-size: 16px;
+        line-height: 21px;
+        padding-bottom: 5%;
     }
 }
