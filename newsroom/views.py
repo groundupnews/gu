@@ -20,6 +20,7 @@ from django.views.generic import View
 from letters.models import Letter
 from letters.settings import DAYS_AGO
 from pgsearch.utils import searchPostgresDB, searchArticlesAndPhotos
+from django.conf import settings as django_settings
 
 from . import models, settings, utils
 from .forms import ArticleForm, ArticleListForm, AdvancedSearchForm

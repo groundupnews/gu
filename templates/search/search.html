@@ -61,6 +61,24 @@
                   <a href="{% url "photo.detail" article.pk %}">
                     <h2 class="search-result__title">{{ article.title|safe }}</h2>
                   </a>
+                  <div class="dropdown">
+                    <a id="drop1" href="#"
+                       role="button"
+                       class="dropdown-toggle btn btn-default btn-info"
+                       data-toggle="dropdown">Download<b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+                      {% for version in versions %}
+                        {% version article.cached_summary_image version.0 as image %}
+                        <li>
+                          <a href="{{image.url}}" download>
+                            {{version.1.verbose_name|capfirst}}
+                            ({{image.width}}px X {{image.height}}px)
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
                 </div>
               </div>
             {% endif %}
