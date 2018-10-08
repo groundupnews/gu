@@ -475,48 +475,44 @@ def account_profile(request):
     return render(request, "newsroom/account_profile.html")
 
 def advanced_search(request):
-    
+    page = None
     query = request.GET.get('adv_search')
     search_type = request.GET.get('search_type')
     author = request.GET.get('author')
     first_author = request.GET.get('first_author')
-    first_author_only = True if first_author == "on" else False    
+    first_author_only = True if first_author == "on" else False
     category_pk = request.GET.get('category')
     topic_pk = request.GET.get('topics')
     from_date = request.GET.get('date_from')
     to_date = request.GET.get('date_to')
-    
+
     if request.GET.get('search_type') == 'article':
         inc_articles = True
         inc_photos = False
     else:
         inc_articles = True if search_type == 'article' or search_type == 'both' else False
- 
+
     if request.GET.get('search_type') == 'image':
         inc_photos = True
         inc_articles = False
     else:
         inc_photos = True if search_type == 'image' or search_type == 'both' else False
-        
+
     adv_search_form = AdvancedSearchForm(request.GET or None)
-        
-    if query:
-        article_list = searchArticlesAndPhotos(query, inc_articles, inc_photos, author, first_author_only,
-                                               category_pk, topic_pk, from_date, to_date)
-        paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
-        page_num = request.GET.get('page')
-        if page_num is None:
-            page_num = 1
-            try:
-                page = paginator.page(page_num)
-            except PageNotAnInteger:
-                page = paginator.page(1)
-            except EmptyPage:
-                page = paginator.page(paginator.num_pages)
-    else:
-        query = ""
-        page = None
-        method = None
+
+    article_list = searchArticlesAndPhotos(query, inc_articles, inc_photos,
+                                           author, first_author_only,
+                                           category_pk, topic_pk, from_date, to_date)
+    paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
+    page_num = request.GET.get('page')
+    if page_num is None:
+        page_num = 1
+    try:
+        page = paginator.page(page_num)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
 
     versions = {key: value for (key, value) in
                 django_settings.FILEBROWSER_VERSIONS.items()
@@ -524,9 +520,10 @@ def advanced_search(request):
 
     versions = sorted(versions.items(),key=lambda x: x[1]["width"])
 
-        
+
     return render(request, 'search/search.html', {'query': query,
                                                   'page': page,
+                                                  'page_num': page_num,
                                                   'adv_search_form': adv_search_form,
                                                   'versions': versions})
 
