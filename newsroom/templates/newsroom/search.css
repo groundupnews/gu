@@ -73,7 +73,7 @@
 #id_adv_search {
     flex-basis: 100%;    
     padding-left: 5px;
-    margin-right: 29px;
+    margin-right: 6.5%;
 }
 
 #id_topics, #id_author {
@@ -161,6 +161,19 @@
     padding-top: 15px;
 }
 
+.search-result__download {
+    width: 25%;
+}
+
+.search-result__download-button {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #00B1F0;
+    background-image: none;
+    border: none;
+    border-radius: inherit;
+    width: 100%;
+}
+
 @media (min-width:787px) {
     .search-page {
         margin-top: 30px;
@@ -195,4 +208,16 @@
         line-height: 21px;
         padding-bottom: 5%;
     }
+
+    .search-result__download {
+        width: 50%;
+        text-align: center;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 425px) {
+    .search-result__download {
+        width: 90%;
+    }    
 }

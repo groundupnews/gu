@@ -16,7 +16,7 @@
           {% if page.object_list %}
               <div class="search-results__header">
 	          <h1>Search results</h1>
-                  <p>Keywords: {{request.GET.q}}&emsp;
+                  <p>Keywords: {{request.GET.adv_search}}&emsp;
                       Search type: {{request.GET.search_type}}&emsp;
                       Page: {{page_num}}
                   </p>
@@ -52,11 +52,11 @@
                                   <a href="{% url "photo.detail" article.pk %}">
                                       <h2 class="search-result__title">{{ article.title|safe }}</h2>
                                   </a>
-                                  <div class="dropdown">
-                                      <a id="drop1" href="#"
-                                         role="button"
-                                         class="dropdown-toggle btn btn-default btn-info"
-                                         data-toggle="dropdown">Download<b class="caret"></b></a>
+                                  <div class="dropdown search-result__download">
+                                    <a id="drop1" href="#"
+                                       role="button"
+                                       class="dropdown-toggle btn btn-default btn-info search-result__download-button"
+                                       data-toggle="dropdown">Download <b class="caret"></b></a>
 
                                       <ul class="dropdown-menu">
                                           {% for version in versions %}
