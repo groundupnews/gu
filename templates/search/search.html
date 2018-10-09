@@ -16,9 +16,14 @@
           {% if page.object_list %}
               <div class="search-results__header">
 	          <h1>Search results</h1>
-                  <p>Keywords: {{request.GET.adv_search}}&emsp;
-                      Search type: {{request.GET.search_type}}&emsp;
-                      Page: {{page_num}}
+                  <p>Keywords: {{ request.GET.adv_search|default:"-" }}&emsp;
+                    Search type: {{ request.GET.search_type|default:"-" }}&emsp;
+                    Author: {{ request.GET.author|default:"-" }}&emsp;
+                    Category: {{ request.GET.category|default:"-" }}&emsp;
+                    Topic: {{ request.GET.topics|default:"-" }}&emsp;
+                    From Date: {{ request.GET.date_from|default:"-" }}&emsp;
+                    To Date: {{ request.GET.date_to|default:"-" }}&emsp;
+                    Page: {{ page_num|default:"-" }}
                   </p>
               </div>
               {% include "search/advanced_search.html" %}
