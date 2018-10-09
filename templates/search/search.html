@@ -16,7 +16,8 @@
           {% if page.object_list %}
               <div class="search-results__header">
 	          <h1>Search results</h1>
-                  <p>Keywords: {{ request.GET.adv_search|default:"-" }}&emsp;
+                  <p>
+                    Keywords: {{ request.GET.adv_search|default:"-" }}&emsp;
                     Search type: {{ request.GET.search_type|default:"-" }}&emsp;
                     Author: {{ request.GET.author|default:"-" }}&emsp;
                     Category: {{ request.GET.category|default:"-" }}&emsp;
@@ -37,12 +38,12 @@
                               <div class="search-result__details">
                                   <p class="search-result__pub-date">{{article.published|date:"j F Y"}}</p>
                                   <h2 class="search-result__title">
-                                      <a href="{% url "article.detail" article.slug %}">
-                                          {{ article.title|safe }}
+                                    <a href="{% url "article.detail" article.slug %}">
+                                      {{ article.title|safe }}
                                       </a>
                                   </h2>
                                   <h3 class="search-result__sub-title">
-                                      {{ article.subtitle|safe }}
+                                    {% highlight article.subtitle with query %}
                                   </h3>
                               </div>
                           </div>
