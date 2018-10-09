@@ -31,8 +31,10 @@ class AdvancedSearchForm(forms.Form):
     adv_search = forms.CharField(label="Search Term...",
                                  widget=forms.TextInput(attrs={'placeholder': 'Search...'}),
                                  required=False)
-    search_type = forms.ChoiceField(choices=SEARCH_TYPES, widget=forms.RadioSelect(),
-                                    required=False)
+    search_type = forms.ChoiceField(choices=SEARCH_TYPES,
+                                    widget=forms.RadioSelect(),
+                                    required=False,
+                                    initial='both')
     author = forms.ModelChoiceField(queryset=models.Author.objects.all().order_by('first_names'),
                                     required=False)
     first_author = forms.BooleanField(label="First Author Only", required=False)
