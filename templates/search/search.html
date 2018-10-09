@@ -21,7 +21,11 @@
                     Keywords: {{ adv_search_form.cleaned_data.adv_search }}&emsp;
                   {% endif %}
                   {% if adv_search_form.cleaned_data.search_type %}
-                    Search type: {{ adv_search_form.cleaned_data.search_type }}&emsp;
+                    {% if adv_search_form.cleaned_data.search_type == "both" %}
+                      Search type: articles & images&emsp;
+                    {% else %}
+                      Search type: {{ adv_search_form.cleaned_data.search_type }}&emsp;
+                    {% endif %}
                   {% endif %}
                   {% if adv_search_form.cleaned_data.author %}
                     Author: {{ adv_search_form.cleaned_data.author }}&emsp;

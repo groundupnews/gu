@@ -67,6 +67,11 @@ button#search-button:hover {
     background-color: lightgray;
 }
 
+#search-button:disabled {
+    background-color: #333 !important;
+}
+
+
 .header__burger-menu-icon {
     background-color: #4D4D4D;
     justify-self: flex-start;

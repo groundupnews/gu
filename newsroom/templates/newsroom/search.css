@@ -94,6 +94,11 @@
     background-color: #151F22;
 }
 
+.adv-filter-submit:disabled {
+    background-color: #151F22;
+    color: #aaa;
+}
+
 .adv-filter__item select, .adv-filter__item input {
     flex-basis: 65%;
 }
