@@ -15,15 +15,29 @@
       <div class="search-results">
           {% if page.object_list %}
               <div class="search-results__header">
-	          <h1>Search results</h1>
-                  <p>
-                    Keywords: {{ request.GET.adv_search|default:"-" }}&emsp;
-                    Search type: {{ request.GET.search_type|default:"-" }}&emsp;
-                    Author: {{ request.GET.author|default:"-" }}&emsp;
-                    Category: {{ request.GET.category|default:"-" }}&emsp;
-                    Topic: {{ request.GET.topics|default:"-" }}&emsp;
-                    From Date: {{ request.GET.date_from|default:"-" }}&emsp;
-                    To Date: {{ request.GET.date_to|default:"-" }}&emsp;
+	        <h1>Search results</h1>
+                <p>
+                  {% if adv_search_form.cleaned_data.adv_search %}
+                    Keywords: {{ adv_search_form.cleaned_data.adv_search }}&emsp;
+                  {% endif %}
+                  {% if adv_search_form.cleaned_data.search_type %}
+                    Search type: {{ adv_search_form.cleaned_data.search_type }}&emsp;
+                  {% endif %}
+                  {% if adv_search_form.cleaned_data.author %}
+                    Author: {{ adv_search_form.cleaned_data.author }}&emsp;
+                  {% endif %}
+                  {% if adv_search_form.cleaned_data.category %}
+                    Category: {{ adv_search_form.cleaned_data.category }}&emsp;
+                  {% endif %}
+                  {% if adv_search_form.cleaned_data.topics %}
+                    Topic: {{ adv_search_form.cleaned_data.topics }}&emsp;
+                  {% endif %}
+                  {% if adv_search_form.cleaned_data.date_from %}
+                    From Date: {{ adv_search_form.cleaned_data.date_from }}&emsp;
+                  {% endif %}
+                  {% if adv_search_form.cleaned_data.date_to %}
+                    To Date: {{ adv_search_form.cleaned_data.date_to }}&emsp;
+                  {% endif %}
                     Page: {{ page_num|default:"-" }}
                   </p>
               </div>

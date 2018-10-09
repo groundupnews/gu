@@ -17,11 +17,9 @@ $( document ).ready(function() {
     adv_arrow.on('click', function() {
         var icon = $(this)
         if (icon.hasClass('fa-angle-up')) {
-            console.log('slideup')
             adv_form.slideUp('slow')
             adv_arrow.toggleClass('fa-angle-up fa-angle-down')
         } else {
-            console.log('slidedown')
             $('.adv-filter-form').slideDown('slow')
             adv_arrow.toggleClass('fa-angle-down fa-angle-up')
         }

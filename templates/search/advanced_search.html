@@ -1,10 +1,19 @@
 <div class="adv-filter-box">
   <div class="adv-filter-header">
     <h3 class="adv-filter-heading">
-      Advanced Search <i class="adv-filter-arrow fas fa-angle-up fa-lg"></i>
+      Advanced Search <i class="adv-filter-arrow fas 
+                                {% if request.GET.is_simple %}
+                                fa-angle-down
+                                {%else%}
+                                fa-angle-up
+                                {%endif%} 
+                                fa-lg"></i>
     </h3>
   </div>
-  <form action="/advanced_search/" class="adv-filter-form" method="GET">
+  <form action="/advanced_search/" class="adv-filter-form" method="GET"
+        {% if request.GET.is_simple %}
+        style="display: none"
+        {%endif%}>
     <div class="adv-filter-form__row">
       <div class="adv-filter__item adv-filter__search-box">
         {{ adv_search_form.adv_search }}

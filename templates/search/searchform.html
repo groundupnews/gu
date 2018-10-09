@@ -11,6 +11,7 @@
 	     placeholder="Search photos"
              value="{{query|default:""}}" />
       <input type="hidden" name="search_type" value="image" />
+      <input type="hidden" name="is_simple" value="true" />
     {% else %}
       <input type="text"
              class="form-control header__search__input"
@@ -19,6 +20,7 @@
 	     placeholder="Search articles"
              value="{{query|default:""}}" />
       <input type="hidden" name="search_type" value="article" />
+      <input type="hidden" name="is_simple" value="true" />
     {% endif %}
     <button id="search-button">
       <i class="fas fa-search"></i>

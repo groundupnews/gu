@@ -89,15 +89,13 @@ def searchArticles(search_string=None,
 
     if from_date:
         try:
-            dt = timezone.datetime.strptime(from_date,"%Y%m%d").date()
-            query = query & Q(published__gte=dt)
+            query = query & Q(published__gte=from_date)
         except:
             pass
 
     if to_date:
         try:
-            dt = timezone.datetime.strptime(to_date,"%Y%m%d").date()
-            query = query & Q(published__lte=dt)
+            query = query & Q(published__lte=to_date)
         except:
             pass
 
@@ -127,17 +125,16 @@ def searchPhotos(search_string=None,
         except:
             pass
 
+        
     if from_date:
         try:
-            dt = timezone.datetime.strptime(from_date,"%Y%m%d").date()
-            query = query & Q(date_taken__gte=dt)
+            query = query & Q(date_taken__gte=from_date)
         except:
             pass
 
     if to_date:
         try:
-            dt = timezone.datetime.strptime(to_date,"%Y%m%d").date()
-            query = query & Q(date_taken__lte=dt)
+            query = query & Q(date_taken__lte=to_date)
         except:
             pass
 
@@ -153,6 +150,7 @@ def searchArticlesAndPhotos(search_string=None,
                             from_date=None, to_date=None):
 
     articles = photos = result = []
+    
     if inc_articles:
         articles = searchArticles(search_string, author_pk, first_author,
                                   category_pk, topic_pk,
