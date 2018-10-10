@@ -494,17 +494,20 @@ def advanced_search(request):
         inc_photos = True if search_type == 'image' or search_type == 'both' else False
 
     adv_search_form = AdvancedSearchForm(request.GET or None)
-
-    if query and adv_search_form.is_valid():
+    
+    if adv_search_form.is_valid():
         cleaned_adv_form = adv_search_form.cleaned_data
+        author_pk = cleaned_adv_form.get("author").pk if cleaned_adv_form.get("author") else None
+        category_pk = cleaned_adv_form.get("category").pk if cleaned_adv_form.get("category") else None
+        topic_pk = cleaned_adv_form.get("topics").pk if cleaned_adv_form.get("topics") else None
         try:
             article_list = searchArticlesAndPhotos(cleaned_adv_form.get("adv_search"),
                                                    inc_articles,
                                                    inc_photos,
-                                                   cleaned_adv_form.get("author"),
+                                                   author_pk,
                                                    first_author_only,
-                                                   cleaned_adv_form.get("category_pk"),
-                                                   cleaned_adv_form.get("topic_pk"),
+                                                   category_pk,
+                                                   topic_pk,
                                                    cleaned_adv_form.get("date_from"),
                                                    cleaned_adv_form.get("date_to"))
         except:

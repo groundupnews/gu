@@ -30,19 +30,6 @@ $( document ).ready(function() {
         }
     })
 
-    if (advanced_search_input.val() !== undefined && advanced_search_input.val().trim() === "") {
-        advanced_search_button.prop('disabled', true)
-    }
-
-    advanced_search_input.on('keyup paste', function() {
-        var input = $(this)
-        if (input.val().trim() === "") {
-            advanced_search_button.prop('disabled', true)
-        } else {
-            advanced_search_button.prop('disabled', false)
-        }
-    })
-
     adv_arrow.on('click', function() {
         var icon = $(this)
         if (icon.hasClass('fa-angle-up')) {
