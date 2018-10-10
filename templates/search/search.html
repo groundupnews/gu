@@ -1,57 +1,95 @@
 {% extends 'base.html' %}
 {% load highlight %}
+{% load fb_versions %}
 
 {% block search %} {% endblock %}
 
 {% block title %}
-    Search {{block.super}}
+  Search {{block.super}}
 {% endblock %}
 
 
 {% block content %}
 
-    <div class="container search-page">
-	<div class="row">
-	    <div class="col-xs-12 col-md-8">
-		{% if query %}
-		    <h1>Search results</h1>
-                    <p>
-                        {% if method == "DATE" %}
-                            Results are sorted by publication date.
-                            <a href="?q={{query}}&page={{page.number}}&method=RELEVANCE">
-                                Sort by relevance.
-                            </a>
-                        {% else %}
-                            Results are sorted by relevance.
-                            <a href="?q={{query}}&page={{page.number}}&method=DATE">
-                                Sort by publication date.
-                            </a>
-                        {% endif %}
-                    </p>
-		    {% for article in page.object_list %}
-			<h2>
-			    <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
-			</h2>
-			<p>
-			   {{article.published|date:"j M Y"}}
-			</p>
-                        <p>
-                            {% with article.body|safe as body %}
-			        {% highlight body with query %}
-			    {% endwith %}
+  <div class="container search-page">
+      <div class="search-results">
+          {% if page.object_list %}
+              <div class="search-results__header">
+	        <h1>Search results</h1>
+                {% include 'search/_search_param_list.html' %}
+              </div>
+              {% include "search/advanced_search.html" %}
+              <div class="search-results__body">
+	        {% for article in page.object_list %}
+                  {% if article.obj_type == 0 %}
+                    <div class="search-result">
+                      <div class="search-result__image">
+                        <img src="{{ article.cached_summary_image }}" />
+                      </div>
+                      <div class="search-result__details">
+                        <p class="search-result__pub-date">
+                          {{article.published|date:"j F Y"}} | ARTICLE
                         </p>
-		    {% empty %}
-			<p>No results found.</p>
-		    {% endfor %}
+                        <h2 class="search-result__title">
+                          <a href="{% url "article.detail" article.slug %}">
+                            {{ article.title|safe }}
+                          </a>
+                        </h2>
+                        <h3 class="search-result__sub-title">
+                          {% highlight article.subtitle with query %}
+                        </h3>
+                      </div>
+                    </div>
+                  {% elif article.obj_type == 1 %}
+                    <div class="search-result">
+                      <div class="search-result__image">
+                        <img src="{% version article.cached_summary_image 'medium' %}"
+                             alt="{{ article.subtitle }}" />
+                      </div>
+                      <div class="search-result__details">
+                        <p class="search-result__pub-date">
+                          {{article.published|date:"j F Y"}} | IMAGE
+                        </p>
+                        <a href="{% url "photo.detail" article.pk %}">
+                          <h2 class="search-result__title">{{ article.title|safe }}</h2>
+                        </a>
+                        <div class="dropdown search-result__download">
+                          <a id="drop1" href="#"
+                             role="button"
+                             class="dropdown-toggle btn btn-default btn-info search-result__download-button"
+                             data-toggle="dropdown">Download <b class="caret"></b></a>
 
+                          <ul class="dropdown-menu">
+                                          {% for version in versions %}
+                                              {% version article.cached_summary_image version.0 as image %}
+                                              <li>
+                                                  <a href="{{image.url}}" download>
+                                                      {{version.1.verbose_name|capfirst}}
+                                                      ({{image.width}}px X {{image.height}}px)
+                                                  </a>
+                                              </li>
+                                          {% endfor %}
+                                      </ul>
+                                  </div>
+                              </div>
+                          </div>
+                      {% endif %}
+	          {% empty %}
+	              <p>No results found.</p>
+	          {% endfor %}
 
-		    {% block pagination %}
-			{% include 'paginator.html' with page_obj=page query=query %}
-		    {% endblock %}
-                {% else %}
-                    <h2>Please enter text to search for.</h2>
-		{% endif %}
-	    </div>
-	</div>
-    </div>
+	          {% block pagination %}
+	              {% include 'paginator.html' with page_obj=page query=query %}
+	          {% endblock %}
+              </div>
+          {% else %}
+              <div class="search-results__header">
+                  <h2>Please enter text to search for.</h2>
+              </div>
+              <div class="search-results__body">
+                  {% include "search/advanced_search.html" %}
+              </div>
+          {% endif %}
+      </div>
+  </div>
 {% endblock %}

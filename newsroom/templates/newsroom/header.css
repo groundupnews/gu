@@ -24,7 +24,23 @@ header a:hover {
 
 .header__search-form {
     display: flex;
+    flex-direction: column;
     flex-basis: 90%;
+}
+
+.header__search__input-box {
+    display: flex;
+}
+
+.advanced-search-box {
+    display: flex;
+    justify-content: flex-end;
+    flex-basis: 40%;
+}
+
+.advanced-search {
+    display: none;
+    padding-right: 24px;
 }
 
 nav {
@@ -48,8 +64,13 @@ button#search-button {
 }
 
 button#search-button:hover {
-    background-color: lightgray;
+    background-color: #00729bjs;
 }
+
+#search-button:disabled {
+    background-color: #333 !important;
+}
+
 
 .header__burger-menu-icon {
     background-color: #4D4D4D;
@@ -325,7 +346,7 @@ button#search-button:hover {
     }
 
     .header__nav__link {
-        flex-basis: 18%;
+        flex-basis: 20%;
     }
 }
 

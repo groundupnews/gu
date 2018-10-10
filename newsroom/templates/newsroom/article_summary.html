@@ -1,48 +1,48 @@
 <div class="home__articles__article">
-	{% if article.cached_summary_image %}
-	  <div class="home__articles__article__image summary-image-container">
-		  <a href="{{article.get_absolute_url}}">
-		    <img class="summary-image"
-			       src="{{ article.cached_summary_image }}"
-			       alt="{{ article.summary_image_alt }}"/>
-		  </a>
-	  </div>
-	{% endif %}
+  {% if article.cached_summary_image %}
+    <div class="home__articles__article__image summary-image-container">
+      <a href="{{article.get_absolute_url}}">
+	<img class="summary-image"
+	     src="{{ article.cached_summary_image }}"
+	     alt="{{ article.summary_image_alt }}"/>
+      </a>
+    </div>
+  {% endif %}
 
-	<div class="home__articles__article__text">
+  <div class="home__articles__article__text">
     <div class="home__articles__article__text__box">
       <a href="{{article.get_absolute_url}}">
-		    <p class="home__articles__article__text__category">
-		      {{article.category|upper}}
-		    </p>
-	    </a>
+	<p class="home__articles__article__text__category">
+	  {{article.category|upper}}
+	</p>
+      </a>
       <a href="{{article.get_absolute_url}}">
-		    <p class="home__articles__article__text__date">
-		      {{article.published|date:"j F Y"}}
-		    </p>
-	    </a>
-	    <h2 class="home__articles__article__text__title">
-		    <a href="{{article.get_absolute_url}}">
-		      {{article.title|safe }}
-		    </a>
-	    </h2>
-	    {% if include_summary == "1" %}
-		    <a href="{{article.get_absolute_url}}">
-		      <p class="home__articles__article__text__summary"">
-			      {{article.cached_summary_text|safe}}
-		      </p>
-		    </a>
-	    {% endif %}
-	    <p class="home__articles__article__text__byline">
-		    <a href="{{article.get_absolute_url}}">
-		      {{article.cached_byline_no_links|safe|striptags}}
-		    </a>
-	    </p>
+	<p class="home__articles__article__text__date">
+	  {{article.published|date:"j F Y"}}
+	</p>
+      </a>
+      <h2 class="home__articles__article__text__title">
+	<a href="{{article.get_absolute_url}}">
+	  {{article.title|safe }}
+	</a>
+      </h2>
+      {% if include_summary == "1" %}
+	<a href="{{article.get_absolute_url}}">
+	  <p class="home__articles__article__text__summary"">
+	    {{article.cached_summary_text|safe}}
+	  </p>
+	</a>
+      {% endif %}
+      <p class="home__articles__article__text__byline">
+	<a href="{{article.get_absolute_url}}">
+	  {{article.cached_byline_no_links|safe|striptags}}
+	</a>
+      </p>
       <div class="home__articles_article__details-mobile">
         <a href="{{article.get_absolute_url}}">
           {{article.cached_byline_no_links|safe|striptags}}
-		    </a> - {{article.published|date:"j F Y"}}
+	</a> - {{article.published|date:"j F Y"}}
       </div>
     </div>
-	</div>
+  </div>
 </div>

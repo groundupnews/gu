@@ -19,10 +19,11 @@ from django.views.decorators.http import last_modified
 from django.views.generic import View
 from letters.models import Letter
 from letters.settings import DAYS_AGO
-from pgsearch.utils import searchPostgresDB
+from pgsearch.utils import searchPostgresDB, searchArticlesAndPhotos
+from django.conf import settings as django_settings
 
 from . import models, settings, utils
-from .forms import ArticleForm, ArticleListForm
+from .forms import ArticleForm, ArticleListForm, AdvancedSearchForm
 
 logger = logging.getLogger(__name__)
 
@@ -473,46 +474,70 @@ def account_profile(request):
                                      "Please change your password.")
     return render(request, "newsroom/account_profile.html")
 
-
-def search(request):
-    query = request.GET.get('q')
-    method = request.GET.get('method')
-    if method is None:
-        method = "DATE"
-    if query:
-        if method == "DATE":
-            article_list = searchPostgresDB(query,
-                                            models.Article,
-                                            settings.SEARCH_CONFIG, False,
-                                            "title", "subtitle",
-                                            "cached_byline_no_links",
-                                            "body").published() \
-                                            [:settings.MAX_SEARCH_RESULTS]
-        else:
-            article_list = searchPostgresDB(query,
-                                            models.Article,
-                                            settings.SEARCH_CONFIG, True,
-                                            "title", "subtitle",
-                                            "cached_byline_no_links",
-                                            "body").published() \
-                                            [:settings.MAX_SEARCH_RESULTS]
-        paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
-        page_num = request.GET.get('page')
-        if page_num is None:
-            page_num = 1
-        try:
-            page = paginator.page(page_num)
-        except PageNotAnInteger:
-            page = paginator.page(1)
-        except EmptyPage:
-            page = paginator.page(paginator.num_pages)
+def advanced_search(request):
+    page = None
+    query = request.GET.get('adv_search')
+    search_type = request.GET.get('search_type')
+    first_author = request.GET.get('first_author')
+    first_author_only = True if first_author == "on" else False
+    
+    if request.GET.get('search_type') == 'article':
+        inc_articles = True
+        inc_photos = False
     else:
-        query = ""
-        page = None
-        method = None
-    return render(request, 'search/search.html', {'method': method,
+        inc_articles = True if search_type == 'article' or search_type == 'both' else False
+
+    if request.GET.get('search_type') == 'image':
+        inc_photos = True
+        inc_articles = False
+    else:
+        inc_photos = True if search_type == 'image' or search_type == 'both' else False
+
+    adv_search_form = AdvancedSearchForm(request.GET or None)
+    
+    if adv_search_form.is_valid():
+        cleaned_adv_form = adv_search_form.cleaned_data
+        author_pk = cleaned_adv_form.get("author").pk if cleaned_adv_form.get("author") else None
+        category_pk = cleaned_adv_form.get("category").pk if cleaned_adv_form.get("category") else None
+        topic_pk = cleaned_adv_form.get("topics").pk if cleaned_adv_form.get("topics") else None
+        try:
+            article_list = searchArticlesAndPhotos(cleaned_adv_form.get("adv_search"),
+                                                   inc_articles,
+                                                   inc_photos,
+                                                   author_pk,
+                                                   first_author_only,
+                                                   category_pk,
+                                                   topic_pk,
+                                                   cleaned_adv_form.get("date_from"),
+                                                   cleaned_adv_form.get("date_to"))
+        except:
+            logger.error("Advanced Search Failed")
+            article_list = models.Article.objects.none()
+    else:
+        article_list = models.Article.objects.none()
+
+    paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
+    page_num = request.GET.get('page')
+    if page_num is None:
+        page_num = 1
+    try:
+        page = paginator.page(page_num)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
+    versions = {key: value for (key, value) in
+                django_settings.FILEBROWSER_VERSIONS.items()
+                if not key.startswith("admin")}
+
+    versions = sorted(versions.items(),key=lambda x: x[1]["width"])
+    
+    return render(request, 'search/search.html', {'query': query,
                                                   'page': page,
-                                                  'query': query})
+                                                  'page_num': page_num,
+                                                  'adv_search_form': adv_search_form,
+                                                  'versions': versions})
 
 
 ''' Used to test logging

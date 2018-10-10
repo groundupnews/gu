@@ -1,10 +1,29 @@
-
-  <form class="header__search-form" id="search-form" method="get"
-        action="{% if gallery %}{% url 'photo.list' %}{% else %}/search/{% endif %}">
-    <input type="text" class="form-control header__search__input" name="q" id="id_q"
-	         placeholder="Search {% if gallery %}photos{% else %}articles{% endif %}"
-           value="{{query}}" />
+<form class="header__search-form"
+      id="search-form"
+      method="get"
+      action="/advanced_search/">
+  <div class="header__search__input-box">
+    {% if gallery %}
+      <input type="text"
+             class="form-control header__search__input"
+             name="adv_search"
+             id="id_q"
+	     placeholder="Search photos"
+             value="{{query|default:""}}" />
+      <input type="hidden" name="search_type" value="image" />
+      <input type="hidden" name="is_simple" value="true" />
+    {% else %}
+      <input type="text"
+             class="form-control header__search__input"
+             name="adv_search"
+             id="id_q"
+	     placeholder="Search articles"
+             value="{{query|default:""}}" />
+      <input type="hidden" name="search_type" value="article" />
+      <input type="hidden" name="is_simple" value="true" />
+    {% endif %}
     <button id="search-button">
       <i class="fas fa-search"></i>
     </button>
-  </form>
+  </div>
+</form>

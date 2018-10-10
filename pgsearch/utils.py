@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F
 from newsroom.models import Article, Author, Category, Topic
 from gallery.models import Photograph
 from django.utils import timezone
@@ -48,6 +48,7 @@ def searchArticles(search_string=None,
                    author_pk=None, first_author=False,
                    category_pk=None, topic_pk=None,
                    from_date=None, to_date=None):
+
     query = Q()
     if search_string:
         list_of_terms = parseSearchString(search_string[:30])
@@ -89,15 +90,13 @@ def searchArticles(search_string=None,
 
     if from_date:
         try:
-            dt = timezone.datetime.strptime(from_date,"%Y%m%d").date()
-            query = query & Q(published__gte=dt)
+            query = query & Q(published__gte=from_date)
         except:
             pass
 
     if to_date:
         try:
-            dt = timezone.datetime.strptime(to_date,"%Y%m%d").date()
-            query = query & Q(published__lte=dt)
+            query = query & Q(published__lte=to_date)
         except:
             pass
 
@@ -127,17 +126,16 @@ def searchPhotos(search_string=None,
         except:
             pass
 
+        
     if from_date:
         try:
-            dt = timezone.datetime.strptime(from_date,"%Y%m%d").date()
-            query = query & Q(date_taken__gte=dt)
+            query = query & Q(date_taken__gte=from_date)
         except:
             pass
 
     if to_date:
         try:
-            dt = timezone.datetime.strptime(to_date,"%Y%m%d").date()
-            query = query & Q(date_taken__lte=dt)
+            query = query & Q(date_taken__lte=to_date)
         except:
             pass
 
@@ -151,25 +149,30 @@ def searchArticlesAndPhotos(search_string=None,
                             author_pk=None, first_author=False,
                             category_pk=None, topic_pk=None,
                             from_date=None, to_date=None):
+
     articles = photos = result = []
+    
     if inc_articles:
         articles = searchArticles(search_string, author_pk, first_author,
                                   category_pk, topic_pk,
                                   from_date, to_date).extra(select = {'obj_type': 0}). \
-                                  values("pk", "title", "subtitle", "primary_image",
-                                         "published", "obj_type")
+                                  values("pk", "title", "subtitle", "cached_summary_image",
+                                         "obj_type", "slug", "published")
 
     if inc_photos:
         photos = searchPhotos(search_string, author_pk,
                               from_date, to_date).extra(select = {'obj_type': 1}). \
-                              values("pk", "suggested_caption", "alt", "image",
-                                     "date_taken", "obj_type")
-
+                              annotate(title=F("suggested_caption"), subtitle=F("alt"),
+                                       cached_summary_image=F("image"),
+                                       slug=F("credit"), published=F("date_taken")). \
+                              values("pk", "title", "subtitle", "cached_summary_image",
+                                     "obj_type", "slug", "published")
+        
     if articles and photos:
         result = articles.union(photos).order_by('-published')
     elif articles:
         result = articles
     elif photos:
         result = photos
-
+        
     return result
