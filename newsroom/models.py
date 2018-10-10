@@ -104,6 +104,7 @@ class Author(models.Model):
         return " ".join([self.title, self.first_names,
                          self.last_name]).strip()
 
+
     def get_absolute_url(self):
         return reverse('author.detail', args=[self.pk, ])
 

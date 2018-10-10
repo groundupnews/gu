@@ -480,7 +480,7 @@ def advanced_search(request):
     search_type = request.GET.get('search_type')
     first_author = request.GET.get('first_author')
     first_author_only = True if first_author == "on" else False
-    
+
     if request.GET.get('search_type') == 'article':
         inc_articles = True
         inc_photos = False
@@ -494,7 +494,7 @@ def advanced_search(request):
         inc_photos = True if search_type == 'image' or search_type == 'both' else False
 
     adv_search_form = AdvancedSearchForm(request.GET or None)
-    
+
     if adv_search_form.is_valid():
         cleaned_adv_form = adv_search_form.cleaned_data
         author_pk = cleaned_adv_form.get("author").pk if cleaned_adv_form.get("author") else None
@@ -511,7 +511,7 @@ def advanced_search(request):
                                                    cleaned_adv_form.get("date_from"),
                                                    cleaned_adv_form.get("date_to"))
         except:
-            logger.error("Advanced Search Failed")
+            logger.error("Advanced Search Failed calling searchArticlesAndPhotos")
             article_list = models.Article.objects.none()
     else:
         article_list = models.Article.objects.none()
@@ -526,18 +526,23 @@ def advanced_search(request):
         page = paginator.page(1)
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
+    except:
+        logger.error("Advanced Search Failed in pagination")
+    finally:
+        try:
+            num_pages = paginator.num_pages
+        except:
+            logger.error("Advanced Search failed to get num_pages")
+            num_pages = 1
 
-    versions = {key: value for (key, value) in
-                django_settings.FILEBROWSER_VERSIONS.items()
-                if not key.startswith("admin")}
 
-    versions = sorted(versions.items(),key=lambda x: x[1]["width"])
-    
     return render(request, 'search/search.html', {'query': query,
                                                   'page': page,
                                                   'page_num': page_num,
-                                                  'adv_search_form': adv_search_form,
-                                                  'versions': versions})
+                                                  'num_pages': num_pages,
+                                                  'num_items': len(article_list),
+                                                  'search_type': search_type,
+                                                  'adv_search_form': adv_search_form})
 
 
 ''' Used to test logging

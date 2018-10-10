@@ -36,45 +36,61 @@
                           </a>
                         </h2>
                         <h3 class="search-result__sub-title">
-                          {% highlight article.subtitle with query %}
+                            {% highlight article.subtitle with query %}
                         </h3>
+                        <p class="search-result__byline">
+                            {{article.fullname}}
+                        </p>
+                        <p>
+                            {% highlight article.body with query %}
+                        </p>
                       </div>
                     </div>
                   {% elif article.obj_type == 1 %}
-                    <div class="search-result">
-                      <div class="search-result__image">
-                        <img src="{% version article.cached_summary_image 'medium' %}"
-                             alt="{{ article.subtitle }}" />
-                      </div>
-                      <div class="search-result__details">
-                        <p class="search-result__pub-date">
-                          {{article.published|date:"j F Y"}} | IMAGE
-                        </p>
-                        <a href="{% url "photo.detail" article.pk %}">
-                          <h2 class="search-result__title">{{ article.title|safe }}</h2>
-                        </a>
-                        <div class="dropdown search-result__download">
-                          <a id="drop1" href="#"
-                             role="button"
-                             class="dropdown-toggle btn btn-default btn-info search-result__download-button"
-                             data-toggle="dropdown">Download <b class="caret"></b></a>
+                        <div class="search-result">
+                            <div class="search-result__image">
+                                {% if search_type == 'both' %}
+                                    <img
+                                        src="{% version article.cached_summary_image 'medium' %}"
+                                        alt="{{ article.subtitle }}"
+                                    />
+                                {% else %}
+                                    <img
+                                        src="{% version article.image 'medium' %}"
+                                        alt="{{ article.alt }}"
+                                    />
 
-                          <ul class="dropdown-menu">
-                                          {% for version in versions %}
-                                              {% version article.cached_summary_image version.0 as image %}
-                                              <li>
-                                                  <a href="{{image.url}}" download>
-                                                      {{version.1.verbose_name|capfirst}}
-                                                      ({{image.width}}px X {{image.height}}px)
-                                                  </a>
-                                              </li>
-                                          {% endfor %}
-                                      </ul>
-                                  </div>
-                              </div>
-                          </div>
-                      {% endif %}
-	          {% empty %}
+                                {% endif %}
+                            </div>
+                            <div class="search-result__details">
+                                <p class="search-result__pub-date">
+                                    {% if search_type == 'both' %}
+                                        {{article.published|date:"j F Y"}} | IMAGE
+                                    {% else %}
+                                        {{article.date_taken|date:"j F Y"}} | IMAGE
+                                    {% endif %}
+                                </p>
+                                <a href="{% url "photo.detail" article.pk %}">
+                                    {% if search_type == 'both' %}
+                                        <h2 class="search-result__title">{{ article.title|safe }}</h2>
+                                    {% else %}
+                                        <h2 class="search-result__title">{{ article.suggested_caption|safe }}</h2>
+                                    {% endif %}
+                                </a>
+                                <h3 class="search-result__sub-title">
+                                    {% if search_type == 'both' %}
+                                        {{article.subtitle}}
+                                    {% else %}
+                                        {{article.alt}}
+                                    {% endif %}
+                                </h3>
+                                <p class="search-result__byline">
+                                    By {{article.fullname}}
+                                </p>
+                            </div>
+                        </div>
+                  {% endif %}
+	        {% empty %}
 	              <p>No results found.</p>
 	          {% endfor %}
 
@@ -84,7 +100,11 @@
               </div>
           {% else %}
               <div class="search-results__header">
-                  <h2>Please enter text to search for.</h2>
+                  {% if adv_search_form.cleaned_data.adv_search %}
+                      <h2>Nothing found for: {{adv_search_form.cleaned_data.adv_search}}</h2>
+                  {% else %}
+                      <h2>Please enter text to search for.</h2>
+                  {% endif %}
               </div>
               <div class="search-results__body">
                   {% include "search/advanced_search.html" %}

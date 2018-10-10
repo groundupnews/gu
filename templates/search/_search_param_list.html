@@ -1,14 +1,15 @@
+{% load humanize %}
 <p>
   {% if adv_search_form.cleaned_data.adv_search %}
     <strong>Keywords:</strong> {{ adv_search_form.cleaned_data.adv_search }}&emsp;
   {% endif %}
   {% if adv_search_form.cleaned_data.search_type %}
     {% if adv_search_form.cleaned_data.search_type == "both" %}
-      <strong>Search type:</strong> Articles & Images&emsp;
+      <strong>Content:</strong> Articles & Images&emsp;
     {% elif adv_search_form.cleaned_data.search_type == "image" %}
-      <strong>Search type:</strong> Images&emsp;
+      <strong>Content:</strong> Images&emsp;
     {% else %}
-      <strong>Search type:</strong> Articles&emsp;
+      <strong>Content:</strong> Articles&emsp;
     {% endif %}
   {% endif %}
   {% if adv_search_form.cleaned_data.author %}
@@ -20,11 +21,12 @@
   {% if adv_search_form.cleaned_data.topics %}
     <strong>Topic:</strong> {{ adv_search_form.cleaned_data.topics }}&emsp;
   {% endif %}
-  {% if adv_search_form.cleaned_data.date_from %}
-    <strong>From Date:</strong> {{ adv_search_form.cleaned_data.date_from }}&emsp;
+  {% if request.GET.date_from %}
+    <strong>From:</strong> {{ request.GET.date_from }}&emsp;
   {% endif %}
-  {% if adv_search_form.cleaned_data.date_to %}
-    <strong>To Date:</strong> {{ adv_search_form.cleaned_data.date_to }}&emsp;
+  {% if request.GET.date_to %}
+    <strong>To:</strong> {{ request.GET.date_to }}&emsp;
   {% endif %}
-  <strong>Page:</strong> {{ page_num|default:"-" }}
+  <strong>Page:</strong> {{ page_num }} of {{num_pages}}&emsp;
+  <strong>Items:</strong> {{num_items|intcomma}}
 </p>

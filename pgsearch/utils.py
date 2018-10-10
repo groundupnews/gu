@@ -1,4 +1,6 @@
-from django.db.models import Q, F
+from django.db.models import Q, F, ExpressionWrapper, Value
+from django.db.models import IntegerField, CharField, DateTimeField
+from django.db.models.functions import Concat
 from newsroom.models import Article, Author, Category, Topic
 from gallery.models import Photograph
 from django.utils import timezone
@@ -126,7 +128,7 @@ def searchPhotos(search_string=None,
         except:
             pass
 
-        
+
     if from_date:
         try:
             query = query & Q(date_taken__gte=from_date)
@@ -151,28 +153,36 @@ def searchArticlesAndPhotos(search_string=None,
                             from_date=None, to_date=None):
 
     articles = photos = result = []
-    
+
     if inc_articles:
         articles = searchArticles(search_string, author_pk, first_author,
                                   category_pk, topic_pk,
-                                  from_date, to_date).extra(select = {'obj_type': 0}). \
+                                  from_date, to_date). \
+                                  annotate(obj_type=Value(0,
+                                                          output_field=IntegerField()),
+                                           fullname=F("cached_byline_no_links")). \
                                   values("pk", "title", "subtitle", "cached_summary_image",
-                                         "obj_type", "slug", "published")
+                                         "obj_type", "slug", "body",
+                                         "fullname",  "published")
 
     if inc_photos:
         photos = searchPhotos(search_string, author_pk,
-                              from_date, to_date).extra(select = {'obj_type': 1}). \
-                              annotate(title=F("suggested_caption"), subtitle=F("alt"),
-                                       cached_summary_image=F("image"),
-                                       slug=F("credit"), published=F("date_taken")). \
-                              values("pk", "title", "subtitle", "cached_summary_image",
-                                     "obj_type", "slug", "published")
-        
-    if articles and photos:
+                              from_date, to_date). \
+                              annotate(obj_type=Value(1,
+                                                      output_field=IntegerField()),
+                                       fullname=Concat("photographer__first_names" ,
+                                                       Value(" "),
+                                                       "photographer__last_name",
+                                                       output_field=CharField())). \
+                              values("pk", "suggested_caption", "alt", "image",
+                                     "obj_type", "alt", "alt",
+                                     "fullname", "date_taken")
+
+    if inc_articles and inc_photos:
         result = articles.union(photos).order_by('-published')
-    elif articles:
+    elif inc_articles:
         result = articles
-    elif photos:
+    elif inc_photos:
         result = photos
-        
+
     return result
