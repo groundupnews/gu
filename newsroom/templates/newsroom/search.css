@@ -91,12 +91,12 @@
 }
 
 .adv-filter-submit:hover {
-    background-color: #151F22;
+    background-color: #00729b;
 }
 
 .adv-filter-submit:disabled {
     background-color: #151F22;
-    color: #aaa;
+    color: #fff;
 }
 
 .adv-filter__item select, .adv-filter__item input {

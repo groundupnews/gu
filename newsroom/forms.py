@@ -40,9 +40,9 @@ class AdvancedSearchForm(forms.Form):
     first_author = forms.BooleanField(label="First Author Only", required=False)
     category = forms.ModelChoiceField(queryset=models.Category.objects.all(), required=False)
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
-    date_from = forms.DateField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
+    date_from = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
                                     required=False,
                                     input_formats=['%d/%m/%Y'])
-    date_to = forms.DateField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
+    date_to = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
                                   required=False,
                                   input_formats=['%d/%m/%Y'])

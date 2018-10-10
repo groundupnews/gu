@@ -1,0 +1,30 @@
+<p>
+  {% if adv_search_form.cleaned_data.adv_search %}
+    <strong>Keywords:</strong> {{ adv_search_form.cleaned_data.adv_search }}&emsp;
+  {% endif %}
+  {% if adv_search_form.cleaned_data.search_type %}
+    {% if adv_search_form.cleaned_data.search_type == "both" %}
+      <strong>Search type:</strong> Articles & Images&emsp;
+    {% elif adv_search_form.cleaned_data.search_type == "image" %}
+      <strong>Search type:</strong> Images&emsp;
+    {% else %}
+      <strong>Search type:</strong> Articles&emsp;
+    {% endif %}
+  {% endif %}
+  {% if adv_search_form.cleaned_data.author %}
+    <strong>Author:</strong> {{ adv_search_form.cleaned_data.author }}&emsp;
+  {% endif %}
+  {% if adv_search_form.cleaned_data.category %}
+    <strong>Category:</strong> {{ adv_search_form.cleaned_data.category }}&emsp;
+  {% endif %}
+  {% if adv_search_form.cleaned_data.topics %}
+    <strong>Topic:</strong> {{ adv_search_form.cleaned_data.topics }}&emsp;
+  {% endif %}
+  {% if adv_search_form.cleaned_data.date_from %}
+    <strong>From Date:</strong> {{ adv_search_form.cleaned_data.date_from }}&emsp;
+  {% endif %}
+  {% if adv_search_form.cleaned_data.date_to %}
+    <strong>To Date:</strong> {{ adv_search_form.cleaned_data.date_to }}&emsp;
+  {% endif %}
+  <strong>Page:</strong> {{ page_num|default:"-" }}
+</p>

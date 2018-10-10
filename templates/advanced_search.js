@@ -9,10 +9,10 @@ $( document ).ready(function() {
     var adv_form = $('.adv-filter-form')
 
     if ($(window).width() > 768) {
-        search_input.on('focus', function() {
+        header_bar.on('mouseenter', function() {
             advanced_search.slideDown('slow')
         })
-        header_bar.on('mouseleave', function() {
+        $('#BelowTheBanner').on('mouseenter', function() {
             advanced_search.slideUp('slow')
         })
     }

@@ -64,7 +64,7 @@ button#search-button {
 }
 
 button#search-button:hover {
-    background-color: lightgray;
+    background-color: #00729bjs;
 }
 
 #search-button:disabled {

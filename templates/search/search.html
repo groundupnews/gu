@@ -16,73 +16,50 @@
           {% if page.object_list %}
               <div class="search-results__header">
 	        <h1>Search results</h1>
-                <p>
-                  {% if adv_search_form.cleaned_data.adv_search %}
-                    Keywords: {{ adv_search_form.cleaned_data.adv_search }}&emsp;
-                  {% endif %}
-                  {% if adv_search_form.cleaned_data.search_type %}
-                    {% if adv_search_form.cleaned_data.search_type == "both" %}
-                      Search type: articles & images&emsp;
-                    {% else %}
-                      Search type: {{ adv_search_form.cleaned_data.search_type }}&emsp;
-                    {% endif %}
-                  {% endif %}
-                  {% if adv_search_form.cleaned_data.author %}
-                    Author: {{ adv_search_form.cleaned_data.author }}&emsp;
-                  {% endif %}
-                  {% if adv_search_form.cleaned_data.category %}
-                    Category: {{ adv_search_form.cleaned_data.category }}&emsp;
-                  {% endif %}
-                  {% if adv_search_form.cleaned_data.topics %}
-                    Topic: {{ adv_search_form.cleaned_data.topics }}&emsp;
-                  {% endif %}
-                  {% if adv_search_form.cleaned_data.date_from %}
-                    From Date: {{ adv_search_form.cleaned_data.date_from }}&emsp;
-                  {% endif %}
-                  {% if adv_search_form.cleaned_data.date_to %}
-                    To Date: {{ adv_search_form.cleaned_data.date_to }}&emsp;
-                  {% endif %}
-                    Page: {{ page_num|default:"-" }}
-                  </p>
+                {% include 'search/_search_param_list.html' %}
               </div>
               {% include "search/advanced_search.html" %}
               <div class="search-results__body">
-	          {% for article in page.object_list %}
-                      {% if article.obj_type == 0 %}
-                          <div class="search-result">
-                              <div class="search-result__image">
-                                  <img src="{{ article.cached_summary_image }}" />
-                              </div>
-                              <div class="search-result__details">
-                                  <p class="search-result__pub-date">{{article.published|date:"j F Y"}}</p>
-                                  <h2 class="search-result__title">
-                                    <a href="{% url "article.detail" article.slug %}">
-                                      {{ article.title|safe }}
-                                      </a>
-                                  </h2>
-                                  <h3 class="search-result__sub-title">
-                                    {% highlight article.subtitle with query %}
-                                  </h3>
-                              </div>
-                          </div>
-                      {% elif article.obj_type == 1 %}
-                          <div class="search-result">
-                              <div class="search-result__image">
-                                  <img src="{% version article.cached_summary_image 'medium' %}"
-                                       alt="{{ article.subtitle }}" />
-                              </div>
-                              <div class="search-result__details">
-                                  <p class="search-result__pub-date">{{article.published|date:"j F Y"}}</p>
-                                  <a href="{% url "photo.detail" article.pk %}">
-                                      <h2 class="search-result__title">{{ article.title|safe }}</h2>
-                                  </a>
-                                  <div class="dropdown search-result__download">
-                                    <a id="drop1" href="#"
-                                       role="button"
-                                       class="dropdown-toggle btn btn-default btn-info search-result__download-button"
-                                       data-toggle="dropdown">Download <b class="caret"></b></a>
+	        {% for article in page.object_list %}
+                  {% if article.obj_type == 0 %}
+                    <div class="search-result">
+                      <div class="search-result__image">
+                        <img src="{{ article.cached_summary_image }}" />
+                      </div>
+                      <div class="search-result__details">
+                        <p class="search-result__pub-date">
+                          {{article.published|date:"j F Y"}} | ARTICLE
+                        </p>
+                        <h2 class="search-result__title">
+                          <a href="{% url "article.detail" article.slug %}">
+                            {{ article.title|safe }}
+                          </a>
+                        </h2>
+                        <h3 class="search-result__sub-title">
+                          {% highlight article.subtitle with query %}
+                        </h3>
+                      </div>
+                    </div>
+                  {% elif article.obj_type == 1 %}
+                    <div class="search-result">
+                      <div class="search-result__image">
+                        <img src="{% version article.cached_summary_image 'medium' %}"
+                             alt="{{ article.subtitle }}" />
+                      </div>
+                      <div class="search-result__details">
+                        <p class="search-result__pub-date">
+                          {{article.published|date:"j F Y"}} | IMAGE
+                        </p>
+                        <a href="{% url "photo.detail" article.pk %}">
+                          <h2 class="search-result__title">{{ article.title|safe }}</h2>
+                        </a>
+                        <div class="dropdown search-result__download">
+                          <a id="drop1" href="#"
+                             role="button"
+                             class="dropdown-toggle btn btn-default btn-info search-result__download-button"
+                             data-toggle="dropdown">Download <b class="caret"></b></a>
 
-                                      <ul class="dropdown-menu">
+                          <ul class="dropdown-menu">
                                           {% for version in versions %}
                                               {% version article.cached_summary_image version.0 as image %}
                                               <li>
