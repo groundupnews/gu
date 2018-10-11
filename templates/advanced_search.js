@@ -1,6 +1,6 @@
 $( document ).ready(function() {
     var search_input = $('.header__search__input')
-    var search_button = $('#search-button')
+    var search_button = $('.header__search-button')
     var advanced_search = $('.advanced-search')
     var advanced_search_input = $('#id_adv_search')
     var advanced_search_button = $('.adv-filter-submit')
@@ -21,7 +21,7 @@ $( document ).ready(function() {
         search_button.prop('disabled', true)
     }
 
-    search_input.on('keyup paste', function() {
+    search_input.on('keyup paste change', function() {
         var input = $(this)
         if (input.val().trim() === "") {
             search_button.prop('disabled', true)
