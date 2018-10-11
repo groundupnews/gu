@@ -21,7 +21,7 @@ $( document ).ready(function() {
         search_button.prop('disabled', true)
     }
 
-    search_input.on('keyup paste change', function() {
+    search_input.on('keyup paste change input', function() {
         var input = $(this)
         if (input.val().trim() === "") {
             search_button.prop('disabled', true)
