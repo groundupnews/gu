@@ -11,6 +11,7 @@ from django.contrib.postgres.search import SearchVector, SearchRank, \
 import shlex
 import string
 
+ignored_words = ["and", "or", "of", "but", "on", "is", "a", "if", "but", ]
 
 def parseSearchString(search_string):
     try:
@@ -55,13 +56,13 @@ def searchArticles(search_string=None,
     if search_string:
         list_of_terms = parseSearchString(search_string[:30])
         for term in list_of_terms:
-            if term not in ["and", "or", "of", "but", "on", "is", ]:
-                query = query & \
-                        (Q(title__icontains=term) |
+            if term not in ignored_words:
+                query = (query & (Q(title__icontains=term) |
                          Q(subtitle__icontains=term) |
                          Q(primary_image_caption__icontains=term) |
                          Q(cached_byline_no_links__icontains=term) |
-                         Q(body__icontains=term))
+                         Q(body__icontains=term)))
+
     if author_pk:
         try:
             author = Author.objects.get(pk=author_pk)
@@ -115,11 +116,11 @@ def searchPhotos(search_string=None,
     if search_string:
         list_of_terms = parseSearchString(search_string[:30])
         for term in list_of_terms:
-            if term not in ["and", "or", "of", "but", "on", "is", ]:
-                query = query & \
+            if term not in ignored_words:
+                query = (query & \
                         (Q(suggested_caption__icontains=term) |
                          Q(alt__icontains=term) |
-                         Q(keywords__name=term))
+                         Q(keywords__name=term)))
 
     if author_pk:
         try:
