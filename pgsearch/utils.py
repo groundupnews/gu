@@ -175,7 +175,7 @@ def searchArticlesAndPhotos(search_string=None,
                                                        Value(" "),
                                                        "photographer__last_name",
                                                        output_field=CharField())). \
-                              values("pk", "suggested_caption", "alt", "image",
+                              values("pk", "alt", "suggested_caption", "image",
                                      "obj_type", "alt", "alt",
                                      "fullname", "date_taken")
 

@@ -74,14 +74,14 @@
                                     {% if search_type == 'both' %}
                                         <h2 class="search-result__title">{{ article.title|safe }}</h2>
                                     {% else %}
-                                        <h2 class="search-result__title">{{ article.suggested_caption|safe }}</h2>
+                                        <h2 class="search-result__title">{{ article.alt }}</h2>
                                     {% endif %}
                                 </a>
                                 <h3 class="search-result__sub-title">
                                     {% if search_type == 'both' %}
                                         {{article.subtitle}}
                                     {% else %}
-                                        {{article.alt}}
+                                        {{article.suggested_caption}}
                                     {% endif %}
                                 </h3>
                                 <p class="search-result__byline">
