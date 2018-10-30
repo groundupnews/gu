@@ -8,7 +8,7 @@ $( document ).ready(function() {
     var adv_arrow = $('.adv-filter-arrow')
     var adv_form = $('.adv-filter-form')
 
-    if ($(window).width() > 768) {
+    if ($(window).width() > 1024) {
         header_bar.on('mouseenter', function() {
             advanced_search.slideDown('slow')
         })
