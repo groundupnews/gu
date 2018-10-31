@@ -518,18 +518,9 @@ article figure, article p.caption {
 
 }
 
-@media (min-width: 787px) {
+@media (min-width: 769px) {
     .article__sidebar--undistracted .recommended__article__title {
         font-size: 2rem;
-    }
-
-    .article__content--undistracted {
-        width: 75%;
-    }
-
-    .article__sidebar--undistracted {
-        width: 75%;
-        align-self: center;
     }
 }
 
@@ -546,11 +537,20 @@ article figure, article p.caption {
 
 @media (min-width: 769px) {
     .article__content{
-        flex-basis: 70%;
+        width: 70%;
     }
 
     .article__sidebar {
         flex-basis: 30%;
+    }
+
+    .article__content--undistracted {
+        width: 75%;
+    }
+
+    .article__sidebar--undistracted {
+        width: 75%;
+        align-self: center;
     }
 }
 
