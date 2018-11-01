@@ -516,7 +516,15 @@ def advanced_search(request):
     else:
         article_list = models.Article.objects.none()
 
-    paginator = Paginator(article_list, settings.SEARCH_RESULTS_PER_PAGE)
+    try:
+        num_results = int(request.GET.get('results_per_page'))
+    except:
+        if search_type == 'image':
+            num_results = settings.SEARCH_RESULTS_PER_PAGE * 2
+        else:
+            num_results = settings.SEARCH_RESULTS_PER_PAGE
+
+    paginator = Paginator(article_list, num_results)
     page_num = request.GET.get('page')
     if page_num is None:
         page_num = 1
