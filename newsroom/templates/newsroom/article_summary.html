@@ -1,7 +1,7 @@
 <div class="home__articles__article">
   {% if article.cached_summary_image %}
     <div class="home__articles__article__image summary-image-container">
-      <a href="{{article.get_absolute_url}}">
+      <a style="display:block;" href="{{article.get_absolute_url}}">
 	<img class="summary-image"
 	     src="{{ article.cached_summary_image }}"
 	     alt="{{ article.summary_image_alt }}"/>

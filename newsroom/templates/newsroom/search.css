@@ -124,16 +124,8 @@
     border-bottom: 2px solid #D6D6DA;
 }
 
-.search-result__image {
-    flex: 1;
-}
-
 .search-result__image img {
     width: 90%;
-}
-
-.search-result__details {
-    flex: 2;
 }
 
 .search-result__title {
@@ -191,6 +183,15 @@
         margin-top: 30px;
         margin-bottom: 30px;
     }
+
+    .search-result__image {
+        flex: 1;
+    }
+
+    .search-result__details {
+        flex: 2;
+    }
+
 }
 
 @media (max-width: 768px) {
