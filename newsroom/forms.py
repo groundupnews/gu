@@ -30,7 +30,8 @@ class ArticleForm(forms.ModelForm):
 class AdvancedSearchForm(forms.Form):
     RESULTS_PER_PAGE = [(10, '10 Results Per Page'),
                         (20, '20 Results Per Page'),
-                        (50, '50 Results Per Page')]
+                        (50, '50 Results Per Page'),
+                        (100, '100 Results Per Page')]
     
     adv_search = forms.CharField(label="Search Term...",
                                  widget=forms.TextInput(attrs={'placeholder': 'Search...'}),
