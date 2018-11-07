@@ -148,6 +148,7 @@
 
 .search-result-images {
     width: 45%;
+    padding: 30px 15px 30px 15px;
     flex-direction: column;
 }
 
@@ -158,7 +159,7 @@
 .search-result__image-images {
     overflow: hidden;
     flex: unset !important;
-    background-color: rgba(21, 31, 34, 0.5);
+    background-color: rgba(21, 31, 34, 0.1);
 }
 
 .search-result__image-images img {
@@ -221,6 +222,14 @@
     background-image: none;
     border: none;
     border-radius: inherit;
+    width: 100%;
+}
+
+.search-result__details-images {
+    margin-top: 15px;
+}
+
+.search-results__body-images #paginator {
     width: 100%;
 }
 
