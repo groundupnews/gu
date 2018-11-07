@@ -108,6 +108,24 @@
     color: #00B1F0;
 }
 
+
+.adv-filter__results-per-page-row {
+    justify-content: flex-end;
+}
+
+.adv-filter__results-per-page {
+    justify-content: flex-end;
+}
+
+.adv-filter__results-per-page-row select {
+    background: transparent;
+    flex-basis: unset;
+}
+
+.adv-filter__results-per-page {
+
+}
+
 #id_first_author {
     flex-basis: 4%;
     margin-top: 0px;

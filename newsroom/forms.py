@@ -28,6 +28,10 @@ class ArticleForm(forms.ModelForm):
 
 
 class AdvancedSearchForm(forms.Form):
+    RESULTS_PER_PAGE = [(10, '10 Results Per Page'),
+                        (20, '20 Results Per Page'),
+                        (50, '50 Results Per Page')]
+    
     adv_search = forms.CharField(label="Search Term...",
                                  widget=forms.TextInput(attrs={'placeholder': 'Search...'}),
                                  required=False)
@@ -46,3 +50,4 @@ class AdvancedSearchForm(forms.Form):
     date_to = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
                                   required=False,
                                   input_formats=['%d/%m/%Y'])
+    results_per_page = forms.ChoiceField(choices=RESULTS_PER_PAGE, required=False)
