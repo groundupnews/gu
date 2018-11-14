@@ -53,8 +53,12 @@ def get_most_popular_urls(num_articles):
                     continue
                 if article.published >= timezone.now() - \
                    datetime.timedelta(days=7):
-                    article_list.append(article.slug + "|" + article.title)
-                    num_found = num_found + 1
+                    item = article.slug + "|" + article.title
+                    if item in article_list:
+                        pass
+                    else:
+                        article_list.append(item)
+                        num_found = num_found + 1
             except ObjectDoesNotExist:
                 continue
     mostpopular = MostPopular()
