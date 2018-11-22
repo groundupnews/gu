@@ -183,7 +183,7 @@ div.editor-summary {
     margin-bottom: 2rem;
 }
 
-.subheading, #article_body .editor-summary h2 {
+.subheading, #article_body h2 {
     font-family: 'Roboto slab', sans-serif;
     margin-top: 30px;
     margin-bottom: 20px;
