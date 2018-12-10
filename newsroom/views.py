@@ -160,7 +160,7 @@ class RegionDetail(ArticleList):
             region_name = region_name.rpartition("/")[0]
             query = query | Q(name=region_name)
         regions = models.Region.objects.filter(query)
-        regions = ["<a href='" + reverse("region.detail",
+        regions = ["<a href='" + reverse("newsroom:region.detail",
                                          args=(region.name, )) + "'>"
                    + region.name.rpartition("/")[2] + "</a>"
                    for region in regions]
@@ -289,7 +289,7 @@ def article_post(request, slug):
             else:
                 messages.add_message(request, messages.INFO,
                                      "Changes saved.")
-            return HttpResponseRedirect(reverse('article.detail',
+            return HttpResponseRedirect(reverse('newsroom:article.detail',
                                                 args=(slug,)))
         else:
             return HttpResponseForbidden()
@@ -300,7 +300,7 @@ def article_post(request, slug):
         else:
             messages.add_message(request, messages.ERROR,
                                  "Something went wrong.")
-        return HttpResponseRedirect(reverse('article.detail',
+        return HttpResponseRedirect(reverse('newsroom:article.detail',
                                             args=(slug,)))
 
 

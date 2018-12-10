@@ -1,11 +1,11 @@
 <div class="article__container {% if article.undistracted_layout %} article__container--undistracted {% endif %}">
   <div class="article__content {% if article.undistracted_layout %} article__content--undistracted {% endif %}">
-    <a class="article__category" href="{%  url 'category.detail' article.category.name %}">
+    <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.name %}">
       {{article.category|upper}}
     </a>
     {% if display_region %}
       |
-      <a class="article__region" href="{% url 'region.detail' article.region.name %}">
+      <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">
         {{display_region|upper}}
       </a>
     {% endif %}
@@ -116,7 +116,7 @@
 
 {% if can_edit %}
   <div style="display:none;">
-    <form action="{% url 'article.detail' article.slug %}"
+    <form action="{% url 'newsroom:article.detail' article.slug %}"
           id="article_form"
 
 

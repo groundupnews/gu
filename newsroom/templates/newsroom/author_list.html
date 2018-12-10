@@ -13,7 +13,7 @@
 		<ul>
 		    {% for author in object_list %}
 			<li>
-			    <a href="{% url 'author.detail' author.pk %}">
+			    <a href="{% url 'newsroom:author.detail' author.pk %}">
 				{{ author }}
 			    </a>
 			</li>

@@ -1,7 +1,7 @@
 beautifulsoup4==4.6.0
-Django==1.11.12
-django-filebrowser==3.9.1
-django-grappelli==2.10.2
+Django==2.1.4
+django-filebrowser==3.11.1
+django-grappelli==2.12.1
 facebook-sdk
 # google-api-python-client
 html2text
@@ -32,4 +32,3 @@ django-el-pagination
 csscompressor
 django-compressor
 django-allauth-2fa
-

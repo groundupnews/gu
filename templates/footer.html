@@ -1,14 +1,14 @@
 {% load staticfiles %}
 
 <footer>
-  <div class="footer-container">    
+  <div class="footer-container">
     <div class="footer-logo">
       <div class="copyright">
-        <a href="{% url 'home' %}">
+        <a href="{% url 'newsroom:home' %}">
           <img class="footer-logo-img" src="{% static logo %}" alt="GroundUp Logo" />
         </a>
         <p>
-          Copyright &#169; 2012-{% now "Y" %} GroundUp. 
+          Copyright &#169; 2012-{% now "Y" %} GroundUp.
         </p>
         <p>See copyright notice on articles for terms.</p>
       </div>
@@ -47,6 +47,6 @@
       </div>
     </div>
 
-    
+
   </div>
 </footer>

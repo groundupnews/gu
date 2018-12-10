@@ -5,6 +5,8 @@ from django.views.generic.base import RedirectView
 from . import feeds, settings, views
 from .utils import cache_except_staff
 
+app_name = "newsroom"
+
 
 urlpatterns = [
     url(r'^$',

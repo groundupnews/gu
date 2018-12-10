@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Max
 from django.utils import timezone
@@ -161,7 +161,7 @@ class Invoice(models.Model):
             str(self.author) + " - " + self.get_status_display()
 
     def get_absolute_url(self):
-        return reverse('invoice.detail', args=[self.author.pk,
+        return reverse('payments:invoice.detail', args=[self.author.pk,
                                                self.invoice_num])
 
     def short_string(self):
@@ -234,9 +234,9 @@ class Commission(models.Model):
                                    choices=COMMISSION_DESCRIPTION_CHOICES)
     notes = models.CharField(max_length=200, blank=True)
     fund = models.ForeignKey(Fund, blank=True, null=True,
+                             on_delete=models.CASCADE,
                              help_text="Selecting a fund "
-                             "approves the commission",
-                             on_delete=models.CASCADE)
+                             "approves the commission")
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)
@@ -253,7 +253,7 @@ class Commission(models.Model):
     objects = CommissionQuerySet.as_manager()
 
     def get_absolute_url(self):
-        return reverse('invoice.detail',
+        return reverse('payments:invoice.detail',
                        args=[self.invoice.author.pk, self.invoice.invoice_num])
 
     def save(self, *args, **kwargs):

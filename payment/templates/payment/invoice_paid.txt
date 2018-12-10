@@ -21,7 +21,7 @@
         </p>
 
         <p>
-            <a href="http://{{site.domain}}{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}">Invoice
+            <a href="http://{{site.domain}}{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">Invoice
             {{invoice.short_string}}</a> has been paid to you.
         </p>
 

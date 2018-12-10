@@ -3,7 +3,7 @@
   {% with topics_all=article.topics.all %}
     {% if topics_all|length  %}
       {% for topic in topics_all %}
-	<a class="article__topic" href="{% url 'topic.detail' topic.slug %}">
+	<a class="article__topic" href="{% url 'newsroom:topic.detail' topic.slug %}">
           {{ topic.name|capfirst }}</a>
       {% endfor %}
     {% endif %}

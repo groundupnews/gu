@@ -41,14 +41,14 @@
                         {% include "letters/letter_text.html" %}
                     </div>
 		    <form id="letter-form"
-                          action="{% url 'letter_to_editor' article.pk %}"
+                          action="{% url 'letters:letter_to_editor' article.pk %}"
 		          method="post">
 		        {% csrf_token %}
                         <div id="letter-input-fields">
 		            <p id="letter-form-salutation">Dear Editor</p>
 		            <p id="letter-form-article-title">
 			        This is a letter in response to
-			        <a href={% url 'article.detail' article.slug  %}>
+			        <a href={% url 'newsroom:article.detail' article.slug  %}>
 			            {{article.title|safe}}</a>.
 		            </p>
 		            {{ form.as_p }}

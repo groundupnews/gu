@@ -63,7 +63,7 @@
         {% endif %}
     </h2>
     <form
-        action="{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}"
+        action="{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}"
         method="post">
     <div class="container">
         <div class="row">
@@ -148,15 +148,15 @@
 	    <div class="col-xs-12 col-md-6">
                 {% include "payment/invoice_table.html" %}
                 {% if not print_view %}
-                    <a href="{% url "invoice.list" %}">INVOICES</a> |
-                    <a href="{% url "invoice.print" invoice.author.pk invoice.invoice_num %}"
+                    <a href="{% url "payments:invoice.list" %}">INVOICES</a> |
+                    <a href="{% url "payments:invoice.print" invoice.author.pk invoice.invoice_num %}"
                        target="_blank"
                     >
                         PRINT
                     </a>
                     {% if can_edit_commissions %}
                         |
-                        <a href="{% url 'commissions.detail.add' %}?author={{invoice.author.pk}}"
+                        <a href="{% url 'payments:commissions.detail.add' %}?author={{invoice.author.pk}}"
                            target="_blank">
                             ADD COMMISSION
                         </a>

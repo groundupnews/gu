@@ -18,7 +18,7 @@
 
         <p> Below is a list of commissions due to you. Please go to
         <a href=
-           "http://{{site.domain}}{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}">
+           "http://{{site.domain}}{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">
             this link</a>, make sure your details are correct,
             and approve the payment.  </p>
 

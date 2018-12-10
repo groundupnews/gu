@@ -3,7 +3,7 @@
 <div id="related">
     {% for rel_article in related %}
         {% if forloop.first %}
-            <h3>More about <a href="{% url 'topic.detail' article.main_topic.slug %}">
+            <h3>More about <a href="{% url 'newsroom:topic.detail' article.main_topic.slug %}">
                 {{article.main_topic}}</a></h3>
             <ul>
         {% endif %}

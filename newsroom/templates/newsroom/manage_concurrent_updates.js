@@ -32,7 +32,7 @@ $(document).ready(function() {
     function manageConcurrentEditing()
     {
         $.ajax({
-	    url: "{% url "article.concurrent_check" %}",
+	    url: "{% url "newsroom:article.concurrent_check" %}",
 	    type:"POST",
 	    headers: { "X-CSRFToken": getCookie("csrftoken") },
 	    data: {

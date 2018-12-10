@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = "payments"
+
 urlpatterns = [
     url(r'^invoices/$', views.invoice_list,
         name="invoice.list"),

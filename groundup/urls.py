@@ -13,7 +13,8 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import url
+from django.urls import include, path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -50,24 +51,26 @@ photo_dict = {
     'date_field': 'modified',
 }
 
+app_name = 'groundup'
+
 urlpatterns = [
-    url(r'^admin/filebrowser/', include(site.urls)),
-    url(r'^grappelli/', include('grappelli.urls')),
+    path('admin/filebrowser/', site.urls),
+    path('grappelli/', include('grappelli.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),
-    url(r'^admin/login/$', RedirectView.as_view(url='/accounts/login/')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^imagegallery/', include('gallery.urls')),
-    url(r'^', include('newsroom.urls')),
-    url(r'^', include('payment.urls')),
-    url(r'^', include('letters.urls')),
-    url(r'^', include('security.urls')),
-    url(r'^', include('allauth_2fa.urls')),
-    url(r'^accounts/', include('allauth.urls')),
+    path('admin/login/', RedirectView.as_view(url='/accounts/login/')),
+    path('admin/', admin.site.urls),
+    path('imagegallery/', include('gallery.urls')),
+    path('', include('newsroom.urls')),
+    path('', include('payment.urls')),
+    path('', include('letters.urls')),
+    path('', include('security.urls')),
+    path('', include('allauth_2fa.urls')),
+    path('accounts/', include('allauth.urls')),
 
     url(r'^sitemap\.xml$', sitemap,
-        {'sitemaps':
+         {'sitemaps':
          {'articles': GenericSitemap(article_dict,
-                                     priority=0.5),
+                                      priority=0.5),
           'authors': GenericSitemap(author_dict,
                                     priority=0.5,
                                     changefreq='weekly'),
@@ -75,11 +78,11 @@ urlpatterns = [
                                    priority=0.5),
           'flatpages': FlatPageSitemap}},
         name='django.contrib.sitemaps.views.sitemap'),
-    url(r'^cache/', include('clearcache.urls', namespace="cache")),
+    path('cache/', include('clearcache.urls', namespace="cache")),
     url(r'^robots\.txt',
-        TemplateView.as_view(template_name='robots.txt',
-                             content_type='text/plain'),
-        name='robots.txt'),
+         TemplateView.as_view(template_name='robots.txt',
+                              content_type='text/plain'),
+         name='robots.txt'),
     url(r'^404testing',
         TemplateView.as_view(template_name='404.html'),
         name='test404'),
@@ -92,7 +95,7 @@ urlpatterns = [
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        path('__debug__/', include(debug_toolbar.urls)),
     ]
 
 urlpatterns += [

@@ -28,8 +28,8 @@ class Republisher(models.Model):
 
 
 class RepublisherArticle(models.Model):
-    article = models.ForeignKey(Article)
-    republisher = models.ForeignKey(Republisher)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    republisher = models.ForeignKey(Republisher, on_delete=models.CASCADE)
     wait_time = models.PositiveIntegerField(
         default=0,
         help_text="Minimum number of minutes after publication till sent.")

@@ -15,9 +15,9 @@
 			   >Unsticky</a></li>
   {% endif %}
   {% if request.GET.edit != "no" %}
-    <li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}?edit=no">Edit off</a></li>
+    <li><a class="admin-menu-item" href="{% url 'newsroom:article.detail' article.slug %}?edit=no">Edit off</a></li>
   {% else %}
-    <li><a class="admin-menu-item" href="{% url 'article.detail' article.slug %}">Edit on</a></li>
+    <li><a class="admin-menu-item" href="{% url 'newsroom:article.detail' article.slug %}">Edit on</a></li>
   {% endif %}
   <li role="separator" class="divider"></li>
 {% endif %}
@@ -57,10 +57,10 @@
   <li class="header__nav__link header__nav__link--drop" role="separator" class="divider"></li>
 {% endif %}
 {% if perms.payment.change_invoice %}
-  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'invoice.list' %}" class="admin-menu-item">Invoices</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'payments:invoice.list' %}" class="admin-menu-item">Invoices</a></li>
 {% endif %}
 {% if perms.payment.change_commission %}
-  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'commissions.detail.add' %}" class="admin-menu-item">Add commission</a></li>
+  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'payments:commissions.detail.add' %}" class="admin-menu-item">Add commission</a></li>
 {% endif %}
 
 <li role="separator" class="divider"></li>
@@ -68,9 +68,9 @@
 <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:index' %}" class="admin-menu-item">Admin front</a></li>
 <li class="header__nav__link header__nav__link--drop"><a href="/admin/filebrowser/browse/" class="admin-menu-item">Browse
   files</a></li>
-<li class="header__nav__link header__nav__link--drop"><a href="{% url 'generate_article_list' %}" class="admin-menu-item">Generate article list</a></li>
+<li class="header__nav__link header__nav__link--drop"><a href="{% url 'newsroom:generate_article_list' %}" class="admin-menu-item">Generate article list</a></li>
 <li class="header__nav__link header__nav__link--drop"><a href="{% url 'cache:clearcache' %}" class="admin-menu-item">Clear cache</a></li>
 
 <li role="separator" class="divider"></li>
 
-<li class="header__nav__link header__nav__link--drop"><a href="{% url 'user.profile' %}" class="admin-menu-item">{% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}'s Account</a></li>
+<li class="header__nav__link header__nav__link--drop"><a href="{% url 'newsroom:user.profile' %}" class="admin-menu-item">{% if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user }}{% endif %}'s Account</a></li>

@@ -32,19 +32,19 @@
         </p>
         <p>
             {% if this_month %}
-                <a href="{% url "invoice.list" previous_month.year previous_month.month 0 %}">
+                <a href="{% url "payments:invoice.list" previous_month.year previous_month.month 0 %}">
                     Previous: {{previous_month|date:"F Y"}}
                 </a>
                 &nbsp;|&nbsp;
-                <a href="{% url "invoice.list" next_month.year next_month.month 0 %}">
+                <a href="{% url "payments:invoice.list" next_month.year next_month.month 0 %}">
                     Next: {{next_month|date:"F Y"}}
                 </a>
                 &nbsp;|&nbsp;
-                <a href="{% url "invoice.list" 0 0 0 %}">
+                <a href="{% url "payments:invoice.list" 0 0 0 %}">
                     All
                 </a>
             {% else %}
-                <a href="{% url "invoice.list" next_month.year next_month.month 0 %}">
+                <a href="{% url "payments:invoice.list" next_month.year next_month.month 0 %}">
                     Go to latest month: {{next_month|date:"F Y"}}
                 </a>
             {% endif %}
@@ -71,7 +71,7 @@
                 {% if staff_view or payment.3 > 0.00 %}
                     <tr>
                         <td>
-                            <a href="{% url "invoice.detail" invoice.author.pk invoice.invoice_num %}">
+                            <a href="{% url "payments:invoice.detail" invoice.author.pk invoice.invoice_num %}">
 
                                     {{invoice.short_string}}
 
@@ -92,7 +92,7 @@
                         <td>R{{payment.0|floatformat:2}}</td>
                         {% if staff_view %}
                             <td>
-                                <a href="{%  url 'invoice.list' 0 0 invoice.author.pk %}">
+                                <a href="{%  url 'payments:invoice.list' 0 0 invoice.author.pk %}">
                                     {{invoice.author}}
                                 </a>
                             </td>

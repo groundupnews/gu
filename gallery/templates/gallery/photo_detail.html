@@ -16,8 +16,8 @@
 
 {% block breadcrumbs %}
     <div id="gallery-breadcrumbs">
-        <a href="{% url 'gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
-        <a href="{% url 'photo.list' %}">Photos</a>&nbsp;|&nbsp;
+        <a href="{% url 'gallery:gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
+        <a href="{% url 'gallery:photo.list' %}">Photos</a>&nbsp;|&nbsp;
         {{photo.alt}}
     </div>
 
@@ -76,14 +76,14 @@
                 <span class="photo-label">Date taken</span>
             </div>
             <div class="col-xs-8">
-                <a href="{% url 'photo.list' %}?date={{photo.date_taken|date:"Ymd"}}">
+                <a href="{% url 'gallery:photo.list' %}?date={{photo.date_taken|date:"Ymd"}}">
                     {{photo.date_taken|date:"j F Y"}}
                 </a>
             </div>
 
             <div class="col-xs-4"><span class="photo-label">Photo by</span></div>
             <div class="col-xs-8">
-                <a href="{% url 'photo.list' %}?photographer={{photo.photographer.pk}}">
+                <a href="{% url 'gallery:photo.list' %}?photographer={{photo.photographer.pk}}">
                     {{photo.photographer}}
                 </a>
             </div>
@@ -103,7 +103,7 @@
             <div class="col-xs-4"><span class="photo-label">Albums</span></div>
             <div class="col-xs-8">
                 {% for album in photo.albums.all %}
-                    <a href="{% url 'album.detail' album.pk %}">{{album}}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="{% url 'gallery:album.detail' album.pk %}">{{album}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </div>
             <div class="col-xs-4">
@@ -111,7 +111,7 @@
             </div>
             <div class="col-xs-8">
                 {% for keyword in photo.keywords.all %}
-                    <a href="{% url 'photo.list' keyword %}">
+                    <a href="{% url 'gallery:photo.list' keyword %}">
                         {{keyword}}</a>{% if not forloop.last %},&nbsp;{% endif %}
                 {% endfor %}
             </div>
@@ -135,7 +135,7 @@
     </div>
 
     {% if photos %}
-        <h2><a href="{% url 'photo.list' %}">Related photos</a></h2>
+        <h2><a href="{% url 'gallery:photo.list' %}">Related photos</a></h2>
         <div id="gallery-related-photos" class="row">
             {% include page_template %}
         </div>

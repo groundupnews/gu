@@ -1,7 +1,8 @@
 <div class="letters" id="letters">
     {% if article.letters_on %}
 	<div class="article__letter__button">
-	  <a class="article__letter__link" href="{% url "letter_to_editor" article.pk %}">
+	    <a class="article__letter__link"
+               href="{% url "letters:letter_to_editor" article.pk %}">
 	    Write a letter in response to this article
 	  </a>
 	</div>
@@ -21,7 +22,7 @@
 		   href="#letter-{{forloop.counter}}"
 		   class="{{letter.css_classes}}">
 		  {{letter.title}}
-		</a>                
+		</a>
 	      </h4>
 	    </div>
 	    <div id="letter-{{forloop.counter}}"

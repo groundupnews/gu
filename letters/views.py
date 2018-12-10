@@ -93,7 +93,7 @@ def write_letter(request, pk):
                     [letter.email],
                     html_message=html_message
                 )
-                return HttpResponseRedirect(reverse("letter_thanks"))
+                return HttpResponseRedirect(reverse("letters:letter_thanks"))
             else:
                 messages.add_message(request, messages.ERROR,
                                      "Please fix the problems below.")

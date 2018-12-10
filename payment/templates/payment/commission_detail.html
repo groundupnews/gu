@@ -11,7 +11,7 @@
         {% if pk %}
             {% with invoice=commission.invoice %}
                 <h2>Edit commission {{pk}} for
-                    <a href="{% url 'invoice.detail' invoice.author.pk invoice.invoice_num %}">
+                    <a href="{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">
                         Invoice: {{invoice.short_string}}</h2>
                     </a>
             {% endwith %}
@@ -19,9 +19,9 @@
             <h2>New commission</h2>
         {% endif %}
         <form action="{% if pk %}
-                      {% url 'commissions.detail' pk %}
+                      {% url 'payments:commissions.detail' pk %}
         {% else %}
-                      {% url 'commissions.detail.add' %}
+                      {% url 'payments:commissions.detail.add' %}
         {% endif %}"
               method="post">
             {% csrf_token %}

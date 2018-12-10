@@ -7,7 +7,7 @@
 
 {% block breadcrumbs %}
     <div id="gallery-breadcrumbs">
-        <a href="{% url 'gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
+        <a href="{% url 'gallery:gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
         Albums
     </div>
 
@@ -24,7 +24,7 @@
             <div class="gallery-album-item">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2><a href="{% url 'album.detail' album.pk %}">{{album}}</a></h2>
+                        <h2><a href="{% url 'gallery:album.detail' album.pk %}">{{album}}</a></h2>
                         <div class="row">
                         {% for photo in album.photograph_set.all|slice:":4" %}
 	                    <div class="col-xs-6 col-md-3">

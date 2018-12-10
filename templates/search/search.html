@@ -32,7 +32,7 @@
                       {{article.published|date:"j F Y"}} | ARTICLE
                     </p>
                     <h2 class="search-result__title">
-                      <a href="{% url "article.detail" article.slug %}">
+                      <a href="{% url "newsroom:article.detail" article.slug %}">
                         {{ article.title|safe }}
                       </a>
                     </h2>
@@ -61,7 +61,7 @@
                     <p class="search-result__pub-date">
                       {{article.published|date:"j F Y"}} | IMAGE
                     </p>
-                    <a href="{% url "photo.detail" article.pk %}">
+                    <a href="{% url "gallery:photo.detail" article.pk %}">
                       <h2 class="search-result__title">{{ article.title|safe }}</h2>
                     </a>
                     <h3 class="search-result__sub-title">
@@ -94,7 +94,7 @@
                   <p class="search-result__pub-date">
                     {{article.date_taken|date:"j F Y"}} | IMAGE
                   </p>
-                  <a href="{% url "photo.detail" article.pk %}">
+                  <a href="{% url "gallery:photo.detail" article.pk %}">
                     <h2 class="search-result__title">{{ article.alt }}</h2>
                   </a>
                   <h3 class="search-result__sub-title">

@@ -3,9 +3,9 @@
 <nav class="header__nav">
   <ul class="header__nav__links">
     {% with path=request.get_full_path %}
-        <li class="drop header__nav__link"><a href="{% url 'home' %}">News</a>
+        <li class="drop header__nav__link"><a href="{% url 'newsroom:home' %}">News</a>
 	  <ul class="header__nav__drop-down">
-            {% url 'home' as home_url %}
+            {% url 'newsroom:home' as home_url %}
             <span class="header__nav__drop-down__spacer"></span>
             <li {% if path == home_url %}class='active header__nav__link header__nav__link--drop'{% endif %}>
               <a href="/">Home</a>
@@ -50,12 +50,12 @@
       </li>
     {% elif request.user.is_authenticated %}
       <li class="header__nav__link">
-	<a href="{% url 'user.profile' %}" class="admin-menu-item">Account</a>
+	<a href="{% url 'newsroom:user.profile' %}" class="admin-menu-item">Account</a>
       </li>
     {% endif %}
   </ul>
     <div class="advanced-search-box">
-      <a class="advanced-search" href="{% url 'advanced.search' %}">Advanced Search</a>
+      <a class="advanced-search" href="{% url 'newsroom:advanced.search' %}">Advanced Search</a>
       <input type="hidden" name="search_type" value="both" />
     </div>
 </nav>

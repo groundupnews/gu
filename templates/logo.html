@@ -2,7 +2,7 @@
 
 <span class="header__logo" id="logo">
     {% if gallery %}
-        <a href="{% url 'gallery.front' %}">
+        <a href="{% url 'gallery:gallery.front' %}">
             <h2 class="gallery">Gallery</h2></a>
             {% comment %}
             <img src=
@@ -11,7 +11,7 @@
         </a><br />
         {% endcomment %}
     {% else %}
-    <a href="{% url 'home' %}">
+    <a href="{% url 'newsroom:home' %}">
         <img src=
              "{% static logo %}"
              alt="GroundUp Logo"

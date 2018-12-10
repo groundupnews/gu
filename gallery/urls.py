@@ -2,6 +2,8 @@ from django.conf.urls import url
 from . import views
 from . import feeds
 
+app_name = "gallery"
+
 urlpatterns = [
     url(r'^$', views.gallery_front, name='gallery.front'),
     url(r'^albums/$', views.album_list, name='album.list'),

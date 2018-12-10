@@ -34,7 +34,7 @@
 </a>
 
 {% if article.encourage_republish %}
-    <a href="{% url 'article.copy' article.slug %}"
+    <a href="{% url 'newsroom:article.copy' article.slug %}"
        id="republish-article"
        target="_blank"
        title="Republish this article">

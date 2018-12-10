@@ -106,7 +106,7 @@ class Author(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse('author.detail', args=[self.pk, ])
+        return reverse('newsroom:author.detail', args=[self.pk, ])
 
     def save(self, *args, **kwargs):
         if self.pk is None or self.user is None:
@@ -163,7 +163,7 @@ class Region(models.Model):
         return regions
 
     def get_absolute_url(self):
-        return reverse('region.detail', args=[self.name, ])
+        return reverse('newsroom:region.detail', args=[self.name, ])
 
     def get_specific(self):
         index = self.name.rfind("/")
@@ -201,7 +201,7 @@ class Topic(models.Model):
         return Article.objects.filter(topics=self).count()
 
     def get_absolute_url(self):
-        return reverse('topic.detail', args=[self.slug, ])
+        return reverse('newsroom:topic.detail', args=[self.slug, ])
 
     def __str__(self):
         return self.name
@@ -219,7 +219,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     def get_absolute_url(self):
-        return reverse('category.detail', args=[self.slug, ])
+        return reverse('newsroom:category.detail', args=[self.slug, ])
 
     def __str__(self):
         return self.name
@@ -324,9 +324,11 @@ class Article(models.Model):
     recommended = models.BooleanField(default=True)
     category = models.ForeignKey(Category, default=4,
                                  on_delete=models.CASCADE)
-    region = models.ForeignKey(Region, blank=True, null=True)
+    region = models.ForeignKey(Region, blank=True, null=True,
+                               on_delete=models.CASCADE)
     topics = models.ManyToManyField(Topic, blank=True)
     main_topic = models.ForeignKey(Topic, blank=True,
+                                   on_delete=models.CASCADE,
                                    null=True,
                                    related_name="main",
                                    help_text="Used for generating"
@@ -619,7 +621,7 @@ class Article(models.Model):
         super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('article.detail', args=[self.slug, ])
+        return reverse('newsroom:article.detail', args=[self.slug, ])
 
     def __str__(self):
         return str(self.pk) + " " + self.title

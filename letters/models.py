@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from newsroom.models import Article
 
 # Create your models here.
@@ -72,7 +72,7 @@ class Letter(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('article.detail', args=[self.article.slug, ]) + \
+        return reverse('newsroom:article.detail', args=[self.article.slug, ]) + \
             "#letter-" + str(self.pk)
 
     class Meta:

@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.html import format_html
 import random
 
@@ -14,7 +14,7 @@ class Keyword(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     def get_absolute_url(self):
-        return reverse('keyword.detail', args=[self.slug, ])
+        return reverse('gallery:keyword.detail', args=[self.slug, ])
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class Album(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('album.detail', args=[self.pk, ])
+        return reverse('gallery:album.detail', args=[self.pk, ])
 
     @staticmethod
     def autocomplete_search_fields():
@@ -88,7 +88,7 @@ class Photograph(models.Model):
                           str(self.photographer), ])
 
     def get_absolute_url(self):
-        return reverse('photo.detail', args=[self.pk, ])
+        return reverse('gallery:photo.detail', args=[self.pk, ])
 
     def thumbnail(self):
         return format_html(

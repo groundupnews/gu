@@ -9,15 +9,15 @@
 </div>
 <ul>
     <li class="btn btn-default navbar-btn">
-        <a href="{% url 'gallery.front' %}">
+        <a href="{% url 'gallery:gallery.front' %}">
         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
         Images home
         </a>
     </li>
     <li class="btn btn-default navbar-btn">
-        <a href="{% url 'album.list' %}">Albums</a>
+        <a href="{% url 'gallery:album.list' %}">Albums</a>
     </li>
     <li class="btn btn-default navbar-btn">
-        <a href="{% url 'photo.list' %}">Photos</a>
+        <a href="{% url 'gallery:photo.list' %}">Photos</a>
     </li>
 </ul>
