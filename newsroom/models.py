@@ -701,7 +701,7 @@ class MostPopular(models.Model):
                 html = "<ol class='most-popular'>"
                 for article in article_list:
                     entry = "<li><a href='" + \
-                            reverse('article.detail', args=[article[0]]) + \
+                            reverse('newsroom:article.detail', args=[article[0]]) + \
                             "'>" + article[1] + "</a></li>"
                     html = html + entry
                 html = html + "</ol>"
