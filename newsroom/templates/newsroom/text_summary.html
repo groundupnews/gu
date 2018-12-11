@@ -7,7 +7,7 @@
 		</a>
 	    </h2>
 	    <p class="summary-dateline">
-		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;<a href="{% url 'category.detail' article.category %}">{{article.category|upper}}</a>
+		{{article.published|date:"j F Y"}}&nbsp;&nbsp;&nbsp;<a href="{% url 'newsroom:category.detail' article.category %}">{{article.category|upper}}</a>
 	    </p>
 
 	    <p class="summary-byline">
