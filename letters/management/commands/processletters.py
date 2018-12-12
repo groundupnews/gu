@@ -19,7 +19,6 @@ def process():
         html_message = render_to_string('letters/published_letter.html',
                                         {'letter': letter,
                                          'base_url': base_url})
-        print(html_message)
         message = strip_tags(html_message)
         try:
             send_mail(

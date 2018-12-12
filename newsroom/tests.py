@@ -7,11 +7,11 @@ from django.test import Client, TestCase
 from django.utils import timezone
 from letters.models import Letter
 from newsroom import utils
-from newsroom.models import Article, Category, Topic
+from newsroom.models import Article, Category, Topic, Author
 from pgsearch.utils import searchPostgresDB
 from django.contrib.sites.models import Site
 from django.contrib.flatpages.models import FlatPage
-
+from django.urls import reverse
 
 class HtmlCleanUp(TestCase):
 
@@ -37,12 +37,12 @@ class HtmlCleanUp(TestCase):
                 "<p>The dog --- ran away.</p>" \
                 "<p>The dog--ran away.</p>" \
                 "<p>The dog---ran away.</p>"
-        html2 = "<html><body><p>The dog ran away.</p>" \
+        html2 = "<p>The dog ran away.</p>" \
                 "<p>The dog – ran away.</p>" \
                 "<p>The dog — ran away.</p>" \
                 "<p>The dog--ran away.</p>" \
-                "<p>The dog---ran away.</p></body></html>"
-        html3 = str(utils.processDashes(bs(html1)))
+                "<p>The dog---ran away.</p>"
+        html3 = str(utils.processDashes(bs(html1, "html.parser")))
         self.assertEqual(html2, html3)
 
 
@@ -101,6 +101,14 @@ class ArticleTest(TestCase):
         a.save()
         a.publish_now()
 
+        author = Author()
+        author.first_names = "Joe"
+        author.last_name = "Bloggs"
+        author.email = "joebloggs@example.com"
+        author.save()
+        a.author_01 = author
+        a.save()
+
     def test_articles(self):
         articles = Article.objects.all()
         self.assertEqual(len(articles), 2)
@@ -126,6 +134,8 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 404)
         response = client.get('/content/test-article-1/')
         self.assertEqual(response.status_code, 302)
+        response = client.get('/category/')
+        self.assertEqual(response.status_code, 200)
         response = client.get('/category/News/')
         self.assertEqual(response.status_code, 200)
         response = client.get('/category/news/')
@@ -133,6 +143,18 @@ class ArticleTest(TestCase):
         response = client.get('/category/Opinion/')
         self.assertEqual(response.status_code, 200)
         response = client.get('/category/opinion/')
+        self.assertEqual(response.status_code, 200)
+        response = client.get('/topic/')
+        self.assertEqual(response.status_code, 200)
+        topic = Topic.objects.all()[0]
+        url = reverse('newsroom:topic.detail', args=[topic,])
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = client.get('/author/')
+        self.assertEqual(response.status_code, 200)
+        author = Author.objects.all()[0]
+        url = '/author/' + str(author.pk) + '/'
+        response = client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_duplicate_save(self):
