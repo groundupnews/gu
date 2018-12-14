@@ -18,7 +18,7 @@
 	<div class="row">
 	    <div class="col-sm-8 col-md-offset-2">
     <h1>Generate a list of articles</h1>
-    <form role="form" action="{% url 'generate_article_list' %}" method="post">
+    <form role="form" action="{% url 'newsroom:generate_article_list' %}" method="post">
 	{% csrf_token %}
 
 	{{ form.non_field_errors }}
