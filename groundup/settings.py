@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'blocks',
     'letters',
     'gallery',
+    'agony',
     'pgsearch',
 )
 

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Answers to your questions {{block.super}}
+{% endblock %}
+
+{% block css-override %}
+    <style>
+        {% include  "agony/qanda.css" %}
+    </style>
+    {{block.super}}
+{% endblock %}
+
+{% block content %}
+    <div id="list-content" class="home qanda__container">
+        <div class="home_container">
+            <div class="home__articles">
+                <h1>Answers to your questions</h1>
+                {% if topic %}
+                    <p>
+                        Topic: {{topic}} &nbsp;|&nbsp;
+                        <a href="{% url 'agony:list' %}">
+                            Show questions and answers for all topics</a>
+                    </p>
+                {%  endif %}
+                {% for qanda in object_list %}
+                    <div class="qanda__question">
+                        <h2 class="qanda__summary_question">{{ qanda.summary_question }}</h2>
+                        <p class="qanda__summary_answer">{{ qanda.summary_answer }}</p>
+                        <p><a href="{% url 'agony:detail' qanda.pk %}">Read more</a></p>
+                        {% with topics_all=qanda.topics.all %}
+                            {% if topics_all|length  %}
+                                <div class="qanda__topics">
+                                    {% for topic in topics_all %}
+	                                <a class="article__topic"
+                                           href="{% url 'agony:list' %}?topic={{topic.pk}}">
+                                            {{ topic.name|capfirst }}</a>
+                                    {% endfor %}
+                                </div>
+
+                                {% endif %}
+                            {% endwith %}
+                        {% if can_edit %}
+                            <p>
+                                <a href="{% url 'admin:agony_qanda_change' qanda.pk %}">
+                                    Edit
+                                </a>
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% include "paginator.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

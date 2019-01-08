@@ -1,0 +1,29 @@
+.qanda__container div.home_container {
+    padding-bottom: 15px;
+}
+
+.qanda__topics {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.qanda__question {
+    border-bottom: 1px solid;
+}
+
+.qanda__full_question_intro, .qanda__full_answer_intro {
+    font-weight: bold;
+}
+
+.qand__read_more {
+    font-style: italic;
+}
+
+.qanda__date_published {
+    border-top: 1px solid black;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-style: italic;
+
+}

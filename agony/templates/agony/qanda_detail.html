@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{object.summary_question|truncatechars:30}} {{block.super}}
+{% endblock %}
+
+{% block css-override %}
+    <style>
+     {% include  "agony/qanda.css" %}
+    </style>
+    {{block.super}}
+{% endblock %}
+
+{% block content %}
+    <div class="qand__detail article-container">
+        <div class="article__content">
+            <h1 class="qanda__summary_question">{{object.summary_question}}</h1>
+            <p class="qanda__summary_answer">
+                {% if object.full_question %}
+                    The short answer:
+                {% endif %}
+                {{object.summary_answer}}
+            </p>
+            {% if object.full_question %}
+                <div class="qanda__full_question">
+                    <p class="qanda__full_question_intro">The whole question:</p>
+                    {{object.full_question|linebreaks|safe}}
+                </div>
+            {% endif %}
+            {% if object.full_answer %}
+                <div class="qanda__full_answer">
+                    <p class="qanda__full_answer_intro">The long answer:</p>
+                    {{object.full_answer|linebreaks|safe}}</div>
+            {% endif %}
+            <p class="qanda__date_published">Answered on {{object.published}}</p>
+            {% with topics_all=qanda.topics.all %}
+                {% if topics_all|length  %}
+                    <div class="qanda__topics">
+                        {% for topic in topics_all %}
+	                    <a class="article__topic"
+                               href="{% url 'agony:list' %}?topic={{topic.pk}}">
+                                {{ topic.name|capfirst }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% if can_edit %}
+                <p>
+                    <a href="{% url 'admin:agony_qanda_change' qanda.pk %}">
+                        Edit
+                    </a>
+                </p>
+            {% endif %}
+            <p class="qand__read_more">
+                <a href="{% url 'agony:list' %}">See more questions and answers</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
