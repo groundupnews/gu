@@ -1,0 +1,31 @@
+
+<p>Dear {{response.sender_name}}</p>
+
+{% if response.answer_for_sender %}
+    {{response.answer_for_sender|safe|linebreaks}}
+{% else %}
+    {% if  response.full_answer %}
+        {{response.full_answer|safe|linebreaks}}
+    {% else %}
+        {{response.summary_answer|safe|linebreaks}}
+    {% endif %}
+{% endif %}
+
+<p>
+    Your question:
+</p>
+
+{% if response.original_question %}
+    {{response.original_question|safe|linebreaks}}
+{% else %}
+    {% if  response.full_question %}
+        {{response.full_question|safe|linebreaks}}
+    {% else %}
+        {{response.summary_question|safe|linebreaks}}
+    {% endif %}
+{% endif %}
+
+<p>
+    Regards<br />
+    GroundUp
+</p>
