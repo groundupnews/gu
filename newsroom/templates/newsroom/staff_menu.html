@@ -48,7 +48,10 @@
   <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:newsroom_article_changelist' %}" class="admin-menu-item">Articles</a></li>
 {% endif %}
 {% if perms.letters.add_letter %}
-  <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
+    <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:letters_letter_changelist' %}" class="admin-menu-item">Letters</a></li>
+{% endif %}
+{% if perms.agony.change_qanda %}
+    <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:agony_qanda_changelist' %}" class="admin-menu-item">Agony admin</a></li>
 {% endif %}
 {% if perms.newsroom.change_author %}
   <li class="header__nav__link header__nav__link--drop"><a href="{% url 'admin:newsroom_author_changelist' %}" class="admin-menu-item">Authors</a></li>

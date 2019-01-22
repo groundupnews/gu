@@ -2,7 +2,6 @@ from smtplib import SMTPException
 from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.contrib.sites.models import Site
 from django.utils.html import strip_tags
 
 from agony import settings
@@ -27,6 +26,7 @@ def process():
             )
         except SMTPException as err:
             print("Error sending response to agony writer: {0}".format(err))
+
         response.sender_notified = True
         response.save()
 
