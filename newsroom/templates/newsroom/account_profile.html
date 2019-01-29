@@ -9,7 +9,7 @@
     <ul>
         {% if user.author.freelancer  %}
             <li>
-                <a href='{% url "invoice.list" %}'>Invoices</a>
+                <a href='{% url "payments:invoice.list" %}'>Invoices</a>
             </li>
         {% endif %}
         <li><a href="{% url "account_change_password" %}">
