@@ -5,12 +5,14 @@ from agony.models import QandA
 
 class QandAAdmin(admin.ModelAdmin):
     list_display = ['summary_question', 'sender_name', 'sender_email',
-                    'published', 'created', 'modified',]
+                    'published', 'created', 'modified',
+                    'notify_sender', 'sender_notified', ]
+    list_editable = ['notify_sender', 'sender_notified']
     list_filter = ['published', 'topics',]
     raw_id_fields = ('topics', )
     date_hierarchy = 'published'
     search_fields = ['summary_question', 'summary_answer', 'sender_name', 'sender_email',]
-    readonly_fields = ('created', 'modified', 'sender_notified', )
+    readonly_fields = ('created', 'modified', )
     autocomplete_lookup_fields = {
         'm2m': ['topics', ],
     }

@@ -24,8 +24,10 @@ def process():
                 [response.sender_email] + settings.AGONY_EMAIL_RECIPIENTS,
                 html_message=html_message
             )
+            print("Response sent to: ", response.sender_email)
         except SMTPException as err:
-            print("Error sending response to agony writer: {0}".format(err))
+            print("Error sending response to agony writer {0}: {1}".
+                  format(response.sender_email, err))
 
         response.sender_notified = True
         response.save()
