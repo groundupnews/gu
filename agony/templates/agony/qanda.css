@@ -2,6 +2,10 @@
     padding-bottom: 15px;
 }
 
+.home__articles {
+    margin: 12px;
+}
+
 .qanda__topics {
     padding-top: 20px;
     padding-bottom: 20px;
@@ -14,6 +18,7 @@
 .qanda__full_question_intro, .qanda__full_answer_intro {
     font-weight: bold;
 }
+
 
 .qand__read_more {
     font-style: italic;
