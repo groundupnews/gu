@@ -7,6 +7,19 @@
     max-width: 700px;
 }
 
+h1 {
+    font-family: 'Roboto slab', sans-serif;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 36px;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.8rem;
+}
+
+
 .qanda__topics {
     padding-top: 20px;
     padding-bottom: 20px;
