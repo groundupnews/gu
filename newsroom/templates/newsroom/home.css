@@ -236,13 +236,13 @@
     margin-bottom: 40px;
 }
 
-.home .more_articles__popular ol {
+.home .more_articles__popular ol, .home .more_articles__popular ul {
     list-style: none;
     counter-reset: item;
     padding-left: 0px;
 }
 
-.home .more_articles__popular ol li {
+.home .more_articles__popular ol li, .home .more_articles__popular ul li {
     counter-increment: item;
     display: flex;
     width: 100%;
@@ -252,6 +252,9 @@
 
 .home .more_articles__popular ol li:before {
     content: counter(item);
+}
+
+.home .more_articles__popular ol li:before, .home .more_articles__popular ul li:before {
     font-weight: bold;
     font-size: 3rem;
     font-family: 'Roboto Slab', serif;
@@ -259,7 +262,7 @@
     width: 5%;
 }
 
-.home .more_articles__popular ol li a {
+.home .more_articles__popular ol li a, .home .more_articles__popular ul li a {
     width: 90%;
     padding-left: 10px;
     font-family: 'Open Sans', sans-serif;
@@ -268,7 +271,7 @@
     font-size: 1.6rem;
 }
 
-.home .more_articles__popular ol li a:hover {
+.home .more_articles__popular ol li a:hover, .home .more_articles__popular ul li a:hover {
     text-decoration: none;
     color: #00b1F0;
 }

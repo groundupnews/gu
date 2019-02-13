@@ -19,6 +19,7 @@ from django.views.decorators.http import last_modified
 from django.views.generic import View
 from letters.models import Letter
 from letters.settings import DAYS_AGO
+from agony.models import QandA
 from pgsearch.utils import searchPostgresDB, searchArticlesAndPhotos
 from django.conf import settings as django_settings
 
@@ -56,6 +57,7 @@ class ArticleList(generic.ListView):
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
         context['letters'] = Letter.objects.published().\
             filter(published__gte=date_from).order_by('-published')
+        context['agony'] = QandA.objects.published()[:5]
         return context
 
 
