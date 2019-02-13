@@ -64,8 +64,10 @@
     </div>
     <div class="more_articles">
       <div class="more_articles__popular">
-        <h2>Most Read</h2>
-        {{most_popular_html|safe}}
+          <h2>Most Read</h2>
+          {{most_popular_html|safe}}
+      </div>
+      <div class="more_articles__popular">
         <h2>Latest questions and answers</h2>
         <ul class="most-popular">
         {% for qanda in agony %}
