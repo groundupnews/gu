@@ -225,7 +225,7 @@ class FlatPageAdmin(FlatPageAdmin):
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
-            '//cdn.ckeditor.com/4.7.3/standard-all/ckeditor.js',
+            '//cdn.ckeditor.com/4.11.2/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
         ]

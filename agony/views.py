@@ -36,6 +36,14 @@ class QandAList(ListView):
 class QandADetail(DetailView):
     model = QandA
 
+    def get_context_data(self, **kwargs):
+        context = super(QandADetail, self).get_context_data(**kwargs)
+        if self.request.user.has_perm('agony.change_qanda'):
+            context['can_edit'] = True
+        else:
+            context['can_edit'] = False
+        return context
+
     def get_object(self, queryset=None):
         obj = super(QandADetail, self).get_object()
         if obj.is_published() is False:

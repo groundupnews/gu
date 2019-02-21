@@ -25,13 +25,13 @@
                 {% if object.full_question %}
                     <div class="qanda__full_question">
                         <p class="qanda__full_question_intro">The whole question:</p>
-                        {{object.full_question|linebreaks|safe}}
+                        {{object.full_question|safe}}
                     </div>
                 {% endif %}
                 {% if object.full_answer %}
                     <div class="qanda__full_answer">
                         <p class="qanda__full_answer_intro">The long answer:</p>
-                        {{object.full_answer|linebreaks|safe}}</div>
+                        {{object.full_answer|safe}}</div>
                 {% endif %}
                 <p class="qanda__date_published">Answered on {{object.published}}</p>
                 {% with topics_all=qanda.topics.all %}

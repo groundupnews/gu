@@ -34,9 +34,14 @@ $(document).ready(function() {
 	ckeditor_switch();
     }
 
-    if ($("#id_content").length) {
-	CKEDITOR.replace( 'id_content', {
-	    customConfig: '/static/newsroom/js/ck_config.js'
-	});
+    textarea_editors = ['id_content', 'id_original_question',
+                        'id_answer_for_sender', 'id_full_question', 'id_full_answer'];
+    for (var i in textarea_editors) {
+        id_editor = '#' + textarea_editors[i];
+        if ($(id_editor).length) {
+            CKEDITOR.replace(textarea_editors[i], {
+	        customConfig: '/static/newsroom/js/ck_config.js'
+	    });
+        }
     }
 });

@@ -17,20 +17,27 @@ class QandAAdmin(admin.ModelAdmin):
         'm2m': ['topics', ],
     }
     fieldsets = (
-        ('Main', {
+        ('', {
             'classes': ('wide',),
-            'fields': ('summary_question', 'full_question',
-                       'summary_answer', 'full_answer',
-                       ('sender_name', 'sender_email', ),
-                       ('notify_sender', 'sender_notified',),
-                       'topics',
-                       'published','notes',),
+            'fields': (
+                ('sender_name', 'sender_email', ),
+                'original_question', 'answer_for_sender',
+                'summary_question', 'full_question',
+                'summary_answer', 'full_answer',
+                ('notify_sender', 'sender_notified',),
+                'topics',
+                'published','notes',
+                ('created', 'modified',),)
         }),
-        ('Advanced', {
-            'classes': ('wide',),
-            'fields': ('original_question', 'answer_for_sender',
-                       'created', 'modified', )
-        })
     )
+
+    class Media:
+        css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
+        js = [
+            '//cdn.ckeditor.com/4.11.2/standard-all/ckeditor.js',
+            '/static/newsroom/js/ck_styles.js',
+            '/static/newsroom/js/ck_init_admin.js',
+        ]
+
 
 admin.site.register(QandA, QandAAdmin)

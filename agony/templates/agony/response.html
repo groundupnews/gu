@@ -2,12 +2,12 @@
 <p>Dear {{response.sender_name}}</p>
 
 {% if response.answer_for_sender %}
-    {{response.answer_for_sender|safe|linebreaks}}
+    {{response.answer_for_sender|safe}}
 {% else %}
     {% if  response.full_answer %}
-        {{response.full_answer|safe|linebreaks}}
+        {{response.full_answer|safe}}
     {% else %}
-        {{response.summary_answer|safe|linebreaks}}
+        {{response.summary_answer|safe}}
     {% endif %}
 {% endif %}
 
@@ -16,12 +16,12 @@
 </p>
 
 {% if response.original_question %}
-    {{response.original_question|safe|linebreaks}}
+    {{response.original_question|safe}}
 {% else %}
     {% if  response.full_question %}
-        {{response.full_question|safe|linebreaks}}
+        {{response.full_question|safe}}
     {% else %}
-        {{response.summary_question|safe|linebreaks}}
+        {{response.summary_question|safe}}
     {% endif %}
 {% endif %}
 
