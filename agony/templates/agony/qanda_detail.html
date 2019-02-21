@@ -16,12 +16,17 @@
         <div class="home_container">
             <div class="home__articles">
                 <h1 class="qanda__summary_question">{{object.summary_question}}</h1>
-                <p class="qanda__summary_answer">
-                    {% if object.full_question %}
-                        The short answer:
-                    {% endif %}
-                    {{object.summary_answer}}
-                </p>
+                {% if object.summary_answer %}
+                    <div class="qanda__summary_answer">
+                        <p class="qanda__summary_answer_intro">
+                            The short answer
+                        </p>
+                        <p>
+                            {{object.summary_answer|safe}}
+                        </p>
+                    </div>
+                {% endif %}
+
                 {% if object.full_question %}
                     <div class="qanda__full_question">
                         <p class="qanda__full_question_intro">The whole question:</p>
@@ -30,7 +35,7 @@
                 {% endif %}
                 {% if object.full_answer %}
                     <div class="qanda__full_answer">
-                        <p class="qanda__full_answer_intro">The long answer:</p>
+                        <p class="qanda__full_answer_intro">The long answer</p>
                         {{object.full_answer|safe}}</div>
                 {% endif %}
                 <p class="qanda__date_published">Answered on {{object.published}}</p>

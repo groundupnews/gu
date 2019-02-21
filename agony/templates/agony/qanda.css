@@ -19,6 +19,10 @@ p {
     font-size: 1.8rem;
 }
 
+p.qanda__summary_answer_intro {
+    font-weight: bold;
+}
+
 
 .qanda__topics {
     padding-top: 20px;
