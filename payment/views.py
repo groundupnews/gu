@@ -22,12 +22,12 @@ into model.
 
 
 @login_required
-def invoice_list_new(request,
-                     year_begin=None, month_begin=None,
-                     year_end=None, month_end=None,
-                     author=None):
+def invoice_list(request,
+                 year_begin=None, month_begin=None,
+                 year_end=None, month_end=None,
+                 author=None):
 
-    now = timezone.now()
+    now = timezone.datetime.now()
     # Set staff status
     user = request.user
     if user.is_staff and user.has_perm("payment.change_invoice"):
@@ -80,15 +80,26 @@ def invoice_list_new(request,
 
 
     # Extract only between start and end dates (inclusive)
-    query = Q(date_time_processed__gte=year_month_begin) & \
-            Q(date_time_processed__lte=year_month_end)
+    if year_month_end >= now:
+        query = (Q(date_time_processed__gte=year_month_begin) & \
+                 Q(date_time_processed__lte=year_month_end)) | \
+                 Q(status__lt="4")
+    else:
+        query = (Q(date_time_processed__gte=year_month_begin) &
+                 Q(date_time_processed__lte=year_month_end) &
+                 Q(status="4"))
 
-    # # If it's not the latest period, filter out unpaid items
-    # old_period = False
-    # if year_month_end.year < now.year:
-    #     old_period = True
-    # if year_month_end.year == now.year and year_month_end.month < now.month:
-    #     old_period = True
+    # Show recently deleted records
+    if staff_view:
+        query = query | \
+                (Q(created__gte=year_month_begin) &
+                 Q(created__lte=year_month_end) &
+                 Q(status="5"))
+
+
+    if year_month_end >= now:
+        query = query | Q(status__lte="3")
+
 
     # Filter author
     if staff_view:
@@ -98,7 +109,6 @@ def invoice_list_new(request,
     else:     # Filter out unauthorised records
         author = get_object_or_404(Author, pk=user.author.pk)
         query = query &  Q(author=author)
-        query = query & (Q(status__lte="4") & Q(status__gte="0"))
 
     if author is None or author == 0:
         author_pk = 0
@@ -122,7 +132,11 @@ def invoice_list_new(request,
     total = total_paid + total_outstanding
 
     previous_month = year_month_begin - relativedelta.relativedelta(months=1)
-    next_month = year_month_end + relativedelta.relativedelta(months=1)
+
+    next_month = timezone.datetime(year_month_end.year, year_month_end.month, 1) + \
+                 relativedelta.relativedelta(months=1)
+    if next_month > now:
+        next_month = None
 
     return render(request, "payment/invoice_list.html",
                   {'invoices': invoices,

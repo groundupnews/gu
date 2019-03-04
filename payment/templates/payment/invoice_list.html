@@ -11,7 +11,7 @@
         {% if not staff_view %}
             for {{request.user.first_name}} {{request.user.last_name}}
         {% else %}
-            {% if from_date == end_date %}
+            {% if from_date.year == end_date.year and from_date.month == end_date.month %}
                 for {{from_date|date:"F Y"}}
             {% else %}
                 {% if from_date.year > 1900 %}
@@ -54,7 +54,7 @@
                 Previous: {{previous_month|date:"F Y"}}
             </a>
         {% endif %}
-        {% if next_month.year < 2100 %}
+        {% if next_month < latest_month %}
             &nbsp;|&nbsp;
             <a href="{% url "payments:invoice.list" next_month.year next_month.month next_month.year next_month.month author_pk %}">
                 Next: {{next_month|date:"F Y"}}
@@ -79,9 +79,7 @@
                     <tr>
                         <td>
                             <a href="{% url "payments:invoice.detail" invoice.author.pk invoice.invoice_num %}">
-
                                 {{invoice.short_string}}
-
                             </a>
                         </td>
                         <td>
