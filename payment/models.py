@@ -162,7 +162,7 @@ class Invoice(models.Model):
 
     def get_absolute_url(self):
         return reverse('payments:invoice.detail', args=[self.author.pk,
-                                               self.invoice_num])
+                                                        self.invoice_num])
 
     def short_string(self):
         return str(self.author.pk) + "-" + str(self.invoice_num)

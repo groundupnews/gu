@@ -1,5 +1,5 @@
 import calendar
-
+from decimal import Decimal
 from dateutil import relativedelta
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -22,100 +22,121 @@ into model.
 
 
 @login_required
-def invoice_list(request, year=None, month=None, author=None):
+def invoice_list_new(request,
+                     year_begin=None, month_begin=None,
+                     year_end=None, month_end=None,
+                     author=None):
+
+    now = timezone.now()
+    # Set staff status
     user = request.user
-    if not user.is_authenticated:
-        raise Http404
-    staff_view = False
-    year_month_begin = None
-    next_month = None
-    previous_month = None
-    total_paid_for_month = None
-    total_outstanding_for_month = None
-    total_for_month = None
-    # Staff query
-
     if user.is_staff and user.has_perm("payment.change_invoice"):
-
-        if year and int(year) == 0:
-            year = 0
-            year_month_begin = timezone.datetime(1900, 1, 1)
-
-        elif year is None or month is None:
-            year_month_begin = timezone.now()
-            year_month_begin = timezone.datetime(year_month_begin.year,
-                                                 year_month_begin.month,
-                                                 1)
-        else:
-            try:
-                year_month_begin = timezone.datetime(int(year), int(month), 1)
-            except:
-                raise Http404
-        last_day = calendar.monthrange(year_month_begin.year,
-                                       year_month_begin.month)[1]
-        if year == 0:
-            year_month_end = timezone.datetime(5000, 1, 1)
-        else:
-            year_month_end = timezone.datetime(year_month_begin.year,
-                                               year_month_begin.month,
-                                               last_day, 23, 59, 59)
-
-        if year == 0:
-            next_month = timezone.now()
-            previous_month = timezone.now() - \
-                relativedelta.relativedelta(months=1)
-            query = Q()
-            year_month_begin = None
-        else:
-            next_month = year_month_begin + \
-                relativedelta.relativedelta(months=1)
-            previous_month = year_month_begin - \
-                relativedelta.relativedelta(months=1)
-
-            query = (Q(date_time_processed__gte=year_month_begin) &
-                     Q(date_time_processed__lte=year_month_end) &
-                     Q(status="4") |
-                     (Q(created__gte=year_month_begin) &
-                     Q(created__lte=year_month_end) &
-                     Q(status="5")))
-            if year_month_begin.month == timezone.now().month and \
-               year_month_begin.year == timezone.now().year:
-                query = query | Q(status__lte="3")
-
-        if author is not None and int(author) is not 0:
-            author = get_object_or_404(Author, pk=author)
-            query = query | Q(author=author)
-        else:
-            author = None
-
-        invoices = models.Invoice.objects.filter(query)
-        total_paid_for_month = invoices.filter(status="4").aggregate(
-            amount_paid=Sum(F('amount_paid') + F('vat_paid') +
-                            F('tax_paid')))["amount_paid"]
-        total_outstanding_for_month = invoices.filter(status__lt="4").\
-            aggregate(amount_paid=Sum(F('amount_paid') + F('vat_paid') +
-                                      F('tax_paid')))["amount_paid"]
-        if total_paid_for_month is not None and \
-           total_outstanding_for_month is not None:
-            total_for_month = total_paid_for_month + \
-                              total_outstanding_for_month
         staff_view = True
-    elif user.author is not None and user.author.freelancer is True:
-        invoices = models.Invoice.objects.filter(author=user.author).\
-                   filter(status__gt="-").filter(status__lt="5")
     else:
+        staff_view = False
+
+    # Block anyone who isn't supposed to be here
+    try:
+        if not user.is_authenticated:
+            raise Http404
+        if staff_view is False:
+            if not user.author or user.author.freelancer == False:
+                raise Http404
+            if author is not None and int(author) != 0:
+                if author != user.author.pk:
+                    raise Http404
+    except: # Let's not risk any unwarranted access
         raise Http404
+
+    # Set date fields to coherent values
+    try:
+        if year_begin is None:
+            year_begin = now.year
+        else:
+            year_begin = int(year_begin)
+        if month_begin is None:
+            month_begin = now.month
+        else:
+            month_begin = int(month_begin)
+            if month_begin < 1:
+                raise Http404
+        if year_end is None:
+            year_end = now.year
+        else:
+            year_end = int(year_end)
+        if month_end is None:
+            month_end = now.month
+        else:
+            month_end = int(month_end)
+            if month_end > 12:
+                raise Http404
+        year_month_begin = timezone.datetime(year_begin, month_begin, 1)
+        year_month_end = timezone.datetime(year_end, month_end, 1)
+        last_day = calendar.monthrange(year_month_end.year,
+                                       year_month_end.month)[1]
+        year_month_end = timezone.datetime(year_end, month_end, last_day)
+    except:
+        raise Http404
+
+
+    # Extract only between start and end dates (inclusive)
+    query = Q(date_time_processed__gte=year_month_begin) & \
+            Q(date_time_processed__lte=year_month_end)
+
+    # # If it's not the latest period, filter out unpaid items
+    # old_period = False
+    # if year_month_end.year < now.year:
+    #     old_period = True
+    # if year_month_end.year == now.year and year_month_end.month < now.month:
+    #     old_period = True
+
+    # Filter author
+    if staff_view:
+        if author is not None and author != 0:
+            author = get_object_or_404(Author, pk=author)
+            query = query &  Q(author=author)
+    else:     # Filter out unauthorised records
+        author = get_object_or_404(Author, pk=user.author.pk)
+        query = query &  Q(author=author)
+        query = query & (Q(status__lte="4") & Q(status__gte="0"))
+
+    if author is None or author == 0:
+        author_pk = 0
+    else:
+        author_pk = author.pk
+
+    invoices = models.Invoice.objects.filter(query)
+
+    # Calculated values
+    total_paid = invoices.filter(status="4").aggregate(
+        amount_paid=Sum(F('amount_paid') + F('vat_paid') +
+                    F('tax_paid')))["amount_paid"]
+    total_outstanding = invoices.filter(status__lt="4").\
+            aggregate(amount_paid=Sum(F('amount_paid') + F('vat_paid') +
+                                    F('tax_paid')))["amount_paid"]
+    if total_paid is None:
+        total_paid = Decimal(0.0)
+    if total_outstanding is None:
+        total_outstanding = Decimal(0.0)
+
+    total = total_paid + total_outstanding
+
+    previous_month = year_month_begin - relativedelta.relativedelta(months=1)
+    next_month = year_month_end + relativedelta.relativedelta(months=1)
+
     return render(request, "payment/invoice_list.html",
                   {'invoices': invoices,
-                   'total_paid_for_month': total_paid_for_month,
-                   'total_outstanding_for_month': total_outstanding_for_month,
-                   'total_for_month': total_for_month,
-                   'this_month': year_month_begin,
+                   'total_paid': total_paid,
+                   'total_outstanding': total_outstanding,
+                   'total': total,
+                   'from_date': year_month_begin,
+                   'end_date' : year_month_end,
                    'next_month': next_month,
                    'previous_month': previous_month,
+                   'latest_month': now,
                    'author': author,
+                   'author_pk': author_pk,
                    'staff_view': staff_view})
-
 
 @login_required
 def invoice_detail(request, author_pk, invoice_num, print_view=False):
