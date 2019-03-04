@@ -8,25 +8,21 @@
 {% block content %}
 
     <h1>Invoices
-        {% if not staff_view %}
-            for {{request.user.first_name}} {{request.user.last_name}}
+        {% if from_date.year == end_date.year and from_date.month == end_date.month %}
+            for {{from_date|date:"F Y"}}
         {% else %}
-            {% if from_date.year == end_date.year and from_date.month == end_date.month %}
-                for {{from_date|date:"F Y"}}
-            {% else %}
-                {% if from_date.year > 1900 %}
-                    from {{from_date|date:"F Y"}}
-                {% endif %}
-                {% if end_date.year < 5000 %}
-                    to {{end_date|date:"F Y"}}
-                {% endif %}
-                {% if from_date.year == 1900 and end_date.year == 5000 %}
-                    for all time
-                {% endif %}
+            {% if from_date.year > 1900 %}
+                from {{from_date|date:"F Y"}}
             {% endif %}
-            {% if author %}
-                for  {{author}}
+            {% if end_date.year < 5000 %}
+                to {{end_date|date:"F Y"}}
             {% endif %}
+            {% if from_date.year == 1900 and end_date.year == 5000 %}
+                for all time
+            {% endif %}
+        {% endif %}
+        {% if author %}
+            for  {{author}}
         {% endif %}
     </h1>
     <p>
