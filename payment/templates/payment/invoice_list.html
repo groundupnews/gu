@@ -7,28 +7,43 @@
 
 {% block content %}
 
-    <h1>Invoices
-        {% if from_date.year == end_date.year and from_date.month == end_date.month %}
-            for {{from_date|date:"F Y"}}
-        {% else %}
-            {% if from_date.year > 1900 %}
-                from {{from_date|date:"F Y"}}
-            {% endif %}
-            {% if end_date.year < 5000 %}
-                to {{end_date|date:"F Y"}}
-            {% endif %}
-            {% if from_date.year == 1900 and end_date.year == 5000 %}
-                for all time
-            {% endif %}
-        {% endif %}
+    <p style="margin-top: 18px;">Invoices
+        from
+        <select id="month-from">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select id="year-from"></select>
+        to
+        <select id="month-to">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select id="year-to"></select>
         {% if author %}
             for  {{author}}
         {% endif %}
-    </h1>
-    <p>
-        Paid: R{{total_paid|floatformat:"2"|intcomma}}
-        | Outstanding: R{{total_outstanding|floatformat:"2"|intcomma}}
-        | Total: R{{total|floatformat:"2"|intcomma}}
+        <button id="date-filter" onclick="filterDate()" type="button">Filter</button>
     </p>
     <p>
         <a href="{% url "payments:invoice.list" 1900 1 5000 12 author_pk %}">
@@ -42,7 +57,7 @@
             &nbsp;|&nbsp;
         {% endif %}
         <a href="{% url "payments:invoice.list" latest_month.year latest_month.month latest_month.year latest_month.month author_pk %}">
-            Latest month: {{latest_month|date:"F Y"}}
+            Latest: {{latest_month|date:"F Y"}}
         </a>
         {% if previous_month.year > 2012 %}
             &nbsp;|&nbsp;
@@ -56,6 +71,11 @@
                 Next: {{next_month|date:"F Y"}}
             </a>
         {% endif %}
+    </p>
+    <p>
+        Paid: R{{total_paid|floatformat:"2"|intcomma}}
+        | Outstanding: R{{total_outstanding|floatformat:"2"|intcomma}}
+        | Total: R{{total|floatformat:"2"|intcomma}}
     </p>
     <table class="table" id="invoice-table">
         <tr>
@@ -103,5 +123,54 @@
             {% endwith %}
         {% endfor %}
     </table>
+
+    <script>
+     var current_year = new Date().getFullYear();
+     for(var i=2012; i<=current_year; i++){
+         var select_year_from = document.getElementById("year-from");
+         var option_from = document.createElement("OPTION");
+	 select_year_from.options.add(option_from);
+	 option_from.text = i;
+	 option_from.value = i;
+         if (i == {{from_date.year}}) {
+             option_from.selected = true;
+         }
+         var select_year_to = document.getElementById("year-to");
+         var option_to = document.createElement("OPTION");
+	 select_year_to.options.add(option_to);
+	 option_to.text = i;
+	 option_to.value = i;
+         if (i == {{from_date.year}} || (i == 2012 && {{from_date.year}} < 2012)) {
+             option_from.selected = true;
+         }
+         if (i == {{end_date.year}}  ||
+             (i == current_year && {{end_date.year}} > current_year)) {
+             option_to.selected = true;
+         }
+     }
+     document.getElementById('month-from').
+              getElementsByTagName('option')[{{from_date.month}} - 1].selected = 'selected'
+     document.getElementById('month-to').
+              getElementsByTagName('option')[{{end_date.month}} - 1].selected = 'selected'
+
+     var filterDate = function()
+     {
+         var e = document.getElementById("year-from");
+         var year_from = e.value;
+         var e = document.getElementById("month-from");
+         var month_from = e.value;
+         var e = document.getElementById("year-to");
+         var year_to = e.value;
+         var e = document.getElementById("month-to");
+         var month_to = e.value;
+
+         url = "{% url 'payments:invoice.list' %}" +
+               year_from + "/" + month_from + "/" +
+               year_to + "/" + month_to + '/' +
+               {{author_pk}};
+         location.href = url;
+     }
+    </script>
+
 
 {% endblock %}
