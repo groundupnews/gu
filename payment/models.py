@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models import Max
 from django.utils import timezone
 from filebrowser.fields import FileBrowseField
-from newsroom.models import Article, Author
+from newsroom.models import Article, Author, LEVEL_CHOICES
 
 INVOICE_STATUS_CHOICES = (
     ("-", "Invoice being prepared by editor"),
@@ -30,6 +30,33 @@ COMMISSION_DESCRIPTION_CHOICES = (
     ("Sundry", "Sundry"),
 )
 
+RATES = {
+    'primary_photo': 280.0,
+    'inside_photo': 140.0,
+    'opinion': 0.0,
+    'brief': 300.0,
+    'law': 850.0,
+    'news': 850.0,
+    'science': 1500.0,
+    'simple_feature': 1500.0,
+    'complex_feature': 2200.0
+}
+
+BONUSES = [  0,   0,   0,   0,   500, 500, 500, 500, 500, 500,
+             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+             500, 500, 500, 500, 500, 500, 500, 500, 500, 500 ]
+
+LEVELS = {
+    'intern': 0.5,
+    'standard': 1,
+    'senior': 1.35,
+    'experienced': 1.7,
+    'exceptional': 2.2
+}
 
 class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -58,6 +85,7 @@ def set_corresponding_vals(fromobj, to):
     to.tax_no = fromobj.tax_no
     to.tax_percent = fromobj.tax_percent
     to.vat = fromobj.vat
+    to.level = fromobj.level
 
 
 class Invoice(models.Model):
@@ -104,6 +132,8 @@ class Invoice(models.Model):
                               verbose_name="VAT %",
                               help_text="If you are VAT registered "
                               "set this to 15 else leave at 0")
+    level = models.CharField(max_length=15, choices=LEVEL_CHOICES,
+                             default='standard')
     ####
     # paid = models.BooleanField(default=False)
     amount_paid = models.DecimalField(max_digits=8,
@@ -260,6 +290,81 @@ class Commission(models.Model):
         if self.fund is not None and self.date_approved is None:
             self.date_approved = timezone.now()
         super(Commission, self).save(*args, **kwargs)
+
+    def estimate_payment(self):
+        article = experience = inside_photos = bonus = total = primary_photo = 0.0
+        shared = 1.0
+
+        estimate = {
+            'article': 0.0,
+            'experience': 0.00,
+            'primary photo': 0.00,
+            'inside photos': 0.00,
+            'shared': 0.00,
+            'bonus': 0.00,
+            'total': 0.00
+        }
+
+        if self.article and self.description == "Article author":
+            if self.article.author_01 == self.invoice.author or \
+               self.article.author_02 == self.invoice.author or \
+               self.article.author_03 == self.invoice.author or \
+               self.article.author_04 == self.invoice.author or \
+               self.article.author_04 == self.invoice.author:
+
+                try:
+                    experience = LEVELS[self.invoice.author.level]
+                except:
+                    experience = 1.0
+
+                if self.article.author_02 is None:
+                    shared = 1.0
+                elif self.article.author_03 is None:
+                    shared = 2.0
+                elif self.article.author_04 is None:
+                    shared = 3.0
+                elif self.article.author_05 is None:
+                    shared = 4.0
+                else:
+                    shared = 5.0
+
+                if self.article.primary_image:
+                    primary_photo = RATES['primary_photo']
+
+                if self.article.category.name == "Brief":
+                    article = RATES["brief"]
+                elif self.article.category.name == "Feature":
+                    article = RATES["complex_feature"]
+                elif self.article.category.name == "Opinion":
+                    article = RATES["opinion"]
+                else:
+                    article = RATES["news"]
+
+                num_images = self.article.body.count("<img ")
+                inside_photos = num_images * RATES["inside_photo"]
+
+                month_start = timezone.datetime(self.created.year, self.created.month, 1)
+
+                payments_this_month = Commission.objects.filter(created__gte=month_start). \
+                                      filter(created__lt=self.created).\
+                                      filter(invoice__author=self.invoice.author).\
+                                      filter(invoice__status="4").\
+                                      filter(description="Article author").count()
+                bonus = BONUSES[payments_this_month]
+                total = (article * experience + primary_photo + inside_photos) / shared \
+                        + bonus
+                estimate = {
+                    'article': article,
+                    'experience': experience,
+                    'primary_photo': primary_photo,
+                    'inside_photos': inside_photos,
+                    'shared': shared,
+                    'bonus': bonus,
+                    'total': total
+                }
+
+
+        return estimate
 
     def calc_payment(self):
         vat = Decimal(0.00)

@@ -35,11 +35,32 @@ BYLINE_CHOICES = (
     ("TP", "Text By [First Author] Photos By [Second Author]"),
 )
 
+LEVEL_CHOICES = (
+    ("intern", "Intern"),
+    ("standard", "Standard"),
+    ("senior", "Senior"),
+    ("experienced", "Experienced"),
+    ("exceptional", "Exceptional"),
+)
+
+# Used to prevent disaster on the template fields
+DETAIL_TEMPLATE_CHOICES = (
+    ("newsroom/article_detail.html", "Standard"),
+)
+
+SUMMARY_TEMPLATE_CHOICES = (
+    ("newsroom/article_summary.html", "Standard"),
+    ("newsroom/photo_summary.html", "Great Photo"),
+    ("newsroom/text_summary.html", "Text only"),
+)
+
 
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200)
     freelancer = models.BooleanField(default=False)
+    level = models.CharField(max_length=15, choices=LEVEL_CHOICES,
+                             default='standard')
     email = models.EmailField(blank=True)
     title = models.CharField(max_length=20, blank=True)
     telephone = models.CharField(max_length=200, blank=True)
@@ -232,19 +253,6 @@ class Category(models.Model):
         verbose_name = "category"
         verbose_name_plural = "categories"
         ordering = ['name', ]
-
-
-# Used to prevent disaster on the template fields
-DETAIL_TEMPLATE_CHOICES = (
-    ("newsroom/article_detail.html", "Standard"),
-)
-
-SUMMARY_TEMPLATE_CHOICES = (
-    ("newsroom/article_summary.html", "Standard"),
-    ("newsroom/photo_summary.html", "Great Photo"),
-    ("newsroom/text_summary.html", "Text only"),
-)
-
 
 class ArticleQuerySet(models.QuerySet):
 

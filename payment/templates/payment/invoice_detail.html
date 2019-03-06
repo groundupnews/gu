@@ -19,6 +19,20 @@
     {% else %}
         {{block.super}}
     {% endif %}
+    <style>
+     .commission-estimate {
+         font-size: 75%;
+         text-align: left;
+     }
+     ul.errorlist {
+         list-style-type: none;
+         padding: 0;
+         font-size: 75%;
+     }
+     .errorlist li {
+         color: red;
+     }
+    </style>
 {% endblock %}
 
 {% block admin-area %}

@@ -95,11 +95,8 @@ def invoice_list(request,
                 (Q(created__gte=year_month_begin) &
                  Q(created__lte=year_month_end) &
                  Q(status="5"))
-
-
-    if year_month_end >= now:
-        query = query | Q(status__lte="3")
-
+    else:
+        query = query & Q(status__gt="-")
 
     # Filter author
     if staff_view:
@@ -172,6 +169,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         staff_view = False
 
     CommissionFormSet = modelformset_factory(models.Commission,
+                                             form=forms.CommissionFormset,
                                              fields=('commission_due',
                                                      'taxable',
                                                      'vatable',
@@ -230,8 +228,14 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             if user.has_perm("payment.change_commission"):
                 commissionformset = CommissionFormSet(request.POST,
                                                       request.FILES)
+                can_edit_commissions = True
                 if commissionformset.is_valid():
                     commissionformset.save()
+                else:
+                    messages.add_message(request, messages.ERROR,
+                                         "Please correct the commissions")
+            else:
+                can_edit_commissions = False
         else:
             messages.add_message(request, messages.ERROR,
                                  "Please make corrections")
@@ -244,9 +248,6 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                 raise Http404
             form = forms.InvoiceForm(request.POST or None, instance=invoice)
 
-    if invoice.status == "0" or invoice.status == "1":
-        can_edit = True
-
     # Get commissions
     formset = None
     can_edit_commissions = False
@@ -257,10 +258,13 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             can_edit_commissions = True
             formset = CommissionFormSet(queryset=commissions)
     else:
-        commissions = models.Commission.objects.for_authors().\
-                      filter(invoice=invoice)
+        commissions = models.Commission.objects.for_authors().filter(invoice=invoice)
+
     if formset:
-        commissionformset = zip(commissions, formset)
+        if request.method != "POST":
+            commissionformset = zip(commissions, formset)
+        else:
+            commissionformset = zip(commissions, commissionformset)
     else:
         commissionformset = zip(commissions, range(len(commissions)))
 
@@ -268,6 +272,11 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         can_edit = False
         can_edit_commissions = False
         staff_view = False
+    else:
+        if invoice.status == "0" or invoice.status == "1":
+            can_edit = True
+
+
 
     return render(request, "payment/invoice_detail.html",
                   {'invoice': invoice,
