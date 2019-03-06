@@ -72,11 +72,12 @@
                                     {% endif %}
                                     =
                                     {% if  commission.commission_due == 0.00 %}
-                                        <button class="commission-estimate-button"
-                                                value=
-                                                "{{commission.estimate_payment.total}}"
-                                                onclick=
-                                                "fillDue(this, {{forloop.counter0}})">
+                                        <button type="button"
+                                            class="commission-estimate-button"
+                                            value=
+                                            "{{commission.estimate_payment.total}}"
+                                            onclick=
+                                            "fillDue(this, {{forloop.counter0}})">
                                             {{commission.estimate_payment.total|floatformat:"2"|intcomma}}
                                         </button>
                                     {% else %}
