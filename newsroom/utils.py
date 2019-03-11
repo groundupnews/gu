@@ -198,16 +198,23 @@ def linkImages(soup):
                                             "leave" in i["class"])]
         # Exclude if not a versioned image
         images = [i for i in images if i.has_attr("src") and
-                  i["src"].find("_versions/") > 0 and
-                  i["src"].find("_extra_large") > 0]
+                  ("_versions" in i["src"] and
+                  ("_extra_large" in i["src"] or "_huge" in i["src"]))]
         lenVersions = len("_versions/")
-        lenExtra = len("_extra_large")
+        extra_large_len = len("_extra_large")
+        huge_len = len("_huge")
         for img in images:
             url = img["src"]
             vBegin = url.find("_versions/")
             vEnd = vBegin + lenVersions
+
             eBegin = url.find("_extra_large")
-            eEnd = eBegin + lenExtra
+            if eBegin > -1:
+                eEnd = eBegin + extra_large_len
+            else:
+                eBegin = url.find("_huge")
+                eEnd = eBegin + huge_len
+
             urlnew = url[:vBegin] + "uploads/" + url[vEnd:eBegin] + url[eEnd:]
             if img.parent.name == 'a':
                 img.parent["href"] = urlnew
@@ -220,7 +227,7 @@ def linkImages(soup):
                 link["class"] = "bigger-image"
                 img.wrap(link)
         return soup
-    # This code is not important enough to be worth crashing the sav on
+    # This code is not important enough to be worth crashing the site on
     # an exception
     except:
         return soup_copy

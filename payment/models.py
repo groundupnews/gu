@@ -328,9 +328,6 @@ class Commission(models.Model):
                 else:
                     shared = 5.0
 
-                if self.article.primary_image:
-                    primary_photo = RATES['primary_photo']
-
                 if self.article.category.name == "Brief":
                     article = RATES["brief"]
                 elif self.article.category.name == "Feature":
@@ -339,6 +336,9 @@ class Commission(models.Model):
                     article = RATES["opinion"]
                 else:
                     article = RATES["news"]
+
+                if self.article.primary_image:
+                    primary_photo = RATES['primary_photo']
 
                 num_images = self.article.body.count("<img ")
                 inside_photos = num_images * RATES["inside_photo"]
