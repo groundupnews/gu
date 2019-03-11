@@ -269,11 +269,13 @@ FILEBROWSER_VERSIONS = {
     'large': {'verbose_name': 'Large',
               'width': 680, 'height': '', 'opts': ''},
     'extra_large': {'verbose_name': 'Extra large',
-              'width': 750, 'height': '', 'opts': ''},
+                    'width': 750, 'height': '', 'opts': ''},
+    'huge': {'verbose_name': 'huge',
+              'width': 882, 'height': '', 'opts': ''},
 }
 
 FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 'small', 'medium', 'big',
-                              'large', 'extra_large']
+                              'large', 'extra_large', 'huge', ]
 
 GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 
