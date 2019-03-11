@@ -270,7 +270,7 @@ FILEBROWSER_VERSIONS = {
               'width': 680, 'height': '', 'opts': ''},
     'extra_large': {'verbose_name': 'Extra large',
                     'width': 750, 'height': '', 'opts': ''},
-    'huge': {'verbose_name': 'huge',
+    'huge': {'verbose_name': 'Huge',
               'width': 882, 'height': '', 'opts': ''},
 }
 
