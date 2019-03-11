@@ -130,9 +130,15 @@ class Author(models.Model):
         return reverse('newsroom:author.detail', args=[self.pk, ])
 
     def save(self, *args, **kwargs):
+        try:
+            self.user
+        except User.DoesNotExist:
+            self.user = None
+
         if self.pk is None or self.user is None:
             pwd = None
             site = Site.objects.get_current()
+
             if self.user is None:
                 pwd = utils.generate_pwd()
                 username = (self.first_names +

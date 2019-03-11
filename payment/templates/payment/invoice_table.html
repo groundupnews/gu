@@ -50,13 +50,18 @@
                             {{ form.commission_due }}
                             {% if commission.estimate_payment.total %}
                                 <div class="commission-estimate">
-                                    {{commission.estimate_payment.article}} for article
-                                    {% if commission.estimate_payment.experience != 1 %}
-                                        x {{commission.estimate_payment.experience}}
-                                        for experience
+                                    {% if commission.estimate_payment.article %}
+                                        {{commission.estimate_payment.article}} for article
+                                        {% if commission.estimate_payment.experience != 1 %}
+                                            x {{commission.estimate_payment.experience}}
+                                            for experience
+                                        {% endif %}
                                     {% endif %}
                                     {% if commission.estimate_payment.primary_photo %}
-                                        + {{commission.estimate_payment.primary_photo}}
+                                        {% if commission.estimate_payment.article %}
+                                            +
+                                        {% endif %}
+                                        {{commission.estimate_payment.primary_photo}}
                                         for primary photo
                                     {% endif %}
                                     {% if commission.estimate_payment.inside_photos %}

@@ -291,78 +291,139 @@ class Commission(models.Model):
             self.date_approved = timezone.now()
         super(Commission, self).save(*args, **kwargs)
 
-    def estimate_payment(self):
-        article = experience = inside_photos = bonus = total = primary_photo = 0.0
-        shared = 1.0
 
+    def estimate_bonus(self):
+        month_start = timezone.datetime(self.created.year, self.created.month, 1)
+        payments_this_month = Commission.objects.filter(created__gte=month_start). \
+                              filter(created__lt=self.created).\
+                              filter(invoice__author=self.invoice.author).\
+                              filter(invoice__status="4").\
+                              filter(description="Article author").count()
+        return BONUSES[payments_this_month]
+
+    def estimate_payment_st(self, estimate):
+        try:
+            experience = LEVELS[self.invoice.author.level]
+        except:
+            experience = 1.0
+
+        estimate['experience'] = experience
+
+        if self.article.author_02 is None:
+            shared = 1.0
+        elif self.article.author_03 is None:
+            shared = 2.0
+        elif self.article.author_04 is None:
+            shared = 3.0
+        elif self.article.author_05 is None:
+            shared = 4.0
+        else:
+            shared = 5.0
+
+        estimate['shared'] = shared
+
+        if self.article.category.name == "Brief":
+            article = RATES["brief"]
+        elif self.article.category.name == "Feature":
+            article = RATES["complex_feature"]
+        elif self.article.category.name == "Opinion":
+            article = RATES["opinion"]
+        else:
+            article = RATES["news"]
+
+        estimate['article'] = article
+
+        if self.article.category.name.lower() == "photo essay":
+            primary_photo = RATES['primary_photo']
+        else:
+            if self.article.primary_image and \
+               (str(self.invoice.author).lower() in
+                self.article.primary_image_caption.lower()):
+                primary_photo = RATES['primary_photo']
+            else:
+                primary_photo = 0.0
+
+        estimate['primary_photo'] = primary_photo
+
+        num_images = self.article.body.count("<img ")
+        estimate['inside_photos'] = num_images * RATES["inside_photo"]
+        estimate['bonus'] = self.estimate_bonus()
+
+        return estimate
+
+    def estimate_payment_writer(self, estimate):
+        try:
+            experience = LEVELS[self.invoice.author.level]
+        except:
+            experience = 1.0
+
+        estimate['experience'] = experience
+
+        if self.article.category.name == "Brief":
+            article = RATES["brief"]
+        elif self.article.category.name == "Feature":
+            article = RATES["complex_feature"]
+        elif self.article.category.name == "Opinion":
+            article = RATES["opinion"]
+        else:
+            article = RATES["news"]
+
+        estimate['article'] = article
+        estimate['bonus'] = self.estimate_bonus()
+
+        return estimate
+
+    def estimate_payment_photographer(self, estimate):
+        estimate['primary_photo'] = RATES['primary_photo']
+        num_images = self.article.body.count("<img ")
+        estimate['inside_photos'] = num_images * RATES["inside_photo"]
+        return estimate
+
+    def estimate_payment_tp(self, estimate):
+        estimate['shared'] = 1
+        if not (self.article.author_01 and self.article.author_02):
+            return estimate
+        if self.invoice.author == self.article.author_01:
+            return self.estimate_payment_writer(estimate)
+        elif self.invoice.author == self.article.author_02:
+            return self.estimate_payment_photographer(estimate)
+        else:
+            return estimate
+
+
+
+    def estimate_payment(self):
         estimate = {
             'article': 0.0,
             'experience': 0.00,
-            'primary photo': 0.00,
-            'inside photos': 0.00,
+            'primary_photo': 0.00,
+            'inside_photos': 0.00,
             'shared': 0.00,
             'bonus': 0.00,
             'total': 0.00
         }
 
-        if self.article and self.description == "Article author":
-            if self.article.author_01 == self.invoice.author or \
-               self.article.author_02 == self.invoice.author or \
-               self.article.author_03 == self.invoice.author or \
-               self.article.author_04 == self.invoice.author or \
-               self.article.author_04 == self.invoice.author:
+        # This code is not so important that it should ever crash the site
+        try:
+            if self.article and self.description == "Article author":
 
-                try:
-                    experience = LEVELS[self.invoice.author.level]
-                except:
-                    experience = 1.0
+                if self.article.author_01 == self.invoice.author or \
+                   self.article.author_02 == self.invoice.author or \
+                   self.article.author_03 == self.invoice.author or \
+                   self.article.author_04 == self.invoice.author or \
+                   self.article.author_05 == self.invoice.author:
 
-                if self.article.author_02 is None:
-                    shared = 1.0
-                elif self.article.author_03 is None:
-                    shared = 2.0
-                elif self.article.author_04 is None:
-                    shared = 3.0
-                elif self.article.author_05 is None:
-                    shared = 4.0
-                else:
-                    shared = 5.0
+                    if self.article.byline_style == "ST":
+                        estimate = self.estimate_payment_st(estimate)
+                    elif self.article.byline_style == "TP":
+                        estimate = self.estimate_payment_tp(estimate)
+        except Exception as e:
+            pass
 
-                if self.article.category.name == "Brief":
-                    article = RATES["brief"]
-                elif self.article.category.name == "Feature":
-                    article = RATES["complex_feature"]
-                elif self.article.category.name == "Opinion":
-                    article = RATES["opinion"]
-                else:
-                    article = RATES["news"]
-
-                if self.article.primary_image:
-                    primary_photo = RATES['primary_photo']
-
-                num_images = self.article.body.count("<img ")
-                inside_photos = num_images * RATES["inside_photo"]
-
-                month_start = timezone.datetime(self.created.year, self.created.month, 1)
-
-                payments_this_month = Commission.objects.filter(created__gte=month_start). \
-                                      filter(created__lt=self.created).\
-                                      filter(invoice__author=self.invoice.author).\
-                                      filter(invoice__status="4").\
-                                      filter(description="Article author").count()
-                bonus = BONUSES[payments_this_month]
-                total = (article * experience + primary_photo + inside_photos) / shared \
-                        + bonus
-                estimate = {
-                    'article': article,
-                    'experience': experience,
-                    'primary_photo': primary_photo,
-                    'inside_photos': inside_photos,
-                    'shared': shared,
-                    'bonus': bonus,
-                    'total': total
-                }
-
+        estimate['total'] = (estimate['article'] * estimate['experience'] +
+                             estimate['primary_photo'] +
+                             estimate['inside_photos']) / estimate['shared'] + \
+                             estimate['bonus']
 
         return estimate
 
