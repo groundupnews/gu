@@ -310,7 +310,7 @@ class Commission(models.Model):
         estimate['experience'] = experience
 
 
-        if self.article_author_01 is None:
+        if self.article.author_01 is None:
             shared = 1.0
         elif self.article.author_02 is None:
             shared = 1.0
@@ -427,7 +427,6 @@ class Commission(models.Model):
                              estimate['primary_photo'] +
                              estimate['inside_photos']) / estimate['shared'] + \
                              estimate['bonus']
-
         return estimate
 
     def calc_payment(self):

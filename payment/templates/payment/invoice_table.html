@@ -48,48 +48,50 @@
                         <div class="commission-due-input">
                             {{ form.errors.commission_due }}
                             {{ form.commission_due }}
-                            {% if commission.estimate_payment.total %}
-                                <div class="commission-estimate">
-                                    {% if commission.estimate_payment.article %}
-                                        {{commission.estimate_payment.article}} for article
-                                        {% if commission.estimate_payment.experience != 1 %}
-                                            x {{commission.estimate_payment.experience}}
-                                            for experience
+                            {% with commission.estimate_payment as estimate %}
+                                {% if estimate.total %}
+                                    <div class="commission-estimate">
+                                        {% if estimate.article %}
+                                            {{estimate.article}} for article
+                                            {% if estimate.experience != 1 %}
+                                                x {{estimate.experience}}
+                                                for experience
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
-                                    {% if commission.estimate_payment.primary_photo %}
-                                        {% if commission.estimate_payment.article %}
-                                            +
+                                        {% if estimate.primary_photo %}
+                                            {% if estimate.article %}
+                                                +
+                                            {% endif %}
+                                            {{estimate.primary_photo}}
+                                            for primary photo
                                         {% endif %}
-                                        {{commission.estimate_payment.primary_photo}}
-                                        for primary photo
-                                    {% endif %}
-                                    {% if commission.estimate_payment.inside_photos %}
-                                        + {{commission.estimate_payment.inside_photos}}
-                                        for photos in the article
-                                    {% endif %}
-                                    {% if commission.estimate_payment.shared > 1 %}
-                                        shared by {{commission.estimate_payment.shared|floatformat:"0"}}
-                                        authors
-                                    {% endif %}
-                                    {% if commission.estimate_payment.bonus %}
-                                        + {{commission.estimate_payment.bonus}} bonus
-                                    {% endif %}
-                                    =
-                                    {% if  commission.commission_due == 0.00 %}
-                                        <button type="button"
-                                            class="commission-estimate-button"
-                                            value=
-                                            "{{commission.estimate_payment.total}}"
-                                            onclick=
-                                            "fillDue(this, {{forloop.counter0}})">
-                                            {{commission.estimate_payment.total|floatformat:"2"|intcomma}}
-                                        </button>
-                                    {% else %}
-                                        {{commission.estimate_payment.total|floatformat:"2"|intcomma}}
-                                    {% endif %}
-                                </div>
-                            {% endif %}
+                                        {% if estimate.inside_photos %}
+                                            + {{estimate.inside_photos}}
+                                            for photos in the article
+                                        {% endif %}
+                                        {% if estimate.shared > 1 %}
+                                            shared by {{estimate.shared|floatformat:"0"}}
+                                            authors
+                                        {% endif %}
+                                        {% if estimate.bonus %}
+                                            + {{estimate.bonus}} bonus
+                                        {% endif %}
+                                        =
+                                        {% if  commission.commission_due == 0.00 %}
+                                            <button type="button"
+                                                    class="commission-estimate-button"
+                                                    value=
+                                                    "{{estimate.total}}"
+                                                    onclick=
+                                                    "fillDue(this, {{forloop.counter0}})">
+                                                {{estimate.total|floatformat:"2"|intcomma}}
+                                            </button>
+                                        {% else %}
+                                            {{estimate.total|floatformat:"2"|intcomma}}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
                         </div>
                     {% else %}
                         {{payment.3|floatformat:0}}
