@@ -1,6 +1,7 @@
 from django import forms
 
 from . import models, utils
+from newsroom.settings import SEARCH_MAXLEN
 
 
 SEARCH_TYPES=[('article', 'Articles'),
@@ -32,9 +33,13 @@ class AdvancedSearchForm(forms.Form):
                         (20, '20 Results Per Page'),
                         (50, '50 Results Per Page'),
                         (100, '100 Results Per Page')]
-    
+
     adv_search = forms.CharField(label="Search Term...",
-                                 widget=forms.TextInput(attrs={'placeholder': 'Search...'}),
+                                 widget=forms.TextInput(
+                                     attrs={
+                                         'placeholder': 'Search...',
+                                         'maxlength': SEARCH_MAXLEN,
+                                     }),
                                  required=False)
     search_type = forms.ChoiceField(choices=SEARCH_TYPES,
                                     widget=forms.RadioSelect(),

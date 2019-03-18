@@ -2,25 +2,27 @@
       id="search-form"
       method="get"
       action="/advanced_search/">
-  <div class="header__search__input-box">
-    {% if gallery %}
-      <input type="text"
-             class="form-control header__search__input"
-             name="adv_search"
-             id="id_q"
-	     placeholder="Search photos"
-             value="{{query|default:""}}" />
-      <input type="hidden" name="search_type" value="image" />
-      <input type="hidden" name="is_simple" value="true" />
-    {% else %}
-      <input type="text"
-             class="form-control header__search__input"
-             name="adv_search"
-             id="id_q"
-	     placeholder="Search articles"
-             value="{{query|default:""}}" />
-      <input type="hidden" name="search_type" value="article" />
-      <input type="hidden" name="is_simple" value="true" />
+    <div class="header__search__input-box">
+        {% if gallery %}
+            <input type="text"
+                   maxlength="{{SEARCH_MAXLEN}}"
+                   class="form-control header__search__input"
+                   name="adv_search"
+                   id="id_q"
+	           placeholder="Search photos"
+                   value="{{query|default:""}}" />
+            <input type="hidden" name="search_type" value="image" />
+            <input type="hidden" name="is_simple" value="true" />
+        {% else %}
+            <input type="text"
+                   maxlength="{{SEARCH_MAXLEN}}"
+                   class="form-control header__search__input"
+                   name="adv_search"
+                   id="id_q"
+	           placeholder="Search articles"
+                   value="{{query|default:""}}" />
+        <input type="hidden" name="search_type" value="article" />
+        <input type="hidden" name="is_simple" value="true" />
     {% endif %}
     <button id="search-button" class="header__search-button">
       <i class="fas fa-search"></i>

@@ -2,8 +2,10 @@ from django.db.models import Q, F, ExpressionWrapper, Value
 from django.db.models import IntegerField, CharField, DateTimeField
 from django.db.models.functions import Concat
 from newsroom.models import Article, Author, Category, Topic
+from newsroom.settings import SEARCH_MAXLEN
 from gallery.models import Photograph
 from django.utils import timezone
+
 
 from django.contrib.postgres.search import SearchVector, SearchRank, \
     SearchQuery
@@ -54,7 +56,7 @@ def searchArticles(search_string=None,
 
     query = Q()
     if search_string:
-        list_of_terms = parseSearchString(search_string[:30])
+        list_of_terms = parseSearchString(search_string[:SEARCH_MAXLEN])
         for term in list_of_terms:
             if term not in ignored_words:
                 query = (query & (Q(title__icontains=term) |
@@ -114,7 +116,7 @@ def searchPhotos(search_string=None,
     query = Q()
 
     if search_string:
-        list_of_terms = parseSearchString(search_string[:30])
+        list_of_terms = parseSearchString(search_string[:SEARCH_MAXLEN])
         for term in list_of_terms:
             if term not in ignored_words:
                 query = (query & \

@@ -10,4 +10,5 @@ def newsroom_template_variables(request):
             'GOOGLE_ADS': settings.GOOGLE_ADS,
             'AMAZON_ADS': settings.AMAZON_ADS,
             'AB_TEST_ADS': settings.AB_TEST_ADS,
-            'AD_OPTIONS': random.randint(0, 1)}
+            'AD_OPTIONS': random.randint(0, 1),
+            'SEARCH_MAXLEN': newsroom_settings.SEARCH_MAXLEN}
