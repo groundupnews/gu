@@ -62,14 +62,15 @@ class InvoiceForm(InvoiceStaffForm):
 
 
 class CommissionForm(ModelForm):
-    author = AutoCompleteSelectField("authors", required=False, help_text=None)
+    author = AutoCompleteSelectField("authors", required=False,
+                                     help_text=None, label="Payee")
     article = AutoCompleteSelectField('articles', required=False,
                                       help_text=None)
 
     def clean_author(self):
         data = self.cleaned_data['author']
         if data is None:
-            raise forms.ValidationError("Please enter an author")
+            raise forms.ValidationError("Please enter a user")
         return data
 
     class Meta:
