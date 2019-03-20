@@ -33,43 +33,44 @@
             </table>
         </form>
     </div>
-    <div>
-        <table cellpadding="10" class="table table-bordered table-condensed">
-            <tr>
-                <th>
-                    Invoice
-                </th>
-                <th>
-                    Author
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Fund
-                </th>
-                <th>
-                    Date approved
-                </th>
-                <th style="text-align:right">
-                    Amount<br />
-                    {{total_amount|floatformat:"2"|intcomma}}
-                </th>
-                <th>
-                    PAYE<br />
-                    {{total_paye|floatformat:"2"|intcomma}}
-                </th style="text-align:right">
-                <th style="text-align:right">
-                    VAT<br />
-                    {{total_vat|floatformat:"2"|intcomma}}
-                </th>
-                <th style="text-align:right">
-                    Due<br />
-                    {{total_due|floatformat:"2"|intcomma}}
-                </th>
-            </tr>
+    {% if commissions %}
+        <div>
+            <p>{{len_commissions}} entries</p>
+            <table cellpadding="10" class="table table-bordered table-condensed">
+                <tr>
+                    <th>
+                        Invoice
+                    </th>
+                    <th>
+                        Author
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Fund
+                    </th>
+                    <th>
+                        Date approved
+                    </th>
+                    <th style="text-align:right">
+                        Amount<br />
+                        {{total_amount|floatformat:"2"|intcomma}}
+                    </th>
+                    <th style="text-align:right">
+                        PAYE<br />
+                        {{total_paye|floatformat:"2"|intcomma}}
+                    </th style="text-align:right">
+                    <th style="text-align:right">
+                        VAT<br />
+                        {{total_vat|floatformat:"2"|intcomma}}
+                    </th>
+                    <th style="text-align:right">
+                        Due<br />
+                        {{total_due|floatformat:"2"|intcomma}}
+                    </th>
+                </tr>
 
-            {% if commissions %}
                 {% for commission in commissions %}
                     <tr>
                         <td>
@@ -105,7 +106,7 @@
                         {% endwith %}
                     </tr>
                 {% endfor %}
-            {% endif %}
-        </table>
-    </div>
+            </table>
+        </div>
+    {% endif %}
 {% endblock %}

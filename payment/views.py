@@ -390,10 +390,14 @@ def commission_analysis(request, pk=None):
                                             {'date_from': begin,
                                              'date_to': end,
                                             })
+    if commissions:
+        len_commissions = len(commissions)
+    else:
+        len_commissions = 0
     return render(request, "payment/commission_analysis.html",
                   {'form': form,
                    'commissions': commissions,
-                   'len_commissions': len(commissions),
+                   'len_commissions': len_commissions,
                    'total_amount': total_amount,
                    'total_paye': total_paye,
                    'total_vat': total_vat,
