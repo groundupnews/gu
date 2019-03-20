@@ -38,9 +38,9 @@
                     {% if commission.article.category %}
                         <br /><em>{{commission.article.category}}</em>
                     {% endif %}
-                    {% if commission.article.region.slug != "none" %}
+                    {% if commission.notes %}
                         <br />
-                        {{commission.article.region.get_specific}}
+                        {{commission.notes}}
                     {% endif %}
                 </td>
                 <td align="right">
