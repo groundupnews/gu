@@ -350,6 +350,9 @@ def commission_detail(request, pk=None):
 
 @staff_member_required
 def commission_analysis(request, pk=None):
+    if not request.user.has_perm("payment.change_invoice"):
+        raise Http404
+
     commissions = pmts = None
     total_amount = total_vat = total_paye = total_due = Decimal(0.0)
     if request.method == 'POST':
@@ -390,6 +393,7 @@ def commission_analysis(request, pk=None):
     return render(request, "payment/commission_analysis.html",
                   {'form': form,
                    'commissions': commissions,
+                   'len_commissions': len(commissions),
                    'total_amount': total_amount,
                    'total_paye': total_paye,
                    'total_vat': total_vat,

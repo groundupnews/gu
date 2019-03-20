@@ -53,57 +53,59 @@
                 </th>
                 <th style="text-align:right">
                     Amount<br />
-                    {{total_amount|floatformat:"0"|intcomma}}
+                    {{total_amount|floatformat:"2"|intcomma}}
                 </th>
                 <th>
                     PAYE<br />
-                    {{total_paye|floatformat:"0"|intcomma}}
+                    {{total_paye|floatformat:"2"|intcomma}}
                 </th style="text-align:right">
                 <th style="text-align:right">
                     VAT<br />
-                    {{total_vat|floatformat:"0"|intcomma}}
+                    {{total_vat|floatformat:"2"|intcomma}}
                 </th>
                 <th style="text-align:right">
                     Due<br />
-                    {{total_due|floatformat:"0"|intcomma}}
+                    {{total_due|floatformat:"2"|intcomma}}
                 </th>
             </tr>
 
-            {% for commission in commissions %}
-                <tr>
-                    <td>
-                        <a href="{% url "payments:invoice.detail" commission.invoice.author.pk commission.invoice.invoice_num %}">
-                            {{commission.invoice.author.pk}}-{{commission.invoice.invoice_num}}
-                        </a>
-                    </td>
-                    <td>
-                        {{commission.invoice.author}}
-                    </td>
-                    <td>
-                        {{commission.description}}
-                    </td>
-                    <td>
-                        {{commission.fund}}
-                    </td>
-                    <td>
-                        {{commission.date_approved}}
-                    </td>
-                    <td style="text-align:right">
-                        {{commission.commission_due|floatformat:"0"|intcomma}}
-                    </td>
-                    {% with commission.calc_payment as payment %}
-                        <td style="text-align:right">
-                            {{payment.1|floatformat:"0"|intcomma}}
+            {% if commissions %}
+                {% for commission in commissions %}
+                    <tr>
+                        <td>
+                            <a href="{% url "payments:invoice.detail" commission.invoice.author.pk commission.invoice.invoice_num %}">
+                                {{commission.invoice.author.pk}}-{{commission.invoice.invoice_num}}
+                            </a>
+                        </td>
+                        <td>
+                            {{commission.invoice.author}}
+                        </td>
+                        <td>
+                            {{commission.description}}
+                        </td>
+                        <td>
+                            {{commission.fund}}
+                        </td>
+                        <td>
+                            {{commission.date_approved}}
                         </td>
                         <td style="text-align:right">
-                            {{payment.2|floatformat:"0"|intcomma}}
+                            {{commission.commission_due|floatformat:"2"|intcomma}}
                         </td>
-                        <td style="text-align:right">
-                            {{payment.0|floatformat:"0"|intcomma}}
-                        </td>
-                    {% endwith %}
-                </tr>
-            {% endfor %}
+                        {% with commission.calc_payment as payment %}
+                            <td style="text-align:right">
+                                {{payment.1|floatformat:"2"|intcomma}}
+                            </td>
+                            <td style="text-align:right">
+                                {{payment.2|floatformat:"2"|intcomma}}
+                            </td>
+                            <td style="text-align:right">
+                                {{payment.0|floatformat:"2"|intcomma}}
+                            </td>
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
         </table>
     </div>
 {% endblock %}
