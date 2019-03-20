@@ -19,14 +19,15 @@ INVOICE_STATUS_CHOICES = (
 
 COMMISSION_DESCRIPTION_CHOICES = (
     ("", ""),
+    ("Administration", "Administration"),
     ("Article author", "Article author"),
-    ("Photographs", "Photographs"),
     ("Article cancellation fee", "Article cancellation fee"),
+    ("Consulting", "Consulting"),
     ("Expenses", "Expenses"),
     ("Editing", "Editing"),
+    ("Fact check", "Fact check"),
+    ("Photographs", "Photographs"),
     ("Subediting", "Subediting"),
-    ("Consulting", "Consulting"),
-    ("Administration", "Administration"),
     ("Sundry", "Sundry"),
 )
 
@@ -63,6 +64,11 @@ class Fund(models.Model):
 
     def __str__(self):
         return self.name.upper()
+
+    @staticmethod
+    def get_funds():
+        funds = [(fund.pk, fund.name) for fund in Fund.objects.all()]
+        return funds
 
     class Meta:
         ordering = ['name', ]

@@ -58,7 +58,11 @@
 
 
 {% block content %}
-    <h1>Invoice #{{invoice.short_string}} for {{invoice.author}}</h1>
+    <h1>Invoice #{{invoice.short_string}} for
+        <a href="{% url "payments:invoice.list" 1900 1 5000 12 invoice.author.pk %}">
+            {{invoice.author}}
+        </a>
+    </h1>
     <h2>
         {% if invoice.status == "-" %}
             This invoice is being prepared by the editor
@@ -173,6 +177,11 @@
                         <a href="{% url 'payments:commissions.detail.add' %}?author={{invoice.author.pk}}"
                            target="_blank">
                             ADD COMMISSION
+                        </a>
+                        |
+                        <a href="{% url 'payments:commissions.detail.analysis' %}"
+                           target="_blank">
+                            ANALYSIS
                         </a>
                     {% endif %}
                 {% endif %}

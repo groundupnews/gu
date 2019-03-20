@@ -71,6 +71,12 @@
                 Next: {{next_month|date:"F Y"}}
             </a>
         {% endif %}
+        {% if staff_view %}
+            &nbsp;|&nbsp;
+            <a href="{% url "payments:commissions.detail.analysis" %}">
+                Analysis
+            </a>
+        {% endif %}
     </p>
     <p>
         Paid: R{{total_paid|floatformat:"2"|intcomma}}

@@ -1,0 +1,109 @@
+{% extends "base_20161106.html" %}
+{% load humanize %}
+
+{% block title %}
+    Analysis of commissions {{block.super}}
+{% endblock %}
+
+{% block content %}
+    <style>
+     select#id_date_from_year {width:100px;}
+     select#id_date_from_month {width:120px;}
+     select#id_date_from_day  {width:60px;}
+     select#id_date_to_year {width:100px;}
+     select#id_date_to_month {width:120px;}
+     select#id_date_to_day  {width:60px;}
+    </style>
+
+    {{form.media}}
+    <div id="commission-detail">
+        <h1>Commission analysis</h1>
+        <h2>Select criteria</h2>
+        <form method="post"
+              action="{% url 'payments:commissions.detail.analysis' %}">
+            {% csrf_token %}
+            <table>
+                {{form.as_table}}
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Analyse" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <table cellpadding="10" class="table table-bordered table-condensed">
+            <tr>
+                <th>
+                    Invoice
+                </th>
+                <th>
+                    Author
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Fund
+                </th>
+                <th>
+                    Date approved
+                </th>
+                <th style="text-align:right">
+                    Amount<br />
+                    {{total_amount|floatformat:"0"|intcomma}}
+                </th>
+                <th>
+                    PAYE<br />
+                    {{total_paye|floatformat:"0"|intcomma}}
+                </th style="text-align:right">
+                <th style="text-align:right">
+                    VAT<br />
+                    {{total_vat|floatformat:"0"|intcomma}}
+                </th>
+                <th style="text-align:right">
+                    Due<br />
+                    {{total_due|floatformat:"0"|intcomma}}
+                </th>
+            </tr>
+
+            {% for commission in commissions %}
+                <tr>
+                    <td>
+                        <a href="{% url "payments:invoice.detail" commission.invoice.author.pk commission.invoice.invoice_num %}">
+                            {{commission.invoice.author.pk}}-{{commission.invoice.invoice_num}}
+                        </a>
+                    </td>
+                    <td>
+                        {{commission.invoice.author}}
+                    </td>
+                    <td>
+                        {{commission.description}}
+                    </td>
+                    <td>
+                        {{commission.fund}}
+                    </td>
+                    <td>
+                        {{commission.date_approved}}
+                    </td>
+                    <td style="text-align:right">
+                        {{commission.commission_due|floatformat:"0"|intcomma}}
+                    </td>
+                    {% with commission.calc_payment as payment %}
+                        <td style="text-align:right">
+                            {{payment.1|floatformat:"0"|intcomma}}
+                        </td>
+                        <td style="text-align:right">
+                            {{payment.2|floatformat:"0"|intcomma}}
+                        </td>
+                        <td style="text-align:right">
+                            {{payment.0|floatformat:"0"|intcomma}}
+                        </td>
+                    {% endwith %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

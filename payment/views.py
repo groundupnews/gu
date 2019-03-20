@@ -347,3 +347,50 @@ def commission_detail(request, pk=None):
                   {'form': form,
                    'pk': pk,
                    'commission': commission})
+
+@staff_member_required
+def commission_analysis(request, pk=None):
+    commissions = pmts = None
+    total_amount = total_vat = total_paye = total_due = Decimal(0.0)
+    if request.method == 'POST':
+        form = forms.CommissionAnalysisForm(request.POST)
+        if form.is_valid():
+            commissions = models.Commission.objects.filter(invoice__status="4")
+            descriptions = form.cleaned_data['descriptions']
+            if descriptions:
+                commissions = commissions.filter(description__in=descriptions)
+            funds = form.cleaned_data['funds']
+            if funds:
+                commissions = commissions.filter(fund__in=funds)
+            authors = [int(author) for author in form.cleaned_data['authors']]
+            if authors:
+                commissions = commissions.filter(invoice__author__in=authors)
+            date_from = form.cleaned_data['date_from']
+            if date_from:
+                commissions = commissions.filter(date_approved__gte=date_from)
+            date_to = form.cleaned_data['date_to']
+            if date_to:
+                commissions = commissions.filter(date_approved__lte=date_to)
+            commissions = commissions.order_by('date_approved')
+            pmts = [pmt.calc_payment() for pmt in commissions]
+            total_amount = sum([ p[3] for p in pmts])
+            total_paye = sum([ p[1] for p in pmts])
+            total_vat = sum([ p[2] for p in pmts])
+            total_due = sum([ p[0] for p in pmts])
+    else:
+        now = timezone.datetime.now()
+        previous = now - relativedelta.relativedelta(months=1)
+        begin = timezone.datetime(previous.year, previous.month, 1)
+        last_day = calendar.monthrange(begin.year, begin.month)[1]
+        end = timezone.datetime(previous.year, previous.month, last_day)
+        form = forms.CommissionAnalysisForm(initial=
+                                            {'date_from': begin,
+                                             'date_to': end,
+                                            })
+    return render(request, "payment/commission_analysis.html",
+                  {'form': form,
+                   'commissions': commissions,
+                   'total_amount': total_amount,
+                   'total_paye': total_paye,
+                   'total_vat': total_vat,
+                   'total_due': total_due})

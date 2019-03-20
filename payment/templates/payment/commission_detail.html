@@ -6,8 +6,11 @@
 
 {% block content %}
     {{ form.media }}
+    <style>
+     .date-field {width: 40px;}
+    </style>
 
-    <div id="commission-detail">
+    <div id="commission-analysis-detail">
         {% if pk %}
             {% with invoice=commission.invoice %}
                 <h2>Edit commission {{pk}} for

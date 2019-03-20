@@ -1,11 +1,12 @@
-from ajax_select.fields import AutoCompleteSelectField
+from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from django import forms
-from django.forms import ModelForm
+from django.forms import Form, ModelForm
 from django.contrib import messages
 from newsroom.models import Article, Author
-from payment.models import Commission, Invoice
+from payment.models import Commission, Invoice, Fund, COMMISSION_DESCRIPTION_CHOICES
 
 BIRTH_YEAR_CHOICES = range(1920,2016)
+COMMISSION_YEAR_CHOICES = range(2012,2050)
 
 class InvoiceStaffForm(ModelForm):
     dob = forms.DateField(widget=
@@ -90,3 +91,32 @@ class CommissionFormset(ModelForm):
         if due and due != 0.0 and  fund is None:
             raise forms.ValidationError("Please select a fund")
         return fund
+
+
+class CommissionAnalysisForm(ModelForm):
+    descriptions = forms.MultipleChoiceField(choices=COMMISSION_DESCRIPTION_CHOICES,
+                                            help_text="You can select multiple choices "
+                                            "using the ctrl button and left click.",
+                                            required=False)
+    funds = forms.MultipleChoiceField(choices=Fund.get_funds,
+                                      help_text="You can select multiple choices "
+                                            "using the ctrl button and left click.",
+                                      required=False)
+    date_from = forms.DateField(widget=forms.SelectDateWidget
+                                (empty_label=("Year", "Month", "Day"),
+                                 years=COMMISSION_YEAR_CHOICES,
+                                 attrs={'class': 'date-field'}),
+                                required=False)
+    date_to = forms.DateField(widget=forms.SelectDateWidget
+                                (empty_label=("Year", "Month", "Day"),
+                                 years=COMMISSION_YEAR_CHOICES,
+                                 attrs={'class': 'date-field'}),
+                                required=False)
+    authors = AutoCompleteSelectMultipleField('authors', required=False,
+                                             help_text="Enter text to search. "
+                                              "You can select multiple payees",
+                                              label="Payees")
+
+    class Meta:
+        model = Commission
+        fields = ['descriptions', 'funds', 'authors', 'date_from', 'date_to', ]
