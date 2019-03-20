@@ -113,10 +113,10 @@
                             </span>
                         </td>
 
-                        <td>R{{payment.3|floatformat:2}}</td>
-                        <td>R{{payment.2|floatformat:2}}</td>
-                        <td>R{{payment.1|floatformat:2}}</td>
-                        <td>R{{payment.0|floatformat:2}}</td>
+                        <td>R{{payment.3|floatformat:2|intcomma}}</td>
+                        <td>R{{payment.2|floatformat:2|intcomma}}</td>
+                        <td>R{{payment.1|floatformat:2|intcomma}}</td>
+                        <td>R{{payment.0|floatformat:2|intcomma}}</td>
                         {% if staff_view %}
                             <td>
                                 <a href="{%  url 'payments:invoice.list' 1900 1 5000 12 invoice.author.pk %}">
