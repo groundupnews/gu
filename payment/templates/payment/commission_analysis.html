@@ -13,6 +13,14 @@
      select#id_date_to_year {width:100px;}
      select#id_date_to_month {width:120px;}
      select#id_date_to_day  {width:60px;}
+     #entry-table tr:first-of-type th {cursor: pointer;}
+     #entry-table th.asc::after {
+         content: "↑";
+     }
+     #entry-table th.des::after {
+         content: "↓";
+     }
+
     </style>
 
     {{form.media}}
@@ -35,42 +43,66 @@
     </div>
     {% if commissions %}
         <div>
-            <p>{{len_commissions}} entries</p>
-            <table cellpadding="10" class="table table-bordered table-condensed">
+            <p>{{len_commissions}} entries
+                <button onclick="downloadcsv('commissions.csv')">
+                    Export to spreadsheet
+                </button>
+            </p>
+            <table id="entry-table"
+                   cellpadding="10"
+                   class="table table-bordered table-condensed">
                 <tr>
-                    <th>
+                    <th onclick="sortTable(0, 'A')">
                         Invoice
                     </th>
-                    <th>
+                    <th onclick="sortTable(1, 'A')">
                         Author
                     </th>
-                    <th>
+                    <th onclick="sortTable(2, 'A')">
                         Description
                     </th>
-                    <th>
+                    <th onclick="sortTable(3, 'A')">
                         Fund
                     </th>
-                    <th>
+                    <th class="asc"
+                        onclick="sortTable(4, 'A')">
                         Date approved
                     </th>
+                    <th style="text-align:right"
+                        onclick="sortTable(5, 'N')">
+                        Amount
+                    </th>
+                    <th style="text-align:right"
+                        onclick="sortTable(6, 'N')">
+                        PAYE
+                    </th style="text-align:right">
+                    <th style="text-align:right"
+                            onclick="sortTable(7, 'N')">
+                        VAT
+                    </th>
+                    <th style="text-align:right"
+                        onclick="sortTable(8, 'N')">
+                        Due
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Total:
+                    </th>
+                    <th></th><th></th><th></th><th></th>
                     <th style="text-align:right">
-                        Amount<br />
                         {{total_amount|floatformat:"2"|intcomma}}
                     </th>
                     <th style="text-align:right">
-                        PAYE<br />
                         {{total_paye|floatformat:"2"|intcomma}}
-                    </th style="text-align:right">
+                    </th>
                     <th style="text-align:right">
-                        VAT<br />
                         {{total_vat|floatformat:"2"|intcomma}}
                     </th>
                     <th style="text-align:right">
-                        Due<br />
                         {{total_due|floatformat:"2"|intcomma}}
                     </th>
                 </tr>
-
                 {% for commission in commissions %}
                     <tr>
                         <td>
@@ -88,7 +120,7 @@
                             {{commission.fund}}
                         </td>
                         <td>
-                            {{commission.date_approved}}
+                            {{commission.date_approved|date:"Y-m-d"}}
                         </td>
                         <td style="text-align:right">
                             {{commission.commission_due|floatformat:"2"|intcomma}}
@@ -109,4 +141,113 @@
             </table>
         </div>
     {% endif %}
+{% endblock %}
+
+
+{% block javascript-includes %}
+    {{block.super}}
+
+    <script>
+     /* Adapted from W3Cschools.com */
+     function sortTable(n, sort_type) {
+         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+         table = document.getElementById("entry-table");
+         switching = true;
+         // Set the sorting direction to ascending:
+         dir = "asc";
+         var elements = table.getElementsByTagName("th");
+         for (let element of elements) {
+             element.classList.remove("des");
+             element.classList.remove("asc");
+         }
+         elements[n].classList.add("asc");
+
+         /* Make a loop that will continue until
+            no switching has been done: */
+         while (switching) {
+             // Start by saying: no switching is done:
+             switching = false;
+             rows = table.rows;
+             /* Loop through all table rows (except the
+                first, which contains table headers): */
+             for (i = 2; i < (rows.length - 1); i++) {
+                 // Start by saying there should be no switching:
+                 shouldSwitch = false;
+                 /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                 x = rows[i].getElementsByTagName("TD")[n];
+                 y = rows[i + 1].getElementsByTagName("TD")[n];
+                 /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                 if (dir == "asc" && sort_type=="A") {
+                     if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                         // If so, mark as a switch and break the loop:
+                         shouldSwitch = true;
+                         break;
+                     }
+                 } else if (dir == "desc" && sort_type=="A") {
+                     if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                         // If so, mark as a switch and break the loop:
+                         shouldSwitch = true;
+                         break;
+                     }
+                 } else if (dir == "asc" && sort_type=="N") {
+                     if (Number(x.innerHTML.replace(/,/g,"")) >
+                         Number(y.innerHTML.replace(/,/g,""))) {
+                         shouldSwitch = true;
+                         break;
+                     }
+                 } else if (dir == "desc" && sort_type=="N") {
+                     if (Number(x.innerHTML.replace(/,/g,"")) <
+                         Number(y.innerHTML.replace(/,/g,""))) {
+                         shouldSwitch = true;
+                         break;
+                     }
+                 }
+             }
+             if (shouldSwitch) {
+                 /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                 rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                 switching = true;
+                 // Each time a switch is done, increase this count by 1:
+                 switchcount ++;
+             } else {
+                 /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                 if (switchcount == 0 && dir == "asc") {
+                     dir = "desc";
+                     elements[n].classList.remove("asc");
+                     elements[n].classList.add("des");
+                     switching = true;
+                 }
+             }
+         }
+     }
+     function downloadcsv(filename) {
+
+         var table = document.getElementById("entry-table");
+         var text="";
+         for (var i = 0, row; row = table.rows[i]; i++) {
+             for (var j = 0, col; col = row.cells[j]; j++) {
+                 if (j > 0) text += ",";
+                 text += col.textContent.replace(/,/g,"").trim();
+             }
+             text += "\n";
+         }
+
+         var element = document.createElement('a');
+         element.setAttribute('href',
+                              'data:text/plain;charset=utf-8,' +
+                              encodeURIComponent(text));
+         element.setAttribute('download', filename);
+
+         element.style.display = 'none';
+         document.body.appendChild(element);
+
+         element.click();
+
+         document.body.removeChild(element);
+     }
+    </script>
 {% endblock %}
