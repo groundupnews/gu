@@ -192,6 +192,13 @@ class Invoice(models.Model):
         return (self.amount_paid, self.vat_paid,
                 self.tax_paid, total_uncorrected,)
 
+    def quick_calc_payment(self):
+        if self.status >= "4":
+            return (self.amount_paid, self.vat_paid,
+                    self.tax_paid, self.amount_paid - self.vat_paid + self.tax_paid)
+        else:
+            return self.calc_payment()
+
     def __str__(self):
         return str(self.author.pk) + "-" + str(self.invoice_num) + " - " + \
             str(self.author) + " - " + self.get_status_display()
@@ -214,6 +221,7 @@ class Invoice(models.Model):
             if self.date_time_processed is None:
                 self.date_time_processed = timezone.now()
         self.calc_payment()
+        print("Saving: ", self.amount_paid, self.vat_paid, self.tax_paid)
         super(Invoice, self).save(*args, **kwargs)
         set_corresponding_vals(self, self.author)
         self.author.save()

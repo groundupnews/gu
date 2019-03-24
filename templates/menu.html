@@ -52,7 +52,7 @@
       </li>
     {% elif request.user.is_authenticated %}
       <li class="header__nav__link">
-	<a href="{% url 'newsroom:user.profile' %}" class="admin-menu-item">Account</a>
+	<a href="{% url 'newsroom:user.profile' %}" class="admin-nav-item">Account</a>
       </li>
     {% endif %}
   </ul>

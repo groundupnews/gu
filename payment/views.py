@@ -113,14 +113,11 @@ def invoice_list(request,
         author_pk = author.pk
 
     invoices = models.Invoice.objects.filter(query).select_related("author")
+    total_paid = sum([i.amount_paid + i.vat_paid + i.tax_paid
+                      for i in invoices if i.status == "4"])
+    total_outstanding = sum([i.amount_paid + i.vat_paid + i.tax_paid
+                             for i in invoices if i.status != "4"])
 
-    # Calculated values
-    total_paid = invoices.filter(status="4").aggregate(
-        amount_paid=Sum(F('amount_paid') + F('vat_paid') +
-                    F('tax_paid')))["amount_paid"]
-    total_outstanding = invoices.filter(status__lt="4").\
-            aggregate(amount_paid=Sum(F('amount_paid') + F('vat_paid') +
-                                    F('tax_paid')))["amount_paid"]
     if total_paid is None:
         total_paid = Decimal(0.0)
     if total_outstanding is None:
@@ -134,9 +131,12 @@ def invoice_list(request,
                  relativedelta.relativedelta(months=1)
     if next_month > now:
         next_month = None
+    if invoices:
+        len_invoices = len(invoices)
 
     return render(request, "payment/invoice_list.html",
                   {'invoices': invoices,
+                   'len_invoices': len_invoices,
                    'total_paid': total_paid,
                    'total_outstanding': total_outstanding,
                    'total': total,
@@ -190,47 +190,41 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                 invoice.status = "-"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to UNPROCESSED")
-                invoice.save()
             if "return_button" in request.POST and invoice.status != "0":
                 invoice.status = "0"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to REPORTER MUST APPROVE")
-                invoice.save()
             elif "query_button" in request.POST and invoice.status != "1":
                 invoice.status = "1"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to QUERIED BY REPORTER")
-                invoice.save()
             elif "pay_button" in request.POST and invoice.status != "2":
                 invoice.status = "2"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to APPROVED BY REPORTER")
-                invoice.save()
             elif "approve_button" in request.POST and invoice.status != "3":
                 invoice.status = "3"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to APPROVED BY EDITOR")
-                invoice.save()
             elif "paid_button" in request.POST and invoice.status != "4":
                 invoice.status = "4"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to PAID")
-                invoice.save()
             elif "delete_button" in request.POST and invoice.status != "5":
                 invoice.status = "5"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to DELETED")
-                invoice.save()
             elif form.has_changed():
                 messages.add_message(request, messages.INFO,
                                      "Details updated")
-                invoice.save()
+            invoice.save()
             if user.has_perm("payment.change_commission"):
                 commissionformset = CommissionFormSet(request.POST,
                                                       request.FILES)
                 can_edit_commissions = True
                 if commissionformset.is_valid():
                     commissionformset.save()
+                    invoice.save()
                 else:
                     messages.add_message(request, messages.ERROR,
                                          "Please correct the commissions")

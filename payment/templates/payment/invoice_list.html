@@ -6,6 +6,24 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+     #invoice-table {
+         max-width: 850px;
+     }
+     #invoice-table thead {
+         background-color: #F0F8FF;
+     }
+     #invoice-table tbody tr:nth-child(even) {
+         background-color: #F0F8FF;
+     }
+     #invoice-table thead th:nth-child(n+2) {cursor: pointer;}
+     #invoice-table th.asc::after {
+         content: "↑";
+     }
+     #invoice-table th.des::after {
+         content: "↓";
+     }
+    </style>
 
     <p style="margin-top: 18px;">Invoices
         from
@@ -77,57 +95,73 @@
                 Analysis
             </a>
         {% endif %}
+        &nbsp;|&nbsp;
+        <button onclick="downloadcsv('commissions.csv')">
+            Export to spreadsheet
+        </button>
     </p>
     <p>
-        Paid: R{{total_paid|floatformat:"2"|intcomma}}
-        | Outstanding: R{{total_outstanding|floatformat:"2"|intcomma}}
-        | Total: R{{total|floatformat:"2"|intcomma}}
+        Invoices: {{len_invoices}}
+        | Paid: {{total_paid|floatformat:"2"|intcomma}}
+        | Outstanding: {{total_outstanding|floatformat:"2"|intcomma}}
+        | Total: {{total|floatformat:"2"|intcomma}}
     </p>
-    <table class="table" id="invoice-table">
+    <table class="table table-bordered table-condensed" id="invoice-table">
+        <thead>
         <tr>
             <th>#</th>
-            <th>Status</th>
-            <th >Before tax & VAT</th>
-            <th >Tax</th>
-            <th >Vat</th>
-            <th >Due</th>
+            <th class="asc" onclick="sortTable(this, 1, 'S')">Status</th>
+            <th style="text-align:right" onclick="sortTable(this, 2, 'N')">
+                Before tax & VAT</th>
+            <th style="text-align:right" onclick="sortTable(this, 3, 'N')">Tax</th>
+            <th style="text-align:right" onclick="sortTable(this, 4, 'N')">Vat</th>
+            <th style="text-align:right" onclick="sortTable(this, 5, 'N')">Due</th>
             {% if staff_view %}
-                <th>Name</th>
+                <th onclick="sortTable(this, 6, 'A')">Name</th>
             {% endif %}
         </tr>
-        {% for invoice in invoices %}
-            {% with invoice.calc_payment as payment %}
-                {% if staff_view or payment.3 > 0.00 %}
-                    <tr>
-                        <td>
-                            <a href="{% url "payments:invoice.detail" invoice.author.pk invoice.invoice_num %}">
-                                {{invoice.short_string}}
-                            </a>
-                        </td>
-                        <td>
-                            <span class="status{{invoice.status}}">
-                                {{invoice.get_status_display}}
-                                {% if invoice.status == "4" %}
-                                    on {{invoice.date_time_processed|date:"j M Y"}}
-                                {% endif %}
-                            </span>
-                        </td>
-
-                        <td>R{{payment.3|floatformat:2|intcomma}}</td>
-                        <td>R{{payment.2|floatformat:2|intcomma}}</td>
-                        <td>R{{payment.1|floatformat:2|intcomma}}</td>
-                        <td>R{{payment.0|floatformat:2|intcomma}}</td>
-                        {% if staff_view %}
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+                {% with invoice.quick_calc_payment as payment %}
+                    {% if staff_view or payment.3 > 0.00 %}
+                        <tr>
                             <td>
-                                <a href="{%  url 'payments:invoice.list' 1900 1 5000 12 invoice.author.pk %}">
-                                    {{invoice.author}}
+                                <a href="{% url "payments:invoice.detail" invoice.author.pk invoice.invoice_num %}">
+                                    {{invoice.short_string}}
                                 </a>
                             </td>
-                        {% endif %}
-                    </tr>
-                {% endif %}
-            {% endwith %}
-        {% endfor %}
+                            <td>
+                                <span class="status{{invoice.status}}">
+                                    <span class="status" style="display: none;">
+                                        {{invoice.status}}</span>
+                                    <span>{{invoice.get_status_display}}
+                                    {% if invoice.status == "4" %}
+                                        on {{invoice.date_time_processed|date:"Y-m-d"}}
+                                    {% endif %}</span>
+                                </span>
+                            </td>
+
+                            <td style="text-align:right">
+                                {{payment.3|floatformat:2|intcomma}}</td>
+                            <td style="text-align:right">
+                                {{payment.2|floatformat:2|intcomma}}</td>
+                            <td style="text-align:right">
+                                {{payment.1|floatformat:2|intcomma}}</td>
+                            <td style="text-align:right">
+                                {{payment.0|floatformat:2|intcomma}}</td>
+                            {% if staff_view %}
+                                <td>
+                                    <a href="{%  url 'payments:invoice.list' 1900 1 5000 12 invoice.author.pk %}">
+                                        {{invoice.author}}
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        </tbody>
     </table>
 
     <script>
@@ -173,8 +207,87 @@
          url = "{% url 'payments:invoice.list' %}" +
                year_from + "/" + month_from + "/" +
                year_to + "/" + month_to + '/' +
-               {{author_pk}};
+                        {{author_pk}};
          location.href = url;
+     }
+
+     function sortTable(element, n, sort_type)
+     {
+         var table = document.getElementById("invoice-table");
+         var thead = table.getElementsByTagName("thead")[0];
+         var tbody = table.getElementsByTagName("tbody")[0];
+         var reverse = 0;
+
+         if (element.classList.contains("asc")) {
+             reverse = -1;
+             element.classList.remove("asc");
+             element.classList.add("des");
+         } else if (element.classList.contains("des")) {
+             reverse = 1;
+             element.classList.remove("des");
+             element.classList.add("asc");
+         }
+
+         if (reverse == 0) {
+             var elements = thead.getElementsByTagName("th");
+             for (let e of elements) {
+                 e.classList.remove("des");
+                 e.classList.remove("asc");
+             }
+             element.classList.add("asc");
+             reverse = 1;
+         }
+         console.log(reverse);
+         tr = Array.prototype.slice.call(tbody.rows, 0);
+         tr = tr.sort(function(a, b) {
+             var x = a.getElementsByTagName("TD")[n];
+             var y = b.getElementsByTagName("TD")[n];
+             if (sort_type=="A") {
+                 return reverse * (x.textContent.trim().
+                                     localeCompare( y.textContent.trim()));
+             } else if (sort_type == "N") {
+                 if (Number(x.textContent.replace(/,/g,"").replace("R","").trim()) <
+                     Number(y.textContent.replace(/,/g,"").replace("R","").trim()))
+                     return reverse * -1;
+                 else
+                     return reverse * 1;
+             } else {
+                 s1 = x.getElementsByClassName("status")[0];
+                 s2 = y.getElementsByClassName("status")[0];
+                 return reverse * (s1.textContent.trim().
+                                      localeCompare( s2.textContent.trim()));
+             }
+         });
+         for(i = 0; i < tr.length; ++i) {
+             tbody.appendChild(tr[i]);
+         }
+     }
+
+
+     function downloadcsv(filename) {
+         var table = document.getElementById("invoice-table");
+         var text="";
+         for (var i = 0, row; row = table.rows[i]; i++) {
+             for (var j = 0, col; col = row.cells[j]; j++) {
+                 if (j > 0) text += ",";
+                 text += col.textContent.replace(/,/g,"").replace(/\n/g,"").trim().
+                             replace(/\s\s+/g, ' ');
+             }
+             text += "\n";
+         }
+
+         var element = document.createElement('a');
+         element.setAttribute('href',
+                              'data:text/plain;charset=utf-8,' +
+                              encodeURIComponent(text));
+         element.setAttribute('download', filename);
+
+         element.style.display = 'none';
+         document.body.appendChild(element);
+
+         element.click();
+
+         document.body.removeChild(element);
      }
     </script>
 

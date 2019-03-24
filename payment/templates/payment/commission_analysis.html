@@ -193,12 +193,11 @@
                  return reverse * (x.textContent.trim().
                                      localeCompare( y.textContent.trim()));
              } else {
-                 var cmp = Number(x.textContent.replace(/,/g,"")) <
-                 Number(y.textContent.replace(/,/g,""));
-                 if (reverse == -1)
-                     return !cmp;
+                 if (Number(x.textContent.replace(/,/g,"")) <
+                     Number(y.textContent.replace(/,/g,"")))
+                     return reverse * -1;
                  else
-                     return cmp;
+                     return reverse;
              }
          });
 
@@ -206,29 +205,29 @@
      }
 
 
-             function downloadcsv(filename) {
-                 var table = document.getElementById("entry-table");
+     function downloadcsv(filename) {
+         var table = document.getElementById("entry-table");
                  var text="";
-                 for (var i = 0, row; row = table.rows[i]; i++) {
-                     for (var j = 0, col; col = row.cells[j]; j++) {
+         for (var i = 0, row; row = table.rows[i]; i++) {
+             for (var j = 0, col; col = row.cells[j]; j++) {
                          if (j > 0) text += ",";
-                         text += col.textContent.replace(/,/g,"").trim();
-                     }
-                     text += "\n";
-                 }
-
-                 var element = document.createElement('a');
-                 element.setAttribute('href',
-                                      'data:text/plain;charset=utf-8,' +
-                                      encodeURIComponent(text));
-                 element.setAttribute('download', filename);
-
-                 element.style.display = 'none';
-                 document.body.appendChild(element);
-
-                 element.click();
-
-                 document.body.removeChild(element);
+                 text += col.textContent.replace(/,/g,"").trim();
              }
+             text += "\n";
+         }
+
+         var element = document.createElement('a');
+         element.setAttribute('href',
+                              'data:text/plain;charset=utf-8,' +
+                              encodeURIComponent(text));
+         element.setAttribute('download', filename);
+
+         element.style.display = 'none';
+         document.body.appendChild(element);
+
+         element.click();
+
+         document.body.removeChild(element);
+     }
     </script>
 {% endblock %}
