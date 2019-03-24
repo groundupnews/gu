@@ -20,7 +20,12 @@
      #entry-table th.des::after {
          content: "↓";
      }
-
+     #entry-table thead {
+         background-color: #F0F8FF;
+     }
+     #entry-table tbody tr:nth-child(even) {
+         background-color: #F0F8FF;
+     }
     </style>
 
     {{form.media}}
@@ -41,7 +46,7 @@
             </table>
         </form>
     </div>
-    {% if commissions %}
+    {% if len_commissions %}
         <div>
             <p>{{len_commissions}} entries
                 <button onclick="downloadcsv('commissions.csv')">
@@ -51,37 +56,38 @@
             <table id="entry-table"
                    cellpadding="10"
                    class="table table-bordered table-condensed">
+                <thead>
                 <tr>
-                    <th onclick="sortTable(0, 'A')">
+                    <th onclick="sortTable(this, 0, 'A')">
                         Invoice
                     </th>
-                    <th onclick="sortTable(1, 'A')">
+                    <th onclick="sortTable(this, 1, 'A')">
                         Author
                     </th>
-                    <th onclick="sortTable(2, 'A')">
+                    <th onclick="sortTable(this, 2, 'A')">
                         Description
                     </th>
-                    <th onclick="sortTable(3, 'A')">
+                    <th onclick="sortTable(this, 3, 'A')">
                         Fund
                     </th>
                     <th class="asc"
-                        onclick="sortTable(4, 'A')">
+                        onclick="sortTable(this, 4, 'A')">
                         Date approved
                     </th>
                     <th style="text-align:right"
-                        onclick="sortTable(5, 'N')">
+                        onclick="sortTable(this, 5, 'N')">
                         Amount
                     </th>
                     <th style="text-align:right"
-                        onclick="sortTable(6, 'N')">
+                        onclick="sortTable(this, 6, 'N')">
                         PAYE
                     </th style="text-align:right">
                     <th style="text-align:right"
-                            onclick="sortTable(7, 'N')">
+                            onclick="sortTable(this, 7, 'N')">
                         VAT
                     </th>
                     <th style="text-align:right"
-                        onclick="sortTable(8, 'N')">
+                        onclick="sortTable(this, 8, 'N')">
                         Due
                     </th>
                 </tr>
@@ -103,6 +109,8 @@
                         {{total_due|floatformat:"2"|intcomma}}
                     </th>
                 </tr>
+                </thead>
+                <tbody>
                 {% for commission in commissions %}
                     <tr>
                         <td>
@@ -138,6 +146,7 @@
                         {% endwith %}
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     {% endif %}
@@ -148,106 +157,78 @@
     {{block.super}}
 
     <script>
-     /* Adapted from W3Cschools.com */
-     function sortTable(n, sort_type) {
-         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-         table = document.getElementById("entry-table");
-         switching = true;
-         // Set the sorting direction to ascending:
-         dir = "asc";
-         var elements = table.getElementsByTagName("th");
-         for (let element of elements) {
-             element.classList.remove("des");
-             element.classList.remove("asc");
-         }
-         elements[n].classList.add("asc");
 
-         /* Make a loop that will continue until
-            no switching has been done: */
-         while (switching) {
-             // Start by saying: no switching is done:
-             switching = false;
-             rows = table.rows;
-             /* Loop through all table rows (except the
-                first, which contains table headers): */
-             for (i = 2; i < (rows.length - 1); i++) {
-                 // Start by saying there should be no switching:
-                 shouldSwitch = false;
-                 /* Get the two elements you want to compare,
-                    one from current row and one from the next: */
-                 x = rows[i].getElementsByTagName("TD")[n];
-                 y = rows[i + 1].getElementsByTagName("TD")[n];
-                 /* Check if the two rows should switch place,
-                    based on the direction, asc or desc: */
-                 if (dir == "asc" && sort_type=="A") {
-                     if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                         // If so, mark as a switch and break the loop:
-                         shouldSwitch = true;
-                         break;
-                     }
-                 } else if (dir == "desc" && sort_type=="A") {
-                     if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                         // If so, mark as a switch and break the loop:
-                         shouldSwitch = true;
-                         break;
-                     }
-                 } else if (dir == "asc" && sort_type=="N") {
-                     if (Number(x.innerHTML.replace(/,/g,"")) >
-                         Number(y.innerHTML.replace(/,/g,""))) {
-                         shouldSwitch = true;
-                         break;
-                     }
-                 } else if (dir == "desc" && sort_type=="N") {
-                     if (Number(x.innerHTML.replace(/,/g,"")) <
-                         Number(y.innerHTML.replace(/,/g,""))) {
-                         shouldSwitch = true;
-                         break;
-                     }
-                 }
-             }
-             if (shouldSwitch) {
-                 /* If a switch has been marked, make the switch
-                    and mark that a switch has been done: */
-                 rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                 switching = true;
-                 // Each time a switch is done, increase this count by 1:
-                 switchcount ++;
-             } else {
-                 /* If no switching has been done AND the direction is "asc",
-                    set the direction to "desc" and run the while loop again. */
-                 if (switchcount == 0 && dir == "asc") {
-                     dir = "desc";
-                     elements[n].classList.remove("asc");
-                     elements[n].classList.add("des");
-                     switching = true;
-                 }
-             }
-         }
-     }
-     function downloadcsv(filename) {
-
+     function sortTable(element, n, sort_type)
+     {
          var table = document.getElementById("entry-table");
-         var text="";
-         for (var i = 0, row; row = table.rows[i]; i++) {
-             for (var j = 0, col; col = row.cells[j]; j++) {
-                 if (j > 0) text += ",";
-                 text += col.textContent.replace(/,/g,"").trim();
-             }
-             text += "\n";
+         var thead = table.getElementsByTagName("thead")[0];
+         var tbody = table.getElementsByTagName("tbody")[0];
+         var reverse = 0;
+
+         if (element.classList.contains("asc")) {
+             reverse = -1;
+             element.classList.remove("asc");
+             element.classList.add("des");
+         } else if (element.classList.contains("des")) {
+             reverse = 1;
+             element.classList.remove("des");
+             element.classList.add("asc");
          }
 
-         var element = document.createElement('a');
-         element.setAttribute('href',
-                              'data:text/plain;charset=utf-8,' +
-                              encodeURIComponent(text));
-         element.setAttribute('download', filename);
+         if (reverse == 0) {
+             var elements = thead.getElementsByTagName("th");
+             for (let e of elements) {
+                 e.classList.remove("des");
+                 e.classList.remove("asc");
+             }
+             element.classList.add("asc");
+             reverse = 1;
+         }
 
-         element.style.display = 'none';
-         document.body.appendChild(element);
+         tr = Array.prototype.slice.call(tbody.rows, 0);
+         tr = tr.sort(function(a, b) {
+             x = a.getElementsByTagName("TD")[n];
+             y = b.getElementsByTagName("TD")[n];
+             if (sort_type=="A") {
+                 return reverse * (x.textContent.trim().
+                                     localeCompare( y.textContent.trim()));
+             } else {
+                 var cmp = Number(x.textContent.replace(/,/g,"")) <
+                 Number(y.textContent.replace(/,/g,""));
+                 if (reverse == -1)
+                     return !cmp;
+                 else
+                     return cmp;
+             }
+         });
 
-         element.click();
-
-         document.body.removeChild(element);
+         for(i = 0; i < tr.length; ++i) tbody.appendChild(tr[i]);
      }
+
+
+             function downloadcsv(filename) {
+                 var table = document.getElementById("entry-table");
+                 var text="";
+                 for (var i = 0, row; row = table.rows[i]; i++) {
+                     for (var j = 0, col; col = row.cells[j]; j++) {
+                         if (j > 0) text += ",";
+                         text += col.textContent.replace(/,/g,"").trim();
+                     }
+                     text += "\n";
+                 }
+
+                 var element = document.createElement('a');
+                 element.setAttribute('href',
+                                      'data:text/plain;charset=utf-8,' +
+                                      encodeURIComponent(text));
+                 element.setAttribute('download', filename);
+
+                 element.style.display = 'none';
+                 document.body.appendChild(element);
+
+                 element.click();
+
+                 document.body.removeChild(element);
+             }
     </script>
 {% endblock %}

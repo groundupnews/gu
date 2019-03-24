@@ -112,7 +112,7 @@ def invoice_list(request,
     else:
         author_pk = author.pk
 
-    invoices = models.Invoice.objects.filter(query)
+    invoices = models.Invoice.objects.filter(query).select_related("author")
 
     # Calculated values
     total_paid = invoices.filter(status="4").aggregate(
@@ -358,7 +358,9 @@ def commission_analysis(request, pk=None):
     if request.method == 'POST':
         form = forms.CommissionAnalysisForm(request.POST)
         if form.is_valid():
-            commissions = models.Commission.objects.filter(invoice__status="4")
+            commissions = models.Commission.objects.filter(invoice__status="4"). \
+                          select_related("fund").select_related("invoice"). \
+                          select_related("invoice__author")
             descriptions = form.cleaned_data['descriptions']
             if descriptions:
                 commissions = commissions.filter(description__in=descriptions)
