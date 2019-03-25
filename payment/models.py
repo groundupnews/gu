@@ -45,7 +45,7 @@ RATES = {
     'complex_feature': 2200.0
 }
 
-BONUSES = [  0,   1,   2,   3,   500, 500, 500, 500, 500, 500,
+BONUSES = [  0,   0,   0,   0,   500, 500, 500, 500, 500, 500,
              500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
              500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
              500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
@@ -316,7 +316,7 @@ class Commission(models.Model):
             published_this_month = Article.objects.published().\
                                    filter(published__gte=month_start).\
                                    filter(published__lt=publish_time).\
-                                   filter(author_01=self.invoice.author).count()
+                                   filter(author_01=self.invoice.author).count() + 1
             return BONUSES[published_this_month]
         else:
             return 0.00
