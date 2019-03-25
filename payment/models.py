@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import Max
 from django.utils import timezone
+from django.utils.timezone import make_aware
+
 from filebrowser.fields import FileBrowseField
 from newsroom.models import Article, Author, LEVEL_CHOICES
 
@@ -221,7 +223,6 @@ class Invoice(models.Model):
             if self.date_time_processed is None:
                 self.date_time_processed = timezone.now()
         self.calc_payment()
-        print("Saving: ", self.amount_paid, self.vat_paid, self.tax_paid)
         super(Invoice, self).save(*args, **kwargs)
         set_corresponding_vals(self, self.author)
         self.author.save()
@@ -309,14 +310,13 @@ class Commission(models.Model):
     def estimate_bonus(self):
         if self.article and self.article.is_published() \
            and self.article.author_01 == self.invoice.author:
-            month_start = timezone.datetime(self.article.published.year,
-                                            self.article.published.month, 1)
-            publish_time = self.article.published()
+            month_start = make_aware(timezone.datetime(self.article.published.year,
+                                            self.article.published.month, 1))
+            publish_time = self.article.published
             published_this_month = Article.objects.published().\
                                    filter(published__gte=month_start).\
                                    filter(published__lt=publish_time).\
                                    filter(author_01=self.invoice.author).count()
-            print(published_this_month)
             return BONUSES[published_this_month]
         else:
             return 0.00

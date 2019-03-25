@@ -10,6 +10,8 @@ from django.forms import modelformset_factory
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+from django.utils.timezone import make_aware
+
 from newsroom.models import Author
 
 from . import forms, models
@@ -27,7 +29,7 @@ def invoice_list(request,
                  year_end=None, month_end=None,
                  author=None):
 
-    now = timezone.datetime.now()
+    now = make_aware(timezone.datetime.now())
     # Set staff status
     user = request.user
     if user.is_staff and user.has_perm("payment.change_invoice"):
@@ -70,11 +72,11 @@ def invoice_list(request,
             month_end = int(month_end)
             if month_end > 12:
                 raise Http404
-        year_month_begin = timezone.datetime(year_begin, month_begin, 1)
-        year_month_end = timezone.datetime(year_end, month_end, 1)
+        year_month_begin = make_aware(timezone.datetime(year_begin, month_begin, 1))
+        year_month_end = make_aware(timezone.datetime(year_end, month_end, 1))
         last_day = calendar.monthrange(year_month_end.year,
                                        year_month_end.month)[1]
-        year_month_end = timezone.datetime(year_end, month_end, last_day)
+        year_month_end = make_aware(timezone.datetime(year_end, month_end, last_day))
     except:
         raise Http404
 
@@ -127,8 +129,9 @@ def invoice_list(request,
 
     previous_month = year_month_begin - relativedelta.relativedelta(months=1)
 
-    next_month = timezone.datetime(year_month_end.year, year_month_end.month, 1) + \
-                 relativedelta.relativedelta(months=1)
+    next_month = make_aware(timezone.datetime(year_month_end.year,
+                                              year_month_end.month, 1) +
+                 relativedelta.relativedelta(months=1))
     if next_month > now:
         next_month = None
     if invoices:
