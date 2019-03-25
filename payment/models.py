@@ -1,4 +1,5 @@
 from decimal import Decimal
+import logging
 
 from django.urls import reverse
 from django.db import models
@@ -60,6 +61,8 @@ LEVELS = {
     'experienced': 1.7,
     'exceptional': 2.2
 }
+
+logger = logging.getLogger("groundup")
 
 class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -441,7 +444,7 @@ class Commission(models.Model):
                     elif self.article.byline_style == "TP":
                         estimate = self.estimate_payment_tp(estimate)
         except Exception as e:
-            pass
+            logger.warning("Error calculating payment: " + str(e))
 
         estimate['total'] = (estimate['article'] * estimate['experience'] +
                              estimate['primary_photo'] +

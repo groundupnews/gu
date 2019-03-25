@@ -350,6 +350,11 @@ LOGGING = {
             'propagate': True,
             'level': 'WARNING',
         },
+        'groundup': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
     }
 }
 

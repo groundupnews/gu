@@ -188,6 +188,11 @@ urlpatterns = [
                              permanent=True)),
 
 
+    # Old search
+    url(r'^search/$',
+        RedirectView.as_view(url='/advanced_search/',
+                             permanent=True)),
+
 
     ###############################
 
