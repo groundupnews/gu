@@ -307,13 +307,19 @@ class Commission(models.Model):
 
 
     def estimate_bonus(self):
-        month_start = timezone.datetime(self.created.year, self.created.month, 1)
-        payments_this_month = Commission.objects.filter(created__gte=month_start). \
-                              filter(created__lt=self.created).\
-                              filter(invoice__author=self.invoice.author).\
-                              filter(invoice__status="4").\
-                              filter(description="Article author").count()
-        return BONUSES[payments_this_month]
+        if self.article and self.article.is_published() \
+           and self.article.author_01 == self.invoice.author:
+            month_start = timezone.datetime(self.article.published.year,
+                                            self.article.published.month, 1)
+            publish_time = self.article.published()
+            published_this_month = Article.objects.published().\
+                                   filter(published__gte=month_start).\
+                                   filter(published__lt=publish_time).\
+                                   filter(author_01=self.invoice.author).count()
+            print(published_this_month)
+            return BONUSES[published_this_month]
+        else:
+            return 0.00
 
     def estimate_payment_st(self, estimate):
         try:
