@@ -133,6 +133,8 @@ def invoice_list(request,
         next_month = None
     if invoices:
         len_invoices = len(invoices)
+    else:
+        len_invoices = 0
 
     return render(request, "payment/invoice_list.html",
                   {'invoices': invoices,
