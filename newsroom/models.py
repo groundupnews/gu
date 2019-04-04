@@ -461,6 +461,25 @@ class Article(models.Model):
         self.stickiness = 1
         self.save()
 
+    def get_next_article(self):
+        next_article = None
+        try:
+            next_article = Article.objects.published().\
+                           filter(published__gt=self.published).last()
+        except Article.tDoesNotExist:
+                pass
+        return next_article
+
+
+    def get_prev_article(self):
+        prev_article = None
+        try:
+            prev_article = Article.objects.published().\
+                           filter(published__lt=self.published).first()
+        except Article.DoesNotExist:
+                pass
+        return prev_article
+
     # Methods that calculate cache fields
 
     '''Used to generate the cached byline upon model save, so

@@ -55,7 +55,7 @@
     margin-top: 30px;
 }
 
-.article__sidebar .article__topics {
+.article__sidebar .article__topics, .article__sidebar .article__next {
     background-color: #fff;
 }
 
@@ -275,12 +275,15 @@ div.editor-summary {
 }
 
 .article__topics {
+    display: flex;
+}
+
+.article__topics, .article__next {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     color: #4d4d4d;
     padding: 15px;
     background-color: #F0F0F2;
-    display: flex;
     align-items: center;
     margin-bottom: 15px;
     font-size: 1.6rem;
@@ -304,6 +307,10 @@ div.editor-summary {
     text-decoration: none;
     color: #00B1F0;
     border-color: #00B1F0;
+}
+
+.article__next p {
+    display: block;
 }
 
 .article__extra-content {

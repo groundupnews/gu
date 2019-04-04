@@ -1,0 +1,23 @@
+<div class="article__next" id="article__next">
+    {% with article.get_next_article as article_next %}
+        {% if article_next %}
+            <p>
+                Next:&nbsp;
+                <a href="{% url "newsroom:article.detail" article_next.slug %}">
+                    {{article_next.title}}
+                </a>
+            </p>
+        {% endif %}
+    {% endwith %}
+
+    {% with article.get_prev_article as article_prev %}
+        {% if article_prev %}
+            <p>
+                Previous:&nbsp;
+                <a href="{% url "newsroom:article.detail" article_prev.slug %}">
+                    {{article_prev.title}}
+                </a>
+            </p>
+        {% endif %}
+    {% endwith %}
+</div>
