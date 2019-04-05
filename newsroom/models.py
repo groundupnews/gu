@@ -463,20 +463,22 @@ class Article(models.Model):
 
     def get_next_article(self):
         next_article = None
-        try:
-            next_article = Article.objects.published().\
-                           filter(published__gt=self.published).last()
-        except Article.DoesNotExist:
+        if self.published:
+            try:
+                next_article = Article.objects.published().\
+                               filter(published__gt=self.published).last()
+            except Article.DoesNotExist:
                 pass
         return next_article
 
 
     def get_prev_article(self):
         prev_article = None
-        try:
-            prev_article = Article.objects.published().\
-                           filter(published__lt=self.published).first()
-        except Article.DoesNotExist:
+        if self.published:
+            try:
+                prev_article = Article.objects.published().\
+                               filter(published__lt=self.published).first()
+            except Article.DoesNotExist:
                 pass
         return prev_article
 
