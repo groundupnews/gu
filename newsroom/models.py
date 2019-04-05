@@ -466,7 +466,7 @@ class Article(models.Model):
         try:
             next_article = Article.objects.published().\
                            filter(published__gt=self.published).last()
-        except Article.tDoesNotExist:
+        except Article.DoesNotExist:
                 pass
         return next_article
 
