@@ -1,20 +1,20 @@
-#most-popular.most-popular {
+#most-popular.most-popular, #qanda.qanda {
     display: flex;
     flex-direction: column;
 }
 
-.article__sidebar #most-popular {
+.article__sidebar #most-popular, .article__sidebar #qanda {
     padding: 30px;
 }
 
-#most-popular h2 {
+#most-popular h2, #qanda h2 {
     font-family: 'Roboto Slab', serif;
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 40px;
 }
 
-#most-popular ol li a {
+#most-popular ol li a, #qanda ul li a {
     font-family: 'Open Sans', sans-serif;
     color: #151F22;
     font-weight: 400;
@@ -22,4 +22,7 @@
     line-height: 1.9rem;
 }
 
-
+#qanda ul {
+    list-style: none;
+    padding: 0;
+}

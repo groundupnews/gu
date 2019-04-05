@@ -57,7 +57,7 @@ class ArticleList(generic.ListView):
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
         context['letters'] = Letter.objects.published().\
             filter(published__gte=date_from).order_by('-published')
-        context['agony'] = QandA.objects.published()[:5]
+        context['agony'] = QandA.objects.published().order_by('-published')
         return context
 
 
@@ -365,6 +365,7 @@ def article_detail(request, slug):
                            'letters': Letter.objects.published().
                            filter(published__gte=date_from).
                            order_by('-published'),
+                           'agony': QandA.objects.published().order_by("-published"),
                            'content_type': 'article',
                            'form': form})
         else:

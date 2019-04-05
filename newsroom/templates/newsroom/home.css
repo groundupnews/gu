@@ -189,11 +189,15 @@
     align-items: flex-start;
 }
 
-.more_articles__popular {
+.more_articles__popular_qanda {
     background-color: #fff;
     flex-basis: 65%;
     padding: 10px;
     margin-right: 30px;
+}
+
+.more_articles__popular {
+    margin-bottom: 30px;
 }
 
 .more_articles__letters {
@@ -225,28 +229,28 @@
     padding-bottom: 30px;
 }
 
-.home .more_articles__popular {
+.home .more_articles__popular_qanda {
     padding: 30px;
 }
 
-.home .more_articles__popular h2 {
+.home .more_articles__popular_qanda h2 {
     font-family: 'Roboto Slab', serif;
     font-weight: 600;
     margin-top: 10px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 h2#qanda {
     margin-top: 40px;
 }
 
-.home .more_articles__popular ol, .home .more_articles__popular ul {
+.home .more_articles__popular_qanda ol, .home .more_articles__popular_qanda ul {
     list-style: none;
     counter-reset: item;
     padding-left: 0px;
 }
 
-.home .more_articles__popular ol li, .home .more_articles__popular ul li {
+.home .more_articles__popular_qanda ol li, .home .more_articles__popular_qanda ul li {
     counter-increment: item;
     display: flex;
     width: 100%;
@@ -254,11 +258,11 @@ h2#qanda {
     margin-bottom: 15px;
 }
 
-.home .more_articles__popular ol li:before {
+.home .more_articles__popular_qanda ol li:before {
     content: counter(item);
 }
 
-.home .more_articles__popular ol li:before, .home .more_articles__popular ul li:before {
+.home .more_articles__popular_qanda ol li:before, .home .more_articles__popular_qanda ul li:before {
     font-weight: bold;
     font-size: 3rem;
     font-family: 'Roboto Slab', serif;
@@ -266,7 +270,7 @@ h2#qanda {
     width: 5%;
 }
 
-.home .more_articles__popular ol li a, .home .more_articles__popular ul li a {
+.home .more_articles__popular_qanda ol li a, .home .more_articles__popular_qanda ul li a {
     width: 90%;
     padding-left: 10px;
     font-family: 'Open Sans', sans-serif;
@@ -275,7 +279,7 @@ h2#qanda {
     font-size: 1.6rem;
 }
 
-.home .more_articles__popular ol li a:hover, .home .more_articles__popular ul li a:hover {
+.home .more_articles__popular_qanda ol li a:hover, .home .more_articles__popular_qanda ul li a:hover {
     text-decoration: none;
     color: #00b1F0;
 }
@@ -297,7 +301,7 @@ h2#qanda {
         flex-direction: column;
     }
 
-    .more_articles__popular {
+    .more_articles__popular_qanda {
         flex: 1;
         padding: 10px;
         margin-right: 0px;

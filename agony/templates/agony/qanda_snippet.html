@@ -1,0 +1,13 @@
+{% with agony_slice=agony|slice:":5" %}
+    {% if agony_slice %}
+
+        <div class="latest-qanda">
+            <h2>Latest questions and answers</h2>
+            <ul>
+                {% for qanda in agony_slice %}
+                    <li><a href="{% url 'agony:detail' qanda.pk %}">{{qanda}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endwith %}
