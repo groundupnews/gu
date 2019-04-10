@@ -1,4 +1,9 @@
 <div id="toy">
+    <style>
+     #chart-checkbox {
+         font-size: 78%;
+     }
+    </style>
     <div id="toy-chart">
 
         <div>
@@ -285,6 +290,7 @@
     var initializeCheckBox = function(dict)
     {
         var div = document.getElementById("chart-checkbox");
+        var i = 1;
         for (let key in dict) {
             var cb = document.createElement("input");
             cb.type = "checkbox";
@@ -296,13 +302,19 @@
             } else {
                 cb.checked = false;
             }
-            div.append(cb);
+            var span = document.createElement("span");
             var label = document.createElement("label");
+            span.style.whiteSpace = "nowrap";
             label.for = key;
-            label.innerHTML = key;
-            div.appendChild(label);
-            var br = document.createElement("br");
-            div.appendChild(br);
+            label.innerHTML = key  + "&nbsp;&nbsp; ";
+            span.append(cb);
+            span.append(label);
+            div.appendChild(span);
+            if (i % 6 == 0) {
+                var br = document.createElement("br");
+                div.appendChild(br);
+            }
+            i++;
         }
     }
 
