@@ -1,0 +1,345 @@
+<div id="toy">
+    <div id="toy-chart">
+
+        <div>
+            <canvas
+                id="value-chart"
+                style="max-width: 750px;">
+            </canvas>
+        </div>
+
+        <div id="chart-checkbox">
+        </div>
+        <ul id="chart-notes">
+            <h3>Notes</h3>
+        </ul>
+
+
+    </div>
+
+   <script>
+    {% include 'toys/Chart.bundle.min.js' %}
+   </script>
+
+   <script>
+    // "use strict";
+
+    const rgb_colors = ['255, 0, 0',
+                        '0, 0, 255',
+                        '30, 230, 250',
+                        '240, 150, 60',
+                        '18,21,99',
+                        '99,18,21',
+                        '9,38,243',
+                        '188,141,181',
+                        '131,141,181',
+                        '255, 0, 0',
+                        '7,253,11',
+                        '83,58,131',
+                        '179,145,108',
+                        '3,147,128',
+                        '100,180,222',
+                        '0, 255, 0',
+                        '241,130,101',
+                        '180,185,190',
+                        '134,175,99',
+                        '77,34,243',
+                        '255,80,21',
+                        '0, 0, 255',
+                        '80,85,190',
+                        '160,85,183',
+                        '142,53,66',
+                        '131,8,240',
+                        '181,175,16',
+                        '255, 255, 0',
+                        '206,163,112',
+                        '155, 127, 51',
+                        '30,46,49',
+                        '198,30,87',
+                        '94,141,167',
+                        '255, 0, 255',
+                        '55, 27, 255',
+                        '175,115,119',
+                        '180,51,42',
+                        '0, 255, 255']
+
+
+    const chart_values = {
+        "indicators": {
+            "GDP": {
+                "value": {
+                    "2018-19": 5059100000000,
+                    "2019-20": 5413800000000,
+                },
+                "initial": false
+            },
+            "Total expenditure":   {
+                "value": {
+                    "2018-19": 1665400000000,
+                    "2019-20": 1826600000000
+                },
+                "initial": true
+            },
+            "Total revenue": {
+                "value": {
+                    "2018-19": 1445200000000,
+                    "2019-20": 1583800000000
+                },
+                "initial": true
+            },
+            "National share": {
+                "value": {
+                    "2018-19": 638200000000,
+                    "2019-20": 684700000000
+                },
+                "initial": false
+            },
+            "Provincial share":    {
+                "value": {
+                    "2018-19": 572200000000,
+                    "2019-20": 612300000000
+                },
+                "initial": false
+            },
+            "Local gov share": {
+                "value": {
+                    "2018-19": 117300000000,
+                    "2019-20": 127300000000
+                },
+                "initial": false
+            },
+            "Income tax": {
+                "value": {
+                    "2018-19": 505800000000,
+                    "2019-20": 552900000000
+                },
+                "initial": false
+            },
+            "Corporate tax": {
+                "value": {
+                    "2018-19": 232200000000,
+                    "2019-20": 229608000000
+                },
+                "initial": false
+            },
+            "Vat": {
+                "value": {
+                    "2018-19": 348100000000,
+                    "2019-20": 360471000000
+                },
+                "initial": false
+            },
+            "Debt payment":{
+                "value": {
+                    "2018-19": 180100000000,
+                    "2019-20": 202200000000
+                },
+                "initial": true,
+            },
+            "Education (basic)": {
+                "value": {
+                    "2018-19": 246800000000,
+                    "2019-20": 262400000000
+                },
+                "initial": false
+            },
+            "Education (tertiary)":  {
+                "value": {
+                    "2018-19":  93700000000,
+                    "2019-20": 112700000000,
+                },
+                "initial": false
+            },
+            "Education (total)": {
+                "value": {
+                    "2018-19": 246800000000 + 93700000000,
+                    "2019-20": 262400000000 + 112700000000,
+                },
+                "initial": true
+            },
+            "Health":  {
+                "value": {
+                    "2018-19": 205400000000,
+                    "2019-20": 222600000000
+                },
+                "initial": true
+            },
+            "Social development": {
+                "value": {
+                    "2018-19": 256874000000,
+                    "2019-20": 278396000000
+                },
+                "initial": true
+            },
+            "Grants": {
+                "value": {
+                    "2018-19": 162642000000,
+                    "2019-20": 175156000000
+                },
+                "initial": true
+            }
+        },
+        "notes": [
+            "All amounts for 2019-20 are estimates",
+            "Source: <a href='https://bit.ly/2IlpDZT'>Treasury, 2019</a>; " +
+            "<a href='https://bit.ly/2UPdJhu'>Treasury, 2018</a>",
+            "Share for local government excludes municipal taxes (e.g. rates)",
+            "Some 2018-19 amounts are not corrected for inflation"
+        ]
+    };
+
+    var ctx;
+    var chart;
+
+    var fmtBillion = function(value) {
+        if (value >= 1000000000000) {
+            return 'R' + (value /
+                1000000000000).toLocaleString()
+                 + " trillion";
+        } else {
+            return 'R' + (value / 1000000000).toLocaleString()
+                 + " billion";
+        }
+    }
+
+    var getChartData = function(dict)
+    {
+        var div = document.getElementById("chart-checkbox");
+        var checkboxes = div.getElementsByTagName("input");
+        var labels = [];
+        var datasets = [];
+        var data = {};
+        var backgroundColors = {};
+        var borderColors = {};
+
+        for (const checkbox of checkboxes) {
+            if (checkbox.checked) {
+                var indicator = dict[checkbox.value];
+                labels.push(checkbox.value);
+                values = indicator["value"];
+                var i = 0;
+                for (const year in indicator["value"]) {
+                    if (! (year in data) ) {
+                        data[year] = [];
+                        backgroundColors[year] = [];
+                        borderColors[year] = [];
+                    }
+                    data[year].push(values[year]);
+                    backgroundColors[year].push("rgb(" + rgb_colors[i] + ", 0.4)");
+                    borderColors[year].push("rgb(" + rgb_colors[i] + ", 1.0)");
+                    i++;
+                }
+            }
+        }
+        for (const year in data) {
+            datasets.push({
+                label: year,
+                data: data[year],
+                backgroundColor: backgroundColors[year],
+                borderColor: borderColors[year],
+                borderWidth: 1
+            });
+        }
+
+        var chartData = {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return fmtBillion(value);
+                            }
+                        }
+                    }]
+                },
+
+                title: {
+                    display: true,
+                    text: 'Government income and expenditure'
+                },
+
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label
+                                     || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += fmtBillion(tooltipItem.yLabel);
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+        return chartData;
+    }
+
+    var initializeCheckBox = function(dict)
+    {
+        var div = document.getElementById("chart-checkbox");
+        for (let key in dict) {
+            var cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.id = key;
+            cb.value = key;
+            cb.onchange = drawGraph;
+            if (dict[key]["initial"] == true) {
+                cb.checked = true;
+            } else {
+                cb.checked = false;
+            }
+            div.append(cb);
+            var label = document.createElement("label");
+            label.for = key;
+            label.innerHTML = key;
+            div.appendChild(label);
+            var br = document.createElement("br");
+            div.appendChild(br);
+        }
+    }
+
+    var drawGraph = function()
+    {
+        var element = document.getElementById('value-chart');
+        var parent = element.parentNode;
+        parent.removeChild(element);
+
+        var canvas = document.createElement("canvas");
+        canvas.id = "value-chart";
+        canvas.style.max_width = "750px";
+        parent.appendChild(canvas);
+
+        var ctx = canvas.getContext('2d');
+        var data = getChartData(chart_values["indicators"]);
+        var chart = new Chart(ctx, data);
+    }
+
+    var writeNotes = function()
+    {
+        var ul = document.getElementById("chart-notes");
+        for (const note of chart_values["notes"]) {
+            var li = document.createElement("li");
+            li.innerHTML = note;
+            ul.appendChild(li);
+        }
+    }
+
+    var initializeGraph = function()
+    {
+        initializeCheckBox(chart_values["indicators"]);
+        drawGraph();
+        writeNotes();
+    }
+
+
+    initializeGraph();
+   </script>
+</div>

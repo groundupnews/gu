@@ -9,7 +9,15 @@ This page is missing
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-7">
-      <h1>Sorry, but we can't find this page.</h1>
+        <h1>Sorry, but we can't find the page: {{request.path}}</h1>
+
+        <h2>Perhaps read one of these trending stories?</h2>
+        <div>
+            {{most_popular_html|safe}}
+        </div>
+
+        <h2>Here's something interesting:</h2>
+        {% include toy_html %}
     </div>
   </div>
 

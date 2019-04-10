@@ -10,6 +10,7 @@ gu_production*.sql
 local_settings.py
 groundup/media/*
 groundup/static/*
+static/*
 .installed.cfg
 bin
 develop-eggs

@@ -17,9 +17,9 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'tools', groups: [ 'tools' ] }
     ];
 
-    config.extraPlugins = 'find,sourcedialog,saveedits';
+    config.extraPlugins = 'codemirror,sourcedialog,saveedits';
 
-    config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Table,Maximize,Strike,Outdent,Indent,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
+    config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Table,Maximize,Strike,Source,Outdent,Indent,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';

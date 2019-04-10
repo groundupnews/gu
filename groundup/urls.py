@@ -93,6 +93,9 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+handler404 = 'newsroom.views.handler404'
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [

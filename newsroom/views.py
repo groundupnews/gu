@@ -556,6 +556,15 @@ def advanced_search(request):
                                                   'adv_search_form': adv_search_form})
 
 
+
+def handler404(request, exception, template_name="404.html"):
+    return render(request,
+                  '404.html',
+                  {'most_popular_html': models.MostPopular.get_most_popular_html(),
+                   'toy_html': 'toys/govtbudgets.html',},
+                  status=404)
+
+
 ''' Used to test logging
 '''
 
