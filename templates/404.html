@@ -11,6 +11,7 @@ This page is missing
     <div class="col-md-7">
         <h1>Sorry, but we can't find the page: {{request.path}}</h1>
 
+        {% comment %}
         <h2>Perhaps read one of these trending stories?</h2>
         <div>
             {{most_popular_html|safe}}
@@ -18,6 +19,7 @@ This page is missing
 
         <h2>Here's something interesting:</h2>
         {% include toy_html %}
+        {% endcomment %}
     </div>
   </div>
 
