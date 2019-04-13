@@ -85,6 +85,16 @@ _Recommend
 	        <div id="qanda">
 	            {% include 'agony/qanda_snippet.html' %}
 	        </div>
+            {% elif b.name == "_Toy" %}
+	        <div id="gu-toy">
+                    {% with "ab"|make_list|random  as choice %}
+                        {% if choice == "a" %}
+	                    {% include 'toys/govtbudgets.html' %}
+                        {% elif choice == "b" %}
+	                    {% include 'toys/grantrecips.html' %}
+                        {% endif %}
+                    {% endwith %}
+	        </div>
             {% else %}
                 {{b.html|safe}}
             {% endif %}

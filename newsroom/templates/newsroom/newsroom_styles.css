@@ -473,13 +473,23 @@ p.author-description, p.disclaimer, p.correction {
     margin-bottom: 6px;
 }
 
-#most-popular, #latest-letters, #qanda {
+#most-popular, #latest-letters, #qanda, #gu-toy {
     margin-bottom: 10px;
 }
 
 #most-popular ol, #see-also ul, #latest-letters ul, #qanda ul {
     font-weight: bold;
     padding-left: 25px;
+}
+
+#gu-toy {
+    padding: 12px;
+}
+
+#chart-notes li {
+    font-size: 70%;
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 
 #see-also ul {

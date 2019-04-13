@@ -6,7 +6,8 @@
     </style>
     <div id="toy-chart">
 
-        <div>
+        <div id="value-chart-container"
+             style="position: relative; min-height:50vh;">
             <canvas
                 id="value-chart"
                 style="max-width: 750px;">
@@ -16,7 +17,6 @@
         <div id="chart-checkbox">
         </div>
         <ul id="chart-notes">
-            <h3>Notes</h3>
         </ul>
 
 
@@ -27,46 +27,10 @@
    </script>
 
    <script>
-    // "use strict";
+    "use strict";
 
     const rgb_colors = ['255, 0, 0',
-                        '0, 0, 255',
-                        '30, 230, 250',
-                        '240, 150, 60',
-                        '18,21,99',
-                        '99,18,21',
-                        '9,38,243',
-                        '188,141,181',
-                        '131,141,181',
-                        '255, 0, 0',
-                        '7,253,11',
-                        '83,58,131',
-                        '179,145,108',
-                        '3,147,128',
-                        '100,180,222',
-                        '0, 255, 0',
-                        '241,130,101',
-                        '180,185,190',
-                        '134,175,99',
-                        '77,34,243',
-                        '255,80,21',
-                        '0, 0, 255',
-                        '80,85,190',
-                        '160,85,183',
-                        '142,53,66',
-                        '131,8,240',
-                        '181,175,16',
-                        '255, 255, 0',
-                        '206,163,112',
-                        '155, 127, 51',
-                        '30,46,49',
-                        '198,30,87',
-                        '94,141,167',
-                        '255, 0, 255',
-                        '55, 27, 255',
-                        '175,115,119',
-                        '180,51,42',
-                        '0, 255, 255']
+                        '0, 0, 255']
 
 
     const chart_values = {
@@ -221,7 +185,7 @@
             if (checkbox.checked) {
                 var indicator = dict[checkbox.value];
                 labels.push(checkbox.value);
-                values = indicator["value"];
+                var values = indicator["value"];
                 var i = 0;
                 for (const year in indicator["value"]) {
                     if (! (year in data) ) {
@@ -256,6 +220,7 @@
                 scales: {
                     yAxes: [{
                         ticks: {
+                            beginAtZero: true,
                             callback: function(value, index, values) {
                                 return fmtBillion(value);
                             }
@@ -281,7 +246,8 @@
                             return label;
                         }
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         }
         return chartData;
@@ -304,16 +270,16 @@
             }
             var span = document.createElement("span");
             var label = document.createElement("label");
-            span.style.whiteSpace = "nowrap";
+            // span.style.whiteSpace = "nowrap";
             label.for = key;
             label.innerHTML = key  + "&nbsp;&nbsp; ";
             span.append(cb);
             span.append(label);
             div.appendChild(span);
-            if (i % 6 == 0) {
-                var br = document.createElement("br");
-                div.appendChild(br);
-            }
+            // if (i % 6 == 0) {
+            //     var br = document.createElement("br");
+            //     div.appendChild(br);
+            // }
             i++;
         }
     }

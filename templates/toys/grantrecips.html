@@ -1,0 +1,163 @@
+<div id="toy">
+    <style>
+     #chart-checkbox {
+         font-size: 78%;
+     }
+    </style>
+    <div id="toy-chart">
+
+        <div id="value-chart-container"
+             style="position: relative; min-height:60vh;">
+            <canvas
+                id="value-chart"
+                style="max-width: 750px;">
+            </canvas>
+        </div>
+
+        <ul id="chart-notes">
+        </ul>
+
+
+    </div>
+
+    <script>
+     {% include 'toys/Chart.bundle.min.js' %}
+    </script>
+
+    <script>
+     "use strict";
+
+     const chart_dict = {
+         type: 'line',
+         data: {
+             labels: ['2002-3', '2003-4', '2004-5', '2005-6',
+                      '2006-7', '2007-8', '2008-9', '2009-10',
+                      '2010-11', '2011-12', '2012-13', '2013-14', '2014-15',
+                      '2015-16', '2016-17', '2017-18', '2018-19'],
+             datasets: [
+                 {
+                     label: 'Total',
+                     borderColor: 'red',
+                     data: [5808,7941,9408,10919,11983,12375,13066,13779,14625,
+                            15198,15857,15765,16496,16928,16970,17237,17614],
+                 },
+
+                 {
+                     label: 'Child support',
+                     borderColor: 'orange',
+                     data: [2631,4310,5662,7045,7864,8196,8765,9381,
+                            10154,10675,11213,11050,11677,12052,
+                            12051,12239,12508],
+                 },
+                 {
+                     label: 'Old age',
+                     borderColor: 'yellow',
+                     data: [2027,2064,2097,2147,2197,2221,2346,2491,
+                            2648,2711,2846,2946,3070,3182,3279,3392,3538],
+                 },
+                 {
+                     label: 'Disability',
+                     borderColor: 'green',
+                     data: [953,1271,1308,1320,1422,1413,1372,1299,1212,1172,
+                            1154,1118,1133,1096,1070,1057,1052]
+                 },
+                 {
+                     label: 'Foster Care',
+                     borderColor: 'blue',
+                     data: [138,200,252,313,401,443,476,489,490,518,
+                            515,519,478,456,425,400,365]
+                 },
+                 {
+                     label: 'Care dependency',
+                     borderColor: 'indigo',
+                     data: [58,78,89,94,99,102,107,119,121,122,129,
+                            132,138,142,145,149,151]
+                 },
+             ]
+         },
+         options: {
+             scales: {
+                 yAxes: [{
+                     ticks: {
+                         beginAtZero: true,
+                         callback: function(value, index, values) {
+                             return formatValue(value);
+                         }
+                     }
+                 }],
+             },
+
+             tooltips: {
+                callbacks: {
+                     label: function(tooltipItem, data) {
+                         var label = data.datasets[tooltipItem.datasetIndex].label
+                                  || '';
+
+                         if (label) {
+                             label += ': ';
+                         }
+                         label += formatValue(tooltipItem.yLabel);
+                         return label;
+                     }
+                 }
+             },
+
+             title: {
+                 display: true,
+                 text: 'Social grant recipients'
+             },
+
+             maintainAspectRatio: false
+         }
+     };
+
+     const notes = [
+         "Click on a dataset label to toggle hiding or showing it.",
+         "Source: Treasury's annual national budget reviews (all numbers are estimates)",
+         "War veteran grants, which are declining and at most a few thousand in " +
+         "any given year, are counted with the old age grants",
+         "Grant-in-aid and Social Relief of Distress grant numbers are not included. " +
+         "They are comparatively small (less than 100k in any year).",
+         "The child support grant (csg) was introduced in 1998.",
+         "The csg eligibility age has gradually been raised from seven to 18."
+     ];
+
+     var formatValue = function(value)
+     {
+         if (value >= 1000) {
+             return (value / 1000).toLocaleString()
+                  + " mil.";
+         } else if (value > 0) {
+             return (value * 1000).toLocaleString();
+         } else {
+             return value;
+         }
+     }
+
+     var drawGraph = function()
+     {
+         var canvas = document.getElementById('value-chart');
+         var ctx = canvas.getContext('2d');
+         var chart = new Chart(ctx, chart_dict);
+     }
+
+     var writeNotes = function()
+     {
+         var ul = document.getElementById("chart-notes");
+         for (var l of notes) {
+             var li = document.createElement("li");
+             li.innerHTML = l;
+             ul.appendChild(li);
+         }
+     }
+
+     var initializeGraph = function()
+     {
+         drawGraph();
+         writeNotes();
+     }
+
+
+     initializeGraph();
+    </script>
+</div>
