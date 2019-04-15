@@ -486,8 +486,12 @@ p.author-description, p.disclaimer, p.correction {
     padding: 12px;
 }
 
-#chart-notes li {
-    font-size: 70%;
+#toy ul {
+    margin-top: 15px;
+}
+
+#toy li {
+    font-size: 12px;
     margin-top: 0;
     margin-bottom: 10px;
 }

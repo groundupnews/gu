@@ -87,11 +87,13 @@ _Recommend
 	        </div>
             {% elif b.name == "_Toy" %}
 	        <div id="gu-toy">
-                    {% with "ab"|make_list|random  as choice %}
+                    {% with "abc"|make_list|random  as choice %}
                         {% if choice == "a" %}
 	                    {% include 'toys/govtbudgets.html' %}
                         {% elif choice == "b" %}
 	                    {% include 'toys/grantrecips.html' %}
+                        {% elif choice == "c" %}
+	                    {% include 'toys/greenhouse.html' %}
                         {% endif %}
                     {% endwith %}
 	        </div>

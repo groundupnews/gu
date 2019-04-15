@@ -1,0 +1,161 @@
+<div id="toy">
+    <div id="toy-chart">
+
+        <div id="value-chart-global-container"
+             style="position: relative; min-height:60vh;">
+            <canvas
+                id="value-chart-global"
+                style="max-width: 750px;">
+            </canvas>
+        </div>
+
+        <ul id="chart-notes-global">
+        </ul>
+
+        <div id="value-chart-sa-container"
+             style="position: relative; min-height:60vh;">
+            <canvas
+                id="value-chart-sa"
+                style="max-width: 750px;">
+            </canvas>
+        </div>
+
+        <ul id="chart-notes-sa">
+        </ul>
+
+
+
+    </div>
+
+    <script>
+     {% include 'toys/Chart.bundle.min.js' %}
+    </script>
+
+    <script>
+     "use strict";
+
+     const global_emissions = {
+         type: 'pie',
+         data: {
+             labels: ['Electricity & heat', 'Agriculture & forestry', 'Transport',
+                      'Buildings', 'Industry', 'Other'],
+             datasets: [
+                 {
+                     label: 'Global greenhouse gas emissions by sector',
+                     data: [25,24,14,6,21,10],
+                     backgroundColor: [
+                         "red", "orange", "yellow", "green", "blue", "indigo"
+                     ]
+                 }
+             ]
+         },
+         options: {
+             tooltips: {
+                 callbacks: {
+                     label: function(tooltipItem, data) {
+                         var label = data.labels[tooltipItem.index] + ' ' +
+                                     data.datasets[0].data[tooltipItem.index] + '%';
+                         return label;
+                     }
+                 }
+             },
+             title: {
+                 display: true,
+                 text: 'Contributors to greenhouse gas emissions (global)'
+             },
+             maintainAspectRatio: false,
+             events: ['mousemove', 'mouseout', 'touchstart', 'touchmove']
+         }
+     };
+
+
+     const sa_emissions = {
+         type: 'pie',
+         data: {
+             labels: ['Electricity & heat',  'Manufacturing & construction',
+                      'Transport', 'Agriculture & forestry', 'Industry',
+                      'Waste', 'Other'],
+             datasets: [
+                 {
+                     label: 'Global greenhouse gas emissions by sector',
+                     data: [50,13,10,7,5,4,10],
+                     backgroundColor: [
+                         "#6b5b95", "#878f99", "#b2ad7f", "#a2b9bc", "#d6cbd3",
+                         "#eca1a6","#bdcebe"
+                     ]
+                 }
+             ]
+         },
+         options: {
+             tooltips: {
+                 callbacks: {
+                     label: function(tooltipItem, data) {
+                         var label = data.labels[tooltipItem.index] + ' ' +
+                                     data.datasets[0].data[tooltipItem.index] + '%';
+                         return label;
+                     }
+                 }
+             },
+             title: {
+                 display: true,
+                 text: 'Contributors to greenhouse gas emissions (South Africa)'
+             },
+             maintainAspectRatio: false,
+             events: ['mousemove', 'mouseout', 'touchstart', 'touchmove']
+         }
+     };
+
+
+     const notes_global = [
+         "Source: <a href='https://www.ipcc.ch/report/ar5/wg3/'>IPCC (2014)</a> via " +
+         "<a href='https://www.epa.gov/ghgemissions/global-greenhouse-gas-emissions-data'> EPA</a>"
+     ];
+
+     const notes_sa = [
+         "SA's greenhouse gas emissions grew 44% from 1990 to 2012",
+         "In 2012, SA emitted 464 million metric tons of CO2 (or equivalent), 0.97% " +
+         "of the world's total",
+         "SA's per capita emissions as well as its emissions per dollar of GDP exceeds " +
+         "the world's average",
+         "Source: <a href='https://www.climatelinks.org/sites/default/files/asset/document/GHG%20Emissions%20Fact%20Sheet%20South%20Africa%20-%207-5-16%20USAIDSAcomm_rev08-26-16_Clean.pdf/'>USAID (2016)</a>"
+     ];
+
+
+
+     var drawGraph = function()
+     {
+         var canvas_global = document.getElementById('value-chart-global');
+         var ctx_global = canvas_global.getContext('2d');
+         var chart_global = new Chart(ctx_global, global_emissions);
+
+         var canvas_sa = document.getElementById('value-chart-sa');
+         var ctx_sa = canvas_sa.getContext('2d');
+         var chart_sa = new Chart(ctx_sa, sa_emissions);
+     }
+
+     var writeNotes = function()
+     {
+         var ul = document.getElementById("chart-notes-global");
+         for (var l of notes_global) {
+             var li = document.createElement("li");
+             li.innerHTML = l;
+             ul.appendChild(li);
+         }
+         ul = document.getElementById("chart-notes-sa");
+         for (var l of notes_sa) {
+             var li = document.createElement("li");
+             li.innerHTML = l;
+             ul.appendChild(li);
+         }
+     }
+
+     var initializeGraph = function()
+     {
+         drawGraph();
+         writeNotes();
+     }
+
+
+     initializeGraph();
+    </script>
+</div>
