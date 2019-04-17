@@ -44,6 +44,15 @@
     display: none;
 }
 
+.article__sidebar h2 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    margin-top: 13px;
+    margin-bottom: 10px;
+}
+
+
+
 @media (max-width: 786px) {
     .article-content .social-media {
         display: none;

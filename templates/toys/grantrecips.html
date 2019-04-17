@@ -1,5 +1,5 @@
 <div id="toy">
-    </style>
+    <h2>Social grant recipients</h2>
     <div id="toy-chart">
         <div id="value-chart-container"
              style="position: relative; min-height:60vh;">
@@ -83,7 +83,7 @@
              },
 
              tooltips: {
-                callbacks: {
+                 callbacks: {
                      label: function(tooltipItem, data) {
                          var label = data.datasets[tooltipItem.datasetIndex].label
                                   || '';
@@ -98,8 +98,8 @@
              },
 
              title: {
-                 display: true,
-                 text: 'Social grant recipients'
+                 display: false,
+                 text: 'Social grant recipients',
              },
 
              maintainAspectRatio: false
