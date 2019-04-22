@@ -492,8 +492,10 @@
                  var tmp2 = input.value.substring(pos, input.value.length);
                  input.value = tmp1 + elem.textContent[0] + tmp2;
              }
-             input.focus();
-             input.setSelectionRange(pos+1, pos+1);
+             if (document.documentElement.clientWidth > 800) {
+                 input.focus();
+                 input.setSelectionRange(pos+1, pos+1);
+             }
              if (elem.id == "target-l0") bullseyePressed = true;
          } else {
              elem.classList.remove('target-used-letter');
@@ -508,8 +510,10 @@
                  input.value = input.value.substring(0, index) +
                                input.value.substring(index + 1,
                                                      input.value.length);
-                 input.focus();
-                 input.setSelectionRange(index, index);
+                 if (document.documentElement.clientWidth > 800) {
+                     input.focus();
+                     input.setSelectionRange(index, index);
+                 }
                  if (elem.id == "target-l0") bullseyePressed = false;
              }
          }
@@ -643,81 +647,85 @@
 
          accept.addEventListener('click', acceptWord);
 
-         input.addEventListener('keydown', function(e) {
-             var keyCode = e.which;
-             var chr = String.fromCharCode(keyCode).toLowerCase();
+         if (document.documentElement.clientWidth > 800) {
+             input.addEventListener('keydown', function(e) {
+                 var keyCode = e.which;
+                 var chr = String.fromCharCode(keyCode).toLowerCase();
 
-             if (keyCode == 37 || keyCode == 39) { // left and right arrows
-                 return true;
-             }
+                 if (keyCode == 37 || keyCode == 39) { // left and right arrows
+                     return true;
+                 }
 
-             if ( (keyCode == 8)) { // backspace
-                 var pos = e.target.selectionStart;
-                 if (pos > 0) {
-                     chr = input.value[pos - 1];
-                     for (var i = 8; i >=0; i--) {
+                 if ( (keyCode == 8)) { // backspace
+                     var pos = e.target.selectionStart;
+                     if (pos > 0) {
+                         chr = input.value[pos - 1];
+                         for (var i = 8; i >=0; i--) {
+                             var idName = "target-l" + i;
+                             var elem = document.getElementById(idName);
+                             if (elem.classList.contains("target-used-letter") &&
+                                 chr == elem.textContent[0]) {
+                                 letterPress(elem, pos-1);
+                                 break;
+                             }
+                         }
+                     }
+                 } else if (keyCode == 13) { // enter
+                     if (accept.disabled == false) {
+                         acceptWord(accept);
+                     }
+                 } else if ( letters.includes(chr)) {
+                     for (var i = 0; i < 9; i++) {
                          var idName = "target-l" + i;
                          var elem = document.getElementById(idName);
-                         if (elem.classList.contains("target-used-letter") &&
+                         if (elem.classList.contains("target-unused-letter") &&
                              chr == elem.textContent[0]) {
-                             letterPress(elem, pos-1);
+                             letterPress(elem, e.target.selectionStart);
                              break;
                          }
                      }
                  }
-             } else if (keyCode == 13) { // enter
-                 if (accept.disabled == false) {
-                     acceptWord(accept);
-                 }
-             } else if ( letters.includes(chr)) {
-                 for (var i = 0; i < 9; i++) {
-                     var idName = "target-l" + i;
-                     var elem = document.getElementById(idName);
-                     if (elem.classList.contains("target-unused-letter") &&
-                         chr == elem.textContent[0]) {
-                         letterPress(elem, e.target.selectionStart);
-                         break;
-                     }
-                 }
-             }
 
-             e.preventDefault();
-             return false;
-         });
-
-         input.addEventListener('select', function() {
-             this.selectionStart = this.selectionEnd;
-         }, false);
-
-         document.getElementById("target-restart").
-                  addEventListener('click', function(e) {
-                      usedWords = [];
-                      localStorage.setItem(storage, usedWords);
-                      clearGrid();
-                      e.target.style.display = "none";
-                      var statusBoard = document.getElementById("target-game-state");
-                      statusBoard.classList.remove("target-good");
-                      statusBoard.classList.remove("target-very-good");
-                      statusBoard.classList.remove("target-excellent");
-                      loadSavedState();
-                  });
-
-         var solutionToggle = document.getElementById("target-solution-toggle");
-         if (solutionToggle) {
-
-             solutionToggle.addEventListener("click", function(e) {
-                 var solutionText = document.getElementById("target-solution-words");
-                 if (solutionText.style.display == "none") {
-                     solutionText.style.display = "block";
-                     solutionToggle.textContent = "Hide solution";
-                 } else {
-                     solutionText.style.display = "none";
-                     solutionToggle.textContent = "Show solution";
-                 }
+                 e.preventDefault();
+                 return false;
              });
+
+             input.addEventListener('select', function() {
+                 this.selectionStart = this.selectionEnd;
+             }, false);
+         } else {
+             input.disabled = true;
          }
 
-         loadSavedState();
+             document.getElementById("target-restart").
+                      addEventListener('click', function(e) {
+                          usedWords = [];
+                          localStorage.setItem(storage, usedWords);
+                          clearGrid();
+                          e.target.style.display = "none";
+                          var statusBoard = document.getElementById("target-game-state");
+                          statusBoard.classList.remove("target-good");
+                          statusBoard.classList.remove("target-very-good");
+                          statusBoard.classList.remove("target-excellent");
+                          loadSavedState();
+                      });
+
+             var solutionToggle = document.getElementById("target-solution-toggle");
+             if (solutionToggle) {
+
+                 solutionToggle.addEventListener("click", function(e) {
+                     var solutionText = document.getElementById("target-solution-words");
+                     if (solutionText.style.display == "none") {
+                         solutionText.style.display = "block";
+                         solutionToggle.textContent = "Hide solution";
+                     } else {
+                         solutionText.style.display = "none";
+                         solutionToggle.textContent = "Show solution";
+                     }
+                 });
+             }
+
+             loadSavedState();
      });
 
     </script>
