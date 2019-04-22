@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete a Target puzzle {{block.super}}
+{% endblock %}
+
+{% block content %}
+
+    <div id="content-area">
+        <form method="post">{% csrf_token %}
+            <p>Are you sure you want to delete Target:
+                <a href="{% url 'target:update' target.pk %}">{{ object }}</a>?</p>
+            <input type="submit" value="Confirm">
+        </form>
+    </div>
+
+{% endblock %}

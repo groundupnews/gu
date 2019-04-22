@@ -64,6 +64,7 @@ urlpatterns = [
     path('', include('payment.urls')),
     path('', include('letters.urls')),
     path('', include('agony.urls')),
+    path('', include('target.urls')),
     path('', include('security.urls')),
     path('', include('allauth_2fa.urls')),
     path('accounts/', include('allauth.urls')),

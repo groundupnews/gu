@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Target puzzles {{block.super}}
+{% endblock %}
+{% block content %}
+    <style>
+     #target-list {
+         margin-left: auto;
+         margin-right: auto;
+         max-width: 600px;
+     }
+    </style>
+    <div id="content-area">
+        <div id="target-list">
+            <h1>Target puzzles</h1>
+
+            {% if  perms.target.create_target %}
+                <p>
+                    <a href="{% url 'target:create' %}">Make new Target</a>
+                </p>
+            {% endif %}
+            <table class="table">
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Letters
+                    </th>
+                    <th>
+                        Words
+                    </th>
+                    {% if  perms.target.change_target %}
+                        <th>
+                            Edit
+                        </th>
+                    {% endif %}
+                </tr>
+                {% for target in object_list %}
+
+                    <tr>
+                        <td>
+                            <a href="{% url "target:detail" target.pk %}">
+                                {{ target.number }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ target.published }}
+                        </td>
+                        <td>
+                            {{ target.letters }}
+                        </td>
+                        <td>
+                            {{ target.wordCount }}
+                        </td>
+                        {% if  perms.target.change_target %}
+                            <td>
+                                <a href="{% url "target:update" target.pk %}">
+                                    &#128394;
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+
+                {% endfor %}
+            </table>
+	    {% include 'paginator.html' %}
+
+        </div>
+    </div>
+{% endblock %}

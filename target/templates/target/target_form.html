@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Make a Target puzzle {{block.super}}
+{% endblock %}
+
+{% block additional_head %}
+
+    {{block.super}}
+
+    <style>
+     {% include "target/flatpickr.min.css" %}
+    </style>
+    <script>
+     {% include "target/flatpickr.min.js" %}
+    </script>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <style>
+     #target-form-area {
+         margin-left: auto;
+         margin-right: auto;
+         max-width: 320px;
+     }
+     #target-form label {
+         width: 120px;
+     }
+     label[for=id_words] {
+         vertical-align: top;
+     }
+     #id_letters {
+         width: 7em;
+     }
+     #id_bullseye {
+         width: 2em;
+     }
+     #id_words {
+         width: 100px;
+     }
+     #id_published {
+         width: 125px;
+     }
+     #id_number {
+         width: 125px;
+     }
+     #target-word-count {
+         padding-left: 122px;
+     }
+     #target-delete {
+         margin-top: 12px;
+         color: red;
+     }
+    </style>
+    <div id="content-area">
+        <div id="target-form-area">
+            {% if object %}
+                <h1>Update Target puzzle number {{object.number}}</h1>
+            {% else %}
+                <h1>Create a Target puzzle</h1>
+            {% endif %}
+            <form id="target-form" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" name="save" value="Save">
+                <input type="submit" name="save_continue" value="Save and edit">
+            </form>
+            {% if object %}
+                <button id="target-delete"
+                        onclick="window.location.href='{% url 'target:delete' object.pk %}';">
+                    Delete
+                </button>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+     "use strict";
+     document.addEventListener("DOMContentLoaded", function(event) {
+         var wordList = document.getElementById("id_words");
+         var p = document.createElement("p");
+         p.id = "target-word-count";
+         var setCount = function()
+         {
+             var w = wordList.value.split("\n");
+             p.textContent = w.length + " words";
+         }
+         wordList.addEventListener("input", setCount);
+         setCount();
+
+         wordList.parentNode.insertBefore(p, wordList.nextSibling);
+         flatpickr("#id_published", {
+             enableTime: true,
+             time_24hr: true,
+             dateFormat: "Y-m-d H:i",
+         });
+     });
+    </script>
+{% endblock %}

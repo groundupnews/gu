@@ -80,6 +80,7 @@ INSTALLED_APPS = (
     'letters',
     'gallery',
     'agony',
+    'target',
     'pgsearch',
 )
 

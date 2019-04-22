@@ -909,6 +909,23 @@ Single-colored icons can be modified like so:
     border-color: #00B1F0;
 }
 
+
+/*** Generic content area ***/
+
+#content-area {
+    background-color: #fff;
+    padding: 15px;
+    margin: 15px auto 15px auto;
+    max-width: 1200px;
+}
+
+#content-area h1, #content-area h2 {
+    margin-top: 10px;
+    font-family: 'Roboto Slab', serif;
+    text-align: center;
+}
+
+
 /*** Pages with List Content ***/
 
 #list-content .row:nth-child(2) {
