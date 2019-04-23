@@ -465,6 +465,7 @@
      var showInputStatus = function(inputElem)
      {
          var value = inputElem.value;
+         console.log("Value: " + value);
          var accept = document.getElementById('target-accept');
 
          inputElem.classList.remove("target-hit");
@@ -686,6 +687,8 @@
                      }
                  }
                  input.value = cleanedValue;
+                 console.log("Input: " + input);
+                 console.log("Input value: " + input.value);
                  showInputStatus(input);
                  e.preventDefault();
                  return false;
