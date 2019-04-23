@@ -154,6 +154,7 @@
         <source src="{% static 'target/sounds/button-pressed.mp3' %}"></source>
     </audio>
     <audio id="sound-9-letter">
+        <source src="{% static 'target/sounds/glass.mp3' %}"></source>
         <source src="{% static 'target/sounds/glass.ogg' %}"></source>
     </audio>
 
@@ -655,48 +656,82 @@
          }
 
          accept.addEventListener('click', acceptWord);
+         var ua = navigator.userAgent.toLowerCase();
+         var isAndroid = ua.indexOf("android") > -1;
 
-         input.addEventListener('keydown', function(e) {
-             var keyCode = e.which;
-             var chr = String.fromCharCode(keyCode).toLowerCase();
-
-             if (keyCode == 37 || keyCode == 39) { // left and right arrows
-                 return true;
-             }
-
-             if ( (keyCode == 8)) { // backspace
-                 var pos = e.target.selectionStart;
-                 if (pos > 0) {
-                     chr = input.value[pos - 1];
-                     for (var i = 8; i >=0; i--) {
-                         var idName = "target-l" + i;
-                         var elem = document.getElementById(idName);
-                         if (elem.classList.contains("target-used-letter") &&
-                             chr == elem.textContent[0]) {
-                             letterPress(elem, pos-1);
+         if (isAndroid) {
+             input.addEventListener('input', function(e) {
+                 var guess = input.value;
+                 var cleanedValue = "";
+                 for (var i = 0; i < cells.length; i++) {
+                     cells[i].classList.remove("target-used-letter");
+                     cells[i].classList.add("target-unused-letter");
+                 }
+                 var matches = [false, false, false, false,
+                                false, false, false, false,
+                                false];
+                 for (var i = 0; i < guess.length; i++) {
+                     for (var j = 0; j < letters.length; j++) {
+                         if ( (guess[i].toLowerCase() == letters[j]) && !matches[j]) {
+                             matches[j] = true;
+                             if (j == 0) bullseyePressed = true;
+                             cleanedValue += guess[i];
+                             var id = "target-l" + j;
+                             var c = document.getElementById(id);
+                             c.classList.add("target-used-letter");
+                             c.classList.remove("target-unused-letter");
                              break;
                          }
                      }
                  }
-             } else if (keyCode == 13) { // enter
-                 if (accept.disabled == false) {
-                     acceptWord(accept);
+                 input.value = cleanedValue;
+                 showInputStatus(input);
+                 e.preventDefault();
+                 return false;
+             });
+         } else {
+             input.addEventListener('keydown', function(e) {
+                 var keyCode = e.which;
+                 var chr = String.fromCharCode(keyCode).toLowerCase();
+
+                 if (keyCode == 37 || keyCode == 39) { // left and right arrows
+                     return true;
                  }
-             } else if ( letters.includes(chr)) {
-                 for (var i = 0; i < 9; i++) {
-                     var idName = "target-l" + i;
-                     var elem = document.getElementById(idName);
-                     if (elem.classList.contains("target-unused-letter") &&
-                         chr == elem.textContent[0]) {
-                         letterPress(elem, e.target.selectionStart);
-                         break;
+
+                 if ( (keyCode == 8)) { // backspace
+                     var pos = e.target.selectionStart;
+                     if (pos > 0) {
+                         chr = input.value[pos - 1];
+                         for (var i = 8; i >=0; i--) {
+                             var idName = "target-l" + i;
+                             var elem = document.getElementById(idName);
+                             if (elem.classList.contains("target-used-letter") &&
+                                 chr == elem.textContent[0]) {
+                                 letterPress(elem, pos-1);
+                                 break;
+                             }
+                         }
+                     }
+                 } else if (keyCode == 13) { // enter
+                     if (accept.disabled == false) {
+                         acceptWord(accept);
+                     }
+                 } else if ( letters.includes(chr)) {
+                     for (var i = 0; i < 9; i++) {
+                         var idName = "target-l" + i;
+                         var elem = document.getElementById(idName);
+                         if (elem.classList.contains("target-unused-letter") &&
+                             chr == elem.textContent[0]) {
+                             letterPress(elem, e.target.selectionStart);
+                             break;
+                         }
                      }
                  }
-             }
 
-             e.preventDefault();
-             return false;
-         });
+                 e.preventDefault();
+                 return false;
+             });
+         }
 
          input.addEventListener('select', function() {
              this.selectionStart = this.selectionEnd;
