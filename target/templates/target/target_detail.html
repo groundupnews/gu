@@ -657,9 +657,10 @@
 
          accept.addEventListener('click', acceptWord);
          var ua = navigator.userAgent.toLowerCase();
+         console.log(ua);
          var isAndroid = ua.indexOf("android") > -1;
 
-         if (isAndroid) {
+         if (true) {
              input.addEventListener('input', function(e) {
                  var guess = input.value;
                  var cleanedValue = "";
