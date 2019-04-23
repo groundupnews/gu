@@ -661,8 +661,9 @@
          console.log(ua);
          var isAndroid = ua.indexOf("android") > -1;
 
-         if (true) {
+         if (false) {
              input.addEventListener('input', function(e) {
+                 console.log(e.key);
                  var guess = input.value.toLowerCase();
                  var cleanedValue = "";
                  for (var i = 0; i < cells.length; i++) {
@@ -705,7 +706,7 @@
                  if ( (keyCode == 8)) { // backspace
                      var pos = e.target.selectionStart;
                      if (pos > 0) {
-                         chr = input.value[pos - 1];
+                         chr = input.value[pos - 1].toLowerCase();
                          for (var i = 8; i >=0; i--) {
                              var idName = "target-l" + i;
                              var elem = document.getElementById(idName);
