@@ -99,7 +99,7 @@
          display: block;
      }
      #target-input {
-         height: 28px;
+         height: 34px;
          margin-top: 12px;
          margin-bottom: 12px;
          border-radius: 10px;
@@ -176,16 +176,25 @@
             {% endif %}
 
             <div id="target-grid">
-                <span id="target-l1" class="target-letter target-unused-letter">{{object.letters.1}}
-                </span><span id="target-l2" class="target-letter target-unused-letter">{{object.letters.2}}
-                </span><span id="target-l3" class="target-letter target-unused-letter">{{object.letters.3}}
+                <span id="target-l1"
+                      class="target-letter target-unused-letter">{{object.letters.1}}
+                </span><span id="target-l2"
+                             class="target-letter target-unused-letter">{{object.letters.2}}
+                </span><span id="target-l3"
+                             class="target-letter target-unused-letter">{{object.letters.3}}
                 </span><br />
-                <span id="target-l4" class="target-letter target-unused-letter">{{object.letters.4}}
-                </span><span id="target-l0" class="target-letter target-unused-letter">{{object.letters.0}}
-                </span><span id="target-l5" class="target-letter target-unused-letter">{{object.letters.5}}
-                </span><br /><span id="target-l6" class="target-letter target-unused-letter">{{object.letters.6}}
-                </span><span id="target-l7" class="target-letter target-unused-letter">{{object.letters.7}}
-                </span><span id="target-l8" class="target-letter target-unused-letter">{{object.letters.8}}
+                <span id="target-l4"
+                      class="target-letter target-unused-letter">{{object.letters.4}}
+                </span><span id="target-l0"
+                             class="target-letter target-unused-letter">{{object.letters.0}}
+                </span><span id="target-l5"
+                             class="target-letter target-unused-letter">{{object.letters.5}}
+                </span><br /><span id="target-l6"
+                                   class="target-letter target-unused-letter">{{object.letters.6}}
+                </span><span id="target-l7"
+                             class="target-letter target-unused-letter">{{object.letters.7}}
+                </span><span id="target-l8"
+                             class="target-letter target-unused-letter">{{object.letters.8}}
                 </span>
             </div>
 
@@ -241,7 +250,7 @@
     <script>
      "use strict";
 
-
+     const minDeviceWidth = 0;
      const storage = "target-words-" + "{{target.pk}}";
      const letters = {{target.lettersJson|safe}};
 
@@ -492,7 +501,7 @@
                  var tmp2 = input.value.substring(pos, input.value.length);
                  input.value = tmp1 + elem.textContent[0] + tmp2;
              }
-             if (document.documentElement.clientWidth > 800) {
+             if (document.documentElement.clientWidth > minDeviceWidth) {
                  input.focus();
                  input.setSelectionRange(pos+1, pos+1);
              }
@@ -510,7 +519,7 @@
                  input.value = input.value.substring(0, index) +
                                input.value.substring(index + 1,
                                                      input.value.length);
-                 if (document.documentElement.clientWidth > 800) {
+                 if (document.documentElement.clientWidth > minDeviceWidth) {
                      input.focus();
                      input.setSelectionRange(index, index);
                  }
@@ -647,7 +656,7 @@
 
          accept.addEventListener('click', acceptWord);
 
-         if (document.documentElement.clientWidth > 800) {
+         if (document.documentElement.clientWidth > minDeviceWidth) {
              input.addEventListener('keydown', function(e) {
                  var keyCode = e.which;
                  var chr = String.fromCharCode(keyCode).toLowerCase();
