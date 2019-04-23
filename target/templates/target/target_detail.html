@@ -464,7 +464,7 @@
 
      var showInputStatus = function(inputElem)
      {
-         var value = inputElem.value;
+         var value = inputElem.value.toLowerCase();
          console.log("Value: " + value);
          var accept = document.getElementById('target-accept');
 
@@ -663,7 +663,7 @@
 
          if (true) {
              input.addEventListener('input', function(e) {
-                 var guess = input.value;
+                 var guess = input.value.toLowerCase();
                  var cleanedValue = "";
                  for (var i = 0; i < cells.length; i++) {
                      cells[i].classList.remove("target-used-letter");
@@ -674,7 +674,7 @@
                                 false];
                  for (var i = 0; i < guess.length; i++) {
                      for (var j = 0; j < letters.length; j++) {
-                         if ( (guess[i].toLowerCase() == letters[j]) && !matches[j]) {
+                         if ( (guess[i] == letters[j]) && !matches[j]) {
                              matches[j] = true;
                              if (j == 0) bullseyePressed = true;
                              cleanedValue += guess[i];
