@@ -26,7 +26,7 @@
          }
          .target-unused-letter {
              background-color: white;
-             border: 1px solid black;*/
+             border: 1px solid black;
          }
          .target-unused-letter:hover {
              font-size: 22px;
@@ -438,9 +438,11 @@
                  return false;
              });
 
-             input.addEventListener('select', function() {
-                 this.selectionStart = this.selectionEnd;
-             }, false);
+             if (0) {
+                 input.addEventListener('select', function() {
+                     this.selectionStart = this.selectionEnd;
+                 }, false);
+             }
 
              document.getElementById("target-restart").
                       addEventListener('click', function(e) {
