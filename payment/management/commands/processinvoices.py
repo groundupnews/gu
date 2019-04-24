@@ -32,7 +32,7 @@ def generate_commissions():
                            article.author_03, article.author_04,
                            article.author_05]
                 for author in authors:
-                    if author is not None and author.freelancer is True:
+                    if author is not None and author.freelancer is not "n":
                         commission = Commission()
                         # commission.author = author
                         commission.article = article

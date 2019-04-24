@@ -160,6 +160,9 @@
     {% endwith%}
 </table>
 <p>Amounts are in South African Rands</p>
+{% if invoice.author.freelancer == 'c' %}
+    <p>Tax (PAYE) for staff is calculated by CMT's payroll system.</p>
+{% endif %}
 
 <script>
  var fillDue = function(e, i) {

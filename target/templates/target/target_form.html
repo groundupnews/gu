@@ -24,7 +24,7 @@
      #target-form-area {
          margin-left: auto;
          margin-right: auto;
-         max-width: 320px;
+         max-width: 600px;
      }
      #target-form label {
          width: 120px;
@@ -58,10 +58,11 @@
     <div id="content-area">
         <div id="target-form-area">
             {% if object %}
-                <h1>Update Target puzzle number {{object.number}}</h1>
+                <h1>Update Target # {{object.number}}</h1>
             {% else %}
-                <h1>Create a Target puzzle</h1>
+                <h1>Create Target</h1>
             {% endif %}
+            <p>Target: {{target}}</p>
             <form id="target-form" method="post">{% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" name="save" value="Save">

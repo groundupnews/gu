@@ -45,10 +45,11 @@ class TargetCreate(PermissionRequiredMixin, generic.edit.CreateView):
     permission_required = 'target.create_target'
     model = models.Target
     fields = ['letters', 'bullseye', 'words', 'published', 'public_solution']
+    target = ""
 
     def get_initial(self):
         puzzle = makeTarget()
-
+        self.target = puzzle['target']
         return {'letters': ''.join(puzzle['letters']),
                 'bullseye': puzzle['bullseye'],
                 'words': '\n'.join(puzzle['words'])}
@@ -64,7 +65,10 @@ class TargetCreate(PermissionRequiredMixin, generic.edit.CreateView):
                     return result
         return super().form_valid(form)
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['target'] = self.target
+        return context
 
 class TargetUpdate(PermissionRequiredMixin, generic.edit.UpdateView):
     permission_required = 'target.change_target'

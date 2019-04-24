@@ -54,11 +54,18 @@ SUMMARY_TEMPLATE_CHOICES = (
     ("newsroom/text_summary.html", "Text only"),
 )
 
+FREELANCER_CHOICES = (
+    ("n", "No"),
+    ("f", "Freelancer"),
+    ("c", "Commissioned staff"),
+)
+
 
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200)
-    freelancer = models.BooleanField(default=False)
+    freelancer = models.CharField(max_length=1, default="n",
+                                  choices=FREELANCER_CHOICES)
     level = models.CharField(max_length=15, choices=LEVEL_CHOICES,
                              default='standard')
     email = models.EmailField(blank=True)

@@ -395,7 +395,10 @@ class Commission(models.Model):
             article = RATES["news"]
 
         estimate['article'] = article
-        estimate['bonus'] = self.estimate_bonus()
+        if self.invoice.author.freelancer == "f":
+            estimate['bonus'] = self.estimate_bonus()
+        else:
+            estimate['bonus'] = Decimal(0.00)
 
         return estimate
 
@@ -415,8 +418,6 @@ class Commission(models.Model):
             return self.estimate_payment_photographer(estimate)
         else:
             return estimate
-
-
 
     def estimate_payment(self):
         estimate = {

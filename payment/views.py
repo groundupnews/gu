@@ -42,7 +42,7 @@ def invoice_list(request,
         if not user.is_authenticated:
             raise Http404
         if staff_view is False:
-            if not user.author or user.author.freelancer == False:
+            if not user.author:
                 raise Http404
             if author is not None and int(author) != 0:
                 if author != user.author.pk:

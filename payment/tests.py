@@ -29,19 +29,19 @@ class InvoiceTest(TestCase):
         author1.first_names = "Joe"
         author1.last_name = "Bloggs"
         author1.email = "joe@example.com"
-        author1.freelancer = True
+        author1.freelancer = "f"
         author1.save()
         author2 = Author()
         author2.first_names = "Jane"
         author2.last_name = "Doe"
         author2.email = "jane@example.com"
-        author2.freelancer = True
+        author2.freelancer = "c"
         author2.save()
         author3 = Author()
         author3.first_names = "Lois"
         author3.last_name = "Lane"
         author3.email = "lane@example.com"
-        author3.freelancer = False
+        author3.freelancer = "n"
         author3.save()
 
         article1 = Article()
@@ -67,7 +67,7 @@ class InvoiceTest(TestCase):
         article3.slug = "test-commission-3"
         article3.category = Category.objects.get(name="News")
         article3.published = timezone.now()
-        article3.author_01 = author1
+        article3.author_02 = author2
         article3.save()
 
         article4 = Article()
@@ -79,6 +79,53 @@ class InvoiceTest(TestCase):
         article4.author_02 = author2
         article4.save()
 
+        article5 = Article()
+        article5.title = "Test commission 5"
+        article5.slug = "test-commission-5"
+        article5.category = Category.objects.get(name="News")
+        article5.published = timezone.now()
+        article5.author_01 = author1
+        article5.author_02 = author2
+        article5.save()
+
+        article6 = Article()
+        article6.title = "Test commission 6"
+        article6.slug = "test-commission-6"
+        article6.category = Category.objects.get(name="News")
+        article6.published = timezone.now()
+        article6.author_01 = author1
+        article6.author_02 = author2
+        article6.save()
+
+        article7 = Article()
+        article7.title = "Test commission 7"
+        article7.slug = "test-commission-7"
+        article7.category = Category.objects.get(name="News")
+        article7.published = timezone.now()
+        article7.author_01 = author2
+        article7.author_02 = author1
+        article7.save()
+
+        article8 = Article()
+        article8.title = "Test commission 8"
+        article8.slug = "test-commission-8"
+        article8.category = Category.objects.get(name="News")
+        article8.published = timezone.now()
+        article8.author_01 = author2
+        article8.author_02 = author1
+        article8.save()
+
+        article9 = Article()
+        article9.title = "Test commission 9"
+        article9.slug = "test-commission-9"
+        article9.category = Category.objects.get(name="News")
+        article9.published = timezone.now()
+        article9.author_01 = author2
+        article9.author_02 = author1
+        article9.save()
+
+
+
     def test_commissions(self):
         fund = Fund.objects.get(name="Bertha|Reporters")
         author1 = Author.objects.get(email="joe@example.com")
@@ -86,13 +133,13 @@ class InvoiceTest(TestCase):
         from django.core import management
         management.call_command('processinvoices')
         commissions = Commission.objects.all()
-        self.assertEqual(len(commissions), 6)
+        self.assertEqual(len(commissions), 16)
         for commission in commissions:
             commission.commission_due = Decimal(900.00)
             commission.fund = fund
             commission.save()
         c = Commission.objects.filter(date_notified_approved__isnull=True)
-        self.assertEqual(len(c), 6)
+        self.assertEqual(len(c), 16)
 
         invoices = Invoice.objects.filter(status="-")
         self.assertEqual(len(invoices), 2)
@@ -121,14 +168,14 @@ class InvoiceTest(TestCase):
         invoices = Invoice.objects.filter(date_notified_payment__isnull=False)
         self.assertEqual(len(invoices), 2)
 
-        article5 = Article()
-        article5.title = "Test commission 5"
-        article5.slug = "test-commission-5"
-        article5.category = Category.objects.get(name="News")
-        article5.published = timezone.now()
-        article5.author_01 = author1
-        article5.author_02 = author2
-        article5.save()
+        article10 = Article()
+        article10.title = "Test commission 10"
+        article10.slug = "test-commission-10"
+        article10.category = Category.objects.get(name="News")
+        article10.published = timezone.now()
+        article10.author_01 = author1
+        article10.author_02 = author2
+        article10.save()
 
         management.call_command('processinvoices')
         invoices = Invoice.objects.filter(status="-")
@@ -152,8 +199,11 @@ class InvoiceTest(TestCase):
         management.call_command('processinvoices')
         invoices = Invoice.objects.filter(date_notified_payment__isnull=False)
         self.assertEqual(len(invoices), 2)
-        for email in mail.outbox:
-            print("From:", email.from_email)
-            print("To:", email.to)
-            print("Subject:", email.subject)
-            print("Body:", email.body)
+
+        commissions = Commission.objects.filter(invoice__author__last_name="Bloggs")
+        num_bonuses = len([True for c in commissions if c.estimate_bonus() > 0])
+        self.assertEqual(num_bonuses, 3)
+
+        commissions = Commission.objects.filter(invoice__author__last_name="Doe")
+        num_bonuses = len([True for c in commissions if c.estimate_bonus() > 0])
+        self.assertEqual(num_bonuses, 0)
