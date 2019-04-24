@@ -21,6 +21,9 @@
 {% block content %}
 
     <style>
+     #target-form-area h1 {
+         text-align: left;
+     }
      #target-form-area {
          margin-left: auto;
          margin-right: auto;
@@ -62,7 +65,6 @@
             {% else %}
                 <h1>Create Target</h1>
             {% endif %}
-            <p>Target: {{target}}</p>
             <form id="target-form" method="post">{% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" name="save" value="Save">
@@ -85,7 +87,7 @@
          var setCount = function()
          {
              var w = wordList.value.split("\n");
-             p.textContent = w.length + " words";
+             p.textContent = "{{target}}" + " | " + w.length + " words";
          }
          wordList.addEventListener("input", setCount);
          setCount();

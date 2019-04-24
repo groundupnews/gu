@@ -73,7 +73,7 @@ class TargetCreate(PermissionRequiredMixin, generic.edit.CreateView):
 class TargetUpdate(PermissionRequiredMixin, generic.edit.UpdateView):
     permission_required = 'target.change_target'
     model = models.Target
-    fields = ['letters', 'bullseye', 'words', 'published', 'public_solution']
+    fields = [ 'letters', 'bullseye', 'words', 'published', 'public_solution']
 
     def form_valid(self, form):
         if self.request.method == 'POST':
