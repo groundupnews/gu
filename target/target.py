@@ -44,9 +44,7 @@ def makeTarget(wordFile="words.txt"):
 
     words_9 = [w for w in words if len(w) == 9]
 
-
     sorted_words_9 = sorted([''.join(sorted(w)) for w in words_9])
-
 
     sorted_words_9_nodups = []
     previous_word = sorted_words_9[0]
