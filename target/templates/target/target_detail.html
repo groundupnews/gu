@@ -148,6 +148,12 @@
          margin-top: 12px;
          margin-left: 83px;
      }
+     #target-rules {
+         border: 1px solid black;
+         border-radius: 10px;
+         padding: 6px;
+         margin: 6px;
+     }
     </style>
     <audio id="sound-button-press">
         <source src="{% static 'target/sounds/button-pressed.ogg' %}"></source>
@@ -245,6 +251,10 @@
                     {% endif %}
                 </div>
             {% endif %}
+            <div id="target-rules">
+                <h2>Rules</h2>
+                {{object.rules|safe|linebreaks}}
+            </div>
         </div>
     </div>
 

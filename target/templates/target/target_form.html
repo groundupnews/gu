@@ -32,14 +32,11 @@
      #target-form label {
          width: 120px;
      }
-     label[for=id_words] {
+     label[for=id_words], label[for=id_rules] {
          vertical-align: top;
      }
      #id_letters {
          width: 7em;
-     }
-     #id_bullseye {
-         width: 2em;
      }
      #id_words {
          width: 100px;
@@ -53,15 +50,22 @@
      #target-word-count {
          padding-left: 122px;
      }
-     #target-delete {
+     input[name="delete"]  {
          margin-top: 12px;
          color: red;
+     }
+     .errorlist {
+         color: red;
+         padding-left: 0;
+     }
+     .errorlist li {
+         list-style-type: none;
      }
     </style>
     <div id="content-area">
         <div id="target-form-area">
             {% if object %}
-                <h1>Update Target # {{object.number}}</h1>
+                <h1>Update Target # {{object.pk}}-{{object.number}}</h1>
             {% else %}
                 <h1>Create Target</h1>
             {% endif %}
@@ -69,13 +73,11 @@
                 {{ form.as_p }}
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="save_continue" value="Save and edit">
+                <input type="submit" name="cancel" value="Cancel">
+                {% if object %}
+                    <input type="submit" name="delete" value="Delete">
+                {% endif %}
             </form>
-            {% if object %}
-                <button id="target-delete"
-                        onclick="window.location.href='{% url 'target:delete' object.pk %}';">
-                    Delete
-                </button>
-            {% endif %}
         </div>
     </div>
     <script>
@@ -87,7 +89,9 @@
          var setCount = function()
          {
              var w = wordList.value.split("\n");
-             p.textContent = "{{target}}" + " | " + w.length + " words";
+             var bullseye = document.getElementById("id_letters").value[0]
+             p.textContent = bullseye + " | " + "{{nine_letter_word}}" + " | " +
+                             w.length + " words";
          }
          wordList.addEventListener("input", setCount);
          setCount();

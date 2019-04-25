@@ -3,6 +3,11 @@ from django.urls import reverse
 from target import target
 from django.utils import timezone
 
+DEFAULT_RULES = """Make words of at least four letters using the grid letters at most once.
+The centre letter must be in every word. There's one nine-letter word.
+No plurals, proper nouns, hyphens or diacritics.
+Words are drawn from our dictionary which has about 100,000 words."""
+
 class TargetQuerySet(models.QuerySet):
 
     def published(self):
@@ -11,9 +16,9 @@ class TargetQuerySet(models.QuerySet):
 class Target(models.Model):
     letters = models.CharField(max_length=9, unique=True)
     words = models.TextField(blank=True)
-    bullseye = models.CharField(max_length=1)
     published = models.DateTimeField(blank=True, null=True)
     public_solution = models.BooleanField(default=False)
+    rules = models.TextField(default=DEFAULT_RULES, blank=True)
     number = models.PositiveSmallIntegerField(default=0, editable=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -39,7 +44,10 @@ class Target(models.Model):
         return hashed_words
 
     def nineLetterWord(self):
-        return [w for w in self.splitWords() if len(w) == 9][0]
+        try:
+            return [w for w in self.splitWords() if len(w) == 9][0]
+        except:
+            return ""
 
     def hashedNineLetterWord(self):
         return target.hashCode(self.nineLetterWord())
@@ -65,4 +73,4 @@ class Target(models.Model):
         return reverse('target:detail', args=[self.pk, ])
 
     class Meta:
-        ordering = ['-number']
+        ordering = ['-number', '-modified', ]

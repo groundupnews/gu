@@ -26,10 +26,10 @@
                         #
                     </th>
                     <th>
-                        Date
+                        Published
                     </th>
                     <th>
-                        Letters
+                        Target
                     </th>
                     <th>
                         Words
@@ -49,10 +49,10 @@
                             </a>
                         </td>
                         <td>
-                            {{ target.published }}
+                            {{ target.published|date:"Y-m-d" }}
                         </td>
                         <td>
-                            {{ target.letters }}
+                            {{ target.nineLetterWord }}
                         </td>
                         <td>
                             {{ target.wordCount }}
