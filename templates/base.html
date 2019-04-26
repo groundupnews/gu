@@ -8,7 +8,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
     <title>
-      {% block title %} | GroundUp{% endblock %}
+        {% block title %} | GroundUp{% endblock %}
     </title>
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -16,6 +16,22 @@
     <link rel="shortcut icon"
           type="image/x-icon"
 	  href="{% static  'newsroom/images/favicon-201809.ico' %}" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" sizes="57x57"
+          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-57By57.png' %}" />
+    <link rel="apple-touch-icon" sizes="72x72"
+          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-72By72.png' %}"/>
+    <link rel="apple-touch-icon" sizes="114x114"
+          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-114By114.png' %}"/>
+    <link rel="apple-touch-icon" sizes="144x144"
+          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-144By144.png' %}"/>
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" sizes="196x196"
+          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-196By196.png' %}"/>
+    <link rel="shortcut icon" sizes="128x128"
+          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-128By128.png' %}"/>
 
     {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
       {% block meta_description_block %}

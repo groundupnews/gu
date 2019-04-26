@@ -169,12 +169,6 @@ class TargetCreate(TargetUpdate):
                 'bullseye': puzzle['letters'][0],
                 'words': '\n'.join(puzzle['words'])}
 
-    def post(self, request, *args, **kwargs):
-        if "cancel" in request.POST:
-            return HttpResponseRedirect(reverse_lazy('target:list'))
-        else:
-            return super().post(request, *args, **kwargs)
-
     def get_object(self, queryset=None):
         try:
             return super().get_object(queryset)

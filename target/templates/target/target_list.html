@@ -52,7 +52,11 @@
                             {{ target.published|date:"Y-m-d" }}
                         </td>
                         <td>
-                            {{ target.nineLetterWord }}
+                            {% if  perms.target.change_target %}
+                                {{ target.nineLetterWord }}
+                            {% else %}
+                                {{ target.letters }}
+                            {% endif %}
                         </td>
                         <td>
                             {{ target.wordCount }}
