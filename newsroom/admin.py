@@ -124,7 +124,7 @@ class ArticleAdmin(admin.ModelAdmin):
                        ('letters_on', 'comments_on', 'collapse_comments', ),
                        'stickiness', 'exclude_from_list_views',
                        'use_editor',
-                       ('template', 'undistracted_layout', ),
+                       ('template', 'template_process', 'undistracted_layout', ),
                        'additional_head_scripts', 'additional_body_scripts',
                        'activate_slideshow',
                        ('last_tweeted', 'notified_authors',),

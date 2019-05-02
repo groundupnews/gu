@@ -10,6 +10,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import (Http404, HttpResponseForbidden, HttpResponseRedirect,
                          JsonResponse)
+from django.template import Template, Context
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -342,6 +343,7 @@ def article_detail(request, slug):
                     soup = utils.processSupportUs(soup)
                     soup = utils.processAdverts(soup)
                     article_body = str(soup)
+
                 except:
                     article_body = article_body.replace(
                         '<aside class="article-advert-edit">',
@@ -349,6 +351,11 @@ def article_detail(request, slug):
                     article_body = article_body.replace(
                         '<aside class="supportus-edit">',
                         '<aside class="supportus" style="display:none;">')
+
+                if article.template_process is True:
+                    t = Template(article_body)
+                    c = Context({"article": article})
+                    article_body = t.render(c)
 
             date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
             # most_popular = models.MostPopular.get_most_popular_html()

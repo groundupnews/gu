@@ -381,6 +381,7 @@ class Article(models.Model):
                          help_text="Include things like additional javascript "
                          "that should come at bottom of article")
     undistracted_layout = models.BooleanField(default=False)
+    template_process = models.BooleanField(default=False)
     # Neccessary for importing old Drupal articles
     disqus_id = models.CharField(blank=True, max_length=20)
 

@@ -76,7 +76,7 @@
 {% block content %}
   <div class="article-container">
     <div id="article-content" class="article-content">
-      <article id="article-category-{{article.category.slug}}" class="article">
+      <article id="article-category-{{article.category|lower}}" class="article">
 	{% block article %}
 	  {% include "newsroom/article_block.html" %}
 	{% endblock %}

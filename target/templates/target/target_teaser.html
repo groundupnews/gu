@@ -1,0 +1,20 @@
+<style>
+ #target-grid {
+     cursor: pointer;
+ }
+</style>
+<div id="target-teaser">
+    {% include "target/target_grid.html" %}
+    <p class="target-teaser-description">
+        {% block target-teaser-text %}
+            <a href="{% url "target:detail" object.pk %}"
+            >Can you see the nine-letter word?</a>
+        {% endblock %}
+    </p>
+</div>
+<script>
+ document.getElementById("target-grid").addEventListener('click', function(e) {
+     location.href= "{% url 'target:detail' object.pk %}";
+     return false;
+ });
+</script>

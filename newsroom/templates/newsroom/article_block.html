@@ -1,6 +1,6 @@
 <div class="article__container {% if article.undistracted_layout %} article__container--undistracted {% endif %}">
   <div class="article__content {% if article.undistracted_layout %} article__content--undistracted {% endif %}">
-    <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.name %}">
+    <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">
       {{article.category|upper}}
     </a>
     {% if display_region %}
