@@ -133,7 +133,7 @@ class CategoryDetail(ArticleList):
 
     def get_queryset(self):
         self.category = get_object_or_404(models.Category,
-                                          name__iexact=self.args[0])
+                                          slug__iexact=self.args[0])
         return models.Article.objects.list_view(). \
             filter(category=self.category)
 
