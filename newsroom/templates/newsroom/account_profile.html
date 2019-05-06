@@ -7,7 +7,7 @@
 {% if request.user.is_authenticated %}
     <h1>{{user.first_name}} {{user.last_name}}</h1>
     <ul>
-        {% if user.author.freelancer  %}
+        {% if user.author.freelancer == 'f' or user.author.freelancer == 'c'  %}
             <li>
                 <a href='{% url "payments:invoice.list" %}'>Invoices</a>
             </li>

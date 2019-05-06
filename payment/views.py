@@ -50,6 +50,7 @@ def invoice_list(request,
     except: # Let's not risk any unwarranted access
         raise Http404
 
+
     # Set date fields to coherent values
     try:
         if year_begin is None:
