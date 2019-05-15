@@ -124,6 +124,14 @@ class InvoiceTest(TestCase):
         article9.author_02 = author1
         article9.save()
 
+        article10 = Article()
+        article10.title = "Test commission 9"
+        article10.slug = "test-commission-10"
+        article10.category = Category.objects.get(name="News")
+        article10.published = timezone.now()
+        article10.author_01 = author2
+        article10.save()
+
 
 
     def test_commissions(self):
@@ -133,13 +141,13 @@ class InvoiceTest(TestCase):
         from django.core import management
         management.call_command('processinvoices')
         commissions = Commission.objects.all()
-        self.assertEqual(len(commissions), 16)
+        self.assertEqual(len(commissions), 17)
         for commission in commissions:
             commission.commission_due = Decimal(900.00)
             commission.fund = fund
             commission.save()
         c = Commission.objects.filter(date_notified_approved__isnull=True)
-        self.assertEqual(len(c), 16)
+        self.assertEqual(len(c), 17)
 
         invoices = Invoice.objects.filter(status="-")
         self.assertEqual(len(invoices), 2)
@@ -168,14 +176,14 @@ class InvoiceTest(TestCase):
         invoices = Invoice.objects.filter(date_notified_payment__isnull=False)
         self.assertEqual(len(invoices), 2)
 
-        article10 = Article()
-        article10.title = "Test commission 10"
-        article10.slug = "test-commission-10"
-        article10.category = Category.objects.get(name="News")
-        article10.published = timezone.now()
-        article10.author_01 = author1
-        article10.author_02 = author2
-        article10.save()
+        article11 = Article()
+        article11.title = "Test commission 11"
+        article11.slug = "test-commission-11"
+        article11.category = Category.objects.get(name="News")
+        article11.published = timezone.now()
+        article11.author_01 = author1
+        article11.author_02 = author2
+        article11.save()
 
         management.call_command('processinvoices')
         invoices = Invoice.objects.filter(status="-")

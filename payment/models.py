@@ -312,7 +312,8 @@ class Commission(models.Model):
 
     def estimate_bonus(self):
         if self.article and self.article.is_published() \
-           and self.article.author_01 == self.invoice.author:
+           and self.article.author_01 == self.invoice.author \
+           and self.invoice.author.freelancer == "f":
             month_start = make_aware(timezone.datetime(self.article.published.year,
                                             self.article.published.month, 1))
             publish_time = self.article.published
@@ -332,7 +333,6 @@ class Commission(models.Model):
 
         estimate['experience'] = experience
 
-
         if self.article.author_01 is None:
             shared = 1.0
         elif self.article.author_02 is None:
@@ -351,7 +351,10 @@ class Commission(models.Model):
         if self.article.category.name == "Brief":
             article = RATES["brief"]
         elif self.article.category.name == "Feature":
-            article = RATES["complex_feature"]
+            if len(self.article.body.split(" ")) > 850:
+                article = RATES["complex_feature"]
+            else:
+                article = RATES["simple_feature"]
         elif self.article.category.name == "Opinion":
             article = RATES["opinion"]
         else:
@@ -395,10 +398,7 @@ class Commission(models.Model):
             article = RATES["news"]
 
         estimate['article'] = article
-        if self.invoice.author.freelancer == "f":
-            estimate['bonus'] = self.estimate_bonus()
-        else:
-            estimate['bonus'] = Decimal(0.00)
+        estimate['bonus'] = self.estimate_bonus()
 
         return estimate
 
