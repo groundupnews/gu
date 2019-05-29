@@ -4,8 +4,10 @@
     <head>
         <meta charset="utf-8">
         <title>{{article.title|striptags|safe}}</title>
+        <meta name="robots" content="noindex,nofollow">
         <style>
          body {
+             font-family: Arial, Helvetica, sans-serif;
              max-width: 700px;
              margin: auto;
          }
@@ -52,7 +54,7 @@
         {% endif %}
 
         <p class="byline">{{article.cached_byline_no_links}}</p>
-        <p class="date">{{ article.published|date:"Y-m-d" }}</p>
+        <p class="date">{{ article.published|date:"j F Y"}}</p>
 
         {{article.body|safe}}
     </body>
