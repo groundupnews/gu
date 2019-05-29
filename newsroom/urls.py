@@ -14,8 +14,6 @@ urlpatterns = [
         (views.home_page_view),
         name='home'),
 
-    # url(r'^search/$', views.search, name='article.search'),
-
     url(r'^advanced_search/$', views.advanced_search, name='advanced.search'),
 
     url(r'^category/opinion_and_analysis/$',
@@ -201,6 +199,13 @@ urlpatterns = [
             decorator=cache_page(settings.CACHE_PERIOD,
                                  key_prefix='article'))
         (views.article_detail), name='article.detail'),
+
+    url(r'^article-print/(?P<slug>[-\w]+)/$',
+        cache_except_staff(
+            decorator=cache_page(settings.CACHE_PERIOD,
+                                 key_prefix='article'))
+        (views.article_print), name='article.print'),
+
 
     url(r'^copy_article/(?P<slug>[-\w]+)/$',
         views.copy_article, name='article.copy'),

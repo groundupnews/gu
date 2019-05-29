@@ -52,19 +52,6 @@ jQuery(document).ready(function ($) {
 	return false;
     });
 
-    $('#print-article').click(function(){
-	$("aside").remove();
-	var print_contents = getPureArticle();
-	print_contents = "<style>body { margin: 50px; }" +
-	                 "img { max-width:90%; }</style>" +
-	                 print_contents;
-        return_button = "<p><a href='{{request.build_asolute_uri}}'>Back</a></p>";
-        document.body.innerHTML = print_contents;
-
-	window.print();
-        document.body.innerHTML = return_button + print_contents;
-    });
-
     {% if can_edit %}
 
     var content_div = $('#content-main');

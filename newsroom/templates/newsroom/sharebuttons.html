@@ -28,7 +28,7 @@
     {% include "insert_icon.html" with icon="icon-mail" %}
 </a>
 
-<a id="print-article" href="#"
+<a id="print-article" href="{% url 'newsroom:article.print' article.slug %}"
    title="Print">
     {% include "insert_icon.html" with icon="icon-print" %}
 </a>

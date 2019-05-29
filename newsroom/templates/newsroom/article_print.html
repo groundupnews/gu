@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{article.title|striptags|safe}}</title>
+        <style>
+         body {
+             max-width: 700px;
+             margin: auto;
+         }
+         img {
+             max-width: 100%;
+         }
+         p {
+             margin-bottom: 12px;
+             margin-top: 12px;
+         }
+         p.caption {
+             font-size: 80%;
+             margin-top: 10px;
+             margin-bottom: 16px;
+         }
+         p.date, p.byline {
+             font-size: 80%;
+             font-style: italic;
+         }
+        </style>
+    </head>
+
+    <body>
+        <h1>{{article.title}}</h1>
+        <h2>{{article.subtitle}}</h2>
+        <p>
+            {% if article.primary_image %}
+	        <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}" target="_blank">
+	            <img src="{{article.cached_primary_image|iriencode}}"
+		         alt="{{article.primary_image_alt|addslashes}}"
+                    />
+	        </a>
+            {% else %}
+                {% if article.cached_primary_image %}
+	            <img src="{{article.cached_primary_image|iriencode}}"
+	                 alt="{{article.primary_image_alt|addslashes}}" />
+                {% endif %}
+            {% endif %}
+        </p>
+        {% if article.primary_image_caption %}
+            <p class="caption">
+	        {{article.primary_image_caption|safe}}
+            </p>
+        {% endif %}
+
+        <p class="byline">{{article.cached_byline_no_links}}</p>
+        <p class="date">{{ article.published|date:"Y-m-d" }}</p>
+
+        {{article.body|safe}}
+    </body>
+</html>

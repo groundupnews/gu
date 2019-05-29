@@ -379,6 +379,15 @@ def article_detail(request, slug):
             raise Http404
 
 
+def article_print(request, slug):
+    article = get_object_or_404(models.Article, slug=slug)
+    if (article.is_published() or request.user.is_staff):
+        return render(request, "newsroom/article_print.html",
+                      {'article': article})
+    else:
+        raise Http404
+
+
 def copy_article(request, slug):
     article = get_object_or_404(models.Article, slug=slug)
     if (article.is_published() or request.user.is_staff) and \
