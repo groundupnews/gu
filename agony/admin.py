@@ -12,6 +12,7 @@ class QandAAdmin(admin.ModelAdmin):
     raw_id_fields = ('topics', )
     date_hierarchy = 'published'
     search_fields = ['summary_question', 'summary_answer', 'sender_name', 'sender_email',]
+    ordering = ('-modified',)
     readonly_fields = ('created', 'modified', )
     autocomplete_lookup_fields = {
         'm2m': ['topics', ],
