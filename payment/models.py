@@ -293,7 +293,7 @@ class Commission(models.Model):
                                          decimal_places=2, default=0.00,
                                          verbose_name="amount")
     taxable = models.BooleanField(default=True)
-    vatable = models.BooleanField(default=False)
+    vatable = models.BooleanField(default=True)
     deleted = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
