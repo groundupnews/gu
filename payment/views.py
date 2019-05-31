@@ -77,7 +77,8 @@ def invoice_list(request,
         year_month_end = make_aware(timezone.datetime(year_end, month_end, 1))
         last_day = calendar.monthrange(year_month_end.year,
                                        year_month_end.month)[1]
-        year_month_end = make_aware(timezone.datetime(year_end, month_end, last_day))
+        year_month_end = make_aware(timezone.datetime(year_end, month_end, last_day,
+                                                      23,59,59,99))
     except:
         raise Http404
 
