@@ -32,3 +32,4 @@ django-el-pagination
 csscompressor
 django-compressor
 django-allauth-2fa
+clfparser

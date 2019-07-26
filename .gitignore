@@ -62,3 +62,6 @@ static/CACHE
 
 # Virtual Environment
 venv/
+access_production.log.1
+access.log
+
