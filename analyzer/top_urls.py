@@ -18,28 +18,39 @@ import operator
 #     f.close()
 #     return lines
 
+URLS_TO_EXCLUDE = ["/sitenews/rss/",
+                   "/favicon.ico/"]
 
-def most_popular_pages(filename, cutoff_time, num):
+def webpage_url_filter(url):
+    return True if url[-1] == "/" and url not in URLS_TO_EXCLUDE else False
+
+def retrieve_log(filename):
     with open(filename) as f:
         content = f.readlines()
-    records = [CLFParser.logDict(l) for l in content]
-    kept = [r['r'] for r in records
+    return [CLFParser.logDict(l) for l in content]
+
+def filter_log_to_get_ip_urls(records, cutoff_time):
+    return [r['r'].split(" ")[1] for r in records
             if r['h'] != '-' and
             r['r'][0:4] == '"GET'and
             isinstance(r['time'], datetime.date) and
             r['time'] > cutoff_time]
-    urls = {}
-    for record in kept:
-        s = record.split(" ")[1]
-        if s[-1] == "/" and s != "/sitenews/rss/":
-            if s in urls:
-                urls[s] = urls[s] + 1
-            else:
-                urls[s] = 1
-    most_pop = sorted(urls.items(), key=operator.itemgetter(1), reverse=True)
-    for url in most_pop[0:num]:
-        print(url[0], url[1])
 
+def pages_by_popularity(filename, cutoff_time, url_filter):
+    records = retrieve_log(filename)
+    kept = filter(url_filter,
+                  filter_log_to_get_ip_urls(records, cutoff_time))
+    urls = {}
+    for item in kept:
+        if item in urls:
+            urls[item] = urls[item] + 1
+        else:
+            urls[item] = 1
+    most_pop = sorted(urls.items(), key=operator.itemgetter(1), reverse=True)
+    return most_pop
+
+def most_popular_pages(filename, cutoff_time, num=5, url_filter=None):
+    return pages_by_popularity(filename, cutoff_time, url_filter)[0:num]
 
 if __name__ == '__main__':
     import argparse
@@ -48,6 +59,10 @@ if __name__ == '__main__':
     parser.add_argument('--date', type=str, default="")
     parser.add_argument('--diff', type=int, default=10)
     parser.add_argument('--num', type=int, default=5)
+    parser.add_argument('--stdfilter', type=bool, default=True)
+    parser.add_argument('--filter', dest='stdfilter', action='store_true')
+    parser.add_argument('--no-filter', dest='stdfilter', action='store_false')
+    parser.set_defaults(stdfilter=True)
     options = parser.parse_args()
 
     if options.date == "":
@@ -56,4 +71,11 @@ if __name__ == '__main__':
     else:
         cutoff_time = datetime.datetime.strptime(options.date,
                                                  '%Y-%m-%d %H:%M:%S')
-    most_popular_pages(options.logfile, cutoff_time, options.num)
+    if options.stdfilter:
+        url_filter = webpage_url_filter
+    else:
+        url_filter = None
+    pages = most_popular_pages(options.logfile, cutoff_time,
+                               options.num, url_filter)
+    for k,v in pages:
+        print(k, v)
