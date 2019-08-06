@@ -320,6 +320,7 @@ class Article(models.Model):
                               "overrides the value of the author fields")
     byline_style = models.CharField(max_length=2, choices=BYLINE_CHOICES,
                                     default="ST")
+    editor_feedback = models.TextField(blank=True)
     primary_image = FileBrowseField(max_length=200, directory="images/",
                                     blank=True)
     primary_image_size = models.CharField(

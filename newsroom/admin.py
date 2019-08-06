@@ -96,7 +96,8 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Additional authors', {
             'classes': ('wide grp-collapse grp-closed',),
             'fields': ('author_02', 'author_03', 'author_04', 'author_05',
-                       ('byline', 'byline_style', ))
+                       ('byline', 'byline_style', ),
+                       'editor_feedback')
         }),
         ('Primary Image', {
             'classes': ('wide',),

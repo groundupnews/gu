@@ -9,5 +9,13 @@ You can find it here:
 Please read the article carefully and check for errors. If you find any, please
 alert the GroundUp editors by replying to this email.
 
+{% if article.editor_feedback %}
+
+The editor of the article has given the following feedback on it:
+
+{{article.editor_feedback}}
+
+{% endif %}
+
 Regards
 GroundUp Editors
