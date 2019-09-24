@@ -111,6 +111,12 @@
     margin-bottom: 20px;
 }
 
+.home__article__block {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #D6D6DA;
+}
+
 .home__articles {
     display: flex;
     flex-direction: column;
@@ -238,6 +244,21 @@
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 20px;
+}
+
+.random_agony {
+    /* max-width: 500px;*/
+    background-color: lightgray;
+    padding: 12px;
+}
+
+.random_agony h2 {
+    font-weight: bold;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    line-height: 28px;
 }
 
 h2#qanda {

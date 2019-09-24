@@ -55,7 +55,7 @@ class LetterAdmin(admin.ModelAdmin):
             'classes': ('wide',),
             'fields': ('article', 'byline', 'email', 'title', 'text',
                        ('note_to_writer', 'replace_with_note', ),
-                       'rejected', 'published'),
+                       'rejected', 'published', 'recommended',),
         }),
         ('Advanced', {
             'classes': ('wide',),

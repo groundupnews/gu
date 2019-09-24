@@ -27,7 +27,7 @@ class QandAAdmin(admin.ModelAdmin):
                 'summary_answer', 'full_answer',
                 ('notify_sender', 'sender_notified',),
                 'topics',
-                'published','notes',
+                'published', 'recommended', 'notes',
                 ('created', 'modified',),)
         }),
     )

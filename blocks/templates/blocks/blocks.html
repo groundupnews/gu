@@ -14,12 +14,16 @@ _Recommend
 
 {% endcomment %}
 
-    {% for b in blocks %}
+{% for b in blocks %}
         <div class="sidebar-block">
             {% if b.name == "_Popular" %}
                 <div id="most-popular">
 		    <h2>Most popular</h2>
 		    {{most_popular_html|safe}}
+		</div>
+            {% elif b.name == "_Random_agony" %}
+                <div id="random_agony">
+                    {% include 'agony/random_question.html' %}
 		</div>
             {% elif b.name == "_Advert" %}
                 {% if not article.suppress_ads %}

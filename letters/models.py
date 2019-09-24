@@ -45,6 +45,7 @@ class Letter(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
     published = models.DateTimeField(blank=True, null=True,
                                      verbose_name='publish time')
+    recommended = models.BooleanField(default=False)
     position = models.IntegerField(default=0)
 
     objects = LetterQuerySet.as_manager()

@@ -23,6 +23,7 @@ class QandA(models.Model):
     notify_sender = models.BooleanField(default=False)
     sender_notified = models.BooleanField(default=False)
     published = models.DateTimeField(blank=True, null=True)
+    recommended = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     topics = models.ManyToManyField(Topic, blank=True)

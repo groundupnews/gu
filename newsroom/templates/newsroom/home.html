@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block article-list %}
-  <div class="home" id="list-content">
-      {% include 'blocks/blocks.html' with blocks=topblocks%}
+    <div class="home" id="list-content">
+        {% include 'blocks/blocks.html' with blocks=topblocks%}
     <div class="home_container">
       <div  class="home__article-list">
 	{% if page_obj.has_previous or article_list.0.stickiness == 0 %}

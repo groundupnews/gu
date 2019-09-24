@@ -72,6 +72,12 @@ class HomePage(ArticleList):
     def get_context_data(self, **kwargs):
         context = super(HomePage, self).get_context_data(**kwargs)
         context = get_blocks_in_context(context, "Home_Top", "topblocks")
+        context = get_blocks_in_context(context, "Home_0", "home_0")
+        context = get_blocks_in_context(context, "Home_1", "home_1")
+        context = get_blocks_in_context(context, "Home_2", "home_2")
+        context = get_blocks_in_context(context, "Home_3", "home_3")
+        context = get_blocks_in_context(context, "Home_4", "home_4")
+        context = get_blocks_in_context(context, "Home_5", "home_5")
         return context
 
     # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
