@@ -246,13 +246,13 @@
     margin-bottom: 20px;
 }
 
-.random_agony {
+.random_qanda, .random_letter {
     /* max-width: 500px;*/
     background-color: lightgray;
     padding: 12px;
 }
 
-.random_agony h2 {
+.random_qanda h2, .random_letter h2 {
     font-weight: bold;
     max-width: 700px;
     margin-left: auto;

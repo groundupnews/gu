@@ -1,0 +1,6 @@
+{% if object %}
+    <h2>
+        Letter from reader:
+        <a href="{{object.get_absolute_url}}">{{object.title|safe}}</a>
+    </h2>
+{% endif %}

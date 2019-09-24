@@ -25,6 +25,10 @@ _Recommend
                 <div id="random_agony">
                     {% include 'agony/random_question.html' %}
 		</div>
+            {% elif b.name == "_Random_letter" %}
+                <div id="random_letter">
+                    {% include 'letters/random_letter.html' %}
+		</div>
             {% elif b.name == "_Advert" %}
                 {% if not article.suppress_ads %}
 		    <aside class="side-advert">
