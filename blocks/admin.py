@@ -11,7 +11,7 @@ class BlockGroupInline(admin.TabularInline):
 
 class BlockAdmin(admin.ModelAdmin):
     list_display = ('name', 'modified', )
-    ordering = ['-modified',]
+    # ordering = ['-modified',]
     search_fields = ['name', 'html',]
 
 class GroupAdmin(admin.ModelAdmin):
