@@ -24,6 +24,14 @@
             <div id="block_home_5" class="home__article__block">
                 {% include 'blocks/blocks.html' with blocks=home_5 %}
             </div>
+        {% elif forloop.counter0 == 6 and home_6 %}
+            <div id="block_home_6" class="home__article__block">
+                {% include 'blocks/blocks.html' with blocks=home_6 %}
+            </div>
+        {% elif forloop.counter0 == 7 and home_7 %}
+            <div id="block_home_7" class="home__article__block">
+                {% include 'blocks/blocks.html' with blocks=home_7 %}
+            </div>
         {% endif %}
         {% include article.summary_template with include_image=include_image include_summary=include_summary md_size=md_size %}
     {% empty %}

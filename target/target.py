@@ -41,7 +41,6 @@ def makeTarget(wordFile="words.txt"):
         words = [w[:-1] for w in f.readlines()
              if all(isalpha(c) for c in w[:-1]) and w == w.lower() and
              len(w) > 4 and len(w) < 11 and w not in banned]
-
     words_9 = [w for w in words if len(w) == 9]
 
     sorted_words_9 = sorted([''.join(sorted(w)) for w in words_9])

@@ -78,6 +78,8 @@ class HomePage(ArticleList):
         context = get_blocks_in_context(context, "Home_3", "home_3")
         context = get_blocks_in_context(context, "Home_4", "home_4")
         context = get_blocks_in_context(context, "Home_5", "home_5")
+        context = get_blocks_in_context(context, "Home_6", "home_6")
+        context = get_blocks_in_context(context, "Home_7", "home_7")
         return context
 
     # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN

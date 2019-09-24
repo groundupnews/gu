@@ -246,13 +246,13 @@
     margin-bottom: 20px;
 }
 
-.random_qanda, .random_letter {
+.random_qanda, .random_letter, #toy {
     /* max-width: 500px;*/
     background-color: lightgray;
     padding: 12px;
 }
 
-.random_qanda h2, .random_letter h2 {
+.random_qanda h2, .random_letter h2, #toy h2 {
     font-weight: bold;
     max-width: 700px;
     margin-left: auto;
@@ -304,7 +304,6 @@ h2#qanda {
     text-decoration: none;
     color: #00b1F0;
 }
-
 
 /*@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) { */
 @media (max-width: 768px) {
