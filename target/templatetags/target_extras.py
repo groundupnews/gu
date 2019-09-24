@@ -12,6 +12,5 @@ def target_teaser(pk=None):
     else:
         pk = int(pk)
         target = Target.objects.published()(pk=pk)
-    print("T:", target)
     return render_to_string("target/target_teaser.html",
                             {'object': target})
