@@ -4,6 +4,19 @@
 
 <p>URL: {{url}}</p>
 
+{% if republisher.slug and republisher.ask_for_analytics %}
+    <p>
+        If possible, please put the following HTML onto the webpage. It will
+        count the number of views the article gets for GroundUp. We don't track
+        individual user information and all log files are deleted within 14
+        days.
+    </p>
+    <p>
+        &lt;img style=&quot;display:none; width:1px;&quot; alt=&quot;&quot;
+        src=&quot;https://thirdpartyhits.groundup.org.za/counter/hit/{{republisher.slug}}/{{article.slug}}&quot; /&gt;
+    </p>
+{% endif %}
+
 <p>
     Below is the article, but please go to the URL above to copy it because we
     sometimes correct articles after publication and the version below may not
