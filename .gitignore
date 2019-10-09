@@ -64,4 +64,20 @@ static/CACHE
 venv/
 access_production.log.1
 access.log
+target/static/target/words/american-english
+target/static/target/words/american-english-huge
+target/static/target/words/american-english-insane
+target/static/target/words/american-english-large
+target/static/target/words/american-english-small
+target/static/target/words/british-english
+target/static/target/words/british-english-huge
+target/static/target/words/british-english-insane
+target/static/target/words/british-english-large
+target/static/target/words/british-english-small
+target/static/target/words/canadian-english
+target/static/target/words/canadian-english-huge
+target/static/target/words/canadian-english-insane
+target/static/target/words/canadian-english-large
+target/static/target/words/canadian-english-small
+target/static/target/words/unknown-english.txt
 
