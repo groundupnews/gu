@@ -1,37 +1,39 @@
 <div class="home__articles">
     {% for article in articles %}
-        {% if forloop.counter0 == 0 and home_0 %}
-            <div id="block_home_0" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_0 %}
-            </div>
-        {% elif forloop.counter0 == 1 and home_1 %}
-            <div id="block_home_1" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_1 %}
-            </div>
-        {% elif forloop.counter0 == 2 and home_2 %}
-            <div id="block_home_2" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_2 %}
-            </div>
-        {% elif forloop.counter0 == 3 and home_3 %}
-            <div id="block_home_3" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_3 %}
-            </div>
-        {% elif forloop.counter0 == 4 and home_4 %}
-            <div id="block_home_4" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_4 %}
-            </div>
-        {% elif forloop.counter0 == 5 and home_5 %}
-            <div id="block_home_5" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_5 %}
-            </div>
-        {% elif forloop.counter0 == 6 and home_6 %}
-            <div id="block_home_6" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_6 %}
-            </div>
-        {% elif forloop.counter0 == 7 and home_7 %}
-            <div id="block_home_7" class="home__article__block">
-                {% include 'blocks/blocks.html' with blocks=home_7 %}
-            </div>
+        {% if page_obj.number == 1 %}
+            {% if forloop.counter0 == 0 and home_0 %}
+                <div id="block_home_0" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_0 %}
+                </div>
+            {% elif forloop.counter0 == 1 and home_1 %}
+                <div id="block_home_1" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_1 %}
+                </div>
+            {% elif forloop.counter0 == 2 and home_2 %}
+                <div id="block_home_2" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_2 %}
+                </div>
+            {% elif forloop.counter0 == 3 and home_3 %}
+                <div id="block_home_3" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_3 %}
+                </div>
+            {% elif forloop.counter0 == 4 and home_4 %}
+                <div id="block_home_4" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_4 %}
+                </div>
+            {% elif forloop.counter0 == 5 and home_5 %}
+                <div id="block_home_5" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_5 %}
+                </div>
+            {% elif forloop.counter0 == 6 and home_6 %}
+                <div id="block_home_6" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_6 %}
+                </div>
+            {% elif forloop.counter0 == 7 and home_7 %}
+                <div id="block_home_7" class="home__article__block">
+                    {% include 'blocks/blocks.html' with blocks=home_7 %}
+                </div>
+            {% endif %}
         {% endif %}
         {% include article.summary_template with include_image=include_image include_summary=include_summary md_size=md_size %}
     {% empty %}
