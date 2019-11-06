@@ -31,9 +31,9 @@
                             Show questions and answers for all topics</a>
                     </p>
                 {%  endif %}
-                {% if qanda_search %}
+                {% if qanda_search_str %}
                     <p>
-                        Questions that contain: {{qanda_search}}
+                        Questions that contain: {{qanda_search_str}}
                         <p>
                             <a href="{% url 'agony:list' %}">
                                 Show all questions and answers

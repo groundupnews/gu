@@ -1,22 +1,22 @@
 <form class="header__search-form"
       id="search-form"
       method="get"
-      {% if qanda %}
+      {% if qanda_search %}
       action="{% url 'agony:list' %}"
       {% else %}
       action="/advanced_search/"
       {% endif %}
 >
     <div class="header__search__input-box">
-        {% if qanda %}
+        {% if qanda_search %}
             <input type="text"
                    maxlength="{{SEARCH_MAXLEN}}"
                    class="form-control header__search__input"
-                   name="qanda_search"
+                   name="qanda_search_str"
                    id="id_q"
 	           placeholder="Search questions"
                    value="{{query|default:""}}" />
-            <input type="hidden" name="search_type" value="qanda" />
+            <input type="hidden" name="search_type" value="qanda_search_str" />
             <input type="hidden" name="is_simple" value="true" />
         {% elif gallery %}
             <input type="text"

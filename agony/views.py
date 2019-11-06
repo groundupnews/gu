@@ -14,9 +14,9 @@ class QandAList(ListView):
     def get_queryset(self):
         qandas = QandA.objects.published()
 
-        if 'qanda_search' in self.request.GET:
+        if 'qanda_search_str' in self.request.GET:
             try:
-                qandas = searchQandA(self.request.GET.get('qanda_search'))
+                qandas = searchQandA(self.request.GET.get('qanda_search_str'))
             except:
                 pass
 
@@ -33,7 +33,7 @@ class QandAList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(QandAList, self).get_context_data(**kwargs)
-        context['qanda'] = True
+        context['qanda_search'] = True
         if self.request.user.has_perm('agony.change_qanda'):
             context['can_edit'] = True
         else:
@@ -45,8 +45,8 @@ class QandAList(ListView):
                 context['topic'] = topic.name
             except:
                 pass
-        if 'qanda_search' in self.request.GET:
-            context['qanda_search'] = self.request.GET['qanda_search']
+        if 'qanda_search_str' in self.request.GET:
+            context['qanda_search_str'] = self.request.GET['qanda_search_str']
         return context
 
 class QandADetail(DetailView):
@@ -54,7 +54,7 @@ class QandADetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(QandADetail, self).get_context_data(**kwargs)
-        context['qanda'] = True
+        context['qanda_search'] = True
         if self.request.user.has_perm('agony.change_qanda'):
             context['can_edit'] = True
         else:
