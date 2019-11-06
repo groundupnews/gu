@@ -4,6 +4,7 @@ from django.db.models.functions import Concat
 from newsroom.models import Article, Author, Category, Topic
 from newsroom.settings import SEARCH_MAXLEN
 from gallery.models import Photograph
+from agony.models import QandA
 from django.utils import timezone
 
 
@@ -189,3 +190,20 @@ def searchArticlesAndPhotos(search_string=None,
         result = photos
 
     return result
+
+def searchQandA(search_string=None):
+    query = Q()
+    if search_string:
+        list_of_terms = parseSearchString(search_string[:SEARCH_MAXLEN])
+        for term in list_of_terms:
+            if term not in ignored_words:
+                query = (query & (Q(summary_question__icontains=term) |
+                                  Q(full_question__icontains=term) |
+                                  Q(full_answer__icontains=term) |
+                                  Q(summary_answer__icontains=term) |
+                                  Q(topics__name__icontains=term)))
+
+    qandas = QandA.objects.published().filter(query). \
+             order_by("-published").distinct()
+
+    return qandas

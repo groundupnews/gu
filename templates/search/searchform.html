@@ -1,9 +1,24 @@
 <form class="header__search-form"
       id="search-form"
       method="get"
-      action="/advanced_search/">
+      {% if qanda %}
+      action="{% url 'agony:list' %}"
+      {% else %}
+      action="/advanced_search/"
+      {% endif %}
+>
     <div class="header__search__input-box">
-        {% if gallery %}
+        {% if qanda %}
+            <input type="text"
+                   maxlength="{{SEARCH_MAXLEN}}"
+                   class="form-control header__search__input"
+                   name="qanda_search"
+                   id="id_q"
+	           placeholder="Search questions"
+                   value="{{query|default:""}}" />
+            <input type="hidden" name="search_type" value="qanda" />
+            <input type="hidden" name="is_simple" value="true" />
+        {% elif gallery %}
             <input type="text"
                    maxlength="{{SEARCH_MAXLEN}}"
                    class="form-control header__search__input"
@@ -21,11 +36,11 @@
                    id="id_q"
 	           placeholder="Search articles"
                    value="{{query|default:""}}" />
-        <input type="hidden" name="search_type" value="article" />
-        <input type="hidden" name="is_simple" value="true" />
-    {% endif %}
-    <button id="search-button" class="header__search-button">
-      <i class="fas fa-search"></i>
-    </button>
-  </div>
+            <input type="hidden" name="search_type" value="article" />
+            <input type="hidden" name="is_simple" value="true" />
+        {% endif %}
+        <button id="search-button" class="header__search-button">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
 </form>

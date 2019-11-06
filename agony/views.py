@@ -1,7 +1,10 @@
 from django.views.generic import ListView, DetailView
 from django.http import Http404
 from django.contrib import messages
+from django.db.models import Q
+
 from newsroom.models import Topic
+from pgsearch.utils import searchQandA
 
 from agony.models import QandA
 
@@ -9,17 +12,28 @@ class QandAList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        qandas = QandA.objects.published()
+
+        if 'qanda_search' in self.request.GET:
+            try:
+                qandas = searchQandA(self.request.GET.get('qanda_search'))
+            except:
+                pass
+
         if 'topic' in self.request.GET:
             try:
                 topic = int(self.request.GET['topic'])
-                return QandA.objects.published().filter(topics__in=[topic,])
+                qandas = qandas & \
+                         QandA.objects.published().filter(topics__in=[topic,])
             except:
                 pass
-        return QandA.objects.published()
+
+        return qandas
 
 
     def get_context_data(self, **kwargs):
         context = super(QandAList, self).get_context_data(**kwargs)
+        context['qanda'] = True
         if self.request.user.has_perm('agony.change_qanda'):
             context['can_edit'] = True
         else:
@@ -31,6 +45,8 @@ class QandAList(ListView):
                 context['topic'] = topic.name
             except:
                 pass
+        if 'qanda_search' in self.request.GET:
+            context['qanda_search'] = self.request.GET['qanda_search']
         return context
 
 class QandADetail(DetailView):
@@ -38,6 +54,7 @@ class QandADetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(QandADetail, self).get_context_data(**kwargs)
+        context['qanda'] = True
         if self.request.user.has_perm('agony.change_qanda'):
             context['can_edit'] = True
         else:

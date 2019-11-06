@@ -21,6 +21,9 @@
                     may answer it. The questions here are based on ones from
                     our readers, with identifying information removed.
                 </p>
+                <p>
+                    {% include "search/searchform.html" %}
+                </p>
                 {% if topic %}
                     <p>
                         Topic: {{topic}} &nbsp;|&nbsp;
@@ -28,6 +31,16 @@
                             Show questions and answers for all topics</a>
                     </p>
                 {%  endif %}
+                {% if qanda_search %}
+                    <p>
+                        Questions that contain: {{qanda_search}}
+                        <p>
+                            <a href="{% url 'agony:list' %}">
+                                Show all questions and answers
+                            </a>
+                        </p>
+                    </p>
+                {% endif %}
                 {% for qanda in object_list %}
                     <div class="qanda__question">
                         <h2 class="qanda__summary_question">{{ qanda.summary_question }}</h2>
