@@ -85,14 +85,14 @@ class HomePage(ArticleList):
     # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
     # WHICH CODE NEEDS TO CHANGE URGENTLY.
 
-    # def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
     # Add messages here. E.g.
-    #    messages.add_message(request, messages.INFO,
-    #                     "We're only publishing urgent "
-    #                     "news until 7 January. Have a "
-    #                     "safe holiday season.")
-    #    request = super(HomePage, self).get(request, args, kwargs)
-    #    return request
+        messages.add_message(request, messages.INFO,
+                             "We're only publishing urgent "
+                             "news until 7 January. Have a "
+                             "safe holiday season.")
+        request = super(HomePage, self).get(request, args, kwargs)
+        return request
 
 
 home_page_view = HomePage.as_view()
