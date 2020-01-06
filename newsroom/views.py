@@ -87,10 +87,10 @@ class HomePage(ArticleList):
 
     def get(self, request, *args, **kwargs):
     # Add messages here. E.g.
-        messages.add_message(request, messages.INFO,
-                             "We're only publishing urgent "
-                             "news until 7 January. Have a "
-                             "safe holiday season.")
+    #    messages.add_message(request, messages.INFO,
+    #                         "We're only publishing urgent "
+    #                         "news until 7 January. Have a "
+    #                         "safe holiday season.")
         request = super(HomePage, self).get(request, args, kwargs)
         return request
 
