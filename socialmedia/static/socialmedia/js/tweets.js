@@ -17,7 +17,7 @@ function calc_tweet_chars(item) {
         }
     });
 
-    num_chars = 140 - num_chars - tag_length - 24;
+    num_chars = 224 - num_chars - tag_length - 24;
 
     $("#tweet_set" + item + " .characters_left div").text(num_chars.toString());
     if (num_chars < 0) {

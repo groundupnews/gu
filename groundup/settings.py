@@ -404,7 +404,7 @@ PIWIK_ENTRIES = 40
 
 from .local_settings import *
 
-if DEBUG is True:
-    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
-    MIDDLEWARE = MIDDLEWARE + \
-        ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+# if DEBUG is True:
+#    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
+#    MIDDLEWARE = MIDDLEWARE + \
+#        ('debug_toolbar.middleware.DebugToolbarMiddleware',)

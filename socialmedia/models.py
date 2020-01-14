@@ -24,7 +24,7 @@ class TwitterHandle(models.Model):
 
 
 def calc_chars_left(tweet_text, image, tags):
-    chars_left = 116 - len(tweet_text.strip())
+    chars_left = 210 - len(tweet_text.strip())
     if image:
         chars_left = chars_left - 24
     for account in tags:
@@ -40,10 +40,10 @@ class Tweet(models.Model):
     status = models.CharField(max_length=20,
                               choices=SCHEDULE_RESULTS,
                               default="scheduled")
-    tweet_text = models.CharField(max_length=117, blank=True)
+    tweet_text = models.CharField(max_length=200, blank=True)
     image = FileBrowseField(max_length=200, directory="images/", blank=True)
     tag_accounts = models.ManyToManyField(TwitterHandle, blank=True)
-    characters_left = models.IntegerField(default=116)
+    characters_left = models.IntegerField(default=200)
 
     class Meta:
         ordering = ["article__published", "wait_time", ]
