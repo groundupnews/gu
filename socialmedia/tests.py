@@ -46,5 +46,5 @@ class TwitterTest(TestCase):
         self.assertEqual(result["successes"], 1)
         self.assertEqual(result["failures"], 0)
         t = Tweet.objects.all()[0]
-        self.assertEqual(t.characters_left, 58)
+        self.assertEqual(t.characters_left, 152)
         self.assertEqual(t.status, "sent")
