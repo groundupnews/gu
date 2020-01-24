@@ -22,7 +22,7 @@
 
 .article__subtitle {
     font-family: 'Open Sans', sans-serif;
-    font-size: 1.8rem;
+    font-size: 2rem;
     line-height: 28px;
     margin-top: 25px;
     margin-bottom: 25px;
@@ -187,6 +187,7 @@ div.editor-summary {
     font-family: 'Roboto slab', sans-serif;
     margin-top: 30px;
     margin-bottom: 20px;
+    font-size: 2.4rem;
 }
 
 .article__copyright {
