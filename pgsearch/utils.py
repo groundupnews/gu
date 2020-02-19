@@ -102,11 +102,13 @@ def searchArticles(search_string=None,
 
     if to_date:
         try:
-            query = query & Q(published__lte=to_date)
+            query = query & Q(published__lte= (to_date +
+                                               datetime.timedelta(days=1)))
         except:
             pass
 
-    articles = Article.objects.published().filter(query).order_by("-published").distinct()
+    articles = Article.objects.published().filter(query). \
+                              order_by("-published").distinct()
 
     return articles
 
