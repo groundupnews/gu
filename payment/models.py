@@ -35,15 +35,15 @@ COMMISSION_DESCRIPTION_CHOICES = (
 )
 
 RATES = {
-    'primary_photo': 280.0,
-    'inside_photo': 140.0,
+    'primary_photo': 300.0,
+    'inside_photo': 150.0,
     'opinion': 0.0,
-    'brief': 300.0,
-    'law': 850.0,
-    'news': 850.0,
-    'science': 1500.0,
-    'simple_feature': 1500.0,
-    'complex_feature': 2200.0
+    'brief': 324.0,
+    'law': 918.0,
+    'news': 918.0,
+    'science': 1620.0,
+    'simple_feature': 1620.0,
+    'complex_feature': 2376.0
 }
 
 BONUSES = [  0,   0,   0,   0,   500, 500, 500, 500, 500, 500,
