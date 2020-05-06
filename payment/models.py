@@ -41,6 +41,7 @@ RATES = {
     'brief': 324.0,
     'law': 918.0,
     'news': 918.0,
+    'video': 1620.0,
     'science': 1620.0,
     'simple_feature': 1620.0,
     'complex_feature': 2376.0
@@ -357,6 +358,8 @@ class Commission(models.Model):
                 article = RATES["simple_feature"]
         elif self.article.category.name == "Opinion":
             article = RATES["opinion"]
+        elif self.article.category.name == "Video":
+            article = RATES["video"]
         else:
             article = RATES["news"]
 
