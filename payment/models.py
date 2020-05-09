@@ -9,6 +9,7 @@ from django.utils.timezone import make_aware
 
 from filebrowser.fields import FileBrowseField
 from newsroom.models import Article, Author, LEVEL_CHOICES
+from newsroom import utils
 
 INVOICE_STATUS_CHOICES = (
     ("-", "Invoice being prepared by editor"),
@@ -365,6 +366,8 @@ class Commission(models.Model):
 
         estimate['article'] = article
 
+        inside_primary_image = 0
+        primary_photo = 0.0
         if self.article.category.name.lower() == "photo essay":
             primary_photo = RATES['primary_photo']
         else:
@@ -372,12 +375,16 @@ class Commission(models.Model):
                (str(self.invoice.author).lower() in
                 self.article.primary_image_caption.lower()):
                 primary_photo = RATES['primary_photo']
-            else:
-                primary_photo = 0.0
+            elif not self.article.primary_image:
+                caption = utils.get_first_caption(self.article.body)
+                if caption:
+                    inside_primary_image = 1
+                    if str(self.invoice.author).lower() in caption.lower():
+                        primary_photo = RATES['primary_photo']
 
         estimate['primary_photo'] = primary_photo
 
-        num_images = self.article.body.count("<img ")
+        num_images = self.article.body.count("<img ") - inside_primary_image
         estimate['inside_photos'] = num_images * RATES["inside_photo"]
         estimate['bonus'] = self.estimate_bonus()
 

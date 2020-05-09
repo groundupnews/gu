@@ -392,29 +392,31 @@ class Article(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     # Facebook
-    facebook_wait_time = models.PositiveIntegerField(
-        default=0,
-        help_text="Minimum number of minutes "
-        "after publication "
-        "till post.")
-    facebook_image = FileBrowseField(
-        max_length=200, directory="images/", blank=True,
-        verbose_name="image", help_text="Leave blank to use primary image.")
-    facebook_image_caption = models.CharField(
-        max_length=200, verbose_name="caption",
-        help_text="Leave blank to use primary "
-        "image caption.", blank=True)
-    facebook_description = models.CharField(
-        max_length=200, blank=True,
-        help_text="Leave blank to use same text as summary.")
-    facebook_message = models.TextField(
-        blank=True, verbose_name="message",
-        help_text="Longer status update that appears "
-        "above the image in Facebook. ")
-    facebook_send_status = models.CharField(max_length=20,
-                                            choices=SCHEDULE_RESULTS,
-                                            verbose_name="sent status",
-                                            default="paused")
+    # facebook_wait_time = models.PositiveIntegerField(
+    #     default=0,
+    #     null=True,
+    #     blank=True,
+    #     help_text="Minimum number of minutes "
+    #     "after publication "
+    #     "till post.")
+    # facebook_image = FileBrowseField(
+    #     max_length=200, directory="images/", blank=True,
+    #     verbose_name="image", help_text="Leave blank to use primary image.")
+    # facebook_image_caption = models.CharField(
+    #     max_length=200, verbose_name="caption",
+    #     help_text="Leave blank to use primary "
+    #     "image caption.", blank=True)
+    # facebook_description = models.CharField(
+    #     max_length=200, blank=True,
+    #     help_text="Leave blank to use same text as summary.")
+    # facebook_message = models.TextField(
+    #     blank=True, verbose_name="message",
+    #     help_text="Longer status update that appears "
+    #     "above the image in Facebook. ")
+    # facebook_send_status = models.CharField(max_length=20,
+    #                                         choices=SCHEDULE_RESULTS,
+    #                                         verbose_name="sent status",
+    #                                         default="paused")
     last_tweeted = models.DateTimeField(
         default=timezone.make_aware(datetime.datetime(year=2000,
                                                       month=1, day=1)))
@@ -556,6 +558,7 @@ class Article(models.Model):
     '''
 
     def calc_summary_image(self):
+
         image_size = self.summary_image_size
         if self.summary_image:
             if self.summary_image_size == 'LEAVE':
@@ -572,7 +575,10 @@ class Article(models.Model):
             else:
                 return self.primary_image.version_generate(image_size).url
 
-        return self.cached_primary_image
+        if self.cached_primary_image:
+            return self.cached_primary_image
+
+        return utils.get_first_image(self.body)
 
     '''Used to generate the cached small image upon model save, so
     there's less processing for website user requests.

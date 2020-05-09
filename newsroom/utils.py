@@ -264,3 +264,24 @@ def get_edit_lock_msg(user):
 
 def generate_pwd(size=12, chars=string.ascii_letters + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
+
+def get_first_image(html):
+    soup = BeautifulSoup(html, "html.parser")
+    img = soup.find('img')
+
+    if img:
+        if 'src' in img.attrs:
+            return img.attrs['src']
+        else:
+            return ""
+    else:
+        return ""
+
+def get_first_caption(html):
+    soup = BeautifulSoup(html, "html.parser")
+    p = soup.find('p', class_='caption')
+
+    if p:
+        return p.text
+    else:
+        return ""

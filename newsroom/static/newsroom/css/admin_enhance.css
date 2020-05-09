@@ -16,6 +16,7 @@ body {
     max-width: 500px !important;
 }
 
+
 .grp-td.image .vFileBrowseField {
     width: 210px !important;
 }
@@ -40,4 +41,10 @@ body {
 
 #editing-article {
     color: red;
+}
+
+p.caption {
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ebebe0;
+    margin-bottom: 15px;
 }

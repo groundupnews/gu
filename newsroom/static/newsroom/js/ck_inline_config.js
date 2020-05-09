@@ -1,14 +1,16 @@
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-	{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+	{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker',
+                                     'editing' ] },
 	{ name: 'links', groups: [ 'links' ] },
 	{ name: 'insert', groups: [ 'insert' ] },
 	{ name: 'forms', groups: [ 'forms' ] },
 	{ name: 'tools', groups: [ 'tools' ] },
 	{ name: 'others', groups: [ 'others' ] },
 	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align',
+                                       'paragraph' ] },
 
 	{ name: 'styles', groups: [ 'styles' ] },
 	{ name: 'colors', groups: [ 'colors' ] },
@@ -19,7 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.extraPlugins = 'codemirror,sourcedialog,saveedits';
 
-    config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Table,Maximize,Strike,Source,Outdent,Indent,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
+    config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Table,Maximize,Strike,Source,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';

@@ -36,8 +36,7 @@ class ArticleForm(forms.ModelForm):
                                            initial="medium")
     primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="extra_large")
-    facebook_send_status = forms.ChoiceField(choices=SCHEDULE_RESULTS,
-                                             initial="scheduled")
+
     '''Remove height and width from TinyMCE image insertions.
     '''
 
@@ -99,12 +98,6 @@ class ArticleAdmin(admin.ModelAdmin):
                        ('byline', 'byline_style', ),
                        'editor_feedback')
         }),
-        ('Primary Image', {
-            'classes': ('wide',),
-            'fields': (('primary_image', 'primary_image_size', ),
-                       ('external_primary_image'),
-                       'primary_image_caption', 'primary_image_alt', )
-        }),
         ('Content', {
             'classes': ('wide',),
             'fields': ('body', )
@@ -113,11 +106,15 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ('category', 'topics', 'main_topic',
                        'region', 'recommended', 'slug', 'published', ),
         }),
-        ('Summary', {
+        ('Image (advanced)', {
             'classes': ('grp-collapse grp-closed',),
-            'fields': (('summary_image', 'summary_image_size', ),
-                       'summary_image_alt', 'cached_summary_text',
-                       'summary_text', 'summary_template',),
+            'fields': (
+                ('primary_image', 'primary_image_size', ),
+                ('external_primary_image'),
+                ('primary_image_caption', 'primary_image_alt',),
+                ('summary_image', 'summary_image_size', ),
+                'summary_image_alt', 'cached_summary_text',
+                'summary_text', 'summary_template',),
         }),
         ('Advanced', {
             'classes': ('grp-collapse grp-closed',),
@@ -134,13 +131,7 @@ class ArticleAdmin(admin.ModelAdmin):
                        ('suppress_ads', 'promote_article',
                         'encourage_republish',),
                        ('user', 'modified', 'version'),)
-        }),
-        ('Facebook', {
-            'classes': ('grp-collapse grp-closed',),
-            'fields': ('facebook_wait_time', 'facebook_image',
-                       'facebook_image_caption',
-                       'facebook_description', 'facebook_message',
-                       'facebook_send_status', ), })
+        })
     )
 
     inlines = [
@@ -159,7 +150,7 @@ class ArticleAdmin(admin.ModelAdmin):
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
-            '//cdn.ckeditor.com/4.7.3/standard-all/ckeditor.js',
+            '//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
             '/static/newsroom/js/admin_enhance.js',
@@ -226,7 +217,7 @@ class FlatPageAdmin(FlatPageAdmin):
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
         js = [
-            '//cdn.ckeditor.com/4.11.2/standard-all/ckeditor.js',
+            '//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
         ]
