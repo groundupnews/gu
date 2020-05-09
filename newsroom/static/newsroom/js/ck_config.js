@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';
-    config.scayt_autoStartup = true;
+    config.scayt_autoStartup = false;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
     config.allowedContent = true;
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
