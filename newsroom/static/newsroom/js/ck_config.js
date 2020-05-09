@@ -1,3 +1,4 @@
+
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -20,13 +21,13 @@ CKEDITOR.editorConfig = function( config ) {
     ];
 
 
-    config.extraPlugins = 'find,sourcearea,codemirror,wordcount';
+    config.extraPlugins = 'find,sourcearea,codemirror,indentblock,wordcount';
 
     config.removeButtons = 'Cut,Copy,Paste,PasteText,PasteFromWord';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';
-    config.scayt_autoStartup = false;
+    config.scayt_autoStartup = true;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
     config.allowedContent = true;
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';

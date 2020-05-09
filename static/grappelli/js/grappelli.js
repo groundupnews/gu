@@ -104,23 +104,82 @@ var inputTypes = [
     };
 
     // changelist: filter
-    grappelli.initFilter = function() {
-        $("a.grp-pulldown-handler").click(function() {
+    grappelli.initFilter = function(method) {
+        $("a.grp-pulldown-handler").on("click", function() {
             var pulldownContainer = $(this).closest(".grp-pulldown-container");
             $(pulldownContainer).toggleClass("grp-pulldown-state-open").children(".grp-pulldown-content").toggle();
         });
-        $("a.grp-pulldown-handler").bind('mouseout', function() {
+        $("a.grp-pulldown-handler").on('mouseout', function() {
             $(this).blur();
         });
-        $(".grp-filter-choice").change(function(){
-            location.href = $(this).val();
-        });
+        if (!method) {
+            $(".grp-filter-choice").change(function(){
+                location.href = $(this).val();
+            });
+        }
+        if (method === 'confirm') {
+            // Construct windowQueryDict from current window.location.search
+            var windowQuery = window.location.search.replace('?', '').split('&');
+            var windowQueryDict = [];
+            if (windowQuery[0] !== undefined && windowQuery[0] !== '') {
+                windowQuery.map(param => {
+                    // Split query param to get the fieldName
+                    var fieldName = param.split('=')[0];
+                    if (fieldName.search('__') != -1) {
+                        fieldName = param.split('__')[0];
+                    }
+                    // Check if fieldName already exists in searchStringDict and add it resp. its values
+                    var fieldNameIndex = windowQueryDict.findIndex(el => el.fieldName === fieldName);
+                    if (fieldNameIndex === -1) {
+                        windowQueryDict.push({
+                            fieldName: fieldName,
+                            values: [param]
+                        });
+                    } else {
+                        windowQueryDict.find(obj => obj.fieldName === fieldName).values.push(param);
+                    }
+                });
+            }
+            // Manipulate windowQueryDict based on changes of filter choices
+            $(".grp-filter-choice").change(function(){
+                // Get the choice's fieldName and isolate its distinctive query params
+                var fieldName = $(this).data('field-name');
+                var value = $(this).val() !== '?' ? $(this).val().replace('?', '') : false;
+                var values = value && value.split('&');
+                var filterQueryParams = values && values.filter(el => el.includes(fieldName));
+                // Check if fieldName already exists in filterQueryDict and add it resp. its values
+                var filterWindowIndex = windowQueryDict.findIndex(el => el.fieldName === fieldName);
+                var isFilterPartOfWindow = filterWindowIndex < 0 ? false : true;
+                if (isFilterPartOfWindow) {
+                    if (filterQueryParams.length > 0) {
+                        // Update query params
+                        windowQueryDict.find(el => el.fieldName === fieldName).values = filterQueryParams;
+                    } else {
+                        // Remove filter
+                        windowQueryDict.splice(filterWindowIndex, 1);
+                    }
+                } else {
+                    if (filterQueryParams.length > 0) {
+                        // Add filter
+                        windowQueryDict.push({
+                            fieldName: fieldName,
+                            values: filterQueryParams,
+                        });
+                    }
+                }
+                // Construct queryString from windowQueryDict
+                var queryString = windowQueryDict.flatMap(el => el.values).join('&');
+                // Assiqn query string to "Apply" button
+                var applyFilter = $(this).closest('.grp-filter').find('#grp-filter-apply');
+                applyFilter.attr('href', '?' + queryString);
+            });
+        }
     };
 
     // changelist: searchbar
     grappelli.initSearchbar = function() {
         var searchbar = $("input.grp-search-field");
-        searchbar.focus();
+        searchbar.trigger("focus");
     };
 
     grappelli.updateSelectFilter = function(form) {

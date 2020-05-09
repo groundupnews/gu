@@ -19,7 +19,7 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'tools', groups: [ 'tools' ] }
     ];
 
-    config.extraPlugins = 'codemirror,sourcedialog,saveedits';
+    config.extraPlugins = 'codemirror,sourcedialog,indentblock,saveedits';
 
     config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Table,Maximize,Strike,Source,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
 

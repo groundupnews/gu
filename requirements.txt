@@ -1,7 +1,7 @@
 beautifulsoup4==4.6.0
-Django==2.2.9
-django-filebrowser==3.11.1
-django-grappelli==2.12.3
+Django==2.2.12
+django-filebrowser==3.12.1
+django-grappelli==2.13.4
 facebook-sdk
 # google-api-python-client
 html2text

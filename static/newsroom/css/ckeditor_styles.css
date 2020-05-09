@@ -4,7 +4,7 @@ body {
 }
 
 img {
-    max-width: 700px !important;
+    max-width: 800px !important;
 }
 
 .summary-text {
@@ -16,8 +16,7 @@ body {
 }
 
 .caption {
-    /* background-color: #EFEFEF;*/
-    background-color: red;
+    background-color: #EFEFEF;
     color: #4b5253;
     font-weight: 600;
     font-size: 14px;
