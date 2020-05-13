@@ -29,7 +29,7 @@
   <meta property="og:type" content="article"/>
 
   {% comment %}Twitter and Facebook images{% endcomment %}
-  {% with image_url=article.cached_primary_image %}
+  {% with image_url=article.cached_summary_image %}
     {% if image_url %}
       <meta property="og:image" itemprop="image"
             content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
