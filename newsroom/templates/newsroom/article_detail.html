@@ -32,9 +32,9 @@
   {% with image_url=article.cached_summary_image %}
     {% if image_url %}
       <meta property="og:image" itemprop="image"
-            content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
-      <meta name="twitter:image" content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_primary_image|iriencode}}"/>
-      <meta name="twitter:image:alt" content="{{article.primary_image_alt}}" />
+            content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
+      <meta name="twitter:image" content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
+      <meta name="twitter:image:alt" content="{{article.summary_image_alt}}" />
     {% endif %}
   {% endwith %}
 
