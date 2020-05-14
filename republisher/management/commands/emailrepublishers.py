@@ -28,7 +28,8 @@ def process():
             prefix = "http://" + Site.objects.all()[0].domain
             url = prefix + republisherarticle.article.get_absolute_url()
             article = republisherarticle.article
-            if article.cached_primary_image[0] == "/":
+            if article.cached_primary_image and \
+               article.cached_primary_image[0] == "/":
                 article.cached_primary_image = prefix + \
                     article.cached_primary_image
             soup = bs(article.body, 'html.parser')
