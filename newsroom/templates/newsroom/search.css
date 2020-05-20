@@ -71,9 +71,10 @@
     margin-right: 6.5%;
 }
 
-#id_topics, #id_author {
-    width: 65%;
+#id_topics, #id_category, #id_author {
+    max-width: 285px;
 }
+
 
 .adv-filter-submit {
     color: #fff;
@@ -265,7 +266,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
-        padding: 0px;    
+        padding: 0px;
     }
 
     .search-result-images {

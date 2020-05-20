@@ -1,12 +1,12 @@
 <div class="adv-filter-box">
   <div class="adv-filter-header">
     <h3 class="adv-filter-heading">
-      Advanced Search <i class="adv-filter-arrow fas 
+      Advanced Search <i class="adv-filter-arrow fas
                                 {% if request.GET.is_simple %}
                                 fa-angle-down
                                 {%else%}
                                 fa-angle-up
-                                {%endif%} 
+                                {%endif%}
                                 fa-lg"></i>
     </h3>
   </div>
@@ -24,24 +24,27 @@
       </div>
     </div>
     <div class="adv-filter-form__row">
-      <div class="adv-filter__item adv-filter__author">
-        {{ adv_search_form.author.label_tag }}
-        {{ adv_search_form.author }}
-      </div>
-      <div class="adv-filter__item adv-filter__first-author">
-        {{ adv_search_form.first_author.label_tag }}
-        {{ adv_search_form.first_author }}
+        <div class="adv-filter__item adv-filter__author">
+            {{ adv_search_form.author.label_tag }}
+            {{ adv_search_form.author }}
+        </div>
+        <div class="adv-filter__item adv-filter__first-author
+                    adv-filter__article_only">
+            {{ adv_search_form.first_author.label_tag }}
+            {{ adv_search_form.first_author }}
       </div>
     </div>
     <div class="adv-filter-form__row">
-      <div class="adv-filter__item adv-filter__category-box">
-        {{ adv_search_form.category.label_tag }}
-        {{ adv_search_form.category }}
-      </div>
-      <div class="adv-filter__item adv-filter__topics-box">
-        {{ adv_search_form.topics.label_tag }}
-        {{ adv_search_form.topics }}
-      </div>
+        <div class="adv-filter__item adv-filter__category-box
+                    adv-filter__article_only">
+            {{ adv_search_form.category.label_tag }}
+            {{ adv_search_form.category }}
+        </div>
+        <div class="adv-filter__item adv-filter__topics-box
+                    adv-filter__article_only">
+            {{ adv_search_form.topics.label_tag }}
+            {{ adv_search_form.topics }}
+        </div>
     </div>
     <div class="adv-filter-form__row">
       <div class="adv-filter__item adv-filter__date-from-box">
@@ -55,9 +58,41 @@
     </div>
     <button class="adv-filter-submit" type="submit">SEARCH</button>
     <div class="adv-filter-form__row adv-filter__results-per-page-row">
-      <div class="adv-filter__item adv-filter__results-per-page">
-        {{ adv_search_form.results_per_page }}
-      </div>
+        <div class="adv-filter__item adv-filter__results-per-page">
+            {{ adv_search_form.results_per_page }}
+        </div>
     </div>
   </form>
 </div>
+
+<script>
+ let showFields = function() {
+     let elems = document.getElementsByClassName(
+         'adv-filter__article_only');
+     let i;
+     for (i = 0; i < elems.length; i++) {
+         elems[i].style.display = 'inherit';
+     }
+ }
+
+ let hideFields = function() {
+     let elems = document.getElementsByClassName(
+         'adv-filter__article_only');
+     let i;
+     for (i = 0; i < elems.length; i++) {
+         elems[i].style.display = 'none';
+     }
+ }
+
+ document.getElementById('id_search_type_1').
+          addEventListener("click", function(){hideFields();});
+ document.getElementById('id_search_type_0').
+          addEventListener("click", function() {showFields();});
+ document.getElementById('id_search_type_2').
+          addEventListener("click", function() {showFields();});
+ if (document.getElementById("id_search_type_1").checked == true) {
+     hideFields();
+ } else {
+     showFields();
+ };
+</script>
