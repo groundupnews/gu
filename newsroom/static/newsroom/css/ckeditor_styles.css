@@ -67,3 +67,12 @@ body {
     background-color: lightgray;
     padding: 20px;
 }
+
+
+img.warn_big {
+    border: 2px solid yellow !important;
+}
+
+img.too_big {
+    border: 2px solid red !important;
+}
