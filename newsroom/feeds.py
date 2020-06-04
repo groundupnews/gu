@@ -34,9 +34,9 @@ class LatestArticlesRssFeed(Feed):
         return article.modified
 
     def item_enclosure_url(self, article):
-        if article.primary_image:
+        if article.cached_summary_image:
             try:
-                url = article.primary_image.version_generate("medium").url
+                url = article.cached_summary_image
             except:
                 url = settings.STATIC_URL + LOGO
         else:
@@ -56,9 +56,8 @@ class LatestArticlesRssFeed(Feed):
 
     def item_enclosure_mime_type(self, article):
         try:
-            if article.primary_image:
-                suffix = article.primary_image.version_generate("medium").\
-                         url[-3:]
+            if article.cached_summary_image:
+                suffix = article.cached_summary_image[-3:]
             else:
                 suffix = LOGO[-3:]
 
