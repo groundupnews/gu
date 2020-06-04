@@ -1000,3 +1000,13 @@ Single-colored icons can be modified like so:
     }
 }
 /********************/
+
+{% if can_edit %}
+img.warn_big {
+    border: 2px solid yellow;
+}
+img.too_big {
+    border: 2px solid red;
+}
+
+{% endif %}

@@ -2,6 +2,8 @@ import random
 import re
 import string
 from random import randint
+import os
+from urllib.parse import unquote
 
 from bs4 import BeautifulSoup
 from django.conf import settings
@@ -188,7 +190,6 @@ def processAdverts(soup):
     #     aside.append(advert)
     return soup
 
-
 def linkImages(soup):
     soup_copy = soup
     try:
@@ -232,6 +233,23 @@ def linkImages(soup):
     except:
         return soup_copy
 
+def warnImageTooBig(soup):
+    images = soup.find_all('img')
+    for img in images:
+        filename = settings.MEDIA_ROOT + \
+                   unquote(img['src'][len(settings.MEDIA_URL):])
+        try:
+            size = os.stat(filename).st_size
+            if 'warn_big' in img.get('class', []):
+                img.get('class').remove('warn_big')
+            if 'too_big' in img.get('class', []):
+                img.get('class').remove('too_big')
+            if size > 250000:
+                img['class'] = img.get('class', []) + ['too_big']
+            elif size > 150000:
+                img['class'] = img.get('class', []) + ['warn_big']
+        except:
+            pass
 
 def replaceBadHtmlWithGood(html):
     html = html.replace('dir="ltr"', "")
@@ -247,6 +265,8 @@ def replaceBadHtmlWithGood(html):
     soup = processYouTubeDivs(soup)
     soup = processSoundCloudDivs(soup)
     soup = linkImages(soup)
+    warnImageTooBig(soup)
+
     return str(soup)
 
 
