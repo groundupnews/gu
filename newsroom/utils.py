@@ -7,6 +7,8 @@ from urllib.parse import unquote
 
 from bs4 import BeautifulSoup
 from django.conf import settings
+from django.contrib.sites.models import Site
+
 # from newsroom.settings import ADVERT_CODE
 from newsroom.settings import SUPPORT_US_IMAGES
 
@@ -234,11 +236,19 @@ def linkImages(soup):
         return soup_copy
 
 def warnImageTooBig(soup):
+    base_https_url = "https://" + Site.objects.get_current().domain
+    base_http_url = "http://" + Site.objects.get_current().domain
     images = soup.find_all('img')
     for img in images:
-        filename = settings.MEDIA_ROOT + \
-                   unquote(img['src'][len(settings.MEDIA_URL):])
         try:
+            if base_https_url == img['src'][:len(base_https_url)]:
+                img['src'] = img['src'][len(base_https_url):]
+            if base_http_url == img['src'][:len(base_http_url)]:
+                img['src'] = img['src'][len(base_http_url):]
+
+            filename = settings.MEDIA_ROOT + \
+                       unquote(img['src'][len(settings.MEDIA_URL):])
+
             size = os.stat(filename).st_size
             if 'warn_big' in img.get('class', []):
                 img.get('class').remove('warn_big')
