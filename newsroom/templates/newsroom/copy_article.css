@@ -1,0 +1,13 @@
+.caption {
+    font-style: italic;
+}
+
+.pquote, aside {
+    display: none;
+}
+
+#recopy__body, #recopy__original {
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    border-bottom: 1px black solid;
+}

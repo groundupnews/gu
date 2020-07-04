@@ -59,23 +59,29 @@
 		    </button>
 		</h2>
 		<div id="article-rendered">
-		    <h1>{{article.title|safe}}</h1>
-		    <h2>{{article.subtitle|safe}}</h2>
-		    <p>{{article.cached_byline_no_links|safe}}</p>
-		    <p>{{article.published|date:"j F Y"}}</p>
-		    <figure>
-			<img src="{{article.cached_primary_image}}"
-			     alt="{{article.primary_image_alt|addslashes}}" />
-			<figcaption>{{article.primary_image_caption}}</figcaption>
-		    </figure>
+		    <h1 id="recopy__title">{{article.title|safe}}</h1>
+		    <h2 id="recopy__subtitle">{{article.subtitle|safe}}</h2>
+		    <p id="recopy__byline">{{article.cached_byline_no_links|safe}}</p>
+		    <p id="recopy__date">{{article.published|date:"j F Y"}}</p>
+                    {% if article.cached_primary_image %}
+		        <figure>
+			    <img src="{{article.cached_primary_image}}"
+			         alt="{{article.primary_image_alt|addslashes}}" />
+			    <figcaption>{{article.primary_image_caption}}</figcaption>
+		        </figure>
+                    {% endif %}
+                    <div id="recopy__body">
 		    {{article.body|safe}}
-		    <hr />
-		    Published originally on
-		    <a href="{% url 'newsroom:article.detail' article.slug %}">
-			GroundUp
-		    </a>.
-		    <hr />
-		    {{article.copyright|safe}}
+                    </div>
+                    <div id="recopy__original">
+		        Published originally on
+		        <a href="{% url 'newsroom:article.detail' article.slug %}">
+			    GroundUp
+		        </a>.
+                    </div>
+                    <div id="recopy__license">
+		        {{article.copyright|safe}}
+                    </div>
 		</div>
 	    </div>
 	</div>
@@ -128,4 +134,7 @@
      });
      new Clipboard('.btn');
     </script>
+    <style>
+     {% include "newsroom/copy_article.css" %}
+    </style>
 {% endblock %}
