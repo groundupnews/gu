@@ -50,3 +50,10 @@ p.qanda__summary_answer_intro {
     font-style: italic;
 
 }
+
+#qand__disclaimer {
+    border-top: 1px solid black;
+    padding-top: 12px;
+    margin-top: 12px;
+    font-style: italic;
+}
