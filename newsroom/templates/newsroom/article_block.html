@@ -86,8 +86,12 @@
          {% if can_edit %}
          contenteditable="true"
          {% endif %}>
-      {{article_body|safe}}
+        {{article_body|safe}}
     </div>
+    {% if can_edit %}
+        <p id="article__statistics">
+        </p>
+    {% endif %}
     {% if article.main_topic %}
       {% include "newsroom/read_similar.html" %}
     {% endif %}

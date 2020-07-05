@@ -4,82 +4,83 @@
 {% load fb_versions %}
 
 {% block title %}
-  {{article.title|striptags|safe}}{{block.super}}
+    {{article.title|striptags|safe}}{{block.super}}
 {% endblock %}
 
 {% block meta_description_block %}
-  {% with article.cached_summary_text_no_html as desc %}
-    {{block.super}}
-  {% endwith %}
+    {% with article.cached_summary_text_no_html as desc %}
+        {{block.super}}
+    {% endwith %}
 {% endblock %}
 
 
 {% block seo_fields %}
-  {{block.super}}
-  {% comment %}Twitter Card{% endcomment %}
+    {{block.super}}
+    {% comment %}Twitter Card{% endcomment %}
 
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@GroundUp_News" />
-  <meta name="twitter:title" content="{{article.title}}" />
-  <meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@GroundUp_News" />
+    <meta name="twitter:title" content="{{article.title}}" />
+    <meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
 
-  {% comment %}Facebook{% endcomment %}
+    {% comment %}Facebook{% endcomment %}
 
-  <meta property="og:title" content="{{article.title}}"/>
-  <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{article.title}}"/>
+    <meta property="og:type" content="article"/>
 
-  {% comment %}Twitter and Facebook images{% endcomment %}
-  {% with image_url=article.cached_summary_image %}
-    {% if image_url %}
-      <meta property="og:image" itemprop="image"
-            content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
-      <meta name="twitter:image" content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
-      <meta name="twitter:image:alt" content="{{article.summary_image_alt}}" />
-    {% endif %}
-  {% endwith %}
+    {% comment %}Twitter and Facebook images{% endcomment %}
+    {% with image_url=article.cached_summary_image %}
+        {% if image_url %}
+            <meta property="og:image" itemprop="image"
+                  content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
+            <meta name="twitter:image" content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
+            <meta name="twitter:image:alt" content="{{article.summary_image_alt}}" />
+        {% endif %}
+    {% endwith %}
 
-  <meta property="article:published_time" content="{{article.published|date:'c'}}"/>
-  <meta property="article:modified_time" content="{{article.modified|date:'c'}}"/>
-  <meta name="author" content="{{ article.cached_byline_no_links }}">
+    <meta property="article:published_time" content="{{article.published|date:'c'}}"/>
+    <meta property="article:modified_time" content="{{article.modified|date:'c'}}"/>
+    <meta name="author" content="{{ article.cached_byline_no_links }}">
 
 {% endblock %}
 
 
 {% block additional_head %}
-  {{block.super}}
-  {% if article.activate_slideshow %}
-    <link rel="stylesheet"
-	  href="{% static 'newsroom/css/pgwslider.min.css' %}">
+    {{block.super}}
+    {% if article.activate_slideshow %}
+        <link rel="stylesheet"
+	      href="{% static 'newsroom/css/pgwslider.min.css' %}">
 	</link>
-  {% endif %}
-  {% if can_edit %}
-    {% comment %}
-    <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
-    {% endcomment %}
-    <script src="{% static 'newsroom/js/ckeditor/ckeditor.js' %}"></script>
-    <script src="{% static 'newsroom/js/ck_styles.js' %}"></script>
-    <script src="{% static 'newsroom/js/ck_init.js' %}"></script>
-  {% endif %}
-  {{article.additional_head_scripts|safe}}
+    {% endif %}
+    {% if can_edit %}
+        {% comment %}
+        <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+        {% endcomment %}
+        <script src="{% static 'newsroom/js/statistics.js' %}"></script>
+        <script src="{% static 'newsroom/js/ckeditor/ckeditor.js' %}"></script>
+        <script src="{% static 'newsroom/js/ck_styles.js' %}"></script>
+        <script src="{% static 'newsroom/js/ck_init.js' %}"></script>
+    {% endif %}
+    {{article.additional_head_scripts|safe}}
 
 {% endblock %}
 
 
 {% block admin-area-additional %}
-  {% if request.user.is_staff %}
-    <div id="editing-article">
-    </div>
-  {% endif %}
+    {% if request.user.is_staff %}
+        <div id="editing-article">
+        </div>
+    {% endif %}
 {% endblock %}
 
 
 {% block content %}
-  <div class="article-container">
-    <div id="article-content" class="article-content">
-      <article id="article-category-{{article.category.slug}}" class="article">
-	{% block article %}
-	  {% include "newsroom/article_block.html" %}
-	{% endblock %}
+    <div class="article-container">
+        <div id="article-content" class="article-content">
+            <article id="article-category-{{article.category.slug}}" class="article">
+	        {% block article %}
+	            {% include "newsroom/article_block.html" %}
+	        {% endblock %}
       </article>
     </div>
     <div class="article-social">

@@ -1008,5 +1008,12 @@ img.warn_big {
 img.too_big {
     border: 2px solid red;
 }
+#article__statistics {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 80%;
+    border-top: 1px lightgray solid;
+    border-bottom: 1px lightgray solid;
+}
 
 {% endif %}

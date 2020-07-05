@@ -153,6 +153,7 @@ class ArticleAdmin(admin.ModelAdmin):
             '//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js',
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
+            '/static/newsroom/js/statistics.js',
             '/static/newsroom/js/admin_enhance.js',
             '/static/socialmedia/js/tweets.js',
         ]
