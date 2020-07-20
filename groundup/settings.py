@@ -284,15 +284,8 @@ GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 
 NEWSROOM_ARTICLE_COPYRIGHT = '<p>&copy; ' + str(datetime.date.today().year) + \
-                             ' GroundUp.' \
-                             '<a rel="license"' \
-                             '   href="http://creativecommons.org/licenses/by-nd/4.0/">' \
-                             '    <svg viewBox="0 0 100 100"' \
-                             '         class="icon icon-creative-commons">' \
-                             '        <use xlink:href="#icon-creative-commons">' \
-                             '        </use>' \
-                             '    </svg>' \
-                             '</a><br />This article is licensed under a ' \
+                             ' GroundUp. ' \
+                             'This article is licensed under a ' \
                              '<a rel="license"' \
                              '   href="http://creativecommons.org/licenses/by-nd/4.0/">' \
                              'Creative Commons Attribution-NoDerivatives 4.0 ' \
