@@ -135,7 +135,7 @@ class ArticleAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        TweetInline, RepublisherInline, LetterInline, CommissionInline,
+        TweetInline, RepublisherInline, LetterInline, # CommissionInline,
     ]
 
     def changelist_view(self, request, extra_context=None):
