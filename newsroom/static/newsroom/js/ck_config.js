@@ -29,6 +29,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.scayt_sLang = 'en_GB';
     config.scayt_autoStartup = true;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
+    config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse?pop=3&dir=images';
     config.allowedContent = true;
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
 };

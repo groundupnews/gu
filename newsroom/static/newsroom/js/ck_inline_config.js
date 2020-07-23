@@ -1,3 +1,4 @@
+
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -27,5 +28,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.scayt_sLang = 'en_GB';
     config.scayt_autoStartup = true;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse?pop=3';
+    config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse?pop=3&dir=images';
     config.allowedContent = true;
 };
