@@ -31,8 +31,8 @@
     </head>
 
     <body>
-        <h1>{{article.title}}</h1>
-        <h2>{{article.subtitle}}</h2>
+        <h1>{{article.title|safe}}</h1>
+        <h2>{{article.subtitle|safe}}</h2>
         <p>
             {% if article.primary_image %}
 	        <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}" target="_blank">
