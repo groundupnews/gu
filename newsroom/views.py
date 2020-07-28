@@ -315,6 +315,54 @@ def article_post(request, slug):
                                             args=(slug,)))
 
 
+@staff_member_required
+def article_gen_preview(request, pk):
+    if request.user.has_perm('newsroom.change_article'):
+        article = get_object_or_404(models.Article, pk=pk)
+    else:
+        return HttpResponseForbidden()
+
+    if article.secret_link == "":
+        if article.secret_link_view == "n":
+            article.secret_link_view = "r"
+        article.save()
+
+    return HttpResponseRedirect(reverse('newsroom:article.preview',
+                                                args=(article.secret_link,)))
+
+def article_preview(request, secret_link):
+    article = get_object_or_404(models.Article, secret_link=secret_link)
+
+    if article.secret_link_view != 'o' and article.is_published():
+        return HttpResponseRedirect(reverse('newsroom:article.detail',
+                                            args=(article.slug,)))
+
+    if article.secret_link_view == 'n':
+        return HttpResponseForbidden()
+
+    if article.region and (article.region.name not in
+                           ["None", "", "(None)", ]):
+        display_region = article.region.name.rpartition("/")[2]
+    else:
+        display_region = ""
+    date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
+    return render(request, article.template,
+                  {'article': article,
+                   'display_region': display_region,
+                   'recommended': article.get_recommended(),
+                   'related': article.get_related(),
+                   'blocks': get_blocks('Article'),
+                   'can_edit': False,
+                   'article_body': article.body,
+                   'article_letters': article.letter_set.published(),
+                   'most_popular_html': models.MostPopular.get_most_popular_html(),
+                   'letters': Letter.objects.published().
+                   filter(published__gte=date_from).
+                   order_by('-published'),
+                   'agony': QandA.objects.published().order_by("-published"),
+                   'content_type': 'article',
+                   'form': None})
+
 def article_detail(request, slug):
     if request.method == 'POST':
         return article_post(request, slug)

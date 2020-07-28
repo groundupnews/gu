@@ -10,6 +10,8 @@ from newsroom import utils
 from newsroom.models import Article, Category, Topic, Author
 from pgsearch.utils import searchPostgresDB
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission
 from django.contrib.flatpages.models import FlatPage
 from django.urls import reverse
 
@@ -197,31 +199,6 @@ class ArticleTest(TestCase):
         objs = serializers.deserialize("xml", data)
         self.assertTrue(len(list(objs)) == num_published)
 
-    # def test_facebook(self):
-    #     article = Article.objects.published()[1]
-    #     self.assertEqual(article.cached_primary_image,
-    #         "http://www.w3schools.com/html/pic_mountain.jpg")
-    #     self.assertEqual(article.facebook_send_status, "paused")
-    #     article.facebook_send_status = "scheduled"
-    #     article.save()
-    #     from .management.commands import posttofacebook
-    #     results = posttofacebook.process(1, 1)
-    #     self.assertEqual(results["successes"], 1)
-    #     self.assertEqual(results["failures"], 0)
-    #     article = Article.objects.published()[1]
-    #     self.assertEqual(article.facebook_send_status, "sent")
-
-    #     article = Article.objects.published()[0]
-    #     self.assertEqual(article.facebook_send_status, "paused")
-    #     article.facebook_send_status = "scheduled"
-    #     article.save()
-    #     from .management.commands import posttofacebook
-    #     results = posttofacebook.process(1, 1)
-    #     self.assertEqual(results["successes"], 1)
-    #     self.assertEqual(results["failures"], 0)
-    #     article = Article.objects.published()[0]
-    #     self.assertEqual(article.facebook_send_status, "sent")
-
     def test_letter(self):
         letter = Letter()
         article = Article.objects.published()[0]
@@ -249,6 +226,34 @@ class ArticleTest(TestCase):
         letters = Letter.objects.all()
         for l in letters:
             self.assertEqual(l.notified_letter_writer, True)
+
+    def test_preview(self):
+
+        article = Article.objects.get(slug="test-article-1")
+        client = Client()
+        response = client.get('/prev_gen/' + str(article.pk))
+        self.assertEqual(response.status_code, 302)
+        response = client.get('/prev_gen/test-article-1/')
+        self.assertEqual(response.status_code, 404)
+        article = Article.objects.get(slug="test-article-1")
+        self.assertTrue(len(article.secret_link) == 0)
+        user = User.objects.create_user('admin', 'admin@example.com', 'abcde')
+        user.is_staff = True
+        user.is_active = True
+        permission = Permission.objects.get(name='Can change article')
+        user.user_permissions.add(permission)
+        user.save()
+        client.login(username='admin', password='abcde')
+        response = client.get('/prev_gen/' + str(article.pk))
+        self.assertEqual(response.status_code, 302)
+        article = Article.objects.get(slug="test-article-1")
+        self.assertTrue(len(article.secret_link) > 0)
+        response = client.get('/preview/' + article.secret_link)
+        self.assertEqual(response.status_code, 302)
+        article.published = None
+        article.save()
+        response = client.get('/preview/' + article.secret_link)
+        self.assertEqual(response.status_code, 200)
 
     def test_search(self):
         articles = searchPostgresDB("cow dog", Article, 'english', False,

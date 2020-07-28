@@ -18,3 +18,9 @@
     <div id="admin-user"></div>
     <div id="editing-article"></div>
 {% endblock %}
+
+
+{% block object-tools-items %}
+    {{block.super}}
+    <li ><a style="color:red;" href="{% url 'newsroom:article.gen_preview' object_id %}" class="grp-state-focus" target="_blank">View secret url</a></li>
+{% endblock %}

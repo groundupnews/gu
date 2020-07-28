@@ -1,6 +1,7 @@
 import datetime
 import logging
 import traceback
+import random
 from urllib.parse import urlparse
 
 import smartypants
@@ -58,6 +59,12 @@ FREELANCER_CHOICES = (
     ("n", "No"),
     ("f", "Freelancer"),
     ("c", "Commissioned staff"),
+)
+
+SECRET_LINK_CHOICES = (
+    ("n", "No prepublication view",),
+    ("r", "Prepublication view only",),
+    ("o", "No restrictions"),
 )
 
 
@@ -275,10 +282,6 @@ class ArticleQuerySet(models.QuerySet):
     def list_view(self):
         return self.published().filter(exclude_from_list_views=False)
 
-
-# def latest_article(request):
-#    return Entry.objects.published().latest("modified").modified
-
 class Article(models.Model):
     title = models.CharField(max_length=250)
     subtitle = models.CharField(max_length=250, blank=True)
@@ -391,32 +394,6 @@ class Article(models.Model):
         help_text="The higher the value, the stickier the article.")
     slug = models.SlugField(max_length=200, unique=True)
 
-    # Facebook
-    # facebook_wait_time = models.PositiveIntegerField(
-    #     default=0,
-    #     null=True,
-    #     blank=True,
-    #     help_text="Minimum number of minutes "
-    #     "after publication "
-    #     "till post.")
-    # facebook_image = FileBrowseField(
-    #     max_length=200, directory="images/", blank=True,
-    #     verbose_name="image", help_text="Leave blank to use primary image.")
-    # facebook_image_caption = models.CharField(
-    #     max_length=200, verbose_name="caption",
-    #     help_text="Leave blank to use primary "
-    #     "image caption.", blank=True)
-    # facebook_description = models.CharField(
-    #     max_length=200, blank=True,
-    #     help_text="Leave blank to use same text as summary.")
-    # facebook_message = models.TextField(
-    #     blank=True, verbose_name="message",
-    #     help_text="Longer status update that appears "
-    #     "above the image in Facebook. ")
-    # facebook_send_status = models.CharField(max_length=20,
-    #                                         choices=SCHEDULE_RESULTS,
-    #                                         verbose_name="sent status",
-    #                                         default="paused")
     last_tweeted = models.DateTimeField(
         default=timezone.make_aware(datetime.datetime(year=2000,
                                                       month=1, day=1)))
@@ -434,6 +411,12 @@ class Article(models.Model):
     override_commissions_system = models.CharField(
         choices=OVERRIDE_COMMISSION_CHOICES, default="NO", max_length=20)
     commissions_processed = models.BooleanField(default=False)
+
+    # Randomly generated link for prepublication view of articles
+    secret_link = models.CharField(max_length=64, blank=True)
+    secret_link_view = models.CharField(choices=SECRET_LINK_CHOICES,
+                                        max_length=1, default="n")
+    # secret_link_editable = models.BooleanField(default=False)
 
     # Cached fields
     cached_byline = models.CharField(max_length=500, blank=True)
@@ -638,7 +621,16 @@ class Article(models.Model):
             replace(u'&#8221;', u'”').\
             replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
 
+    def make_secret_link(self):
+        t = timezone.now()
+        self.secret_link = str(t.year) + str(t.month) + str(t.day) + \
+                           str(t.hour) + str(t.minute) + str(t.second)
+        for _ in range(40):
+            self.secret_link += chr(random.randint(97,122))
+
     def save(self, *args, **kwargs):
+        if self.secret_link_view != "n" and self.secret_link == "":
+            self.make_secret_link()
         self.cached_byline = self.calc_byline(True)
         self.cached_byline_no_links = self.calc_byline(False)
 

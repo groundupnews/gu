@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.views.decorators.cache import cache_page
 from django.views.generic.base import RedirectView
+from django.urls import path
 
 from . import feeds, settings, views
 from .utils import cache_except_staff
@@ -50,6 +51,14 @@ urlpatterns = [
 
     url(r'^generate_article_list/$',
         views.generate_article_list, name='generate_article_list'),
+
+    ###############################
+    # Article preview
+
+    url(r'^preview/(.*)$', views.article_preview, name='article.preview'),
+    path('prev_gen/<int:pk>', views.article_gen_preview,
+         name='article.gen_preview'),
+
 
     ###############################
     # Old feature article redirects

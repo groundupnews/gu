@@ -3,3 +3,9 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /invoices/
+Disallow: /preview/
+Disallow: /prev_gen/
+Disallow: /copy_article/
+Disallow: /article_print/
+Disallow: /commissions/
+

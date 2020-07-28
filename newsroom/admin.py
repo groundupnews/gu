@@ -130,7 +130,8 @@ class ArticleAdmin(admin.ModelAdmin):
                         'commissions_processed',),
                        ('suppress_ads', 'promote_article',
                         'encourage_republish',),
-                       ('user', 'modified', 'version'),)
+                       ('user', 'modified', 'version'),
+                       ('secret_link', 'secret_link_view',))
         })
     )
 
