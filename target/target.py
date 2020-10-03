@@ -26,7 +26,7 @@ def hashCode2(str):
     return hash
 
 
-def makeTarget(wordFile="words.txt"):
+def makeTarget(wordFile="words.txt", user_letters=None):
 
     STATIC_ROOT = settings.STATIC_ROOT + "target/words/"
 
@@ -57,13 +57,19 @@ def makeTarget(wordFile="words.txt"):
         else:
             duplicate = True
 
-
-    index = random.randint(0, len(sorted_words_9_nodups) - 1)
-    letters = sorted(sorted_words_9_nodups[index])
-    target_letters = letters.copy()
-    random.shuffle(target_letters)
-
-    bullseye = target_letters[0]
+    if user_letters is None or len(user_letters) != 9:
+        index = random.randint(0, len(sorted_words_9_nodups) - 1)
+        letters = sorted(sorted_words_9_nodups[index])
+        target_letters = letters.copy()
+        random.shuffle(target_letters)
+        bullseye = target_letters[0]
+    else:
+        t1 = list(user_letters)
+        letters = sorted(list(user_letters))
+        bullseye = t1[0]
+        t2 = t1[1:]
+        random.shuffle(t2)
+        target_letters = [bullseye] + t2
 
     target = ""
     target_words = []

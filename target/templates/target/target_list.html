@@ -17,7 +17,22 @@
 
             {% if  perms.target.create_target %}
                 <p>
-                    <a href="{% url 'target:create' %}">Make new Target</a>
+                    <a id="make-target"
+                       href="{% url 'target:create' %}">Make new Target</a>
+                    <input type="text" id="letters">
+                    <script>
+                     document.getElementById('make-target').
+                              addEventListener('click', function(e) {
+                                  let s = document.getElementById('letters').value;
+                                  if (s.length != 9 && s.length != 0) {
+                                      alert("You must have 9 letters");
+                                      e.preventDefault();
+                                      return false;
+                                  }
+                                  document.getElementById('make-target').href += s;
+                                  return true;
+                              });
+                    </script>
                 </p>
             {% endif %}
             <table class="table">

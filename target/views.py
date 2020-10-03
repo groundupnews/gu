@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views import generic
 from . import models
 from target.target import makeTarget
+from target.utils import saveTargetImage
 from django import forms
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse, reverse_lazy
@@ -138,18 +139,22 @@ class TargetUpdate(PermissionRequiredMixin, generic.edit.UpdateView):
             return self.form_invalid(form)
 
         if self.request.method == 'POST':
+            fv = super().form_valid(form)
+            saveTargetImage(list(self.object.letters.upper()), self.object.pk)
             messages.add_message(self.request, messages.INFO, "Target saved")
             if self.request.POST.get("save_continue"):
-                super().form_valid(form)
                 return HttpResponseRedirect(reverse_lazy("target:update",
                                                          args=(self.object.pk,)))
+            else:
+                return fv
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.object:
             try:
-                context['nine_letter_word'] = [w for w in self.object.words.split("\r\n")
+                context['nine_letter_word'] = [w for w in
+                                               self.object.words.split("\r\n")
                                                if len(w) == 9][0]
             except:
                 context['nine_letter_word'] = ""
@@ -163,7 +168,10 @@ class TargetCreate(TargetUpdate):
     nine_letter_word = ""
 
     def get_initial(self):
-        puzzle = makeTarget()
+        if 'letters' in self.kwargs:
+            puzzle = makeTarget(user_letters=self.kwargs['letters'])
+        else:
+            puzzle = makeTarget()
         self.nine_letter_word = puzzle['target']
         return {'letters': ''.join(puzzle['letters']),
                 'bullseye': puzzle['letters'][0],

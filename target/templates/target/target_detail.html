@@ -6,6 +6,21 @@
 {% endblock %}
 
 {% block content %}
+
+    {% block seo_fields %}
+        {{block.super}}
+        <meta property="og:title"
+              content="GroundUp Target {{target.number}}"/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:image" itemprop="image"
+              content="https://{{request.META.HTTP_HOST}}{{MEDIA_URL}}targets/target_{{target.pk}}.png"/>
+        <meta name="twitter:image"
+              content="https://{{request.META.HTTP_HOST}}{{MEDIA_URL}}targets/target_{{target.pk}}.png"/>
+        <meta name="twitter:image:alt" content="" />
+    {% endblock %}
+
+    <script src="https://use.fontawesome.com/69e4efddab.js"></script>
+
     <style>
      h2 {
          font-size: 16px;
@@ -45,8 +60,13 @@
      .target-word-hit {
          color: blue;
      }
+     .target-word-duplicate {
+         font-style: italic;
+     }
      #target-word-list {
+         margin-top: 12px;
          padding-left: 20px;
+         margin-bottom: 12px;
      }
      #target-word-list li {
          text-transform: uppercase;
@@ -68,10 +88,6 @@
      }
      .target-excellent {
          color: purple;
-     }
-     #target-restart {
-         display: none;
-
      }
 
      #target-form {
@@ -111,9 +127,7 @@
      }
 
      #target-results {
-         /* display: flex;
-            flex-direction: row;*/
-         margin-left: 83px;
+         margin-left: 30px;
      }
      #target-solution-toggle {
          margin-top: 12px;
@@ -137,6 +151,9 @@
          padding: 6px;
          margin: 6px;
      }
+     #target-image {
+         margin-top: 12px;
+     }
     </style>
     <audio id="sound-button-press">
         <source src="{% static 'target/sounds/button-pressed.ogg' %}"></source>
@@ -146,7 +163,9 @@
         <source src="{% static 'target/sounds/glass.mp3' %}"></source>
         <source src="{% static 'target/sounds/glass.ogg' %}"></source>
     </audio>
-
+    <audio id="sound-victory">
+        <source src="{% static 'target/sounds/applause.wav' %}"></source>
+    </audio>
 
     <div id="content-area">
         <div id="target-container">
@@ -154,7 +173,7 @@
                 Target # {{target.number}}
             </h1>
             <h2>
-                {{target.published|date:"d F Y"}}
+                {{target.published|date:"j F Y"}}
             </h2>
 
             {% if  perms.target.change_target %}
@@ -179,10 +198,35 @@
                 <input type="button" id="target-clear" value="&#10799;">
             </div>
             <div id="target-results">
+                <button id="target-restart" class="btn btn-info"
+                        disabled>Restart</button>
+                <button id="target-sort" class="btn btn-info"
+                        disabled>Sort</button>
+
+                <span id="target-shares">
+                    <a id="facebook-share" class="btn btn-info"
+                       href="https://www.facebook.com/sharer.php?u={{request.build_absolute_uri}}&caption=I%20am%20doing%20the%20GroundUp%20Target%20number%20{{target.number}}"
+                       target="_blank"
+                       title="Share on Facebook">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+
+                    <a id="twitter-share"
+                       class="btn btn-info"
+                       href="https://twitter.com/share?url={{request.build_absolute_uri}}&amp;text=I%20am doing%20the%20%40GroundUp_News%20Target%20number%20{{target.number}}"
+                       target="_blank"
+                       title="Share on Twitter">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                </span>
+
+
                 <ol id="target-word-list">
                 </ol>
-                <button id="target-restart">Restart</button>
             </div>
+
+
+
             {% if target.public_solution %}
                 <div id="target-solution">
                     <p id="target-solution-toggle">Show solution</p>
@@ -192,6 +236,12 @@
                     </p>
                 </div>
             {% endif %}
+
+            <div id="target-rules">
+                <h2>Rules</h2>
+                {{object.rules|safe|linebreaks}}
+            </div>
+
             {% if previous_target or next_target %}
                 <div id="target-navigator">
                     {% if previous_target %}
@@ -212,10 +262,12 @@
                     {% endif %}
                 </div>
             {% endif %}
-            <div id="target-rules">
-                <h2>Rules</h2>
-                {{object.rules|safe|linebreaks}}
-            </div>
+
+            {% if  perms.target.change_target %}
+                <div id="target-image">
+                    <img src="{{MEDIA_URL}}targets/target_{{target.pk}}.png" />
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -398,6 +450,7 @@
      const target = "{{target.hashedNineLetterWord}}";
      const bullseye = letters[0];
      var bullseyePressed = false;
+     var gotTheTarget = false;
      var usedWords = [];
 
 
@@ -426,6 +479,13 @@
          return false;
      }
 
+     var checkIfDuplicate = function(string)
+     {
+         if (words.includes(hashCode(string)) && usedWords.includes(string))
+             return true;
+         return false;
+     }
+
      var checkIfTarget = function(string)
      {
          if (target == hashCode(string) && !usedWords.includes(string))
@@ -440,16 +500,21 @@
 
          inputElem.classList.remove("target-hit");
          inputElem.classList.remove("target-word-hit");
+         inputElem.classList.remove("target-word-duplicate");
          inputElem.classList.remove("target-wrong-letters");
 
          if (checkIfTarget(value) == true) {
              inputElem.classList.add("target-hit");
              accept.disabled = false;
+             gotTheTarget = true;
              var audio = document.getElementById("sound-9-letter");
              audio.play();
          } else if (checkIfWord(value) == true) {
              inputElem.classList.add("target-word-hit");
              accept.disabled = false;
+         } else if (checkIfDuplicate(value) == true) {
+             inputElem.classList.add("target-word-duplicate");
+             accept.disabled = true;
          } else if (verifyLetters(value) == false) {
              inputElem.classList.add("target-wrong-letters");
              accept.disabled = true;
@@ -525,7 +590,9 @@
              if (usedWords.length == perfectScore) {
                  statusBoard.innerHTML = "You've found all the words.<br/>";
                  statusBoard.classList.add("target-excellent");
-                 var grid = document.getElementById("target-grid");
+                 let audio = document.getElementById("sound-victory");
+                 audio.play();
+                 let grid = document.getElementById("target-grid");
                  grid.disabled = true;
                  for (var i = 0; i < 9; i++) {
                      cells[i].removeEventListener("click", cellHandler);
@@ -545,16 +612,28 @@
          }
 
 
+         var displayWords = function(ol)
+         {
+             var ol = document.getElementById("target-word-list");
+             ol.innerHTML = "";
+             for (var w of usedWords) {
+                 var li = document.createElement("li");
+                 if (w.length == 9) {
+                     li.innerHTML = "<span class='target-9-letter-word'>" +
+                                    w + "</span>";
+                 } else {
+                     li.textContent = w;
+                 }
+                 ol.append(li);
+             }
+         }
 
          var loadSavedState = function()
          {
              var savedState = localStorage.getItem(storage);
-             var ol = document.getElementById("target-word-list");
-             ol.innerHTML = "";
 
              if (savedState) {
                  var savedWords = savedState.split(",");
-
                  for (var w of savedWords.sort()) {
                      w = w.trim();
                      if (words.includes(hashCode(w))) {
@@ -564,19 +643,12 @@
                          break;
                      }
                  }
-                 for (var w of usedWords) {
-                     var li = document.createElement("li");
-                     if (w.length == 9) {
-                         li.innerHTML = "<span class='target-9-letter-word'>" +
-                                        w + "</span>";
-                     } else {
-                         li.textContent = w;
-                     }
-                     ol.append(li);
-                 }
+                 displayWords();
              }
              if (usedWords.length) {
-                 document.getElementById("target-restart").style.display = "block";
+                 document.getElementById("target-restart").disabled = false;
+                 document.getElementById("target-sort").disabled = false;
+                 "inline-block";
              }
              updateGameState();
          }
@@ -584,6 +656,7 @@
          var clearGrid = function()
          {
              bullseyePressed = false;
+             gotTheTarget = false;
              var input = document.getElementById("target-input");
              input.value = "";
              for (var i = 0; i < cells.length; i++) {
@@ -606,11 +679,14 @@
          var acceptWord = function(e) {
              var word = input.value;
              if (checkIfWord(word) == true) {
-                 var audio = document.getElementById("sound-button-press");
+                 let audio = document.getElementById("sound-button-press");
                  audio.play();
 
                  usedWords.push(word);
-                 document.getElementById("target-restart").style.display = "block";
+                 document.getElementById("target-restart").disabled = false;
+                 if (usedWords.length > 2) {
+                     document.getElementById("target-sort").disabled = false;
+                 }
                  var ol = document.getElementById("target-word-list");
                  var li = document.createElement("li");
                  if (word.length == 9) {
@@ -709,7 +785,9 @@
                       usedWords = [];
                       localStorage.setItem(storage, usedWords);
                       clearGrid();
-                      e.target.style.display = "none";
+                      document.getElementById("target-word-list").innerHTML = "";
+                      e.target.disabled = true;
+                      document.getElementById("target-sort").disabled = true;
                       var statusBoard = document.getElementById("target-game-state");
                       statusBoard.classList.remove("target-good");
                       statusBoard.classList.remove("target-very-good");
@@ -717,9 +795,14 @@
                       loadSavedState();
                   });
 
+         document.getElementById("target-sort").
+                  addEventListener('click', function(e) {
+                      usedWords.sort();
+                      displayWords();
+                  });
+
          var solutionToggle = document.getElementById("target-solution-toggle");
          if (solutionToggle) {
-
              solutionToggle.addEventListener("click", function(e) {
                  var solutionText = document.getElementById("target-solution-words");
                  if (solutionText.style.display == "none") {
@@ -735,5 +818,20 @@
          loadSavedState();
      });
 
+     // Sharing code
+     document.getElementById("facebook-share").
+              addEventListener('click', function(e) {
+                  if (gotTheTarget) {
+                      this.href = "https://www.facebook.com/sharer.php?u={{request.build_absolute_uri}}&caption=I%20worked%20out%20the%20GroundUp%20Target%20number%20{{target.number}}";
+                      console.log(this.href);
+                  }
+              });
+     document.getElementById("twitter-share").
+              addEventListener('click', function(e) {
+                  if (gotTheTarget) {
+                      this.href = "https://twitter.com/share?url={{request.build_absolute_uri}}&amp;text=I%20worked%20out%20the%20%40GroundUp_News%20Target%20number%20{{target.number}}";
+                  }
+                  console.log(this.href);
+              });
     </script>
 {% endblock %}

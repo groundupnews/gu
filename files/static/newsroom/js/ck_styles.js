@@ -1,0 +1,23 @@
+CKEDITOR.stylesSet.add( 'gu_styles', [
+    // Block-level styles
+    { name: 'Author', element: 'p',
+      attributes: { 'class': 'author-description' } },
+    { name: 'Caption', element: 'p',
+      attributes: { 'class': 'caption' } },
+    { name: 'Correction', element: 'p',
+      attributes: { 'class': 'correction' } },
+    { name: 'Disclaimer', element: 'p',
+      attributes: { 'class': 'disclaimer' } },
+    { name: 'Editor summary', element: 'div',
+      attributes: { 'class': 'editor-summary' } },
+    { name: 'Introduction', element: 'p',
+      attributes: { 'class': 'intro' } },
+    { name: 'Pullout' , element: 'div',
+      attributes: { 'class': 'pquote' } },
+    { name: 'SoundCloud', element: 'div',
+      attributes: { 'class': 'soundcloud'}},
+    { name: 'Subheading', element: 'h2',
+      attributes: { 'class': 'subheading' } },
+    { name: 'Youtube', element: 'div',
+      attributes: { 'class': 'youtube'}},
+] );
