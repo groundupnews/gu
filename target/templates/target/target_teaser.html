@@ -1,16 +1,34 @@
+{% load static %}
 <style>
  #target-grid {
      cursor: pointer;
  }
 </style>
 <div id="target-teaser">
-    {% include "target/target_grid.html" %}
-    <p class="target-teaser-description">
-        {% block target-teaser-text %}
-            <a href="{% url "target:detail" object.pk %}"
-            >Can you see the nine-letter word?</a>
-        {% endblock %}
-    </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <h2 class="home__articles__article__text__title">Can you solve GroundUp's Target Number {{object.number}}?</h2>
+                <p class="home__articles__article__text__summary"
+                >Find as many words as you can.</p>
+                <p class="home__articles__article__text__summary"
+                >There's one nine-letter word with a South African flavour.</p>
+                <p class="home__articles__article__text__summary">
+                    <a
+                        href="{% url "target:detail" object.pk %}">Click
+                        to play.</a>
+                </p>
+                <p class="home__articles__article__text__summary"
+                >Start and end your week with GroundUp's Target,
+                    published Monday and Friday.
+                </p>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <a href="{% url "target:detail" object.pk %}"><img
+                src="{% get_media_prefix %}targets/target_{{object.pk}}.png" /></a>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
  document.getElementById("target-grid").addEventListener('click', function(e) {
