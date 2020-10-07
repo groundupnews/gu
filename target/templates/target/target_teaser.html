@@ -8,11 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-6">
-                <h2 class="home__articles__article__text__title">Can you solve GroundUp's Target Number {{object.number}}?</h2>
-                <p class="home__articles__article__text__summary"
-                >Find as many words as you can.</p>
-                <p class="home__articles__article__text__summary"
-                >There's one nine-letter word with a South African flavour.</p>
+                <h2 class="home__articles__article__text__title">Can you solve Target Number {{object.number}}?</h2>
                 <p class="home__articles__article__text__summary">
                     <a
                         href="{% url "target:detail" object.pk %}">Click
@@ -25,6 +21,7 @@
             </div>
             <div class="col-xs-12 col-md-6">
                 <a href="{% url "target:detail" object.pk %}"><img
+                       style="max-width:200px"
                 src="{% get_media_prefix %}targets/target_{{object.pk}}.png" /></a>
             </div>
         </div>
