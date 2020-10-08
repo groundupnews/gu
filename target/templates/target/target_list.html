@@ -15,7 +15,7 @@
         <div id="target-list">
             <h1>Target puzzles</h1>
 
-            {% if  perms.target.create_target %}
+            {% if  perms.target.change_target %}
                 <p>
                     <a id="make-target"
                        href="{% url 'target:create' %}">Make new Target</a>
