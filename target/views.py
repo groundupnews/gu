@@ -164,7 +164,7 @@ class TargetUpdate(PermissionRequiredMixin, generic.edit.UpdateView):
 
 
 class TargetCreate(TargetUpdate):
-    permission_required = 'target.create_target'
+    permission_required = 'target.add_target'
     nine_letter_word = ""
 
     def get_initial(self):
