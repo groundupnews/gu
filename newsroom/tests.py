@@ -211,6 +211,14 @@ class ArticleTest(TestCase):
         letter.published = timezone.now()
         letter.save()
 
+        c = Client()
+        url = reverse('letters:letter_thanks')
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+        url = reverse('letters:letter_to_editor', args=(1,))
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+
         letter = Letter()
         article = Article.objects.published()[0]
         letter.article = article
@@ -226,6 +234,8 @@ class ArticleTest(TestCase):
         letters = Letter.objects.all()
         for l in letters:
             self.assertEqual(l.notified_letter_writer, True)
+
+
 
     def test_preview(self):
 

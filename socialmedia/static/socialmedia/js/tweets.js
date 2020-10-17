@@ -112,7 +112,7 @@ function generate_tweets()
 }
 
 
-$(window).load(function() {
+$(window).on('load', function() {
     /* Hook all entries to tweet length counter. */
     var num_entries = $("#tweet_set-group div.grp-tbody").length - 1;
 

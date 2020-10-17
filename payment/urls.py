@@ -24,9 +24,6 @@ urlpatterns = [
     url(r'^commissions/add$', views.commission_detail,
         name="commissions.detail.add"),
 
-    url(r'^commissions/add$', views.commission_detail,
-        name="commissions.detail.add"),
-
     url(r'^commissions/analysis$', views.commission_analysis,
         name="commissions.detail.analysis"),
 

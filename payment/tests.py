@@ -5,6 +5,7 @@ from django.core import mail
 from django.db import IntegrityError
 from django.test import Client, TestCase
 from django.utils import timezone
+from django.urls import reverse
 from newsroom.models import Article, Author, Category, Topic
 from payment.models import Commission, Fund, Invoice
 
@@ -145,8 +146,6 @@ class InvoiceTest(TestCase):
         article20.author_01 = author2
         article20.save()
 
-
-
     def test_commissions(self):
         fund = Fund.objects.get(name="Bertha|Reporters")
         author1 = Author.objects.get(email="joe@example.com")
@@ -229,3 +228,33 @@ class InvoiceTest(TestCase):
         commissions = Commission.objects.filter(invoice__author__last_name="Doe")
         num_bonuses = len([True for c in commissions if c.estimate_bonus() > 0])
         self.assertEqual(num_bonuses, 0)
+
+        user = User.objects.create_user('admin', 'admin@example.com', 'abcde')
+        user.is_staff = True
+        user.is_superuser = True
+        user.is_active = True
+        user.save()
+        c = Client()
+        response = c.login(username='admin', password='abcde')
+        self.assertEqual(response, True)
+        url = reverse('payments:invoice.list')
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+        url = '/invoices/2000/1/2020/9/0'
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        invoice = Invoice.objects.all()[0]
+        response = c.get('/invoices/' + str(invoice.author.pk) + '-' +
+                         str(invoice.invoice_num))
+        self.assertEqual(response.status_code, 200)
+        response = c.get('/invoices/print/' + str(invoice.author.pk) + '-' +
+                         str(invoice.invoice_num))
+        self.assertEqual(response.status_code, 200)
+        commission = Commission.objects.all()[0]
+        response = c.get('/commissions/' + str(commission.pk))
+        self.assertEqual(response.status_code, 200)
+        response = c.get('/commissions/add')
+        self.assertEqual(response.status_code, 200)
+        response = c.get('/commissions/analysis')
+        self.assertEqual(response.status_code, 200)

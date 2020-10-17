@@ -233,6 +233,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 FILEBROWSER_DIRECTORY = "uploads/"
 
+FILEBROWSER_LIST_PER_PAGE = 150
+
+
 FILEBROWSER_EXTENSIONS = {
     'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
     'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv'],
@@ -278,6 +281,8 @@ FILEBROWSER_VERSIONS = {
 
 FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 'small', 'medium', 'big',
                               'large', 'extra_large', 'huge', ]
+
+FILEBROWSER_SEARCH_TRAVERSE = True
 
 GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
 
