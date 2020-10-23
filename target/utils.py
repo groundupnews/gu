@@ -99,3 +99,5 @@ def saveTargetImage(letters, pk):
 
     image.save(os.path.join(settings.MEDIA_ROOT,
                             'targets/target_' + str(pk) + '.png'))
+    os.chmod(os.path.join(settings.MEDIA_ROOT,
+                          'targets/target_' + str(pk) + '.png'), 0o0644)
