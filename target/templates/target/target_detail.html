@@ -204,7 +204,7 @@
 
                 <span id="target-shares">
                     <a id="facebook-share" class="btn btn-info"
-                       href="https://www.facebook.com/sharer.php?u={{request.build_absolute_uri}}&caption=I%20am%20doing%20the%20GroundUp%20Target%20number%20{{target.number}}"
+                       href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
                        target="_blank"
                        title="Share on Facebook">
                         <i class="fa fa-facebook" aria-hidden="true"></i>
@@ -212,7 +212,7 @@
 
                     <a id="twitter-share"
                        class="btn btn-info"
-                       href="https://twitter.com/share?url={{request.build_absolute_uri}}&amp;text=I%20am doing%20the%20%40GroundUp_News%20Target%20number%20{{target.number}}"
+                       href="#"
                        target="_blank"
                        title="Share on Twitter">
                         <i class="fa fa-twitter" aria-hidden="true"></i>
@@ -225,8 +225,13 @@
             </div>
 
 
+            {% if target.clue %}
+                <p id="target-clue">
+                    Clue: {{target.clue|safe}}
+                </p>
+            {% endif %}
 
-            {% if target.public_solution %}
+            {% if target.is_solution_public %}
                 <div id="target-solution">
                     <p id="target-solution-toggle">Show solution</p>
                     <p id="target-solution-words" style="display:none;">
@@ -449,7 +454,6 @@
      const target = "{{target.hashedNineLetterWord}}";
      const bullseye = letters[0];
      var bullseyePressed = false;
-     var gotTheTarget = false;
      var usedWords = [];
 
 
@@ -492,6 +496,14 @@
          return false;
      }
 
+
+     var checkIfTargetInUsedWords = function()
+     {
+         for (const word of usedWords)
+             if (word.length == 9) return true;
+         return false;
+     }
+
      var showInputStatus = function(inputElem)
      {
          var value = inputElem.value.toLowerCase();
@@ -505,7 +517,6 @@
          if (checkIfTarget(value) == true) {
              inputElem.classList.add("target-hit");
              accept.disabled = false;
-             gotTheTarget = true;
              var audio = document.getElementById("sound-9-letter");
              audio.play();
          } else if (checkIfWord(value) == true) {
@@ -655,7 +666,6 @@
          var clearGrid = function()
          {
              bullseyePressed = false;
-             gotTheTarget = false;
              var input = document.getElementById("target-input");
              input.value = "";
              for (var i = 0; i < cells.length; i++) {
@@ -820,19 +830,20 @@
      });
 
      // Sharing code
-     document.getElementById("facebook-share").
-              addEventListener('click', function(e) {
-                  if (gotTheTarget) {
-                      this.href = "https://www.facebook.com/sharer.php?u={{request.build_absolute_uri}}&caption=I%20worked%20out%20the%20GroundUp%20Target%20number%20{{target.number}}";
-                      console.log(this.href);
-                  }
-              });
      document.getElementById("twitter-share").
               addEventListener('click', function(e) {
-                  if (gotTheTarget) {
-                      this.href = "https://twitter.com/share?url={{request.build_absolute_uri}}&amp;text=I%20worked%20out%20the%20%40GroundUp_News%20Target%20number%20{{target.number}}";
+                  if (checkIfTargetInUsedWords()) {
+                      document.getElementById('twitter-share').href =
+                          "https://twitter.com/share?text=I solved GroundUp Target {{target.number}}!";
+                  } else if (usedWords.length > 0.7 * words.length) {
+                      document.getElementById('twitter-share').href =
+                          "https://twitter.com/share?text=I have found " +
+                          usedWords.length.toString() +
+                          " words in GroundUp Target {{target.number}}.";
+                  } else {
+                      document.getElementById('twitter-share').href =
+                          "https://twitter.com/share?text=I am doing GroundUp Target {{target.number}}.";
                   }
-                  console.log(this.href);
               });
     </script>
 {% endblock %}

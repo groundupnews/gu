@@ -15,6 +15,14 @@
      {% include "target/flatpickr.min.js" %}
     </script>
 
+    <style>
+     .helptext {
+         font-size: 80%;
+     }
+     #id_clue {
+         height: 50%;
+     }
+    </style>
 
 {% endblock %}
 
@@ -78,6 +86,12 @@
                     <input type="submit" name="delete" value="Delete">
                 {% endif %}
             </form>
+            {% if  object.tweeted %}
+                <p>Publication of this Target has been tweeted.</p>
+            {% endif %}
+            {% if object.tweeted_solution %}
+                <p>Solution notification of this Target has been tweeted</p>
+            {% endif %}
         </div>
     </div>
     <script>

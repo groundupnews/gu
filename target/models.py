@@ -20,6 +20,23 @@ class Target(models.Model):
     words = models.TextField(blank=True)
     published = models.DateTimeField(blank=True, null=True)
     public_solution = models.BooleanField(default=False)
+    publish_solution_after = models.SmallIntegerField(
+        default=24, null=True,
+        verbose_name="solution time",
+        help_text="Make solution available after this many hours")
+    clue = models.CharField(
+        max_length=150, blank=True, help_text="Leave blank if no clue.")
+    tweet_text = models.CharField(
+        max_length=180,
+        default="Try the latest GroundUp Target.",
+        help_text="Blank for no tweet")
+    tweet_solution_text = models.CharField(
+        max_length=180,
+        default="The solution for this GroundUp Target is now available.")
+
+    tweeted = models.BooleanField(default=False, editable=False)
+    tweeted_solution = models.BooleanField(default=False, editable=False)
+
     rules = models.TextField(default=DEFAULT_RULES, blank=True)
     number = models.PositiveSmallIntegerField(default=0, editable=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -30,6 +47,14 @@ class Target(models.Model):
     def is_published(self):
         return (self.published is not None) and \
             (self.published <= timezone.now())
+
+    def is_solution_public(self):
+        if self.public_solution or \
+           (self.is_published() and \
+           self.published + timezone.timedelta(hours=self.publish_solution_after) \
+            < timezone.now()):
+           return True
+        return False
 
     def splitWords(self):
         return self.words.split("\r\n")

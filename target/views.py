@@ -118,7 +118,9 @@ def validate_form(words, letters):
 class TargetUpdate(PermissionRequiredMixin, generic.edit.UpdateView):
     permission_required = 'target.change_target'
     model = models.Target
-    fields = [ 'letters', 'words', 'published', 'public_solution', 'rules', ]
+    fields = [ 'letters', 'words', 'published', 'publish_solution_after',
+               'clue', 'tweet_text',
+               'rules', ]
 
     def post(self, request, *args, **kwargs):
         if "cancel" in request.POST:
