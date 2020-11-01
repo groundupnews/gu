@@ -781,17 +781,19 @@
 
          document.getElementById("target-restart").
                   addEventListener('click', function(e) {
-                      usedWords = [];
-                      localStorage.setItem(storage, usedWords);
-                      clearGrid();
-                      document.getElementById("target-word-list").innerHTML = "";
-                      e.target.disabled = true;
-                      document.getElementById("target-sort").disabled = true;
-                      var statusBoard = document.getElementById("target-game-state");
-                      statusBoard.classList.remove("target-good");
-                      statusBoard.classList.remove("target-very-good");
-                      statusBoard.classList.remove("target-excellent");
-                      loadSavedState();
+                      if (confirm("Are you sure you want to restart?")) {
+                          usedWords = [];
+                          localStorage.setItem(storage, usedWords);
+                          clearGrid();
+                          document.getElementById("target-word-list").innerHTML = "";
+                          e.target.disabled = true;
+                          document.getElementById("target-sort").disabled = true;
+                          var statusBoard = document.getElementById("target-game-state");
+                          statusBoard.classList.remove("target-good");
+                          statusBoard.classList.remove("target-very-good");
+                          statusBoard.classList.remove("target-excellent");
+                          loadSavedState();
+                      }
                   });
 
          document.getElementById("target-sort").
