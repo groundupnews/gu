@@ -11,4 +11,5 @@ def newsroom_template_variables(request):
             'AMAZON_ADS': settings.AMAZON_ADS,
             'AB_TEST_ADS': settings.AB_TEST_ADS,
             'AD_OPTIONS': random.randint(0, 1),
+            'PIWIK_SITE_URL': settings.PIWIK_SITE_URL,
             'SEARCH_MAXLEN': newsroom_settings.SEARCH_MAXLEN}

@@ -375,6 +375,7 @@ ACME_ADS = False
 GOOGLE_ADS = False
 AMAZON_ADS = False
 AB_TEST_ADS = False
+PIWIK_SITE_URL = ""
 
 if AB_TEST_ADS:
     ADVERT_CODE_ACME = open(os.path.join(
