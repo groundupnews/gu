@@ -12,6 +12,7 @@ oauth2client
 oauthlib
 Pillow
 psycopg2-binary
+python3-memcached
 pycrypto
 pytz
 requests

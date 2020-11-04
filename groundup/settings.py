@@ -203,6 +203,8 @@ SITE_ID = 1
 
 # CACHES: This should be overriden in local_settings.py
 
+# NEWSROOM_CACHE_PERIOD = 600
+
 try:
     CACHES = local_settings.CACHES
 except:
