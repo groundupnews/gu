@@ -22,7 +22,7 @@ def generate_commissions():
         with transaction.atomic():
             process_commissions = False
             if article.override_commissions_system == "NO":
-                if article.category.name is not "Opinion":
+                if article.category.name != "Opinion":
                     process_commissions = True
             elif article.override_commissions_system == "PROCESS":
                     process_commissions = True
