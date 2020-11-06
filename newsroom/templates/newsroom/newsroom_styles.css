@@ -405,7 +405,7 @@ div.thumbnail {
 
 #paginator {
     text-align: center;
-    font-size: 14x;
+    /* font-size: 14x;*/
 }
 
 #paginator li a {
@@ -688,7 +688,6 @@ iframe {
 h3.advert-title {
     font-size: 10px;
     text-align: center;
-    font-color: gray;
     text-transform: uppercase;
     padding: 6px;
 }
@@ -885,11 +884,6 @@ Single-colored icons can be modified like so:
     width: 0.8em;
     border: none;
     vertical-align: 15%;
-}
-
-.icon-creative-commons {
-    width: 1.4em;
-    vertical-align: bottom;
 }
 
 .icon-creative-commons {

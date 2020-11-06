@@ -6,13 +6,13 @@
         <li class="drop header__nav__link"><a href="{% url 'newsroom:home' %}">News</a>
 	  <ul class="header__nav__drop-down">
             {% url 'newsroom:home' as home_url %}
-            <span class="header__nav__drop-down__spacer"></span>
-            <li {% if path == home_url %}class='active header__nav__link header__nav__link--drop'{% endif %}>
-              <a href="/">Home</a>
-            </li>
-	    <li class="header__nav__link header__nav__link--drop">
-                <a href="/article/everything-you-need-know-about-social-grants_820/">Guide to social grants</a>
-            </li>
+              <!-- <span class="header__nav__drop-down__spacer"></span> -->
+              <li class='{% if path == home_url %}active{% endif %} header__nav__link header__nav__link--drop'>
+                  <a href="/">Front page</a>
+              </li>
+	      <li class="header__nav__link header__nav__link--drop">
+                  <a href="/article/everything-you-need-know-about-social-grants_820/">Guide to social grants</a>
+              </li>
 	    <li class="header__nav__link header__nav__link--drop">
                 <a href="/article/everything-you-need-know-about-government-housing/">Guide to housing</a>
             </li>

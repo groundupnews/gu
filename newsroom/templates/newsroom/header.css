@@ -63,10 +63,6 @@ button#search-button {
     height: 36px;
 }
 
-button#search-button:hover {
-    background-color: #00729bjs;
-}
-
 #search-button:disabled {
     background-color: #333 !important;
 }
@@ -123,7 +119,7 @@ button#search-button:hover {
     .header__logo img {
         height: 40px;
     }
-    
+
     .header__logo {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -143,12 +139,12 @@ button#search-button:hover {
     .drop .header__nav__link {
         padding-left: 15%;
     }
-    
+
     .header__nav__links {
         flex-direction: column;
         width: 100%;
     }
-    
+
     header nav, header .header__search-form {
         display: none;
     }
@@ -172,12 +168,12 @@ button#search-button:hover {
         margin-top: 12px;
         margin-bottom: 12px;
     }
-    
+
     #search-form input {
         display: inline;
         width: 200px;
     }
-    
+
     nav li a {
         width: 100%;
         padding: 0;
@@ -196,7 +192,7 @@ button#search-button:hover {
         display: flex;
         justify-content: center;
     }
-    
+
     .header__search-form--mobile {
         display: flex;
         justify-content: center;
@@ -206,7 +202,7 @@ button#search-button:hover {
         font-size: 18px;
         line-height: 28px;
     }
-    
+
     .header__nav__link a {
         font-variant: all-petite-caps;
         font-weight: 600;
@@ -231,7 +227,7 @@ button#search-button:hover {
     .header__search-form {
         flex-basis: 60%;
     }
-    
+
     .header__menu__container .header__nav__drop-down {
         background-color: #4D4D4D;
     }
@@ -242,17 +238,17 @@ button#search-button:hover {
 
     .header__nav__drop-down .header__nav__link--drop:last-child {
         padding-bottom: 25px;
-    }    
-    
+    }
+
     .header__menu__container {
         flex: 3;
     }
-    
+
     .header {
         justify-content: space-around;
         align-items: center;
     }
-    
+
     .header__logo {
         padding-top: 20px;
         padding-bottom: 20px;
@@ -260,7 +256,7 @@ button#search-button:hover {
         flex: 1;
         justify-content: flex-end;
     }
-    
+
     #hamburger {
         display: none;
     }
@@ -273,7 +269,7 @@ button#search-button:hover {
     .header nav {
         padding-left: 5%;
     }
-    
+
     nav ul {
         padding-left: 0;
         display: inline;
@@ -296,7 +292,7 @@ button#search-button:hover {
         text-decoration: none;
         color: #fff;
     }
-    
+
     nav li li a {
         width: 180px;
         display:block;
@@ -317,7 +313,7 @@ button#search-button:hover {
         height: 27px;
         background-color: #151F22;
     }
-    
+
     nav li.drop:hover ul {
         display: flex;
         flex-direction: column;
@@ -327,7 +323,7 @@ button#search-button:hover {
         visibility: visible;
         opacity: 1;
     }
-    
+
     .header__search-form__container {
         flex: 1;
         display: flex;
@@ -342,7 +338,7 @@ button#search-button:hover {
     .header__nav__link--drop a {
         line-height: 32px;
     }
-    
+
     .header__nav__links {
         display: flex;
         width: 60%;
