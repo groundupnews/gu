@@ -1,9 +1,4 @@
 {% load static %}
-<style>
- #target-grid {
-     cursor: pointer;
- }
-</style>
 <div id="target-teaser">
     <div class="container">
         <div class="row">
@@ -28,9 +23,3 @@
         </div>
     </div>
 </div>
-<script>
- document.getElementById("target-grid").addEventListener('click', function(e) {
-     location.href= "{% url 'target:detail' object.pk %}";
-     return false;
- });
-</script>
