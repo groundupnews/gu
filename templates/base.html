@@ -3,138 +3,145 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-    <title>
-        {% block title %} | GroundUp{% endblock %}
-    </title>
-    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
-    <link rel="shortcut icon"
-          type="image/x-icon"
-	  href="{% static  'newsroom/images/favicon-201809.ico' %}" />
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        {% comment %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+        {% endcomment %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block title %} | GroundUp{% endblock %}
+        </title>
+        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
+        <link rel="shortcut icon"
+              type="image/x-icon"
+	      href="{% static  'newsroom/images/favicon-201809.ico' %}" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" sizes="57x57"
-          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-57By57.png' %}" />
-    <link rel="apple-touch-icon" sizes="72x72"
-          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-72By72.png' %}"/>
-    <link rel="apple-touch-icon" sizes="114x114"
-          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-114By114.png' %}"/>
-    <link rel="apple-touch-icon" sizes="144x144"
-          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-144By144.png' %}"/>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" sizes="57x57"
+              href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-57By57.png' %}" />
+        <link rel="apple-touch-icon" sizes="72x72"
+              href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-72By72.png' %}"/>
+        <link rel="apple-touch-icon" sizes="114x114"
+              href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-114By114.png' %}"/>
+        <link rel="apple-touch-icon" sizes="144x144"
+              href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-144By144.png' %}"/>
 
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="shortcut icon" sizes="196x196"
-          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-196By196.png' %}"/>
-    <link rel="shortcut icon" sizes="128x128"
-          href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-128By128.png' %}"/>
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="shortcut icon" sizes="196x196"
+              href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-196By196.png' %}"/>
+        <link rel="shortcut icon" sizes="128x128"
+              href="{% static 'newsroom/images/LogoFiles/Logos20180905/icon-128By128.png' %}"/>
 
-    {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
-      {% block meta_description_block %}
-        <meta name="description"
-              content="{{desc|truncatechars:190}}"/>
-	<meta property="og:description" content="{{desc}}"/>
-      {% endblock %}
-    {% endwith %}
+        {% with meta_description|default:"GroundUp publishes original public interest news. We mainly cover education, health, sanitation, immigration and human rights stories." as desc  %}
+            {% block meta_description_block %}
+                <meta name="description"
+                      content="{{desc|truncatechars:190}}"/>
+	        <meta property="og:description" content="{{desc}}"/>
+            {% endblock %}
+        {% endwith %}
 
-    {% block seo_fields %}
-      {% block facebook-identifier %}
-	<meta property="fb:app_id" content="794347254025697" />
-      {% endblock %}
-      <meta property="og:site_name" content="GroundUp News" />
-      <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
-      <meta property="og:updated_time" content="{% now "c" %}" />
-    {% endblock %}
-
-    {% block analytics %}
-      {% include "piwik.html" %}
-    {% endblock %}
-
-    {% block additional_head %}
-    {% endblock %}
-
-    {% block bootstrap-css %}
-      {% include "bootstrap_css.html" %}
-    {% endblock %}
-
-    {% block newsroom-css %}
-
-      <style>
-       {% include "newsroom/newsroom_styles.css" %}
-       {% include "newsroom/home.css" %}
-       {% include "newsroom/header.css" %}
-       {% include "newsroom/social_media.css" %}
-       {% include "newsroom/footer.css" %}
-       {% include "newsroom/article.css" %}
-       {% include "newsroom/most_popular.css" %}
-       {% include "newsroom/sidebar.css" %}
-       {% include "newsroom/read_next.css" %}
-       {% include "newsroom/about_us.css" %}
-       {% include "newsroom/search.css" %}
-       {% include "newsroom/letters.css" %}
-       {% include "datepicker/datepicker.min.css" %}
-      </style>
-
-    {% endblock %}
-
-    {% block css-override %}
-    {% endblock %}
-
-
-    {% block top-js %}
-    {% endblock %}
-
-
-  </head>
-
-  <body>
-
-    {% block body %}
-      {% include 'icons.svg' %}
-
-      {% block banner %}
-	{% include 'banner.html' %}
-      {% endblock %}
-
-      <div id="BelowTheBanner" class="{{content_type}}">
-	{% block messages %}
-	  {% include 'messages.html' %}
-	{% endblock %}
-
-	{% block content-header %}
-	{% endblock %}
-
-        {% block content-wrapper %}
-	  {% block content %}
-	  {% endblock %}
+        {% block seo_fields %}
+            {% block facebook-identifier %}
+	        <meta property="fb:app_id" content="794347254025697" />
+            {% endblock %}
+            <meta property="og:site_name" content="GroundUp News" />
+            <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+            <meta property="og:updated_time" content="{% now "c" %}" />
         {% endblock %}
 
-	{% block admin-area %}
-	  {% if request.user.is_staff and can_edit %}
-	    <div id="admin-area">
-	      <div id="admin-user">
-		{{request.user}}
-	      </div>
-	      {% block admin-area-additional %}
-	      {% endblock %}
-	    </div>
-	  {% endif %}
-	{% endblock %}
-      </div>
+        {% block analytics %}
+            {% include "piwik.html" %}
+        {% endblock %}
 
-      {% block footer %}
-	{% include 'footer.html' %}
-      {% endblock %}
+        {% block additional_head %}
+        {% endblock %}
 
-      {% block javascript-includes %}
-	{% include 'javascripts.html' %}
-      {% endblock %}
+        {% block bootstrap-css %}
+            {% include "bootstrap_css.html" %}
+        {% endblock %}
 
-    {% endblock %}
+        {% block newsroom-css %}
 
-  </body>
+            <style>
+             {% include "newsroom/newsroom_styles.css" %}
+             {% include "newsroom/home.css" %}
+             {% include "newsroom/header.css" %}
+             {% include "newsroom/social_media.css" %}
+             {% include "newsroom/footer.css" %}
+             {% include "newsroom/article.css" %}
+             {% include "newsroom/most_popular.css" %}
+             {% include "newsroom/sidebar.css" %}
+             {% include "newsroom/read_next.css" %}
+             {% include "newsroom/about_us.css" %}
+             {% include "newsroom/search.css" %}
+             {% include "newsroom/letters.css" %}
+             {% include "datepicker/datepicker.min.css" %}
+            </style>
+
+        {% endblock %}
+
+        {% block css-override %}
+        {% endblock %}
+
+
+        {% block top-js %}
+        {% endblock %}
+
+
+    </head>
+
+    <body>
+
+        {% block body %}
+            {% include 'icons.svg' %}
+
+            {% block banner %}
+	        {% include 'banner.html' %}
+            {% endblock %}
+
+            <div id="BelowTheBanner" class="{{content_type}}">
+	        {% block messages %}
+	            {% include 'messages.html' %}
+	        {% endblock %}
+
+	        {% block content-header %}
+	        {% endblock %}
+
+                {% block content-wrapper %}
+	            {% block content %}
+	            {% endblock %}
+                {% endblock %}
+
+	        {% block admin-area %}
+	            {% if request.user.is_staff and can_edit %}
+	                <div id="admin-area">
+	                    <div id="admin-user">
+		                {{request.user}}
+	                    </div>
+	                    {% block admin-area-additional %}
+	                    {% endblock %}
+	                </div>
+	            {% endif %}
+	        {% endblock %}
+            </div>
+
+            {% block footer %}
+	        {% include 'footer.html' %}
+            {% endblock %}
+
+            {% block javascript-includes %}
+                <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+                <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+                <!-- Include all compiled plugins (below), or include individual files as needed -->
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+	        {% include 'javascripts.html' %}
+            {% endblock %}
+
+        {% endblock %}
+
+    </body>
 </html>
