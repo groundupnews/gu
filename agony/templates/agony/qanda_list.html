@@ -4,9 +4,10 @@
     Answers to your questions {{block.super}}
 {% endblock %}
 
+
 {% block css-override %}
     <style>
-        {% include  "agony/qanda.css" %}
+     {% include  "agony/qanda.css" %}
     </style>
     {{block.super}}
 {% endblock %}
@@ -22,7 +23,9 @@
                     our readers, with identifying information removed.
                 </p>
                 <p>
-                    {% include "search/searchform.html" %}
+                    <ul id="qanda__searchlist">
+                       {% include "search/searchform.html" %}
+                    </ul>
                 </p>
                 {% if topic %}
                     <p>

@@ -1,46 +1,44 @@
-<form class="header__search-form"
-      id="search-form"
-      method="get"
-      {% if qanda_search %}
-      action="{% url 'agony:list' %}"
-      {% else %}
-      action="/advanced_search/"
-      {% endif %}
->
-    <div class="header__search__input-box">
-        {% if qanda_search %}
-            <input type="text"
-                   maxlength="{{SEARCH_MAXLEN}}"
-                   class="form-control header__search__input"
-                   name="qanda_search_str"
-                   id="id_q"
-	           placeholder="Search questions"
-                   value="{{query|default:""}}" />
-            <input type="hidden" name="search_type" value="qanda_search_str" />
-            <input type="hidden" name="is_simple" value="true" />
-        {% elif gallery %}
-            <input type="text"
-                   maxlength="{{SEARCH_MAXLEN}}"
-                   class="form-control header__search__input"
-                   name="adv_search"
-                   id="id_q"
-	           placeholder="Search photos"
-                   value="{{query|default:""}}" />
-            <input type="hidden" name="search_type" value="image" />
-            <input type="hidden" name="is_simple" value="true" />
-        {% else %}
-            <input type="text"
-                   maxlength="{{SEARCH_MAXLEN}}"
-                   class="form-control header__search__input"
-                   name="adv_search"
-                   id="id_q"
-	           placeholder="Search articles"
-                   value="{{query|default:""}}" />
-            <input type="hidden" name="search_type" value="article" />
-            <input type="hidden" name="is_simple" value="true" />
-        {% endif %}
-        <button id="search-button" class="header__search-button">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
-</form>
+
+<li id="search-box" class="search-box-closed">
+    <form id="search-form"
+          method="get"
+          {% if qanda_search %}
+          action="{% url 'agony:list' %}"
+          {% else %}
+          action="/advanced_search/"
+          {% endif %}
+    >
+
+            {% if qanda_search %}
+                <input type="text"
+                       maxlength="{{SEARCH_MAXLEN}}"
+                       name="qanda_search_str"
+                       id="id_q"
+	               placeholder="Search questions"
+                       value="{{query|default:""}}" />
+                <input type="hidden" name="search_type" value="qanda_search_str" />
+                <input type="hidden" name="is_simple" value="true" />
+            {% elif gallery %}
+                <input type="text"
+                       maxlength="{{SEARCH_MAXLEN}}"
+                       name="adv_search"
+                       id="id_q"
+	               placeholder="Search photos"
+                       value="{{query|default:""}}" />
+                <input type="hidden" name="search_type" value="image" />
+                <input type="hidden" name="is_simple" value="true" />
+            {% else %}
+                <input type="text"
+                       maxlength="{{SEARCH_MAXLEN}}"
+                       name="adv_search"
+                       id="id_q"
+	               placeholder="Search articles"
+                       value="{{query|default:''}}" />
+                <input type="hidden" name="search_type" value="article" />
+                <input type="hidden" name="is_simple" value="true" />
+            {% endif %}
+            <button id="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+    </form>
+</li>

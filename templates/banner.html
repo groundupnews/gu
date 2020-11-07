@@ -1,54 +1,14 @@
 {% load static %}
 
-<header class="header">
-  <span class="header__burger-menu-icon" id="hamburger" onclick="toggleMenu()">
-    <i id="burger_menu" class="fas fa-bars fa-lg"></i>
-  </span>
-  <span class="header__logo" id="logo">
-    <a href="{% url 'newsroom:home' %}">
-      <img class="header__logo__img" src="{% static logo %}" alt="GroundUp Logo" />
-    </a>
-  </span>
-  <div class="header__menu__container">
-    {% block mainmenu %}
-      {% include menu_template|default:"menu.html" %}
-    {% endblock %}
-  </div>
-
-  <div class="header__search-form__container">
-    {% block searchform %}
-      {% include searchform_template|default:"search/searchform.html" %}
-    {% endblock %}
-  </div>
+<header>
+    <div class="container">
+        <span id="logo">
+            <a href="{% url 'newsroom:home' %}">
+                <img src="{% static logo %}" alt="GroundUp Logo" />
+            </a>
+        </span>
+        {% block mainmenu %}
+            {% include menu_template|default:"menu.html" %}
+        {% endblock %}
+    </div>
 </header>
-
-<div class="header__nav--mobile" id="menu_search">
-  <div class="header__nav__drop-down">
-    <div class="header__search-form--mobile">
-      {% block searchform_mobile %}
-        {% include searchform_template|default:"search/searchform.html" %}
-      {% endblock %}
-    </div>
-    <div class="header__menu__container--mobile">
-    {% block mainmenu_mobile %}
-      {% include menu_template|default:"menu.html" %}
-    {% endblock %}
-    </div>
-  </div>
-</div>
-
-
-<script>
- var toggleMenu = function() {
-     menu_search = $("#menu_search");
-     burger_menu = $("#burger_menu")
-     if (burger_menu.hasClass("fa-bars")) {
-         window.scrollTo(0, 0);
-         menu_search.show()
-         burger_menu.toggleClass("fa-bars fa-times");
-     } else {
-         menu_search.hide()
-         burger_menu.toggleClass("fa-times fa-bars");
-     }
- }
-</script>

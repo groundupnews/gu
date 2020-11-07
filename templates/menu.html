@@ -1,63 +1,89 @@
 {% load static %}
 
-<nav class="header__nav">
-  <ul class="header__nav__links">
-    {% with path=request.get_full_path %}
-        <li class="drop header__nav__link"><a href="{% url 'newsroom:home' %}">News</a>
-	  <ul class="header__nav__drop-down">
-            {% url 'newsroom:home' as home_url %}
-              <!-- <span class="header__nav__drop-down__spacer"></span> -->
-              <li class='{% if path == home_url %}active{% endif %} header__nav__link header__nav__link--drop'>
-                  <a href="/">Front page</a>
-              </li>
-	      <li class="header__nav__link header__nav__link--drop">
-                  <a href="/article/everything-you-need-know-about-social-grants_820/">Guide to social grants</a>
-              </li>
-	    <li class="header__nav__link header__nav__link--drop">
-                <a href="/article/everything-you-need-know-about-government-housing/">Guide to housing</a>
-            </li>
+<nav id="main-menu">
+    <ul class="nav nav-pills">
+        <li class="dropdown-btn">
+            <a href="{% url 'newsroom:home' %}">
+                Topics<i class="glyphicon glyphicon-chevron-down"></i>
+            </a>
+	    <ul class="dropdown-menu">
+                <li>
+                    <a href="/">
+                        Latest stories
+                    </a>
+                </li>
 
-            <li class="header__nav__link header__nav__link--drop">
-                <a href="/qanda/">We answer your questions</a>
-            </li>
+                <li>
+                    <a href="/imagegallery/">Gallery</a>
+                </li>
 
-            <li class="header__nav__link header__nav__link--drop">
-              <a href="/category/Feature/">Features</a>
-            </li>
-	    <li class="header__nav__link header__nav__link--drop">
-              <a href="/author/">Authors</a>
-            </li>
-            <li class="header__nav__link header__nav__link--drop">
-              <a href="/topic/">Topics</a>
-            </li>
-	  </ul>
+	        <li>
+                    <a href="/article/everything-you-need-know-about-social-grants_820/">
+                        Social grants guide
+                    </a>
+                </li>
+	        <li>
+                    <a href="/article/everything-you-need-know-about-government-housing/">
+                        Housing guide
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/qanda/">
+                        We answer your questions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/category/Feature/">Features</a>
+                </li>
+
+	        <li>
+                    <a href="/author/">Authors</a>
+                </li>
+                <li>
+                    <a href="/topic/">Category list</a>
+                </li>
+
+                <li>
+                    <a href="/topic/">Topics list</a>
+                </li>
+	    </ul>
         </li>
 
-        <li class="header__nav__link">
-          <a href="/imagegallery/">Gallery</a>
+	<li>
+	    <a href="/about/">
+                About
+            </a>
+	</li>
+
+	<li>
+	    <a href="/donate/">Donate</a>
+	</li>
+        {% if request.user.is_staff %}
+            <li class="dropdown-btn">
+	        <a href="#">
+                    Admin<i class="glyphicon glyphicon-chevron-down"></i>
+                </a>
+	        <ul class="dropdown-menu">
+                    {% include 'newsroom/staff_menu.html' %}
+	        </ul>
+            </li>
+        {% elif request.user.is_authenticated %}
+            <li>
+	        <a href="{% url 'newsroom:user.profile' %}">Account</a>
+            </li>
+        {% endif %}
+        <li>
+            <button id="toggle-search">
+                <i class="fa fa-search"></i>
+            </button>
         </li>
-	<li class='header__nav__link {% if path == '/about/' %} active {% endif %}'>
-	  <a href="/about/">About</a>
-	</li>
-	<li class='header__nav__link {% if path == '/donate/' %} active {% endif %}'>
-	  <a href="/donate/">Donate</a>
-	</li>
-    {% endwith %}
-    {% if request.user.is_staff %}
-      <li class="drop header__nav__link">
-	<a class="admin-menu-item admin-nav-item" href="#">Admin</a>
-	<ul class="header__nav__drop-down">
-          {% include 'newsroom/staff_menu.html' %}
-	</ul>
-      </li>
-    {% elif request.user.is_authenticated %}
-      <li class="header__nav__link">
-	<a href="{% url 'newsroom:user.profile' %}" class="admin-nav-item">Account</a>
-      </li>
-    {% endif %}
-  </ul>
-    <div class="advanced-search-box">
-      <a class="advanced-search" href="{% url 'newsroom:advanced.search' %}">Advanced Search</a>
-      <input type="hidden" name="search_type" value="both" />
-    </div>
+        {% block search %}
+            {% if qanda_search %}
+            {% else %}
+                {% include "search/searchform.html" %}
+            {% endif %}
+        {% endblock %}
+    </ul>
 </nav>

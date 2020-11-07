@@ -57,3 +57,24 @@ p.qanda__summary_answer_intro {
     margin-top: 12px;
     font-style: italic;
 }
+
+#qanda__searchlist {
+    padding: 0;
+    list-style-type: none;
+}
+
+#qanda__searchlist li {
+    margin-left: 0;
+}
+
+#toggle-search {
+    display: none;
+}
+
+#id_q {
+    width: 250px;
+}
+
+#search-box {
+    display: block !important;
+}

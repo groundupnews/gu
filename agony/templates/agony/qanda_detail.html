@@ -61,6 +61,11 @@
                 <p class="qand__read_more">
                     <a href="{% url 'agony:list' %}">See more questions and answers</a>
                 </p>
+                <p>
+                    <ul id="qanda__searchlist">
+                        {% include "search/searchform.html" %}
+                    </ul>
+                </p>
                 <p id="qand__disclaimer">
                     Please note. We are not lawyers or financial advisors. We do
                     our best to make the answers accurate, but we cannot accept

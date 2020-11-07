@@ -1,8 +1,34 @@
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous">
+</script>
 
 <script>
- {% include "bootstrap/jquery.min.js" %}
- {% include "bootstrap/bootstrap.min.js" %}
  {% include "datepicker/datepicker.min.js" %}
  {% include "advanced_search.js" %}
+</script>
+
+{% comment %}
+Handles menu click
+{% endcomment %}
+<script>
+ $( document ).ready(function() {
+     $('.nav .dropdown-btn').hover(function() {
+         $(this).addClass('open');
+     }, function() {
+         $(this).removeClass('open');
+     });
+     $('#toggle-search').click(function() {
+         if ($('#search-box').hasClass('search-box-closed')) {
+             $('#search-box').removeClass('search-box-closed');
+             $("#id_q").focus();
+             $(this).html('<i class="fas fa-times"></i>');
+         } else {
+             $('#search-box').addClass('search-box-closed');
+             $(this).html('<i class="fas fa-search"></i>');
+         }
+     });
+ });
+
 </script>
