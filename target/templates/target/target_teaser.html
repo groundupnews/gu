@@ -15,9 +15,11 @@
                 </p>
             </div>
             <div class="col-xs-12 col-md-6">
-                <a href="{% url "target:detail" object.pk %}"><img
-                   style="max-width:200px; display: block; margin-left: auto; margin-right: auto;"
-                   src="{% get_media_prefix %}targets/target_{{object.pk}}.png"
+                <a href="{% url "target:detail" object.pk %}">
+                    <img
+                        style="max-width:200px; display: block; margin-left: auto; margin-right: auto;"
+                        src="{% get_media_prefix %}targets/target_{{object.pk}}.png"
+                        alt="Image of target {{object.pk}}"
                 /></a>
             </div>
         </div>
