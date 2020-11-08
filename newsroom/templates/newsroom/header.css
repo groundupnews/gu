@@ -3,9 +3,9 @@ header {
     margin: auto;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    padding: 16px 4px;
+    padding: 12px 4px 10px 4px;
     position: sticky;
-    top: -56px;
+    top: -52px;
     z-index: 1000;
     width: 100%;
 }
@@ -99,6 +99,9 @@ nav#main-menu > ul > li > a {
 }
 
 @media only screen and (min-width: 1000px) {
+    header {
+        padding: 10px 4px 14px 4px;
+    }
     #main-menu {
         font-size: 120%;
     }

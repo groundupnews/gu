@@ -91,6 +91,15 @@ a {
 
 /**************/
 
+/* Generic white background for page */
+
+.content-generic {
+    background-color: #fff;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
 
 /* Youtube, Soundcloud and Support ads in CKeditor */
 

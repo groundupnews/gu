@@ -1,22 +1,53 @@
 {% extends "base.html" %}
 
-{% block title %} Topics {{block.super}} {% endblock %}
+{% block title %} Categories and topics {{block.super}} {% endblock %}
 
 {% block content %}
     <div class="container">
 	<div class="row">
 	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
-		<h1>Topics</h1>
-		<ul>
-		    {% for topic in object_list %}
-			<li>
-			    <a href="{% url 'newsroom:topic.detail' topic.slug %}">
-				{{ topic.name|upper }}
-			    </a>
-			</li>
-		    {% endfor %}
-		</ul>
-	    </div>
+                <div class="content-generic">
+		    <h1>Categories and topics</h1>
+
+                    <p>
+                        GroundUp articles are given exactly one category and one or
+                        more topics. Here is first a list of all categories and then
+                        a list of all topics.
+                    </p>
+
+                    <h2>Categories</h2>
+		    <ul>
+		        {% for category in categories %}
+                            {% with total=category.article_set.published.count %}
+                                {% if total > 0 %}
+			            <li>
+			                <a href="{% url 'newsroom:category.detail' category.slug %}">
+				            {{ category.name|upper }}
+			                </a>
+                                        ({{total}} article{{total|pluralize}})
+                                    </li>
+                                {% endif %}
+                            {% endwith %}
+		        {% endfor %}
+		    </ul>
+
+                    <h2>Topics</h2>
+		    <ul>
+		        {% for topic in object_list %}
+                            {% with total=topic.article_set.published.count %}
+                                {% if total > 0 %}
+			            <li>
+			                <a href="{% url 'newsroom:topic.detail' topic.slug %}">
+				            {{ topic.name|upper }}
+                                        </a>
+                                        ({{total}} article{{total|pluralize}})
+                                    </li>
+                                {% endif %}
+                            {% endwith %}
+		        {% endfor %}
+		    </ul>
+	        </div>
+            </div>
 	</div>
     </div>
 {% endblock %}

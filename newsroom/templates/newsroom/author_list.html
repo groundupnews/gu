@@ -9,17 +9,19 @@
     <div class="container">
 	<div class="row">
 	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
-		<h1>Writers</h1>
-		<ul>
-		    {% for author in object_list %}
-			<li>
-			    <a href="{% url 'newsroom:author.detail' author.pk %}">
-				{{ author }}
+                <div class="content-generic">
+		    <h1>Writers</h1>
+		    <ul>
+		        {% for author in object_list %}
+			    <li>
+			        <a href="{% url 'newsroom:author.detail' author.pk %}">
+				    {{ author }}
 			    </a>
-			</li>
-		    {% endfor %}
-		</ul>
+			    </li>
+		        {% endfor %}
+		    </ul>
+	        </div>
 	    </div>
-	</div>
+        </div>
     </div>
 {% endblock %}

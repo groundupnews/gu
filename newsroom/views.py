@@ -112,6 +112,18 @@ class OpinionAnalysisList(ArticleList):
         return context
 
 
+class GroundViewList(ArticleList):
+
+    def get_queryset(self):
+        return models.Article.objects.list_view().filter(
+            Q(category__name="GroundView") |
+            Q(topics__name__in=["GroundView",]))
+
+    def get_context_data(self, **kwargs):
+        context = super(GroundViewList, self).get_context_data(**kwargs)
+        context['heading'] = "GroundView: Our editorials"
+        return context
+
 class AuthorList(generic.ListView):
     model = models.Author
 
@@ -183,6 +195,11 @@ class RegionDetail(ArticleList):
 class TopicList(generic.ListView):
     model = models.Topic
 
+    def get_context_data(self, **kwargs):
+        categories = models.Category.objects.all()
+        context = super(TopicList, self).get_context_data(**kwargs)
+        context['categories'] = categories
+        return context
 
 class TopicDetail(ArticleList):
 

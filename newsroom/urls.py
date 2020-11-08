@@ -22,6 +22,12 @@ urlpatterns = [
         (views.OpinionAnalysisList.as_view()),
         name='article.opinion_analysis'),
 
+    url(r'^category/groundview/$',
+        cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
+        (views.GroundViewList.as_view()),
+        name='article.groundview'),
+
+
     url(r'^category/$', views.CategoryList.as_view(),
         name="category.list"),
 
@@ -36,7 +42,9 @@ urlpatterns = [
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
         (views.RegionDetail.as_view()), name='region.detail'),
 
-    url(r'^topic/$', views.TopicList.as_view(),
+    # Make it a long cache because this makes hundreds of database calls
+    url(r'^topic/$', cache_page(settings.CACHE_PERIOD * 25)
+        (views.TopicList.as_view()),
         name="topic.list"),
 
     url(r'^topic/([-\s\w]+)/$',
