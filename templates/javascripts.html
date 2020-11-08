@@ -13,38 +13,12 @@
 Handles menu click
 {% endcomment %}
 <script>
- /* From:
-    https://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript*/
- function is_touch_device() {
-     if ("ontouchstart" in window || window.TouchEvent)
-         return true;
-
-     if (window.DocumentTouch && document instanceof DocumentTouch)
-         return true;
-
-     const prefixes = ["", "-webkit-", "-moz-", "-o-", "-ms-"];
-     const queries = prefixes.map(prefix => `(${prefix}touch-enabled)`);
-
-     return window.matchMedia(queries.join(",")).matches;
- }
-
-
  $( document ).ready(function() {
-     if (is_touch_device()) {
-         $('.nav .dropdown-btn').click(function() {
-             if (($this).hasClass('open')) {
-                 $(this).removeClass('open');
-             } else {
-                 $(this).addClass('open');
-             }
-         });
-     } else {
-         $('.nav .dropdown-btn').hover(function() {
-             $(this).addClass('open');
-         }, function() {
-             $(this).removeClass('open');
-         });
-     }
+     $('.nav .dropdown-btn').hover(function() {
+         $(this).addClass('open');
+     }, function() {
+         $(this).removeClass('open');
+     });
      $('#toggle-search').click(function() {
          if ($('#search-box').hasClass('search-box-closed')) {
              $('#search-box').removeClass('search-box-closed');
