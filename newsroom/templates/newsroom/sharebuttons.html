@@ -23,7 +23,7 @@
 
 
 <a id="email-share"
-   href="mailto:?Subject=I%20recommend%20an%20article%20published%20on%20GroundUp&amp;Body=Here%20is%20an%20article%20on%20GroundUp%20that%20I%20recommend:%20{{article.title}}%20{{request.build_absolute_uri|urlencode}}"
+   href="mailto:?Subject=I%20recommend%20an%20article%20published%20on%20GroundUp&amp;Body=Here%20is%20an%20article%20on%20GroundUp%20that%20I%20recommend:%20{{article.title|urlencode}}%20{{request.build_absolute_uri|urlencode}}"
    title="Email">
     {% include "insert_icon.html" with icon="icon-mail" %}
 </a>
