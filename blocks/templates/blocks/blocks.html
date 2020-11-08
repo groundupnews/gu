@@ -15,105 +15,105 @@ _Recommend
 {% endcomment %}
 
 {% for b in blocks %}
-        <div class="sidebar-block">
-            {% if b.name == "_Popular" %}
-                <div id="most-popular">
-		    <h2>Most popular</h2>
-		    {{most_popular_html|safe}}
-		</div>
-            {% elif b.name == "_Random_qanda" %}
-                <div id="random_agony">
-                    {% include 'agony/random_question.html' %}
-		</div>
-            {% elif b.name == "_Random_letter" %}
-                <div id="random_letter">
-                    {% include 'letters/random_letter.html' %}
-		</div>
-            {% elif b.name == "_Advert" %}
-                {% if not article.suppress_ads %}
-		    <aside class="side-advert">
-                        {% if AB_TEST_ADS %}
-                            {% if AD_OPTIONS == 0 %}
-                                {% include "newsroom/advert_amazon_gift_responsive.html" %}
-                            {% elif AD_OPTIONS == 1 %}
-                                {% include "newsroom/advert_google_responsive.html" %}
-                            {% endif %}
-                        {% else %}
-                            {% if AMAZON_ADS %}
-                                {% include "newsroom/advert_amazon_gift_responsive.html" %}
-                            {% elif ACME_ADS %}
-                                {% include "newsroom/advert_acme.html" %}
-                            {% elif GOOGLE_ADS %}
-		                {% include "newsroom/advert_google_responsive.html" %}
-                            {% endif %}
+    <div class="sidebar-block">
+        {% if b.name == "_Popular" %}
+            <div id="most-popular">
+		<h2>Most popular</h2>
+		{{most_popular_html|safe}}
+	    </div>
+        {% elif b.name == "_Random_qanda" %}
+            <div id="random_agony">
+                {% include 'agony/random_question.html' %}
+	    </div>
+        {% elif b.name == "_Random_letter" %}
+            <div id="random_letter">
+                {% include 'letters/random_letter.html' %}
+	    </div>
+        {% elif b.name == "_Advert" %}
+            {% if not article.suppress_ads %}
+		<aside class="side-advert">
+                    {% if AB_TEST_ADS %}
+                        {% if AD_OPTIONS == 0 %}
+                            {% include "newsroom/advert_amazon_gift_responsive.html" %}
+                        {% elif AD_OPTIONS == 1 %}
+                            {% include "newsroom/advert_google_responsive.html" %}
                         {% endif %}
-		    </aside>
-                {% endif %}
-            {% elif b.name == "_Tshirt" %}
-                {% if not article.suppress_ads %}
-		    <aside class="side-advert">
-		        {% include "newsroom/advert_tshirt.html" %}
-		    </aside>
-                {% endif %}
-            {% elif b.name == "_Links" %}
-                {% include "newsroom/sidebar_links.html" %}
-            {% elif b.name == "_Letters" %}
-                {% include 'letters/letters.html' %}
-            {% elif b.name == "_Social" %}
-		{% include "newsroom/social_media.html" %}
-            {% elif b.name == "_Promote" %}
-                {% if article.promote_article %}
-	            <div id="support-article">
-	                {% include "newsroom/support_article.html" %}
-	            </div>
-                {% endif %}
-            {% elif b.name == "_Related" %}
-                {% if see_also %}
-	            <div id="see-also">
-	                <h2>Related articles</h2>
-
-	                <ul>
-		            {% for item in see_also %}
-		                <li><a href="{{item.get_absolute_url}}
-				             ">{{item.title|safe}}</a>
-		                </li>
-		            {% endfor %}
-	                </ul>
-	            </div>
-                {% endif %}
-            {% elif b.name == "_Recommend" %}
-	        <div id="read-next">
-	          {% include 'newsroom/read_next.html' %}
-	        </div>
-            {% elif b.name == "_Topic" %}
-	        <div id="topic">
-	            {% include 'newsroom/article_topics.html' %}
-	        </div>
-            {% elif b.name == "_QandA" %}
-	        <div id="qanda">
-	            {% include 'agony/qanda_snippet.html' %}
-	        </div>
-            {% elif b.name == "_Target" %}
-	        <div id="home__target">
-	            {% include 'target/target_snippet.html' %}
-	        </div>
-            {% elif b.name == "_Toy" %}
-	        <div id="gu-toy">
-
-                    {% with "abc"|make_list|random  as choice %}
-                        {% if choice == "a" %}
-	                    {% include 'toys/govtbudgets.html' %}
-                        {% elif choice == "b" %}
-	                    {% include 'toys/grantrecips.html' %}
-                        {% elif choice == "c" %}
-	                    {% include 'toys/greenhouse.html' %}
+                    {% else %}
+                        {% if AMAZON_ADS %}
+                            {% include "newsroom/advert_amazon_gift_responsive.html" %}
+                        {% elif ACME_ADS %}
+                            {% include "newsroom/advert_acme.html" %}
+                        {% elif GOOGLE_ADS %}
+		            {% include "newsroom/advert_google_responsive.html" %}
                         {% endif %}
-                    {% endwith %}
-
-
-	        </div>
-            {% else %}
-                {{b.html|safe}}
+                    {% endif %}
+		</aside>
             {% endif %}
-        </div>
-    {% endfor %}
+        {% elif b.name == "_Tshirt" %}
+            {% if not article.suppress_ads %}
+		<aside class="side-advert">
+		    {% include "newsroom/advert_tshirt.html" %}
+		</aside>
+            {% endif %}
+        {% elif b.name == "_Links" %}
+            {% include "newsroom/sidebar_links.html" %}
+        {% elif b.name == "_Letters" %}
+            {% include 'letters/letters.html' %}
+        {% elif b.name == "_Social" %}
+	    {% include "newsroom/social_media.html" %}
+        {% elif b.name == "_Promote" %}
+            {% if article.promote_article %}
+	        <div id="support-article">
+	            {% include "newsroom/support_article.html" %}
+	        </div>
+            {% endif %}
+        {% elif b.name == "_Related" %}
+            {% if see_also %}
+	        <div id="see-also">
+	            <h2>Related articles</h2>
+
+	            <ul>
+		        {% for item in see_also %}
+		            <li><a href="{{item.get_absolute_url}}
+				         ">{{item.title|safe}}</a>
+		            </li>
+		        {% endfor %}
+	            </ul>
+	        </div>
+            {% endif %}
+        {% elif b.name == "_Recommend" %}
+	    <div id="read-next">
+	        {% include 'newsroom/read_next.html' %}
+	    </div>
+        {% elif b.name == "_Topic" %}
+	    <div id="topic">
+	        {% include 'newsroom/article_topics.html' %}
+	    </div>
+        {% elif b.name == "_QandA" %}
+	    <div id="qanda">
+	        {% include 'agony/qanda_snippet.html' %}
+	    </div>
+        {% elif b.name == "_Target" %}
+	    <div id="home__target">
+	        {% include 'target/target_snippet.html' %}
+	    </div>
+        {% elif b.name == "_Toy" %}
+	    <div id="gu-toy">
+
+                {% with "abc"|make_list|random  as choice %}
+                    {% if choice == "a" %}
+	                {% include 'toys/govtbudgets.html' %}
+                    {% elif choice == "b" %}
+	                {% include 'toys/grantrecips.html' %}
+                    {% elif choice == "c" %}
+	                {% include 'toys/greenhouse.html' %}
+                    {% endif %}
+                {% endwith %}
+
+
+	    </div>
+        {% else %}
+            {{b.html|safe}}
+        {% endif %}
+    </div>
+{% endfor %}
