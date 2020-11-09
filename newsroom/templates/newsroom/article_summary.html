@@ -5,7 +5,12 @@
             <a style="display:block;" href="{{article.get_absolute_url}}">
 	        <img class="summary-image"
 	             src="{{ article.cached_summary_image }}"
-	             alt="{{ article.summary_image_alt }}"/>
+                     {% if article.summary_image_alt %}
+	             alt="{{ article.summary_image_alt }}"
+                     {% else %}
+                     alt="Summary image for article"
+                     {% endif %}
+                />
             </a>
         </div>
     {% endif %}
@@ -38,7 +43,7 @@
                 {{ article.cached_byline|safe }}
             </p>
             <div class="home__articles_article__details-mobile">
-                {{ article.cached_byline|safe }}
+                {{ article.cached_byline|safe }} - {{article.published|date:"j F Y"}}
             </div>
         </div>
     </div>

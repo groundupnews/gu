@@ -187,6 +187,10 @@
     line-height: 20px;
 }
 
+.home__articles__article__text__byline a {
+    color: #00b1F0;
+}
+
 .more_articles {
     display: flex;
     width: 100%;
@@ -409,8 +413,10 @@ h2#qanda {
     }
 
     .home__top-article_text__details-mobile a {
-        color: #000;
-        text-decoration: none;
+    }
+
+    .home__articles_article__details-mobile a {
+        color: #00b1F0;
     }
 
     .home__articles__article {
