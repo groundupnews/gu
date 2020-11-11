@@ -9,7 +9,7 @@
 	<div id="list-content" class="home">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-6 col-md-12 topic-intro">
+                    <div class="col-xs-12 topic-intro">
                         {% block content-intro %}
                             <div>
 	                        {% if heading %}
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6 col-md-12">
+                    <div class="col-xs-12">
 
                         <div  class="home__article-list">
 		            {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
