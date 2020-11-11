@@ -1,7 +1,7 @@
 .home__article__summary {
     margin-top: 12px;
-    margin-bottom: 16px;
-    border-bottom: 2px solid #D6D6DA;
+    padding-bottom: 6px;
+    border-bottom: 1px solid   #e6e6e6;
 }
 
 

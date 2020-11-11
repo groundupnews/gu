@@ -5,49 +5,47 @@
 {% block content %}
     <div class="container">
 	<div class="row">
-	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
-                <div class="content-generic">
-		    <h1>Categories and topics</h1>
+	    <div class="col-xs-12 topic-intro">
+		<h1>Categories and topics</h1>
 
-                    <p>
-                        GroundUp articles are given exactly one category and one or
-                        more topics. Here is first a list of all categories and then
-                        a list of all topics.
-                    </p>
+                <p>
+                    GroundUp articles are given exactly one category and one or
+                    more topics. Here is first a list of all categories and then
+                    a list of all topics.
+                </p>
 
-                    <h2>Categories</h2>
-		    <ul>
-		        {% for category in categories %}
-                            {% with total=category.article_set.published.count %}
-                                {% if total > 0 %}
-			            <li>
-			                <a href="{% url 'newsroom:category.detail' category.slug %}">
-				            {{ category.name|upper }}
-			                </a>
-                                        ({{total}} article{{total|pluralize}})
-                                    </li>
-                                {% endif %}
-                            {% endwith %}
-		        {% endfor %}
-		    </ul>
+                <h2>Categories</h2>
+		<ul>
+		    {% for category in categories %}
+                        {% with total=category.article_set.published.count %}
+                            {% if total > 0 %}
+			        <li>
+			            <a href="{% url 'newsroom:category.detail' category.slug %}">
+				        {{ category.name|upper }}
+			            </a>
+                                    ({{total}} article{{total|pluralize}})
+                                </li>
+                            {% endif %}
+                        {% endwith %}
+		    {% endfor %}
+		</ul>
 
-                    <h2>Topics</h2>
-		    <ul>
-		        {% for topic in object_list %}
-                            {% with total=topic.article_set.published.count %}
-                                {% if total > 0 %}
-			            <li>
-			                <a href="{% url 'newsroom:topic.detail' topic.slug %}">
-				            {{ topic.name|upper }}
-                                        </a>
-                                        ({{total}} article{{total|pluralize}})
-                                    </li>
-                                {% endif %}
-                            {% endwith %}
-		        {% endfor %}
-		    </ul>
-	        </div>
-            </div>
+                <h2>Topics</h2>
+		<ul>
+		    {% for topic in object_list %}
+                        {% with total=topic.article_set.published.count %}
+                            {% if total > 0 %}
+			        <li>
+			            <a href="{% url 'newsroom:topic.detail' topic.slug %}">
+				        {{ topic.name|upper }}
+                                    </a>
+                                    ({{total}} article{{total|pluralize}})
+                                </li>
+                            {% endif %}
+                        {% endwith %}
+		    {% endfor %}
+		</ul>
+	    </div>
 	</div>
     </div>
 {% endblock %}

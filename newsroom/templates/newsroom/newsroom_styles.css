@@ -950,16 +950,23 @@ Single-colored icons can be modified like so:
 }
 
 .topic-intro {
-    /* background-color: #fff;*/
+    background-color: #fff;
     padding: 15px;
-    max-width: 500px;
     margin: 15px auto 15px auto;
 }
 
 .topic-intro h1, .topic-intro h2 {
-    margin-top: 10px;
+    margin-top: 14px;
+    margin-bottom: 12px;
     font-family: 'Roboto Slab', serif;
     text-align: center;
+}
+
+.topic-intro p, .topic-intro ul, .topic-intro form {
+    font-size: 1.8rem;
+    max-width: 600px;
+    margin: auto;
+    margin-bottom: 12px;
 }
 
 /*** Sticky Footer ***/
