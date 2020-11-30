@@ -8,7 +8,7 @@ register = template.Library()
 @register.simple_tag
 def target_teaser(pk=None):
     if pk is None:
-        target = Target.objects.published().first()
+        target = Target.objects.published().latest('published')
     else:
         pk = int(pk)
         target = Target.objects.published()(pk=pk)
