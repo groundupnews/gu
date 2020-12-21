@@ -1,10 +1,10 @@
-h1, h2, p, ul, ol, li {
+#BelowTheBanner h1, #BelowTheBanner h2, #BelowTheBanner p, #BelowTheBanner ul, #BelowTheBanner ol, #BelowTheBanner li {
     margin-left: auto;
     margin-right: auto;
     max-width: 800px;
 }
 
-h1, h2 {
+#BelowTheBanner h1, #BelowTheBanner h2 {
     text-align: center;
 }
 
@@ -13,13 +13,13 @@ h1, h2 {
 }
 
 .sudoku-control button {
-    font-size: 1em;
+    font-size: 0.9em;
 }
 
 .sudoku-stopwatch {
     height: inherit !important;
 }
 
-p, ul, ol, li {
+#BelowTheBanner p, #BelowTheBanner ul, #BelowTheBanner ol, #BelowTheBanner li {
     font-size: 18px;
 }

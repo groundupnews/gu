@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.http import Http404
 
 from sudoku.models import Sudoku
 
@@ -24,12 +25,9 @@ class SudokuDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['choices'] = Sudoku.Difficulty.choices
-        print(self.request.GET)
         if 'diff' in self.request.GET:
-            print("Here")
             context['difficulty'] = self.request.GET['diff']
         else:
-            print("There")
             context['difficulty'] = '0'
         return context
 
