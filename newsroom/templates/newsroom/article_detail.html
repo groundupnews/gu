@@ -75,20 +75,19 @@
 
 
 {% block content %}
-    <div class="article-container">
-        <div id="article-content" class="article-content">
+
+    <div class="container">
+        <div class="row">
             <article id="article-category-{{article.category.slug}}" class="article">
 	        {% block article %}
 	            {% include "newsroom/article_block.html" %}
 	        {% endblock %}
-      </article>
-    </div>
-    <div class="article-social">
-      <div class="article-social-container">
+            </article>
+        </div>
+
         {% include 'newsroom/social_media.html' %}
-      </div>
+
     </div>
-  </div>
 {% endblock %}
 
 {% block javascript-includes %}

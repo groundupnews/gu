@@ -89,7 +89,7 @@ class HomePage(ArticleList):
     # Add messages here. E.g.
     #    messages.add_message(request, messages.INFO,
     #                         "We're only publishing urgent "
-    #                         "news until 7 January. Have a "
+    #                         "news until 11 January. Have a "
     #                         "safe holiday season.")
         request = super(HomePage, self).get(request, args, kwargs)
         return request
@@ -367,7 +367,7 @@ def article_preview(request, secret_link):
                   {'article': article,
                    'display_region': display_region,
                    'recommended': article.get_recommended(),
-                   'related': article.get_related(),
+                   # 'related': article.get_related(),
                    'blocks': get_blocks('Article'),
                    'can_edit': False,
                    'article_body': article.body,
@@ -436,7 +436,7 @@ def article_detail(request, slug):
                           {'article': article,
                            'display_region': display_region,
                            'recommended': article.get_recommended(),
-                           'related': article.get_related(),
+                           # 'related': article.get_related(),
                            'blocks': get_blocks('Article'),
                            'can_edit': can_edit,
                            'article_body': article_body,

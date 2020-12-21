@@ -7,12 +7,10 @@
 
 /****************/
 .home {
-    background-color: #F0F0F2;
-    display: flex;
+/*    background-color: #F0F0F2;*/
     justify-content: center;
     align-items: center;
     width: 65%;
-    flex-direction: column;
     margin: 0 auto;
 }
 
@@ -29,8 +27,6 @@
     background-color: #fff;
     margin-top: 20px;
     margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
     width: 100%;
 }
 
@@ -48,7 +44,6 @@
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
     line-height: 27px;
-    flex-grow: 1;
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -79,13 +74,8 @@
     border-bottom: 2px solid #D6D6DA;
 }
 
-.home__articles {
-    display: flex;
-    flex-direction: column;
-}
 
 .home__articles__article {
-    display: flex;
     padding-top: 20px;
     padding-bottom: 20px;
     border-bottom: 2px solid #D6D6DA;
@@ -93,13 +83,6 @@
 
 .home__articles__article__text {
     justify-content: center;
-    display: flex;
-}
-
-.home__articles__article__text__box {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 95%;
 }
 
 
@@ -150,16 +133,13 @@
 }
 
 .more_articles {
-    display: flex;
     width: 100%;
     justify-content: space-between;
     margin-bottom: 30px;
-    align-items: flex-start;
 }
 
 .more_articles__popular_qanda {
     background-color: #fff;
-    flex-basis: 65%;
     padding: 10px;
     margin-right: 30px;
 }
@@ -170,7 +150,6 @@
 
 .more_articles__letters {
     background-color: #fff;
-    flex-basis: 35%;
     padding: 10px;
 }
 
@@ -235,7 +214,6 @@ h2#qanda {
 
 .home .more_articles__popular_qanda ol li, .home .more_articles__popular_qanda ul li {
     counter-increment: item;
-    display: flex;
     width: 100%;
     font-size: 0.8rem;
     margin-bottom: 15px;
@@ -279,18 +257,12 @@ h2#qanda {
         padding-bottom: 15px;
     }
 
-    .more_articles {
-        flex-direction: column;
-    }
-
     .more_articles__popular_qanda {
-        flex: 1;
         padding: 10px;
         margin-right: 0px;
     }
 
     .more_articles__letters {
-        flex: 1;
         padding: 10px;
         margin-top: 4%;
     }
@@ -315,13 +287,8 @@ h2#qanda {
         line-height: 35px;
     }
 
-    .home__articles__article {
-        display: flex;
-        flex-direction: column;
-    }
 
     .home__articles__article__text__box {
-        flex-basis: 100%;
         padding-top: 2%;
         padding-bottom: 2%;
     }
@@ -354,15 +321,5 @@ h2#qanda {
         font-size: 2vw;
         line-height: 3vw;
         padding-top: 1%;
-    }
-}
-
-@media (min-width: 769px) {
-    .home__articles__article__image {
-        flex: 1;
-    }
-
-    .home__articles__article__text {
-        flex: 2;
     }
 }

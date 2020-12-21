@@ -1,87 +1,74 @@
-<div class="article__container {% if article.undistracted_layout %} article__container--undistracted {% endif %}">
-  <div class="article__content {% if article.undistracted_layout %} article__content--undistracted {% endif %}">
-    <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">
-      {{article.category|upper}}
-    </a>
-    {% if display_region %}
-      |
-      <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">
-        {{display_region|upper}}
-      </a>
-    {% endif %}
+
+<div class="{% if article.undistracted_layout %}col-xs-12  col-md-push-1 col-md-10"{% else %}col-xs-12 col-md-8"{% endif %}>
     <h1 id="article_title" class="article__title" {% if can_edit %} contenteditable="true" {% endif %} >
-      {{ article.title|safe }}
+        {{ article.title|safe }}
     </h1>
-    <div class="article__details--desktop article__details--desktop-by">
-      <div class="article__details__date-by">
-        <time datetime='{{ article.published|date:"Y-m-d" }}'>
-          {{ article.published|date:"j F Y"}} &nbsp;
-        </time>
-        {{ article.cached_byline|safe }}
-      </div>
-    </div>
     {% if article.subtitle %}
-      <h2 id="article_subtitle"
-          class="article__subtitle"
-          {% if can_edit %}
-          contenteditable="true"
-          {% endif %}>
-        {{ article.subtitle|safe }}
-      </h2>
-    {% else %}
-      {% comment %}Subtitle must always be visible for editors
-      {% endcomment %}
-      {% if can_edit %}
-	<h2 id="article_subtitle"
+        <h2 id="article_subtitle"
             class="article__subtitle"
-            contenteditable="true">{{ article.subtitle|safe }}</h2>
-      {% endif %}
+            {% if can_edit %}
+            contenteditable="true"
+            {% endif %}>
+            {{ article.subtitle|safe }}
+        </h2>
+    {% else %}
+        {% comment %}Subtitle must always be visible for editors
+        {% endcomment %}
+        {% if can_edit %}
+	    <h2 id="article_subtitle"
+                class="article__subtitle"
+                contenteditable="true">{{ article.subtitle|safe }}</h2>
+        {% endif %}
     {% endif %}
-    {% if article.cached_primary_image %}
-      <figure id="article-primary-image" class="article__image__box">
-        <div class="article__image__container">
-          {% if article.primary_image %}
-	    <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}" target="_blank">
-	      <img src="{{article.cached_primary_image|iriencode}}"
-		   alt="{{article.primary_image_alt|addslashes}}"
-                   class="webfeedsFeaturedVisual article__image"
-              />
-	    </a>
-	  {% else %}
-	    <img src="{{article.cached_primary_image|iriencode}}"
-	         alt="{{article.primary_image_alt|addslashes}}"
-                 class="webfeedsFeaturedVisual article__image"/>
-	  {% endif %}
-        </div>
-        <div class="article__image__caption">
-          {% if article.primary_image_caption %}
-	    <figcaption id="article_primary_image_caption"
-		        {% if can_edit %}
-		        contenteditable="true"
-		        {% endif %} >
-	      {{article.primary_image_caption|safe}}
-	    </figcaption>
-	  {% else %}
-	    {% comment %}Editors must have empty caption to edit
-	    {% endcomment %}
-	    {% if can_edit %}
-	      <figcaption id="article_primary_image_caption"
-                          contenteditable="true">
-	        {{article.primary_image_caption|safe}}
-	      </figcaption>
-	    {% endif %}
-          {% endif %}
-        </div>
-      </figure>
-    {% endif %}
-    <div class="article__details--mobile article__details--mobile-by">
-      <div class="article__details__date-by">
+    <div class="article__details__date-by">
         <time datetime='{{ article.published|date:"Y-m-d" }}'>
-          {{ article.published|date:"j F Y"}} -
+            {{ article.published|date:"j F Y"}} &nbsp;
         </time>
         {{ article.cached_byline|safe }}
-      </div>
+        <span class="article__info">
+            <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">{{article.category|title}}</a>{% if display_region %} | <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">{{display_region|title}}</a>
+    </span>
+    {% endif %}
     </div>
+
+    {% if article.cached_primary_image %}
+        <figure id="article-primary-image" class="article__image__box">
+            <div class="article__image__container">
+                {% if article.primary_image %}
+	            <a href="{{MEDIA_URL}}{{article.primary_image|iriencode}}" target="_blank">
+	                <img src="{{article.cached_primary_image|iriencode}}"
+		             alt="{{article.primary_image_alt|addslashes}}"
+                             class="webfeedsFeaturedVisual article__image"
+                        />
+	            </a>
+	        {% else %}
+	            <img src="{{article.cached_primary_image|iriencode}}"
+	                 alt="{{article.primary_image_alt|addslashes}}"
+                         class="webfeedsFeaturedVisual article__image"/>
+	        {% endif %}
+            </div>
+            <div class="article__image__caption">
+                {% if article.primary_image_caption %}
+	            <figcaption id="article_primary_image_caption"
+		                {% if can_edit %}
+		                contenteditable="true"
+		                {% endif %} >
+	                {{article.primary_image_caption|safe}}
+	            </figcaption>
+	        {% else %}
+	            {% comment %}Editors must have empty caption to edit
+	            {% endcomment %}
+	            {% if can_edit %}
+	                <figcaption id="article_primary_image_caption"
+                                    contenteditable="true">
+	                    {{article.primary_image_caption|safe}}
+	                </figcaption>
+	            {% endif %}
+                {% endif %}
+            </div>
+        </figure>
+    {% endif %}
+
     <div id="article_body"
          {% if can_edit %}
          contenteditable="true"
@@ -93,7 +80,7 @@
         </p>
     {% endif %}
     {% if article.main_topic %}
-      {% include "newsroom/read_similar.html" %}
+        {% include "newsroom/read_similar.html" %}
     {% endif %}
     <div id="support_gu">
         <p>
@@ -104,48 +91,50 @@
     <div class="article__copyright" id="article-copyright">
         {{article.copyright|safe}}
     </div>
-    <div class="article__details--desktop article__details--desktop-share">
-        <div class="article__details__share">
-            {% include "newsroom/sharebuttons.html" %}
-        </div>
+    <div class="article__details__share">
+        {% include "newsroom/sharebuttons.html" %}
     </div>
     {% include 'newsroom/article_topics.html' %}
     {% include 'newsroom/article_next_article.html' %}
     {% include 'newsroom/article_letters.html' %}
-  </div>
-  <div class="article__sidebar {% if article.undistracted_layout %} article__sidebar--undistracted {% endif %}">
-      {% include 'blocks/blocks.html' %}
-  </div>
 </div>
-<div class="article__extra-content {% if article.undistracted_layout %} article__extra-content--undistracted {% endif %}">
-  <div class="extra-content__related-stories">
-    {% include "newsroom/read_next.html" %}
-  </div>
-  <div class="extra-content__spacer">
-  </div>
+
+<div class="col-xs-12 col-md-4 article__sidebar {% if article.undistracted_layout %}col-md-push-1 article__sidebar--undistracted {% endif %}">
+    {% include 'blocks/blocks.html' %}
 </div>
+
+
+{% comment %}
+<div class="col-xs-12 col-md-8 article__extra-content {% if article.undistracted_layout %} article__extra-content--undistracted {% endif %}">
+    <div class="extra-content__related-stories">
+        {% include "newsroom/read_next.html" %}
+    </div>
+    <div class="extra-content__spacer">
+    </div>
+</div>
+{% endcomment %}
 
 {% if can_edit %}
-  <div style="display:none;">
-    <form action="{% url 'newsroom:article.detail' article.slug %}"
-          id="article_form"
+    <div style="display:none;">
+        <form action="{% url 'newsroom:article.detail' article.slug %}"
+              id="article_form"
 
 
 
 
-	  method="post">{% csrf_token %}
-      {{form.as_p}}
-      <input id="input-is-published"
-	     value="{{article.is_published}}"
-	     name="is_published">
-      <input id="input-top-story"
-	     value="NO"
-	     name="input_top_story">
-      <input id="input-unsticky"
-	     value="NO"
-	     name="input_unsticky">
-      <input id="saveedits" type="submit"
-	     value="Save">
-    </form>
-  </div>
+	      method="post">{% csrf_token %}
+            {{form.as_p}}
+            <input id="input-is-published"
+	           value="{{article.is_published}}"
+	           name="is_published">
+            <input id="input-top-story"
+	           value="NO"
+	           name="input_top_story">
+            <input id="input-unsticky"
+	           value="NO"
+	           name="input_unsticky">
+            <input id="saveedits" type="submit"
+	           value="Save">
+        </form>
+    </div>
 {% endif %}

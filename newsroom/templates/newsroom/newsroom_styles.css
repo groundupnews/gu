@@ -1,5 +1,5 @@
 body {
-    background-color: #F0F0F2;
+    background-color: white;
 }
 
 /****************** HEADER *******************/
@@ -10,6 +10,11 @@ body {
 aside {
     margin-top: 12px;
     margin-bottom: 12px;
+}
+
+article {
+    margin-top: 18px;
+    padding-top: 18px;
 }
 
 article li {
@@ -119,7 +124,7 @@ a {
 .article-advert {
     margin-top: 0;
     padding-bottom: 9px;
-    border-bottom: 1px dotted lightgray;
+    border-bottom: 1px dotted #ebebe0;
 
     width: 100%;
     text-align: center;
@@ -360,8 +365,6 @@ div.editor-summary {
 footer {
     background-color: #151F22;
     color: white;
-    justify-self: flex-end;
-    flex-grow: 0;
 }
 
 #footer-container {
@@ -412,6 +415,7 @@ div.thumbnail {
 #paginator {
     text-align: center;
     /* font-size: 14x;*/
+    border-bottom: 1px solid #ebebe0;
 }
 
 #paginator li a {
@@ -475,6 +479,10 @@ p.author-description, p.disclaimer, p.correction {
 
 #see-also h2 {
     margin-bottom: 6px;
+}
+
+.more-to-read {
+    font-size: 18px;
 }
 
 #most-popular, #latest-letters, #qanda, #gu-toy {
@@ -661,7 +669,7 @@ p.author-description, p.disclaimer, p.correction {
 }
 
 #support_gu {
-    border-top: 1px solid #eee;
+/*    border-top: 1px solid #eee;*/
     color: red;
     font-weight: bold;
 }
@@ -971,28 +979,6 @@ Single-colored icons can be modified like so:
 
 /*** Sticky Footer ***/
 
-@media (min-width: 769px) {
-
-    body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-
-    .header {
-        flex-grow: 0;
-    }
-
-    #BelowTheBanner {
-        flex-grow: 1;
-    }
-
-    footer {
-        justify-self: flex-end;
-        flex-grow: 0;
-    }
-}
-
 
 /********************/
 
@@ -1016,11 +1002,9 @@ img.too_big {
     border: 2px solid red;
 }
 #article__statistics {
-    padding-top: 12px;
     padding-bottom: 12px;
     font-size: 80%;
-    border-top: 1px lightgray solid;
-    border-bottom: 1px lightgray solid;
+    border-bottom: 1px solid #ebebe0;
 }
 
 {% endif %}
