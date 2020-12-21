@@ -104,24 +104,16 @@
 </div>
 
 
-{% comment %}
 <div class="col-xs-12 col-md-8 article__extra-content {% if article.undistracted_layout %} article__extra-content--undistracted {% endif %}">
     <div class="extra-content__related-stories">
         {% include "newsroom/read_next.html" %}
     </div>
-    <div class="extra-content__spacer">
-    </div>
 </div>
-{% endcomment %}
 
 {% if can_edit %}
     <div style="display:none;">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
-
-
-
-
 	      method="post">{% csrf_token %}
             {{form.as_p}}
             <input id="input-is-published"

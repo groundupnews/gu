@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Play Sudoku {{object.number}}
+{% endblock %}
+
+{% block css-override %}
+    {{block.super}}
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/nathangeffen/sudoku/ui/sudoku.css?v={% now 'Ymdhis' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/css/gu-sudoku.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Sudoku puzzle {{object.number}}</h1>
+                <h2>Published on {{object.published|date:"j M Y"}}</h2>
+                <div id="sudoku-{{object.pk}}"></div>
+
+                <p>Difficulty: {{object.get_difficulty_display}}</p>
+
+
+                <p>
+                    <a id ="prev"
+                       href="{% url 'sudoku:nav' object.pk %}?nav=prev&diff={{difficulty}}">Previous</a>
+                    |
+                    <a id="next"
+                       href="{% url 'sudoku:nav' object.pk %}?nav=next&diff={{difficulty}}">Next</a>
+
+                    <select name="difficulty" id="difficulty">
+                        <option value="0">Any</option>
+                        {% for choice in choices|slice:"1:" %}
+                            <option value="{{choice.0}}"
+                                    {% if choice.0 == difficulty %}
+                                    selected
+                                    {% endif %}
+                            >{{choice.1}}</option>
+                        {% endfor %}
+                    </select>
+                    &nbsp;
+                    <a href="{% url 'sudoku:latest' %}">Latest</a>
+                </p>
+
+                <h2>How to use this</h2>
+                <ul>
+                    <li>
+                        Click 1 to 9 to toggle that digit on or off in a cell.
+                    </li>
+
+                    <li>
+                        You can put multiple candidate digits in a cell.
+                    </li>
+
+                    <li>
+                        Click the X button to clear a cell.
+                    </li>
+
+                    <li>
+                        Your edits are automatically saved on your computer. If you come
+                        back to this URL with the same browser, your edits should still be
+                        there.
+                    </li>
+
+                    <li>
+                        Click the Note button while in a cell to move the digits in that
+                        cell to the bottom right corner so that you remember it is
+                        provisional.
+                    </li>
+
+                    <li>
+                        Click on any cell with a single digit to see where the same digit is
+                        in other cells.
+                    </li>
+
+                    <li>
+                        <span class="sudoku-one-to-one">Color of duplicate cells with single digit.</span>
+                    </li>
+
+                    <li>
+                        <span class="sudoku-one-to-many">Color of duplicate cells with multiple digits.</span>
+                    </li>
+                </ul>
+
+                <h2>How the Try button works</h2>
+
+                <p>
+                    The Try button is very useful for hard Sudoku problems. If you get to a
+                    point where you can't make progress without trying one of, say, two
+                    options in a cell, click the Try button. Then try one of the options. If
+                    it turns out to be right and you solve the puzzle, then that's it. But
+                    if you reach a broken position, click the button again (which is now
+                    called Untry). It will restore the position to where you were before you
+                    tried the failed option. Now you can try the second option.
+                </p>
+
+                <h2>Publishing schedule</h2>
+
+                <ul>
+                    <li>Monday: Very easy</li>
+                    <li>Tuesday: Easy</li>
+                    <li>Wednesday: Easy</li>
+                    <li>Thursday: Medium</li>
+                    <li>Friday: Hard</li>
+                    <li>Saturday: Very hard</li>
+                    <li>Sunday: Extremely hard</li>
+                </ul>
+
+                <p>
+                    The puzzles are computer generated. Sometimes an easy puzzle may be more
+                    difficult than it should be and vice-versa. There is exactly one
+                    solution to a puzzle.
+                </p>
+                <p>
+                    The puzzles published on Saturdays and Sundays are very difficult and
+                    will often only be solvable by the very best human solvers.
+                </p>
+                <p>
+                    The source code for this user interface as well as the puzzle
+                    generating and solving code are FLOSS and available on <a href="https://github.com/nathangeffen/sudoku">Github</a>.
+                </p>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/nathangeffen/sudoku/ui/sudoku.js?v={% now 'Ymdhis' %}"></script>
+    <script>
+     "use strict";
+     const puzzle = '{{object.puzzle}}';
+     Sudoku.create('sudoku-{{object.pk}}', puzzle, {stop_watch:true});
+
+     document.getElementById('difficulty').addEventListener('change', function(e) {
+         document.getElementById('prev').href =
+             "{% url 'sudoku:nav' object.pk %}?nav=prev&diff=" + event.target.value;
+         document.getElementById('next').href =
+             "{% url 'sudoku:nav' object.pk %}?nav=next&diff=" + event.target.value;
+     });
+    </script>
+
+{% endblock %}

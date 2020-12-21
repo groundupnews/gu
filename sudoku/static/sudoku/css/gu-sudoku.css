@@ -1,0 +1,25 @@
+h1, h2, p, ul, ol, li {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.sudoku-control {
+    line-height: inherit !important;
+}
+
+.sudoku-control button {
+    font-size: 1em;
+}
+
+.sudoku-stopwatch {
+    height: inherit !important;
+}
+
+p, ul, ol, li {
+    font-size: 18px;
+}

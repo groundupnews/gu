@@ -1,0 +1,153 @@
+/* sudoku.css 1.0 */
+.sudoku-div {margin: auto;}
+
+.sudoku-table {
+    border: 3px solid black;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+.sudoku-table-completed {
+    border: 5px solid #000099;
+}
+
+.sudoku-table td {
+    width: 8vmin;
+    height: 8vmin;
+    text-align: center;
+    margin: 0;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.sudoku-incomplete {
+    display: none;
+}
+
+.sudoku-complete {
+    display: block;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.sudoku-td-in-focus {
+    background-color: #ffffcc;
+}
+
+.sudoku-td-2, .sudoku-td-5, .sudoku-td-11, .sudoku-td-14, .sudoku-td-20,
+.sudoku-td-23, .sudoku-td-29, .sudoku-td-32, .sudoku-td-38, .sudoku-td-41,
+.sudoku-td-47, .sudoku-td-50, .sudoku-td-56, .sudoku-td-59, .sudoku-td-65,
+.sudoku-td-68, .sudoku-td-74, .sudoku-td-77
+{ border-right: 4px solid black !important}
+
+.sudoku-td-8, .sudoku-td-17, .sudoku-td-26, .sudoku-td-35, .sudoku-td-44,
+.sudoku-td-53, .sudoku-td-62, .sudoku-td-71, .sudoku-td-80
+{ border-right: none !important; }
+
+.sudoku-td-18, .sudoku-td-19, .sudoku-td-20, .sudoku-td-21, .sudoku-td-22,
+.sudoku-td-23, .sudoku-td-24, .sudoku-td-25, .sudoku-td-26
+{ border-bottom: 4px solid black !important;}
+
+.sudoku-td-45, .sudoku-td-46, .sudoku-td-47, .sudoku-td-48, .sudoku-td-49,
+.sudoku-td-50, .sudoku-td-51, .sudoku-td-52, .sudoku-td-53
+{ border-bottom: 4px solid black !important;}
+
+.sudoku-td-72, .sudoku-td-73, .sudoku-td-74, .sudoku-td-75, .sudoku-td-76,
+.sudoku-td-77, .sudoku-td-78, .sudoku-td-79, .sudoku-td-80
+{ border-bottom: none !important; }
+
+
+.sudoku-table td.sudoku-font-2 {
+    font-size: 85%;
+}
+
+.sudoku-table td.sudoku-font-3 {
+    font-size: 70%;
+}
+
+.sudoku-table td.sudoku-font-4 {
+    font-size: 65%;
+}
+
+.sudoku-table td.sudoku-font-5 {
+    font-size: 55%;
+}
+
+.sudoku-table td.sudoku-font-6 {
+    font-size: 50%;
+}
+
+.sudoku-table td.sudoku-font-7 {
+    font-size: 50%;
+}
+
+.sudoku-table td.sudoku-font-8 {
+    font-size: 50%;
+}
+
+.sudoku-table td.sudoku-font-9 {
+    font-size: 50%;
+}
+
+.sudoku-protected {
+    font-size: 1.2em;
+    background-color: lightgray;
+}
+
+.sudoku-one-to-one {
+    color: red;
+}
+
+.sudoku-one-to-many {
+    color: blue;
+}
+
+.sudoku-many-to-one {
+    color: blue;
+}
+
+.sudoku-many-to-many {
+/*    color: green;
+    font-weight: bold;*/
+}
+
+.sudoku-buttons {
+    text-align: center;
+    margin: auto;
+}
+
+.sudoku-buttons button {
+    width: 7vmin;
+    height: 7vmin;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-right: 1px;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+.sudoku-control {
+    text-align: center;
+}
+
+.sudoku-control button {
+    border: 2px solid black;
+    border-radius: 12px;
+    margin-left: 12px;
+}
+
+.sudoku-div button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+    .sudoku-buttons button {
+        width: 14vmin;
+        height: 14vmin;
+        margin-right: 5px;
+    }
+}

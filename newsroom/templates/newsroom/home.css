@@ -132,6 +132,12 @@
     color: #00b1F0;
 }
 
+#home__sudoku {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid   #e6e6e6;
+}
+
 .more_articles {
     width: 100%;
     justify-content: space-between;

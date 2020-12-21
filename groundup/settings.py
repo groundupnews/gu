@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'gallery',
     'agony',
     'target',
+    'sudoku',
     'analyzer',
     'pgsearch',
 )
