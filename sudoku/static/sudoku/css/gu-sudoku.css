@@ -13,7 +13,8 @@
 }
 
 .sudoku-control button {
-    font-size: 0.9em;
+    font-size: 1.0em;
+    background-color: white;
 }
 
 .sudoku-stopwatch {

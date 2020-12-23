@@ -9,8 +9,8 @@
 {% block css-override %}
     {{block.super}}
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/nathangeffen/sudoku/ui/sudoku.css?v={% now 'Ymdhis' %}">
-    <link rel="stylesheet" href="{% static 'sudoku/css/gu-sudoku.css' %}">
+          href="https://cdn.jsdelivr.net/gh/nathangeffen/sudoku/ui/sudoku.css?v=20201223">
+    <link rel="stylesheet" href="{% static 'sudoku/css/gu-sudoku.css' %}?v=20201223">
 {% endblock %}
 
 
@@ -127,7 +127,7 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/gh/nathangeffen/sudoku/ui/sudoku.js?v={% now 'Ymdhis' %}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/nathangeffen/sudoku/ui/sudoku.js?v=20201223"></script>
     <script>
      "use strict";
      const puzzle = '{{object.puzzle}}';
