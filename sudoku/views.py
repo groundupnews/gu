@@ -51,8 +51,8 @@ def nav(request, pk):
         lo_diff = '0'
         hi_diff = max(Sudoku.Difficulty.choices)[0]
     else:
-        lo_diff = difficulty[0]
-        hi_diff = difficulty[0]
+        lo_diff = difficulty
+        hi_diff = difficulty
 
     try:
         if nav == 'next':
