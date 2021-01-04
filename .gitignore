@@ -1,3 +1,4 @@
+pyvenv.cfg
 *.pyc
 *.pyo
 *~
