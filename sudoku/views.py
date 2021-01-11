@@ -12,7 +12,11 @@ class SudokuDetailView(DetailView):
     model = Sudoku
 
     def get_object(self, queryset=None):
-        sudoku = super().get_object(queryset)
+        try:
+            sudoku = super().get_object(queryset)
+        except:
+            raise Http404
+
         if self.request.user.is_staff is False:
             if sudoku.is_published() is False:
                 raise Http404
