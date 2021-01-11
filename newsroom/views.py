@@ -87,10 +87,10 @@ class HomePage(ArticleList):
 
     def get(self, request, *args, **kwargs):
     # Add messages here. E.g.
-        messages.add_message(request, messages.INFO,
-                             "We're only publishing urgent "
-                             "news until 11 January. Have a "
-                             "safe holiday season.")
+    #    messages.add_message(request, messages.INFO,
+    #                         "We're only publishing urgent "
+    #                         "news until 11 January. Have a "
+    #                         "safe holiday season.")
         request = super(HomePage, self).get(request, args, kwargs)
         return request
 
@@ -381,10 +381,10 @@ def article_preview(request, secret_link):
                    'form': None})
 
 def article_detail(request, slug):
-    messages.add_message(request, messages.INFO,
-                         "We're only publishing urgent "
-                         "news until 11 January. Have a "
-                         "safe holiday season.")
+    # messages.add_message(request, messages.INFO,
+    #                     "We're only publishing urgent "
+    #                     "news until 11 January. Have a "
+    #                     "safe holiday season.")
     if request.method == 'POST':
         return article_post(request, slug)
     else:  # GET
