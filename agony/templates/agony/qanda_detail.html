@@ -31,6 +31,9 @@
                 {% if object.full_question %}
                     <div class="qanda__full_question">
                         <p class="qanda__full_question_intro">The whole question</p>
+                        {% if object.salutation %}
+                            <p>{{object.salutation|safe}}</p>
+                        {% endif %}
                         {{object.full_question|safe}}
                     </div>
                 {% endif %}

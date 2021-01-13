@@ -11,7 +11,8 @@ class QandAAdmin(admin.ModelAdmin):
     list_filter = ['published', 'topics',]
     raw_id_fields = ('topics', )
     date_hierarchy = 'published'
-    search_fields = ['summary_question', 'summary_answer', 'sender_name', 'sender_email',]
+    search_fields = ['summary_question', 'summary_answer',
+                     'sender_name', 'sender_email',]
     ordering = ('-modified',)
     readonly_fields = ('created', 'modified', )
     autocomplete_lookup_fields = {
@@ -24,7 +25,7 @@ class QandAAdmin(admin.ModelAdmin):
                 ('sender_name', 'sender_email', ),
                 'original_question', 'answer_for_sender',
                 'summary_question', 'full_question',
-                'summary_answer', 'full_answer',
+                'summary_answer', 'full_answer', 'salutation',
                 ('notify_sender', 'sender_notified',),
                 'topics',
                 'published', 'recommended', 'notes',
