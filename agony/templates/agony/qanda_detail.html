@@ -32,7 +32,7 @@
                     <div class="qanda__full_question">
                         <p class="qanda__full_question_intro">The whole question</p>
                         {% if object.salutation %}
-                            <p>{{object.salutation|safe}}</p>
+                            <p>Dear {{object.salutation|safe}}</p>
                         {% endif %}
                         {{object.full_question|safe}}
                     </div>
@@ -40,7 +40,13 @@
                 {% if object.full_answer %}
                     <div class="qanda__full_answer">
                         <p class="qanda__full_answer_intro">The long answer</p>
-                        {{object.full_answer|safe}}</div>
+                        {{object.full_answer|safe}}
+                        {% if object.salutation %}
+                            <p>Wishing you the best,<br />
+                                {{ object.salutation }}
+                            </p>
+                        {% endif %}
+                    </div>
                 {% endif %}
                 <p class="qanda__date_published">Answered on {{object.published}}</p>
                 {% with topics_all=qanda.topics.all %}
