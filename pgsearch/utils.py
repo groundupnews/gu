@@ -127,7 +127,8 @@ def searchPhotos(search_string=None,
                 query = (query & \
                         (Q(suggested_caption__icontains=term) |
                          Q(alt__icontains=term) |
-                         Q(keywords__name=term)))
+                         Q(keywords__name=term) |
+                         Q(albums__name__icontains=term)))
 
     if author_pk:
         try:
@@ -148,8 +149,6 @@ def searchPhotos(search_string=None,
             query = query & Q(date_taken__lte=to_date)
         except:
             pass
-
-
     photos = Photograph.objects.filter(query).order_by("-date_taken").distinct()
 
     return photos
