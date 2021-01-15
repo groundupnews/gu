@@ -127,7 +127,7 @@ def searchPhotos(search_string=None,
                 query = (query & \
                         (Q(suggested_caption__icontains=term) |
                          Q(alt__icontains=term) |
-                         Q(keywords__name=term) |
+                         Q(keywords__name__icontains=term) |
                          Q(albums__name__icontains=term)))
 
     if author_pk:
