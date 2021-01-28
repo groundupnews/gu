@@ -329,3 +329,8 @@ h2#qanda {
         padding-top: 1%;
     }
 }
+
+#sudoku-teaser table {
+    height: 200px;
+    width: 200px;
+}
