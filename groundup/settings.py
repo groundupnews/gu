@@ -304,7 +304,17 @@ NEWSROOM_ARTICLE_COPYRIGHT = '<p>&copy; ' + str(datetime.date.today().year) + \
                              'GroundUp, and do not change the text. ' \
                              'Please include a link back to the original ' \
                              'article.' \
-                             '</p>'
+                             '</p>' \
+                             '<p>We put an invisible pixel in the article so ' \
+                             'that we can count traffic to republishers. ' \
+                             'All analytics tools are solely on our servers. ' \
+                             'We do not give our logs to any third party. ' \
+                             'Logs are deleted after two weeks. We do not ' \
+                             'use any IP address identifying information ' \
+                             'except to count regional traffic. ' \
+                             'We are solely interested in counting hits, ' \
+                             '<b>not tracking</b> users. If you republish, ' \
+                             'please do not delete the invisible pixel.</p>'
 
 
 NEWSROOM_SUPPORT_US_IMAGES = [

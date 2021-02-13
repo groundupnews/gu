@@ -82,21 +82,24 @@
     {% if article.main_topic %}
         {% include "newsroom/read_similar.html" %}
     {% endif %}
+    {% comment %}
     <div id="support_gu">
         <p>
             <span class="support_gu_why">GroundUp is being <a href="/article/lottery-coo-sues-groundup-r600k/">sued</a> after we
                 <a href="/topic/lotto/">exposed</a>  dodgy Lottery deals involving millions of rands. Please help fund our defence.</span> You can support us via <a href="https://www.givengain.com/cause/3569/campaigns/11273/donate/#start">Givengain</a>, <a href="https://pos.snapscan.io/qr/STB24E42">Snapscan</a>, <a href="/donate/">EFT</a>, <a href="/donate/#paypal">PayPal</a> or <a href="/donate/#payfast">PayFast</a>.
         </p>
     </div>
-    <div class="article__copyright" id="article-copyright">
-        {{article.copyright|safe}}
-    </div>
+    {% endcomment %}
     <div class="article__details__share">
         {% include "newsroom/sharebuttons.html" %}
     </div>
     {% include 'newsroom/article_topics.html' %}
     {% include 'newsroom/article_next_article.html' %}
     {% include 'newsroom/article_letters.html' %}
+    <div class="article__copyright" id="article-copyright">
+        {{article.copyright|safe}}
+    </div>
+
 </div>
 
 <div class="col-xs-12 col-md-4 article__sidebar {% if article.undistracted_layout %}col-md-push-1 article__sidebar--undistracted {% endif %}">
