@@ -1,7 +1,5 @@
 {% load static %}
 
-{% include "newsroom/insert_pixel.js" %}
-
 function getPureArticle()
 {
     var pure_article = "<h1>" + $("#article_title").text() + "</h1>";
@@ -54,9 +52,6 @@ jQuery(document).ready(function ($) {
 	win.focus();
 	return false;
     });
-
-    /* Insert pixel to count hits */
-    insertPixel('article_body');
 
     {% if can_edit %}
 

@@ -660,6 +660,8 @@ class Article(models.Model):
             self.clean_typography(self.primary_image_caption)
         self.body = self.clean_typography(self.body)
         self.version = self.version + 1
+        if self.pk:
+            self.body = utils.insertPixel(self.body, self.pk, self.slug)
         super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

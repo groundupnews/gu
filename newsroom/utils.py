@@ -55,9 +55,12 @@ def replaceImgHeightWidthWithClass(soup):
         for tag in soup.find_all("img"):
             # This deals with CKEditor's image insertion
             if tag.has_attr("style"):
-                # Don't do anything if class is leave
+                # Don't do anything if class is leave or this is the counter
                 if tag.has_attr("class"):
                     if "leave" in tag["class"]:
+                        continue
+                if tag.has_attr("id"):
+                    if tag["id"] == "gu_counter":
                         continue
                 del tag["style"]
             # This deals with TinyMCE's image insertion
@@ -287,7 +290,6 @@ def get_edit_lock_msg(user):
               "somewhere safe (like a text editor). Then open this page again."
     return message
 
-
 # Used to generate random passwords. Source:
 # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
 
@@ -306,6 +308,37 @@ def get_first_image(html):
             return ""
     else:
         return ""
+
+def insertPixel(html, pk, slug):
+    # Not worth crashing for
+    soup = BeautifulSoup(html, "html.parser")
+    style = "height:1px; width:1px; visibility:none;"
+    img = soup.find('img', id='gu_counter')
+    if img is None:
+        paras = soup.find_all('p')
+        if len(paras) > 2:
+            url = 'https://republish.groundup.org.za/counter/hit/' + \
+                str(pk) +  '/' + slug
+            img = soup.new_tag('img',
+                               src=url,
+                               id="gu_counter",
+                               alt="",
+                               height="1",
+                               width="1",
+                               style=style)
+            img['class'] = 'leave'
+            paras[2].append(img)
+    else:
+        img['height'] = "1"
+        img["width"] = "1"
+        img["style"] = style
+        img['class'] = "leave"
+        img['alt'] = ""
+    html = str(soup)
+
+
+    return html
+
 
 def get_first_caption(html):
     soup = BeautifulSoup(html, "html.parser")
