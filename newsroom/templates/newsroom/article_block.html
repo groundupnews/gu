@@ -21,10 +21,14 @@
         {% endif %}
     {% endif %}
     <div class="article__details__date-by">
-        <time datetime='{{ article.published|date:"Y-m-d" }}'>
-            {{ article.published|date:"j F Y"}} &nbsp;
-        </time>
-        {{ article.cached_byline|safe }}
+        {% if article.published %}
+            <time datetime='{{ article.published|date:"c" }}'>
+                {{ article.published|date:"j F Y"}}
+            </time>
+        {% else %}
+            Unpublished
+        {% endif %}
+        | {{ article.cached_byline|safe }}
         <span class="article__info">
             <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">{{article.category|title}}</a>{% if display_region %} | <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">{{display_region|title}}</a>
     </span>

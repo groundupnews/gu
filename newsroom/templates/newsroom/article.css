@@ -9,17 +9,16 @@
     font-family: 'Roboto Slab', serif;
     font-size: 3.4rem;
     line-height: 41px;
-    /* margin-top: 0px;*/
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     color: #000;
 }
 
 .article__subtitle {
     font-family: 'Open Sans', sans-serif;
     font-size: 2rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
     line-height: 28px;
-    margin-top: 25px;
-    margin-bottom: 25px;
 }
 
 .article__info {
@@ -398,13 +397,13 @@ article figure, article p.caption {
         margin-bottom: 15px;
     }
 
-    .article__subtitle {
+/*    .article__subtitle {
         font-size: 1.5rem;
         line-height: 28px;
         margin-top: 15px;
         margin-bottom: 15px;
     }
-
+*/
     .article__image__box {
         margin-bottom: 15px;
     }
