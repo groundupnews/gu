@@ -64,6 +64,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'author', 'status', 'invoice_num',)
     inlines = [CommissionInline,]
 
+admin.site.register(models.RateCard)
 admin.site.register(models.Fund)
 admin.site.register(models.Commission, CommissionAdmin)
 admin.site.register(models.Invoice, InvoiceAdmin)

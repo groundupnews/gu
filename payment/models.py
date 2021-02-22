@@ -100,6 +100,62 @@ def set_corresponding_vals(fromobj, to):
     to.vat = fromobj.vat
     to.level = fromobj.level
 
+class RateCard(models.Model):
+    date_from = models.DateTimeField()
+    primary_photo = models.FloatField(default=0.0)
+    inside_photo = models.FloatField(default=0.0)
+    opinion = models.FloatField(default=0.0)
+    brief = models.FloatField(default=0.0)
+    law = models.FloatField(default=0.0)
+    news = models.FloatField(default=0.0)
+    video = models.FloatField(default=0.0)
+    science = models.FloatField(default=0.0)
+    simple_feature = models.FloatField(default=0.0)
+    complex_feature = models.FloatField(default=0.0)
+    bonus = models.FloatField(default=0.0)
+    bonus_article = models.PositiveSmallIntegerField(default=4)
+    level_intern = models.FloatField(default=0.5)
+    level_standard = models.FloatField(default=1.0)
+    level_senior = models.FloatField(default=1.35)
+    level_experienced = models.FloatField(default=1.7)
+    level_exceptional = models.FloatField(default=2.2)
+
+    def __str__(self):
+        return str(self.date_from)
+
+    @staticmethod
+    def get_current_record():
+        try:
+            return RateCard.objects.filter(date_from__lte=timezone.now()).\
+                latest('date_from')
+        except:
+            return None
+
+    @staticmethod
+    def populate_rates():
+        ratecard = RateCard.get_current_record()
+        if ratecard:
+            RATES['primary_photo'] = ratecard.primary_photo
+            RATES['inside_photo'] = ratecard.inside_photo
+            RATES['opinion'] = ratecard.opinion
+            RATES['brief'] = ratecard.brief
+            RATES['law'] = ratecard.law
+            RATES['news'] = ratecard.news
+            RATES['video'] = ratecard.video
+            RATES['science'] = ratecard.science
+            RATES['simple_feature'] = ratecard.simple_feature
+            RATES['complex_feature'] = ratecard.complex_feature
+
+            BONUSES = ratecard.bonus_article * [0] + 50 * [ratecard.bonus]
+            LEVELS['intern'] =  ratecard.level_intern
+            LEVELS['standard'] = ratecard.level_standard
+            LEVELS['senior'] = ratecard.level_senior
+            LEVELS['experienced'] = ratecard.level_experienced
+            LEVELS['exceptional'] = ratecard.level_exceptional
+
+    class Meta:
+        ordering = ["-date_from", ]
+
 
 class Invoice(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -328,6 +384,7 @@ class Commission(models.Model):
             return 0.00
 
     def estimate_payment_st(self, estimate):
+        RateCard.populate_rates()
         try:
             experience = LEVELS[self.invoice.author.level]
         except:
@@ -384,7 +441,9 @@ class Commission(models.Model):
 
         estimate['primary_photo'] = primary_photo
 
-        num_images = self.article.body.count("<img ") - inside_primary_image
+        num_images = self.article.body.count("<img ") - inside_primary_image - \
+            self.article.body.count('id="gu_counter"') - \
+            self.article.body.count("id='gu_counter'")
         estimate['inside_photos'] = num_images * RATES["inside_photo"]
         estimate['bonus'] = self.estimate_bonus()
 
