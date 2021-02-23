@@ -181,7 +181,8 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                                                      'taxable',
                                                      'vatable',
                                                      'fund',
-                                                     'deleted',),
+                                                     'deleted',
+                                                     'split', ),
                                              extra=0)
     invoice = get_object_or_404(models.Invoice, author__pk=author_pk,
                                 invoice_num=invoice_num)

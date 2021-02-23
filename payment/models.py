@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Max
 from django.utils import timezone
 from django.utils.timezone import make_aware
+from django.db import transaction
 
 from filebrowser.fields import FileBrowseField
 from newsroom.models import Article, Author, LEVEL_CHOICES
@@ -273,20 +274,35 @@ class Invoice(models.Model):
     def short_string(self):
         return str(self.author.pk) + "-" + str(self.invoice_num)
 
+    def process_splits(self):
+        commissions = self.commission_set.filter(split=True)
+        if len(commissions) > 0:
+            new_invoice = Invoice.create_invoice(self.author)
+            for commission in commissions:
+                commission.split = False
+                commission.invoice = new_invoice
+                commission.save()
+
     def save(self, *args, **kwargs):
-        if self.status == "2":  # Reporter has approved
-            if self.date_time_reporter_approved is None:
-                self.date_time_reporter_approved = timezone.now()
-        if self.status == "3":  # Editor has approved
-            if self.date_time_editor_approved is None:
-                self.date_time_editor_approved = timezone.now()
-        if self.status == "4":  # Invoice has been paid
-            if self.date_time_processed is None:
-                self.date_time_processed = timezone.now()
-        self.calc_payment()
-        super(Invoice, self).save(*args, **kwargs)
-        set_corresponding_vals(self, self.author)
-        self.author.save()
+        try:
+            with transaction.atomic():
+                if self.status == "2":  # Reporter has approved
+                    if self.date_time_reporter_approved is None:
+                        self.date_time_reporter_approved = timezone.now()
+                if self.status == "3":  # Editor has approved
+                    if self.date_time_editor_approved is None:
+                        self.date_time_editor_approved = timezone.now()
+                if self.status == "4":  # Invoice has been paid
+                    if self.date_time_processed is None:
+                        self.date_time_processed = timezone.now()
+                self.calc_payment()
+                super(Invoice, self).save(*args, **kwargs)
+                set_corresponding_vals(self, self.author)
+                self.author.save()
+                self.process_splits()
+        except Exception as e:
+            print("Problem saving Invoice: ", str(e))
+            logger.error("Error saving invoice: " + str(e))
 
     @staticmethod
     def create_invoice(author):
@@ -353,6 +369,8 @@ class Commission(models.Model):
     taxable = models.BooleanField(default=True)
     vatable = models.BooleanField(default=True)
     deleted = models.BooleanField(default=False)
+    split = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 

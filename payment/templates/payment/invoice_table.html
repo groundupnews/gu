@@ -10,6 +10,7 @@
         {% if staff_view %}<th>Fund</th>{% endif %}
         {% if can_edit_commissions and staff_view %}
             <th>&#x232B;</th>
+            <th>&#9986;</th>
             <th>&#x1F58B;</th>
         {% endif %}
     </tr>
@@ -135,9 +136,10 @@
                             {{form.deleted}}
                         </td>
                         <td>
-                            <a href="
-                                     {% url 'payments:commissions.detail' commission.pk %}
-                                     "
+                            {{form.split}}
+                        </td>
+                        <td>
+                            <a href="{% url 'payments:commissions.detail' commission.pk %}"
                                target="_blank">&#x1F58B;</a>
                         </td>
                     {% endif %}
