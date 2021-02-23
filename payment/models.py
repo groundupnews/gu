@@ -301,8 +301,10 @@ class Invoice(models.Model):
                 self.author.save()
                 self.process_splits()
         except Exception as e:
-            print("Problem saving Invoice: ", str(e))
-            logger.error("Error saving invoice: " + str(e))
+            msg = "Error saving invoice: " + str(e)
+            messages.add_message(request, messages.ERROR, msg)
+            print(msg)
+            logger.error(msg)
 
     @staticmethod
     def create_invoice(author):

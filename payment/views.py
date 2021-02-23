@@ -233,6 +233,8 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                 if commissionformset.is_valid():
                     commissionformset.save()
                     invoice.save()
+                    messages.add_message(request, messages.INFO,
+                                         "Commissions updated")
                 else:
                     messages.add_message(request, messages.ERROR,
                                          "Please correct the commissions")
@@ -263,10 +265,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         commissions = models.Commission.objects.for_authors().filter(invoice=invoice)
 
     if formset:
-        if request.method != "POST":
-            commissionformset = zip(commissions, formset)
-        else:
-            commissionformset = zip(commissions, commissionformset)
+        commissionformset = zip(commissions, formset)
     else:
         commissionformset = zip(commissions, range(len(commissions)))
 
