@@ -277,10 +277,14 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         if invoice.status == "0" or invoice.status == "1":
             can_edit = True
 
-
+    if invoice.author.freelancer == "c":
+        description = "commission reconciliation"
+    else:
+        description = "invoice"
 
     return render(request, "payment/invoice_detail.html",
                   {'invoice': invoice,
+                   'description': description,
                    'commissionformset': commissionformset,
                    'staff_view': staff_view,
                    'form': form,

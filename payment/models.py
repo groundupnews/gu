@@ -427,19 +427,18 @@ class Commission(models.Model):
 
         estimate['shared'] = shared
 
-        if self.article.category.name == "Brief":
-            article = RATES["brief"]
-        elif self.article.category.name == "Feature":
+        category_name = self.article.category.name.lower()
+        if category_name in RATES:
+            article = RATES[category_name]
+        else:
+            article = RATES["news"]
+
+
+        if category_name == "feature":
             if len(self.article.body.split(" ")) > 850:
                 article = RATES["complex_feature"]
             else:
                 article = RATES["simple_feature"]
-        elif self.article.category.name == "Opinion":
-            article = RATES["opinion"]
-        elif self.article.category.name == "Video":
-            article = RATES["video"]
-        else:
-            article = RATES["news"]
 
         estimate['article'] = article
 

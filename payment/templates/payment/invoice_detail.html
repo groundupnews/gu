@@ -1,7 +1,7 @@
 {% extends "base_20161106.html" %}
 
 {% block title %}
-    Invoice {{block.super}}
+    {{description|title}} {{block.super}}
 {% endblock %}
 
 
@@ -58,26 +58,26 @@
 
 
 {% block content %}
-    <h1>Invoice #{{invoice.short_string}} for
+    <h1>{{description|title}} #{{invoice.short_string}} for
         <a href="{% url "payments:invoice.list" 1900 1 5000 12 invoice.author.pk %}">
             {{invoice.author}}
         </a>
     </h1>
     <h2>
         {% if invoice.status == "-" %}
-            This invoice is being prepared by the editor
+            This {{description}} is being prepared by the editor
         {% elif invoice.status == "0" %}
-            {{invoice.author}} needs to approve this invoice
+            {{invoice.author}} needs to approve this {{description}}
         {% elif invoice.status == "1" %}
-            {{invoice.author}} has queried this invoice
+            {{invoice.author}} has queried this {{description}}
         {% elif invoice.status == "2" %}
-            {{invoice.author}} has approved this invoice
+            {{invoice.author}} has approved this {{description}}
         {% elif invoice.status == "3" %}
-            The editors have approved this invoice for payment
+            The editors have approved this {{description}} for payment
         {% elif invoice.status == "4" %}
             Paid on {{invoice.date_time_processed|date:"j M Y"}}
         {% elif invoice.status == "5" %}
-            This invoice has been marked for deletion.
+            This {{description}} has been marked for deletion.
         {% endif %}
     </h2>
     <form
