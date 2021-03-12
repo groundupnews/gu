@@ -34,3 +34,5 @@ csscompressor
 django-compressor
 django-allauth-2fa
 clfparser
+pdfkit
+

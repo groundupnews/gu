@@ -1,0 +1,285 @@
+{% load static %}
+{% load humanize %}
+{% with invoice.calc_payment as payment %}
+
+    <!doctype html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+
+            <title>Cheque requisition {{invoice.requisition_num}}</title>
+            <meta name="description" content="Cheque Requisition">
+            <meta name="author" content="{{request.user}}">
+
+            <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+            <title>
+                CR_{{invoice.requisition_num}}_{{invoice.date_time_processed|date:"Ymd"}}_{{invoice.author}}
+            </title>
+            <style>
+             body {
+                 width: 850px;
+                 margin: auto;
+             }
+             table {
+                 margin-bottom: 16px;
+             }
+
+             #top td, #commissions th {
+                 text-align: left;
+                 padding: 8px;
+             }
+
+             table {
+                 border-collapse: collapse;
+             }
+             #commissions td, #commissions th {
+                 border: 1px solid black;
+                 text-align: left;
+                 padding: 8px;
+             }
+
+             #bottom td, #commissions th {
+                 text-align: left;
+                 padding: 8px;
+             }
+
+             .unused {
+                 background-color: lightgray;
+             }
+            </style>
+        </head>
+
+        <body>
+            <p style="font-size:12px; text-align: center;">
+                <img width="200"
+                     src="{% static "newsroom/images/LogoFiles/Logos20180905/MasterLogo.png" %}"
+                     alt="GroundUp Logo" /><br />
+                tel: +27 21 788 9163 fax: +27 21 7883973<br />
+                email: info@groundup.org.za, web: www.groundup.org.za
+            </p>
+
+            <h1>
+                Payment requisition {{invoice.requisition_number}}
+            </h1>
+
+            <p>{{invoice.date_time_processed|date:"j M Y"}}</p>
+
+            <table id="top">
+                <tr>
+                    <td>Funder</td>
+                    <td>{{invoice.fund.name}}</td>
+                </tr>
+                <tr>
+                    <td>Fund account</td>
+                    <td>{{invoice.fund.bank_account}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        GroundUp #
+                    </td>
+                    <td>
+                        {{invoice.short_string}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Payment method
+                    </td>
+                    <td>
+                        {{invoice.payment_method}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total payment
+                    </td>
+                    <td>
+                        R {{invoice.amount_paid|intcomma}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Description
+                    </td>
+                    <td>
+                        {{invoice.description}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Pay to
+                    </td>
+                    <td>
+                        {% if invoice.invoicing_company %}
+                            {{invoice.invoicing_company}} ({{invoice.author}})
+                        {% else %}
+                            {{invoice.author}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Bank name
+                    </td>
+                    <td>
+                        {{invoice.bank_name}}
+                    </td>
+                </tr>
+                {% if invoice.bank_branch_name or invoice.bank_branch_code %}
+                    <tr>
+                        <td>
+                            Branch
+                        </td>
+                        <td>
+                            {{invoice.bank_branch_name}} {{invoice.bank_branch_code}}
+                        </td>
+                    </tr>
+
+                {% endif %}
+                <tr>
+                    <td>
+                        Bank account
+                    </td>
+                    <td>
+                        {{invoice.bank_account_number}}
+                    </td>
+                </tr>
+            </table>
+
+            <table id="commissions">
+                <tr>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Inv no.
+                    </th>
+                    <th>
+                        Inv date
+                    </th>
+                    <th>
+                        Amount (excl)
+                    </th>
+                    <th>
+                        Pastel
+                    </th>
+                </tr>
+                {% for item in invoice.commission_set.all %}
+                    {% if item.commission_due > 0 %}
+                        <tr>
+                            <td>
+                                {{item.description}}
+                            </td>
+                            <td>
+                                {{item.pk}}
+                            </td>
+                            <td>
+                                {{item.date_generated|date:"j-M-Y"}}
+                            </td>
+                            <td style="text-align: right;">
+                                R {{item.commission_due|intcomma}}
+                            </td>
+                            <td>
+                                {{item.fund.name}}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+
+                <tr>
+                    <td>
+                        <b>Less PAYE @{{invoice.tax_percent}}%</b>
+                    </td>
+                    <td class="unused">
+                    </td>
+                    <td class="unused">
+                    </td>
+                    <td style="text-align: right;">
+                        R {{payment.2|floatformat:2|intcomma}}
+                    </td>
+                    <td class="unused">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>VAT @{{invoice.vat}}%</b>
+                    </td>
+                    <td class="unused">
+                    </td>
+                    <td class="unused">
+                    </td>
+                    <td style="text-align: right;">
+                        R {{payment.1|floatformat:2|intcomma}}
+                    </td>
+                    <td class="unused">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>TOTAL</b>
+                    </td>
+                    <td class="unused">
+                    </td>
+                    <td class="unused">
+                    </td>
+                    <td style="text-align: right;">
+                        <b>R {{invoice.amount_paid|floatformat:2|intcomma}}</b>
+                    </td>
+                    <td class="unused">
+                    </td>
+                </tr>
+            </table>
+
+            <table id="bottom">
+                <tr>
+                    <td>
+                        Vouchers attached
+                    </td>
+                    <td>
+                        {% if invoice.vouchers_attached %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Prepared by
+                    </td>
+                    <td>
+                        {{invoice.prepared_by}}
+                    </td>
+                    <td>
+                        Signature: _____________________
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Approved by
+                    </td>
+                    <td>
+                        {{invoice.approved_by}}
+                    </td>
+                    <td>
+                        Signature: _____________________
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Authorised by
+                    </td>
+                    <td>
+                        {{invoice.authorised_by}}
+                    </td>
+                    <td>
+                        Signature: _____________________
+                    </td>
+                </tr>
+            </table>
+
+        </body>
+    </html>
+{% endwith %}

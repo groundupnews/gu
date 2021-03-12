@@ -69,6 +69,10 @@ logger = logging.getLogger("groundup")
 
 class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
+    description = models.CharField(max_length=100, blank=True)
+    bank_account = models.CharField(max_length=20, blank=True)
+    ledger = models.BooleanField(default=False)
+    deprecated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name.upper()
@@ -77,6 +81,19 @@ class Fund(models.Model):
     def get_funds():
         funds = [(fund.pk, fund.name) for fund in Fund.objects.all()]
         return funds
+
+    @staticmethod
+    def get_ledger_funds():
+        funds = [(fund.pk, fund.name) for fund in Fund.objects.
+                 filter(ledger=True).filter(deprecated=False)]
+        return funds
+
+    @staticmethod
+    def get_account_funds():
+        funds = [(fund.pk, fund.name) for fund in Fund.objects.
+                 filter(ledger=False).filter(deprecated=False)]
+        return funds
+
 
     class Meta:
         ordering = ['name', ]
@@ -167,6 +184,9 @@ class Invoice(models.Model):
                                       "of official identification")
     dob = models.DateField(blank=True, null=True, verbose_name="date of birth",
                            help_text="Required by SARS")
+    invoicing_company = models.CharField(
+        blank=True, max_length=100,
+        help_text="Leave blank unless you invoice through a company")
     address = models.TextField(blank=True,
                                help_text="Required by SARS")
     bank_name = models.CharField(max_length=20, blank=True)
@@ -184,6 +204,7 @@ class Invoice(models.Model):
                                         verbose_name="branch code",
                                         help_text="Unnecessary for Capitec, "
                                         "FNB, Standard, Nedbank and Absa")
+
     swift_code = models.CharField(max_length=12, blank=True,
                                   help_text="Only relevant for banks "
                                   "outside SA")
@@ -232,8 +253,18 @@ class Invoice(models.Model):
                                                editable=False)
     date_notified_payment = models.DateTimeField(null=True, blank=True,
                                                  editable=False)
-    our_reference = models.CharField(max_length=20, blank=True)
-    their_reference = models.CharField(max_length=20, blank=True)
+
+    # Requisition print fields
+    requisition_number = models.CharField(blank=True, max_length=12)
+    payment_method = models.CharField(blank=True, default="EFT", max_length=12)
+    description = models.CharField(blank=True, max_length=20)
+    fund = models.ForeignKey(Fund, blank=True, null=True,
+                             on_delete=models.CASCADE)
+    vouchers_attached = models.BooleanField(default=True)
+    prepared_by = models.CharField(max_length=100, blank=True)
+    approved_by = models.CharField(max_length=100, blank=True)
+    authorised_by = models.CharField(max_length=100, blank=True)
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
@@ -358,8 +389,9 @@ class Commission(models.Model):
                                    choices=COMMISSION_DESCRIPTION_CHOICES)
     notes = models.CharField(max_length=200, blank=True)
     fund = models.ForeignKey(Fund, blank=True, null=True,
+                             verbose_name="ledger",
                              on_delete=models.CASCADE,
-                             help_text="Selecting a fund "
+                             help_text="Selecting a Pastel ledger account "
                              "approves the commission")
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)

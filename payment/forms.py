@@ -16,15 +16,19 @@ class InvoiceStaffForm(ModelForm):
     address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
                               required=False,
                               help_text="Required by SARS")
+    fund = forms.ModelChoiceField(queryset=Fund.objects.filter(ledger=False).
+                                filter(deprecated=False),
+                                required=False)
 
     class Meta:
         model = Invoice
         fields = ['identification', 'dob', 'address',
-                   'bank_name', 'bank_account_number',
-                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
-                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-                   'level', 'query',
-        ]
+                  'bank_name', 'bank_account_number',
+                  'bank_account_type', 'bank_branch_name', 'bank_branch_code',
+                  'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
+                  'level', 'query', 'requisition_number', 'payment_method',
+                  'description', 'fund', 'vouchers_attached',
+                  'prepared_by', 'approved_by', 'authorised_by', ]
 
 class InvoiceForm(InvoiceStaffForm):
     identification = forms.CharField(max_length=20, required=True,
@@ -67,6 +71,9 @@ class CommissionForm(ModelForm):
                                      help_text=None, label="Payee")
     article = AutoCompleteSelectField('articles', required=False,
                                       help_text=None)
+    fund = forms.ModelChoiceField(
+        queryset=Fund.objects.filter(ledger=True).filter(deprecated=False),
+        label='Ledger', required=False)
 
     def clean_author(self):
         data = self.cleaned_data['author']
@@ -81,6 +88,9 @@ class CommissionForm(ModelForm):
 
 
 class CommissionFormset(ModelForm):
+    fund = forms.ModelChoiceField(
+        queryset=Fund.objects.filter(ledger=True).filter(deprecated=False),
+        label='Ledger', required=False)
 
     def clean_fund(self):
         fund = self.cleaned_data['fund']
@@ -88,7 +98,7 @@ class CommissionFormset(ModelForm):
             due = self.cleaned_data['commission_due']
         else:
             due = None
-        if due and due != 0.0 and  fund is None:
+        if due and due != 0.0 and fund is None:
             raise forms.ValidationError("Please select a fund")
         return fund
 

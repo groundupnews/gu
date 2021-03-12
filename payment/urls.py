@@ -18,6 +18,9 @@ urlpatterns = [
     url(r'^invoices/print/([0-9]+)-([0-9]+)$', views.invoice_print,
         name="invoice.print"),
 
+    url(r'^invoices_pdf/([0-9]+)$', views.invoice_pdf,
+        name="invoice.pdf"),
+
     url(r'^commissions/([0-9]+)$', views.commission_detail,
         name="commissions.detail"),
 
@@ -26,5 +29,6 @@ urlpatterns = [
 
     url(r'^commissions/analysis$', views.commission_analysis,
         name="commissions.detail.analysis"),
+
 
 ]

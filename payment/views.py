@@ -1,4 +1,6 @@
 import calendar
+import pdfkit
+import os
 from decimal import Decimal
 from dateutil import relativedelta
 from django.contrib import messages
@@ -9,6 +11,7 @@ from django.db.models import F, Q, Sum
 from django.forms import modelformset_factory
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.timezone import make_aware
 
@@ -409,3 +412,21 @@ def commission_analysis(request, pk=None):
                    'total_paye': total_paye,
                    'total_vat': total_vat,
                    'total_due': total_due})
+
+@login_required
+def invoice_pdf(request, pk):
+    if not request.user.has_perm("payment.change_commission"):
+        raise Http404
+    invoice = models.Invoice.objects.get(pk=pk)
+    html = render_to_string("payment/invoice_pdf.html",
+                            {'invoice': invoice,}, request)
+    options = {
+        # 'page-size': 'A4',
+        'enable-local-file-access': '',
+        'load-error-handling': 'ignore'
+    }
+    filename = "/home/ngeffen/Desktop/sample_pdf.pdf"
+    pdf = pdfkit.from_string(html, filename, options=options)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
+    return response

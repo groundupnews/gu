@@ -64,7 +64,17 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'author', 'status', 'invoice_num',)
     inlines = [CommissionInline,]
 
+class FundAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name', 'description', 'bank_account', 'ledger',
+                    'deprecated')
+    list_editable = ('name', 'description', 'bank_account', 'ledger',
+                    'deprecated')
+    search_fields = ('name', 'description',)
+    list_filter = ('deprecated', 'ledger',)
+    ordering = ['name']
+
+
 admin.site.register(models.RateCard)
-admin.site.register(models.Fund)
+admin.site.register(models.Fund, FundAdmin)
 admin.site.register(models.Commission, CommissionAdmin)
 admin.site.register(models.Invoice, InvoiceAdmin)
