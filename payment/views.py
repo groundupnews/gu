@@ -421,11 +421,11 @@ def invoice_pdf(request, pk):
     html = render_to_string("payment/invoice_pdf.html",
                             {'invoice': invoice,}, request)
     options = {
-        # 'page-size': 'A4',
-        'enable-local-file-access': '',
-        'load-error-handling': 'ignore'
+        'page-size': 'A4',
+        # 'enable-local-file-access': '',
+        # 'load-error-handling': 'ignore'
     }
-    filename = "/home/ngeffen/Desktop/sample_pdf.pdf"
+    filename = "sample_pdf.pdf"
     pdf = pdfkit.from_string(html, filename, options=options)
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
