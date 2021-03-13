@@ -32,6 +32,9 @@
      .errorlist li {
          color: red;
      }
+     .merge-hide {
+         display: none;
+     }
     </style>
 {% endblock %}
 
@@ -130,6 +133,12 @@
                                            value="Update details" />
                                     &nbsp;
                                     <input type="submit"
+                                           id="merge_button"
+                                           name="merge_button"
+                                           class="merge-hide btn btn-info"
+                                           value="Merge invoices" />
+                                    &nbsp;
+                                    <input type="submit"
                                            name="delete_button"
                                            class="btn btn-danger"
                                            value="Delete" />
@@ -140,48 +149,48 @@
                                 </p>
                             {% endif %}
                             <p>
-                            {% if not staff_view %}
-                                <input type="submit"
-                                       name="query_button"
-                                       class="btn btn-warning"
-                                       value="Query invoice" />
-                                &nbsp;
-                                <input type="submit"
-                                       name="pay_button"
-                                       class="btn btn-primary"
-                                       value="Please pay invoice" />
-                            {% else %}
-                                {% if can_edit_commissions %}
+                                {% if not staff_view %}
                                     <input type="submit"
-                                           name="begin_button"
-                                           class="btn"
-                                           value="Begin" />
+                                           name="query_button"
+                                           class="btn btn-warning"
+                                           value="Query invoice" />
                                     &nbsp;
                                     <input type="submit"
-                                           name="return_button"
+                                           name="pay_button"
+                                           class="btn btn-primary"
+                                           value="Please pay invoice" />
+                                {% else %}
+                                    {% if can_edit_commissions %}
+                                        <input type="submit"
+                                               name="begin_button"
+                                               class="btn"
+                                               value="Begin" />
+                                        &nbsp;
+                                        <input type="submit"
+                                               name="return_button"
+                                               class="btn
+                                                     {% if invoice.status == "-" or invoice.status == "1" %}
+                                                     btn-primary
+                                                     {% endif %}"
+                                               value="Author" />
+                                        &nbsp;
+                                        <input type="submit"
+                                               name="approve_button"
+                                               class="btn
+                                                     {% if invoice.status == "2" %}
+                                                     btn-primary
+                                                     {% endif %}"
+                                               value="Approve" />
+                                        &nbsp;
+                                    {% endif %}
+                                    <input type="submit"
+                                           name="paid_button"
                                            class="btn
-                                                 {% if invoice.status == "-" or invoice.status == "1" %}
+                                                 {% if invoice.status == "3" %}
                                                  btn-primary
-                                                 {% endif %}"
-                                           value="Author" />
-                                    &nbsp;
-                                    <input type="submit"
-                                           name="approve_button"
-                                           class="btn
-                                                 {% if invoice.status == "2" %}
-                                                 btn-primary
-                                                 {% endif %}"
-                                           value="Approve" />
-                                    &nbsp;
+                                                 {% endif %}""
+                                           value="Paid" />
                                 {% endif %}
-                                <input type="submit"
-                                       name="paid_button"
-                                       class="btn
-                                             {% if invoice.status == "3" %}
-                                             btn-primary
-                                             {% endif %}""
-                                       value="Paid" />
-                            {% endif %}
                             </p>
                         {% endif %}
                     </div>
@@ -204,5 +213,25 @@
     {% if print_view %}
     {% else %}
         {{block.super}}
+        {% if staff_view %}
+            {% if can_edit %}
+                <script>
+                 let merge_box = document.getElementById("id_merge");
+                 if (merge_box.options.length < 2) {
+                     merge_box.style.display = "none";
+                     merge_box.labels[0].style.display = "none";
+                 } else {
+                     merge_box.onchange = function() {
+                         merge_btn = document.getElementById("merge_button");
+                         if (this.value) {
+                             merge_btn.classList.remove('merge-hide');
+                         } else {
+                             merge_btn.classList.add('merge-hide');
+                         }
+                     };
+                 }
+                </script>
+            {% endif %}
+        {% endif %}
     {% endif %}
 {% endblock %}

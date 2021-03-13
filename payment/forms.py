@@ -19,6 +19,8 @@ class InvoiceStaffForm(ModelForm):
     fund = forms.ModelChoiceField(queryset=Fund.objects.filter(ledger=False).
                                 filter(deprecated=False),
                                 required=False)
+    merge = forms.ChoiceField(required=False)
+
 
     class Meta:
         model = Invoice
@@ -28,7 +30,7 @@ class InvoiceStaffForm(ModelForm):
                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
                   'level', 'query', 'requisition_number', 'payment_method',
                   'description', 'fund', 'vouchers_attached',
-                  'prepared_by', 'approved_by', 'authorised_by', ]
+                  'prepared_by', 'approved_by', 'authorised_by', 'merge',]
 
 class InvoiceForm(InvoiceStaffForm):
     identification = forms.CharField(max_length=20, required=True,

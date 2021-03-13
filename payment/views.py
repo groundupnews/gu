@@ -160,6 +160,13 @@ def invoice_list(request,
                    'author_pk': author_pk,
                    'staff_view': staff_view})
 
+def get_merge_choices(form, invoice):
+    merge_invoices = models.Invoice.objects.filter(author=invoice.author).\
+        exclude(pk=invoice.pk).filter(status__lt='4')
+    choices = [(None, '----')] + [(str(i.pk), str(i))
+                                  for i in merge_invoices]
+    form.fields['merge'].choices = choices
+
 @login_required
 def invoice_detail(request, author_pk, invoice_num, print_view=False):
     user = request.user
@@ -193,6 +200,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
     if request.method == 'POST':
         if staff_view:
             form = forms.InvoiceStaffForm(request.POST, instance=invoice)
+            get_merge_choices(form, invoice)
         else:
             form = forms.InvoiceForm(request.POST, instance=invoice)
 
@@ -226,6 +234,17 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                 invoice.status = "5"
                 messages.add_message(request, messages.INFO,
                                      "Status changed to DELETED")
+            elif "merge_button" in request.POST and invoice.status < "4":
+                if form.cleaned_data['merge'] is not None:
+                    merge_pk = int(form.cleaned_data['merge'])
+                    from_invoice = models.Invoice.objects.get(pk=merge_pk)
+                    models.Invoice.merge_invoices(from_invoice=from_invoice,
+                                                   to_invoice=invoice)
+                    get_merge_choices(form, invoice)
+                    form.cleaned_data['merge'] = None
+                    messages.add_message(request, messages.INFO,
+                                         "Invoice merged with " +
+                                         str(from_invoice))
             elif form.has_changed():
                 messages.add_message(request, messages.INFO,
                                      "Details updated")
@@ -251,6 +270,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         if staff_view:
             form = forms.InvoiceStaffForm(request.POST or None,
                                           instance=invoice)
+            get_merge_choices(form, invoice)
         else:
             if invoice.status == "-" or invoice.status == "5":
                 raise Http404

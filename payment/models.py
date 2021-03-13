@@ -365,6 +365,14 @@ class Invoice(models.Model):
                 invoice.save()
         return invoice
 
+    @staticmethod
+    def merge_invoices(from_invoice, to_invoice):
+        for commission in from_invoice.commission_set.all():
+            commission.invoice = to_invoice
+            commission.save()
+            from_invoice.status = "5"
+        from_invoice.save()
+
     class Meta:
         ordering = ['status', '-modified', ]
         unique_together = ['author', 'invoice_num', ]
