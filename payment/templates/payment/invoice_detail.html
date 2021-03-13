@@ -133,8 +133,10 @@
                                            name="delete_button"
                                            class="btn btn-danger"
                                            value="Delete" />
-                                    &nbsp;
-                                    <a href="{% url "payments:invoice.pdf" invoice.pk %}">PDF</a>
+                                    {% if invoice.status >= "3" and invoice.requisition_number != "" and invoice.fund %}
+                                        &nbsp;
+                                        <a href="{% url "payments:invoice.pdf" invoice.pk %}">Requisition</a>
+                                    {% endif %}
                                 </p>
                             {% endif %}
                             <p>

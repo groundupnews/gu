@@ -11,10 +11,8 @@
             <meta name="description" content="Cheque Requisition">
             <meta name="author" content="{{request.user}}">
 
-            <link rel="stylesheet" href="css/styles.css?v=1.0">
-
             <title>
-                CR_{{invoice.requisition_num}}_{{invoice.date_time_processed|date:"Ymd"}}_{{invoice.author}}
+                CR_{{invoice.requisition_number}}_{{invoice.date_time_processed|date:"Ymd"}}_{{invoice.author}}
             </title>
             <style>
              body {
@@ -53,17 +51,19 @@
         <body>
             <p style="font-size:12px; text-align: center;">
                 <img width="200"
-                     src="{% static "newsroom/images/LogoFiles/Logos20180905/MasterLogo.png" %}"
+                     src="https://www.groundup.org.za/static/newsroom/images/LogoFiles/Logos20180905/MasterLogo.png"
                      alt="GroundUp Logo" /><br />
                 tel: +27 21 788 9163 fax: +27 21 7883973<br />
                 email: info@groundup.org.za, web: www.groundup.org.za
             </p>
 
-            <h1>
+            <h1 style="text-align:center;">
                 Payment requisition {{invoice.requisition_number}}
             </h1>
 
-            <p>{{invoice.date_time_processed|date:"j M Y"}}</p>
+            <p style="text-align:center;">
+               {{invoice.date_time_processed|date:"j M Y"}}
+               </p>
 
             <table id="top">
                 <tr>
@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <td>
-                        GroundUp #
+                        GroundUp
                     </td>
                     <td>
                         {{invoice.short_string}}
@@ -154,7 +154,7 @@
                         Description
                     </th>
                     <th>
-                        Inv no.
+                        GroundUp #
                     </th>
                     <th>
                         Inv date

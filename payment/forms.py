@@ -89,7 +89,8 @@ class CommissionForm(ModelForm):
 
 class CommissionFormset(ModelForm):
     fund = forms.ModelChoiceField(
-        queryset=Fund.objects.filter(ledger=True).filter(deprecated=False),
+        # queryset=Fund.objects.filter(ledger=True).filter(deprecated=False),
+        queryset=Fund.objects.filter(deprecated=False),
         label='Ledger', required=False)
 
     def clean_fund(self):

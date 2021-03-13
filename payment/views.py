@@ -14,10 +14,11 @@ from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.timezone import make_aware
+from django.http import HttpResponse
 
 from newsroom.models import Author
 
-from . import forms, models
+from . import forms, models, settings
 
 
 '''There is business logic in this view that belongs in themodel.
@@ -420,13 +421,14 @@ def invoice_pdf(request, pk):
     invoice = models.Invoice.objects.get(pk=pk)
     html = render_to_string("payment/invoice_pdf.html",
                             {'invoice': invoice,}, request)
-    options = {
-        'page-size': 'A4',
-        # 'enable-local-file-access': '',
-        # 'load-error-handling': 'ignore'
-    }
-    filename = "sample_pdf.pdf"
-    pdf = pdfkit.from_string(html, filename, options=options)
-    response = HttpResponse(pdf, content_type='application/pdf')
+
+    filename = "-".join(["Requisition", invoice.requisition_number,
+                         str(invoice.author),
+                         str(invoice.date_time_processed.year),
+                         str(invoice.date_time_processed.month).zfill(2),
+                         str(invoice.date_time_processed.day).zfill(2),])
+    filename = filename.replace(" ", "-")
+    pdf = pdfkit.from_string(html, False, options=settings.PDF_OPTIONS)
+    response =  HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
     return response
