@@ -71,6 +71,8 @@ class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
     description = models.CharField(max_length=100, blank=True)
     bank_account = models.CharField(max_length=20, blank=True)
+    prefix = models.CharField(max_length=5, blank=True)
+    next_number = models.IntegerField(default=1)
     ledger = models.BooleanField(default=False)
     deprecated = models.BooleanField(default=False)
 
@@ -255,6 +257,7 @@ class Invoice(models.Model):
                                                  editable=False)
 
     # Requisition print fields
+    requisition = models.BooleanField(default=False)
     requisition_number = models.CharField(blank=True, max_length=12)
     payment_method = models.CharField(blank=True, default="EFT", max_length=12)
     description = models.CharField(blank=True, max_length=20)

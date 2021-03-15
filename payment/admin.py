@@ -65,9 +65,11 @@ class InvoiceAdmin(admin.ModelAdmin):
     inlines = [CommissionInline,]
 
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'description', 'bank_account', 'ledger',
+    list_display = ('pk', 'name', 'description', 'bank_account',
+                    'prefix', 'next_number', 'ledger',
                     'deprecated')
-    list_editable = ('name', 'description', 'bank_account', 'ledger',
+    list_editable = ('name', 'description', 'bank_account',
+                     'prefix', 'next_number', 'ledger',
                     'deprecated')
     search_fields = ('name', 'description',)
     list_filter = ('deprecated', 'ledger',)

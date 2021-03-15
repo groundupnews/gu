@@ -248,7 +248,18 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             elif form.has_changed():
                 messages.add_message(request, messages.INFO,
                                      "Details updated")
+
+            # Set the requisition number and update the counter stored in Fund
+            if staff_view and invoice.requisition and invoice.fund and \
+               form.cleaned_data['requisition_number'] == "":
+                requisition_number = invoice.fund.prefix + \
+                    str(invoice.fund.next_number)
+                invoice.requisition_number = requisition_number
+                invoice.fund.next_number = invoice.fund.next_number + 1
+                invoice.fund.save()
+
             invoice.save()
+
             if user.has_perm("payment.change_commission"):
                 commissionformset = CommissionFormSet(request.POST,
                                                       request.FILES)
@@ -442,11 +453,9 @@ def invoice_pdf(request, pk):
     html = render_to_string("payment/invoice_pdf.html",
                             {'invoice': invoice,}, request)
 
-    filename = "-".join(["Requisition", invoice.requisition_number,
-                         str(invoice.author),
-                         str(invoice.date_time_processed.year),
-                         str(invoice.date_time_processed.month).zfill(2),
-                         str(invoice.date_time_processed.day).zfill(2),])
+    filename = "-".join([invoice.requisition_number,
+                         invoice.description,
+                         str(invoice.author), ])
     filename = filename.replace(" ", "-")
     pdf = pdfkit.from_string(html, False, options=settings.PDF_OPTIONS)
     response =  HttpResponse(pdf, content_type='application/pdf')

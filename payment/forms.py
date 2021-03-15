@@ -8,7 +8,7 @@ from payment.models import Commission, Invoice, Fund, COMMISSION_DESCRIPTION_CHO
 BIRTH_YEAR_CHOICES = range(1920,2016)
 COMMISSION_YEAR_CHOICES = range(2012,2050)
 
-class InvoiceStaffForm(ModelForm):
+class BaseInvoiceForm(ModelForm):
     dob = forms.DateField(widget=
                           forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
                           label="Date of birth",
@@ -16,6 +16,9 @@ class InvoiceStaffForm(ModelForm):
     address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
                               required=False,
                               help_text="Required by SARS")
+
+
+class InvoiceStaffForm(BaseInvoiceForm):
     fund = forms.ModelChoiceField(queryset=Fund.objects.filter(ledger=False).
                                 filter(deprecated=False),
                                 required=False)
@@ -28,11 +31,12 @@ class InvoiceStaffForm(ModelForm):
                   'bank_name', 'bank_account_number',
                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-                  'level', 'query', 'requisition_number', 'payment_method',
+                  'level', 'query',
+                  'requisition', 'requisition_number', 'payment_method',
                   'description', 'fund', 'vouchers_attached',
                   'prepared_by', 'approved_by', 'authorised_by', 'merge',]
 
-class InvoiceForm(InvoiceStaffForm):
+class InvoiceForm(BaseInvoiceForm):
     identification = forms.CharField(max_length=20, required=True,
                                      help_text=
                                      "SA ID, passport or some form "
@@ -47,6 +51,7 @@ class InvoiceForm(InvoiceStaffForm):
 
     bank_name = forms.CharField(max_length=20, required=True)
     bank_account_number = forms.CharField(max_length=20, required=True)
+
 
     class Meta:
         model = Invoice

@@ -35,6 +35,15 @@
      .merge-hide {
          display: none;
      }
+     {% if can_edit %}
+     #payment-actions {
+         position: fixed;
+         bottom: 0;
+         right: 0;
+         background-color: lightgray;
+         padding: 12px;
+     }
+     {% endif %}
     </style>
 {% endblock %}
 
@@ -104,6 +113,8 @@
             </div>
 	    <div class="col-xs-12 col-md-6">
                 {% include "payment/invoice_table.html" %}
+            </div>
+            <div id="payment-actions">
                 {% if not print_view %}
                     <a href="{% url "payments:invoice.list" %}">INVOICES</a> |
                     <a href="{% url "payments:invoice.print" invoice.author.pk invoice.invoice_num %}"
@@ -142,7 +153,7 @@
                                            name="delete_button"
                                            class="btn btn-danger"
                                            value="Delete" />
-                                    {% if invoice.status == "4" and invoice.requisition_number != "" and invoice.fund %}
+                                    {% if invoice.status >= "3" and invoice.status <= "4" and invoice.requisition_number != "" and invoice.fund %}
                                         &nbsp;
                                         <a href="{% url "payments:invoice.pdf" invoice.pk %}">Requisition</a>
                                     {% endif %}
@@ -230,6 +241,10 @@
                          }
                      };
                  }
+                 {% if invoice.requisition_number %}
+                 document.getElementById('id_requisition_number').value =
+                     "{{invoice.requisition_number}}";
+                 {% endif %}
                 </script>
             {% endif %}
         {% endif %}
