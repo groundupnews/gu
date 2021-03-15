@@ -252,8 +252,8 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             # Set the requisition number and update the counter stored in Fund
             if staff_view and invoice.requisition and invoice.fund and \
                form.cleaned_data['requisition_number'] == "":
-                requisition_number = invoice.fund.prefix + \
-                    str(invoice.fund.next_number)
+                requisition_number = invoice.fund.prefix + " " + \
+                    str(invoice.fund.next_number).zfill(3)
                 invoice.requisition_number = requisition_number
                 invoice.fund.next_number = invoice.fund.next_number + 1
                 invoice.fund.save()
@@ -455,7 +455,7 @@ def invoice_pdf(request, pk):
 
     filename = "-".join([invoice.requisition_number,
                          invoice.description,
-                         str(invoice.author), ])
+                         str(invoice.author), ]) + ".pdf"
     filename = filename.replace(" ", "-")
     pdf = pdfkit.from_string(html, False, options=settings.PDF_OPTIONS)
     response =  HttpResponse(pdf, content_type='application/pdf')
