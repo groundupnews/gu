@@ -82,7 +82,9 @@ def notify_freelancers():
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [invoice.author.email, settings.INVOICE_EMAIL,],
+                          [invoice.author.email, settings.INVOICE_EMAIL,] +
+                          [e.strip() for e in invoice.additional_emails.split(",")
+                           if e.strip() != ""],
                           html_message=message
                 )
             except SMTPException as err:
@@ -119,7 +121,9 @@ def notify_freelancers():
                 send_mail(subject,
                           message,
                           settings.INVOICE_EMAIL,
-                          [invoice.author.email, settings.INVOICE_EMAIL,],
+                          [invoice.author.email, settings.INVOICE_EMAIL,] +
+                          [e.strip() for e in invoice.additional_emails.split(",")
+                           if e.strip() != ""],
                           html_message=message
                 )
         except SMTPException as err:

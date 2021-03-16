@@ -31,7 +31,7 @@ class InvoiceStaffForm(BaseInvoiceForm):
                   'bank_name', 'bank_account_number',
                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-                  'level', 'query',
+                  'level', 'query', 'additional_emails',
                   'requisition', 'requisition_number', 'payment_method',
                   'description', 'fund', 'vouchers_attached',
                   'prepared_by', 'approved_by', 'authorised_by', 'merge',]

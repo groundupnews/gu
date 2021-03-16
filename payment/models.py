@@ -247,6 +247,9 @@ class Invoice(models.Model):
     query = models.TextField(blank=True, max_length=3000,
                              help_text="Explain your query "
                              "here if you have one")
+    additional_emails = models.CharField(max_length=200, blank=True,
+                                         help_text="Additional emails to notify "
+                                         "separated by commas")
     date_time_reporter_approved = models.DateTimeField(null=True, blank=True,
                                                        editable=False)
     date_time_editor_approved = models.DateTimeField(null=True, blank=True,
