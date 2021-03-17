@@ -106,6 +106,7 @@ EXTENSIONS = [".jpg", ".pdf", ".doc", ".docx", ".odt", ".xls", ".xlsx",
 
 
 def set_corresponding_vals(fromobj, to):
+    to.invoicing_company = fromobj.invoicing_company
     to.identification = fromobj.identification
     to.dob = fromobj.dob
     to.address = fromobj.address
@@ -180,6 +181,7 @@ class RateCard(models.Model):
 class Invoice(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     invoice_num = models.IntegerField(default=0)
+
     # Fields whose default values are taken from Author
     identification = models.CharField(max_length=20, blank=True,
                                       help_text="SA ID, passport or some form "
@@ -507,7 +509,6 @@ class Commission(models.Model):
         num_images = self.article.body.count("<img ") - inside_primary_image - \
             self.article.body.count('id="gu_counter"') - \
             self.article.body.count("id='gu_counter'")
-        print(num_images)
         estimate['inside_photos'] = num_images * RATES["inside_photo"]
         estimate['bonus'] = self.estimate_bonus()
 

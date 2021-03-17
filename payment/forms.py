@@ -27,7 +27,7 @@ class InvoiceStaffForm(BaseInvoiceForm):
 
     class Meta:
         model = Invoice
-        fields = ['identification', 'dob', 'address',
+        fields = ['identification', 'dob', 'invoicing_company', 'address',
                   'bank_name', 'bank_account_number',
                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
@@ -55,7 +55,7 @@ class InvoiceForm(BaseInvoiceForm):
 
     class Meta:
         model = Invoice
-        fields = ['identification', 'dob', 'address',
+        fields = ['identification', 'dob', 'invoicing_company', 'address',
                    'bank_name', 'bank_account_number',
                    'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                    'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',

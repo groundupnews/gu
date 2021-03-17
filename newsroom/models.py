@@ -86,6 +86,9 @@ class Author(models.Model):
                                       "of official identification")
     dob = models.DateField(blank=True, null=True, verbose_name="date of birth",
                            help_text="Please fill this in. Required by SARS.")
+    invoicing_company = models.CharField(
+        blank=True, max_length=100,
+        help_text="Leave blank unless you invoice through a company")
     address = models.TextField(blank=True,
                                help_text="Please fill this in. "
                                "Required by SARS.")
