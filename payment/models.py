@@ -490,25 +490,24 @@ class Commission(models.Model):
 
         inside_primary_image = 0
         primary_photo = 0.0
-        if self.article.category.name.lower() == "photo essay":
+
+        if self.article.primary_image and \
+           (str(self.invoice.author).lower() in
+            self.article.primary_image_caption.lower()):
             primary_photo = RATES['primary_photo']
-        else:
-            if self.article.primary_image and \
-               (str(self.invoice.author).lower() in
-                self.article.primary_image_caption.lower()):
-                primary_photo = RATES['primary_photo']
-            elif not self.article.primary_image:
-                caption = utils.get_first_caption(self.article.body)
-                if caption:
-                    inside_primary_image = 1
-                    if str(self.invoice.author).lower() in caption.lower():
-                        primary_photo = RATES['primary_photo']
+        elif not self.article.primary_image:
+            caption = utils.get_first_caption(self.article.body)
+            if caption:
+                inside_primary_image = 1
+                if str(self.invoice.author).lower() in caption.lower():
+                    primary_photo = RATES['primary_photo']
 
         estimate['primary_photo'] = primary_photo
 
         num_images = self.article.body.count("<img ") - inside_primary_image - \
             self.article.body.count('id="gu_counter"') - \
             self.article.body.count("id='gu_counter'")
+        print(num_images)
         estimate['inside_photos'] = num_images * RATES["inside_photo"]
         estimate['bonus'] = self.estimate_bonus()
 
