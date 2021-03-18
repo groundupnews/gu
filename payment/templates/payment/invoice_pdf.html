@@ -166,11 +166,19 @@
                         Pastel
                     </th>
                 </tr>
-                {% for item in invoice.commission_set.all %}
+                {% for item in invoice.accepted_commissions %}
                     {% if item.commission_due > 0 %}
                         <tr>
                             <td>
                                 {{item.description}}
+                                {% if item.article %}
+                                    <br />
+                                    {{ item.article.title }}
+                                {% endif %}
+                                {% if item.notes %}
+                                    <br />
+                                    {{item.notes}}
+                                {% endif %}
                             </td>
                             <td>
                                 {{item.pk}}

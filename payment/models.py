@@ -322,6 +322,9 @@ class Invoice(models.Model):
                 commission.invoice = new_invoice
                 commission.save()
 
+    def accepted_commissions(self):
+        return self.commission_set.filter(fund__isnull=False).filter(deleted=False)
+
     def save(self, *args, **kwargs):
         try:
             with transaction.atomic():
