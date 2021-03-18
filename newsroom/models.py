@@ -159,7 +159,7 @@ class Author(models.Model):
             if self.user is None:
                 pwd = utils.generate_pwd()
                 username = (self.first_names +
-                            self.last_name).replace(" ", "_")
+                            self.last_name).replace(" ", "_")[0:150]
                 user = User.objects.create_user(username=username,
                                                 first_name=self.first_names,
                                                 last_name=self.last_name,
