@@ -59,6 +59,7 @@ FREELANCER_CHOICES = (
     ("n", "No"),
     ("f", "Freelancer"),
     ("c", "Commissioned staff"),
+    ("t", "Third party"),
 )
 
 SECRET_LINK_CHOICES = (
@@ -67,6 +68,14 @@ SECRET_LINK_CHOICES = (
     ("o", "No restrictions"),
 )
 
+
+CORRECTION_CHOICES = (
+    ("U", "Update"),
+    ("I", "Improvement"),
+    ("C", "Correction"),
+    ("A", "Apology"),
+    ("R", "Retraction"),
+)
 
 class Author(models.Model):
     first_names = models.CharField(max_length=200, blank=True)
@@ -761,8 +770,20 @@ class MostPopular(models.Model):
     class Meta:
         verbose_name_plural = "most popular"
 
-# Signals
+class Correction(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    update_type = models.CharField(max_length=1, default="U")
+    text = models.TextField(blank=True)
+    notify_republishers = models.BooleanField(default=True,
+                                              help_text="Only notifies those"
+                                              "thave have already been sent "
+                                              "article")
+    user = models.ForeignKey(User, blank=True, null=True,
+                             on_delete=models.CASCADE, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
 
+# Signals
 
 @receiver(password_changed)
 def set_password_reset(sender, **kwargs):

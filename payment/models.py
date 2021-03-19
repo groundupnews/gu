@@ -265,7 +265,7 @@ class Invoice(models.Model):
     requisition = models.BooleanField(default=False)
     requisition_number = models.CharField(blank=True, max_length=12)
     payment_method = models.CharField(blank=True, default="EFT", max_length=12)
-    description = models.CharField(blank=True, max_length=20)
+    description = models.CharField(blank=True, max_length=200)
     fund = models.ForeignKey(Fund, blank=True, null=True,
                              on_delete=models.CASCADE)
     vouchers_attached = models.BooleanField(default=True)

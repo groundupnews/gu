@@ -76,7 +76,13 @@
                 </tr>
                 <tr>
                     <td>
-                        GroundUp
+                        {% if invoice.author.freelancer == 't' %}
+                            Our ref
+                        {% elif invoice.author.freelancer == 'f' %}
+                            Invoice #
+                        {% else  %}
+                            GroundUp ref
+                        {% endif %}
                     </td>
                     <td>
                         {{invoice.short_string}}
@@ -154,12 +160,6 @@
                         Description
                     </th>
                     <th>
-                        GroundUp #
-                    </th>
-                    <th>
-                        Inv date
-                    </th>
-                    <th>
                         Amount (excl)
                     </th>
                     <th>
@@ -180,12 +180,6 @@
                                     {{item.notes}}
                                 {% endif %}
                             </td>
-                            <td>
-                                {{item.pk}}
-                            </td>
-                            <td>
-                                {{item.date_generated|date:"j-M-Y"}}
-                            </td>
                             <td style="text-align: right;">
                                 R&nbsp;{{item.commission_due|intcomma}}
                             </td>
@@ -200,10 +194,6 @@
                     <td>
                         <b>Less PAYE @{{invoice.tax_percent}}%</b>
                     </td>
-                    <td class="unused">
-                    </td>
-                    <td class="unused">
-                    </td>
                     <td style="text-align: right;">
                         R&nbsp;{{payment.2|floatformat:2|intcomma}}
                     </td>
@@ -214,10 +204,6 @@
                     <td>
                         <b>VAT @{{invoice.vat}}%</b>
                     </td>
-                    <td class="unused">
-                    </td>
-                    <td class="unused">
-                    </td>
                     <td style="text-align: right;">
                         R&nbsp;{{payment.1|floatformat:2|intcomma}}
                     </td>
@@ -227,10 +213,6 @@
                 <tr>
                     <td>
                         <b>TOTAL</b>
-                    </td>
-                    <td class="unused">
-                    </td>
-                    <td class="unused">
                     </td>
                     <td style="text-align: right;">
                         <b>R&nbsp;{{invoice.amount_paid|floatformat:2|intcomma}}</b>
