@@ -404,6 +404,7 @@ class Commission(models.Model):
     article = models.ForeignKey(Article, blank=True, null=True,
                                 on_delete=models.CASCADE)
     description = models.CharField(max_length=50, blank=True,
+                                   verbose_name="secondary description",
                                    default="Article author",
                                    choices=COMMISSION_DESCRIPTION_CHOICES)
     notes = models.CharField(max_length=200, blank=True)

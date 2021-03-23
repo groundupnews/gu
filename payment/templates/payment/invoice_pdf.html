@@ -170,10 +170,13 @@
                     {% if item.commission_due > 0 %}
                         <tr>
                             <td>
-                                {{item.description}}
+                                {{item.fund.description}}
                                 {% if item.article %}
                                     <br />
                                     {{ item.article.title }}
+                                {% endif %}
+                                {% if item.description %}
+                                    ({{ item.description }})
                                 {% endif %}
                                 {% if item.notes %}
                                     <br />

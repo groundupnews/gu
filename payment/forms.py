@@ -90,8 +90,8 @@ class CommissionForm(ModelForm):
 
     class Meta:
         model = Commission
-        fields = ['author', 'article', 'description', 'notes',
-                  'commission_due', 'taxable', 'vatable', 'fund', ]
+        fields = ['author', 'article', 'fund', 'description', 'notes',
+                  'commission_due', 'taxable', 'vatable',  ]
 
 
 class CommissionFormset(ModelForm):
