@@ -18,6 +18,8 @@ from django.utils.html import strip_tags
 from django.views import generic
 from django.views.decorators.http import last_modified
 from django.views.generic import View
+from django.views.generic.edit import CreateView, UpdateView
+
 from letters.models import Letter
 from letters.settings import DAYS_AGO
 from agony.models import QandA
@@ -221,6 +223,10 @@ class TopicDetail(ArticleList):
     def get_template_names(self):
         return (self.topic.template,)
 
+
+class CorrectionCreate(CreateView):
+    model = models.Correction
+    fields = ['article', 'update_type', 'text', 'notify_republishers', ]
 
 # Support functions for article editing
 

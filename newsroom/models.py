@@ -772,7 +772,8 @@ class MostPopular(models.Model):
 
 class Correction(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    update_type = models.CharField(max_length=1, default="U")
+    update_type = models.CharField(max_length=1, default="U",
+                                   choices=CORRECTION_CHOICES)
     text = models.TextField(blank=True)
     notify_republishers = models.BooleanField(default=True,
                                               help_text="Only notifies those"
@@ -782,6 +783,17 @@ class Correction(models.Model):
                              on_delete=models.CASCADE, editable=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return str(self.article) + " " + self.get_update_type_display()
+
+    def get_absolute_url(self):
+        return reverse('newsroom:article.detail', args=[self.article.slug, ]) + \
+            "#update-" + str(self.pk)
+
+    class Meta:
+        ordering = ['-created', ]
+
 
 # Signals
 

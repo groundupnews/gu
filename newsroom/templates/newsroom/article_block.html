@@ -79,6 +79,28 @@
          {% endif %}>
         {{article_body|safe}}
     </div>
+    <div id="article__corrections">
+        {% for correction in article.correction_set.all reversed %}
+            <div class="article__correction">
+                <a id="update-{{correction.pk}}"></a>
+                <span class="article__correction__type">
+                    {{correction.get_update_type_display}} at
+                    {{correction.created|date:"Y-m-d H:i"}}</span>
+                <span class="article__correction_text">
+                    {{correction.text|safe}}
+                </span>
+                {% if can_edit %}
+                    <p><a href="">Edit</p>
+                {% endif %}
+            </div>
+        {% endfor  %}
+        {% if can_edit %}
+            <p>
+                <a href="{% url 'newsroom:correction.create' %}">Add correction or update</a>
+            </p>
+        {% endif %}
+    </div>
+
     {% if can_edit %}
         <p id="article__statistics">
         </p>

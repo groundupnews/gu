@@ -73,7 +73,7 @@ class Fund(models.Model):
     bank_account = models.CharField(max_length=20, blank=True)
     prefix = models.CharField(max_length=5, blank=True)
     next_number = models.IntegerField(default=1)
-    ledger = models.BooleanField(default=False)
+    ledger = models.BooleanField(default=False, verbose_name="pastel")
     deprecated = models.BooleanField(default=False)
 
     def __str__(self):

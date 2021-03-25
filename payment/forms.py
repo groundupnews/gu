@@ -80,7 +80,7 @@ class CommissionForm(ModelForm):
                                       help_text=None)
     fund = forms.ModelChoiceField(
         queryset=Fund.objects.filter(ledger=True).filter(deprecated=False),
-        label='Ledger', required=False)
+        label='Pastel', required=False)
 
     def clean_author(self):
         data = self.cleaned_data['author']

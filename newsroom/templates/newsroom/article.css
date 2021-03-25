@@ -164,6 +164,25 @@ div.editor-summary {
     font-size: 2.4rem;
 }
 
+#article__correction {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.article__correction__type {
+    text-transform: uppercase;
+}
+
+.article__correction__type:after {
+    content: ": ";
+}
+
+.article__correction {
+    font-style: italic;
+    font-size: 1.3em;
+    margin-bottom: 12px;
+}
+
 .article__copyright {
     /* margin-top: 20px;*/
     /* margin-bottom: 20px;*/
@@ -226,6 +245,8 @@ div.editor-summary {
 .article__comment__title:hover {
     color: #151F22;
 }
+
+
 
 .panel-group .panel {
     border-radius: 0px;
@@ -336,7 +357,7 @@ article figure, article p.caption {
 
 
 #article_body  {
-    margin-bottom: 30px;
+    margin-bottom: 14px;
     border-bottom: 1px solid #eee;
 }
 

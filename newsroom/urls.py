@@ -27,6 +27,8 @@ urlpatterns = [
         (views.GroundViewList.as_view()),
         name='article.groundview'),
 
+    path('correction/create/', views.CorrectionCreate.as_view(),
+         name='correction.create'),
 
     url(r'^category/$', views.CategoryList.as_view(),
         name="category.list"),

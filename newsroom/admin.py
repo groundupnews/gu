@@ -31,6 +31,11 @@ img_regex = re.compile(r'(<img(.*?))(height="(.*?)")(.*?)(width="(.*?)")(.*?)(>)
 figure_regex = re.compile(r'(<p>)(.*?)(<img)(.*?)(/>)(.*?)(</p>)(.*?)\r\n(<p) (class="caption")(.*?)>(.*?)(</p>)')
 
 
+class CorrectionInline(admin.StackedInline):
+    model = models.Correction
+    extra = 0
+
+
 class ArticleForm(forms.ModelForm):
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="medium")
@@ -136,7 +141,8 @@ class ArticleAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        TweetInline, RepublisherInline, LetterInline, # CommissionInline,
+        TweetInline, RepublisherInline, CorrectionInline,
+        LetterInline, # CommissionInline,
     ]
 
     def changelist_view(self, request, extra_context=None):
@@ -192,16 +198,28 @@ class AuthorAdmin(admin.ModelAdmin):
                     'email', 'freelancer', 'level', )
     list_editable = ('email', 'freelancer','level', )
     search_fields = ['last_name', 'first_names', ]
-    inlines = [
-        InvoiceInline,
-    ]
+    # inlines = [
+    #    InvoiceInline,
+    # ]
     raw_id_fields = ('user', )
     autocomplete_lookup_fields = {
         'fk': ['user',],
     }
 
+class CorrectionAdmin(admin.ModelAdmin):
+    list_display = ('article', 'update_type', 'created', 'modified',)
+    list_editable = ('update_type', )
+    list_filter = ['update_type', ]
+    ordering = ['-modified', ]
+    search_fields = ['text', 'article__title', ]
+    raw_id_fields = ('article',)
+    autocomplete_lookup_fields = {
+        'fk': ['article',],
+    }
+
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
+admin.site.register(models.Correction, CorrectionAdmin)
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
