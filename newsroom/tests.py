@@ -7,7 +7,7 @@ from django.test import Client, TestCase
 from django.utils import timezone
 from letters.models import Letter
 from newsroom import utils
-from newsroom.models import Article, Category, Topic, Author
+from newsroom.models import Article, Category, Topic, Author, Correction
 from pgsearch.utils import searchPostgresDB
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
@@ -269,6 +269,43 @@ class ArticleTest(TestCase):
         articles = searchPostgresDB("cow dog", Article, 'english', False,
                                     "title", "subtitle", "body")
         self.assertEqual(len(articles), 1)
+
+    def test_corrections(self):
+        article = Article.objects.get(slug="test-article-1")
+        client = Client()
+        response = client.get(reverse('newsroom:correction.list'))
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.create_user('admin', 'admin@example.com', 'abcde')
+        user.is_staff = True
+        user.is_active = True
+        permission = Permission.objects.get(name='Can add correction')
+        user.user_permissions.add(permission)
+        permission = Permission.objects.get(name='Can change correction')
+        user.user_permissions.add(permission)
+        permission = Permission.objects.get(name='Can delete correction')
+        user.user_permissions.add(permission)
+        user.save()
+        client.login(username='admin', password='abcde')
+        response = client.get(reverse('newsroom:correction.create') +
+                                      "?article_pk=" + str(article.pk))
+        self.assertEqual(response.status_code, 200)
+        correction = Correction()
+        correction.article = article
+        correction.update_type = "C"
+        correction.text = "This is a test of the corrections."
+        correction.save()
+        response = client.get(reverse('newsroom:correction.update', args=[1]))
+        self.assertEqual(response.status_code, 200)
+        response = client.get(reverse('newsroom:correction.delete', args=[1]))
+        self.assertEqual(response.status_code, 200)
+        client = Client()
+        response = client.get(reverse('newsroom:correction.update', args=[1]))
+        self.assertEqual(response.status_code, 302)
+        response = client.get(reverse('newsroom:correction.delete', args=[1]))
+        self.assertEqual(response.status_code, 302)
+        response = client.get(reverse('newsroom:correction.create') +
+                                      "?article_pk=" + str(article.pk))
+        self.assertEqual(response.status_code, 302)
 
     def test_flatpages(self):
         f = FlatPage()

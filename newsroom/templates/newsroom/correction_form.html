@@ -4,9 +4,32 @@
     Correction to article
 {% endblock %}
 
+{% block additional_head %}
+    {{block.super}}
+    <style>
+     {% include "newsroom/correction_styles.css" %}
+    </style>
+{% endblock %}
+
 {% block content %}
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save">
-    </form>
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
+		<h1>Correction or Update</h1>
+                <p>Article title:
+                    {% if article %}
+                        <a href="{% url "newsroom:article.detail" article.slug %}">{{article.title}}</a>{{ article.title }}
+                    {% else %}
+                        <a href="{% url "newsroom:article.detail" object.article.slug %}">{{object.article.title}}</a>
+                    {% endif %}
+                </p>
+                <form id="correction-form" method="post">{% csrf_token %}
+                    <table class="table">
+                        {{ form.as_table }}
+                    </table>
+                    <input class="btn btn-primary" type="submit" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

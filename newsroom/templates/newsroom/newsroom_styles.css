@@ -1007,10 +1007,5 @@ img.warn_big {
 img.too_big {
     border: 2px solid red;
 }
-#article__statistics {
-    padding-bottom: 12px;
-    font-size: 80%;
-    border-bottom: 1px solid #ebebe0;
-}
 
 {% endif %}

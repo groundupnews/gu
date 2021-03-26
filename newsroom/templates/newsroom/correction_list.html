@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Corrections and updates {{block.super}}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
+                <div class="article">
+
+		    <h1>Updates and corrections</h1>
+                    <p>This is a list of updates, improvements and corrections to
+		        articles, as well as retractions and apologies.
+                    </p>
+                    <ul>
+		        {% for correction in object_list %}
+			    <li>
+                                <div class="correction_type">
+                                    {{correction.created|date:"Y-m-d H:j"}} -
+                                    <b>{{correction.get_update_type_display}}</b>
+			            for <a href="{% url 'newsroom:article.detail' correction.article.slug %}#article-corrections">{{correction.article.title}}
+                                    </a>
+                                </div>
+                                <div class="correction_text">
+			            {{ correction.text|safe }}
+                                </div>
+			    </li>
+		        {% endfor %}
+		    </ul>
+	        </div>
+	    </div>
+        </div>
+    </div>
+{% endblock %}

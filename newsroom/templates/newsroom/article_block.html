@@ -79,31 +79,33 @@
          {% endif %}>
         {{article_body|safe}}
     </div>
-    <div id="article__corrections">
-        {% for correction in article.correction_set.all reversed %}
-            <div class="article__correction">
-                <a id="update-{{correction.pk}}"></a>
-                <span class="article__correction__type">
-                    {{correction.get_update_type_display}} at
-                    {{correction.created|date:"Y-m-d H:i"}}</span>
-                <span class="article__correction_text">
-                    {{correction.text|safe}}
-                </span>
-                {% if can_edit %}
-                    <p><a href="">Edit</p>
-                {% endif %}
+    {% with corrections=article.correction_set.all %}
+        {% if corrections %}
+            <div id="article__corrections">
+                <a id="article-corrections"></a>
+                {% for correction in corrections reversed %}
+                    <div class="article__correction">
+                        <a id="update-{{correction.pk}}"></a>
+                        <span class="article__correction__type">
+                            {{correction.get_update_type_display}} on
+                            {{correction.created|date:"Y-m-d H:i"}}</span>
+                        <span class="article__correction_text">
+                            {{correction.text|safe}}
+                        </span>
+                        {% if can_edit %}
+                            <a href="{% url 'newsroom:correction.update' correction.pk %}">Edit</a> |
+                            <a href="{% url 'newsroom:correction.delete' correction.pk %}">Delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor  %}
             </div>
-        {% endfor  %}
-        {% if can_edit %}
-            <p>
-                <a href="{% url 'newsroom:correction.create' %}">Add correction or update</a>
-            </p>
         {% endif %}
-    </div>
-
+    {% endwith %}
     {% if can_edit %}
-        <p id="article__statistics">
+        <p>
+            <a href="{% url 'newsroom:correction.create' %}?article_pk={{article.pk}}">Add correction or update</a>
         </p>
+        <p id="article__statistics"></p>
     {% endif %}
     {% if article.main_topic %}
         {% include "newsroom/read_similar.html" %}

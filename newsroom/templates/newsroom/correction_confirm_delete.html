@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete a correction or update {{block.super}}
+{% endblock %}
+
+{% block additional_head %}
+    {{block.super}}
+    <style>
+     {% include "newsroom/correction_styles.css" %}
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+	<div class="row">
+	        <div class="col-xs-12 col-sm-9 col-sm-push-3">
+                <h1>Delete {{object.get_update_type_display}}</h1>
+
+                <form id="correction-form" method="post">{% csrf_token %}
+                    <p>Are you sure you want to delete this <a href="{% url 'newsroom:correction.update' correction.pk %}">{{object.get_update_type_display}}</a>?</p>
+                    <h2>Article</h2>
+                    {{object.article.title|safe}}<br/>
+                    <h2>
+                        {{object.get_update_type_display}} text
+                    </h2>
+                    <p>
+                        {{object.text|safe}}
+                    </p>
+                    <input class="btn btn-primary" type="submit" value="Confirm">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

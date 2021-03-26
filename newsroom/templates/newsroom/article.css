@@ -38,7 +38,6 @@
     margin-right: 0px;
 }
 
-
 .article__sidebar--undistracted {
 
 }
@@ -525,6 +524,16 @@ article figure, article p.caption {
         align-self: center;
     }
 }
+#article__corrections {
+    border-bottom: 1px solid #ebebe0;
+}
+
+#article__statistics {
+    padding-bottom: 12px;
+    font-size: 80%;
+    border-bottom: 1px solid #ebebe0;
+}
+
 
 /* Preferable drop-case code that doesn't seem to be working at present */
 /*

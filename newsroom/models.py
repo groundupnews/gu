@@ -776,8 +776,8 @@ class Correction(models.Model):
                                    choices=CORRECTION_CHOICES)
     text = models.TextField(blank=True)
     notify_republishers = models.BooleanField(default=True,
-                                              help_text="Only notifies those"
-                                              "thave have already been sent "
+                                              help_text="Only notifies those "
+                                              "that have have already been sent "
                                               "article")
     user = models.ForeignKey(User, blank=True, null=True,
                              on_delete=models.CASCADE, editable=False)

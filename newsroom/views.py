@@ -18,7 +18,8 @@ from django.utils.html import strip_tags
 from django.views import generic
 from django.views.decorators.http import last_modified
 from django.views.generic import View
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from letters.models import Letter
 from letters.settings import DAYS_AGO
@@ -223,10 +224,50 @@ class TopicDetail(ArticleList):
     def get_template_names(self):
         return (self.topic.template,)
 
-
-class CorrectionCreate(CreateView):
+class ListCorrection(generic.ListView):
     model = models.Correction
-    fields = ['article', 'update_type', 'text', 'notify_republishers', ]
+
+class CreateCorrection(PermissionRequiredMixin, CreateView):
+    model = models.Correction
+    fields = ['update_type', 'text', 'notify_republishers', ]
+    permission_required = 'newsroom.add_correction'
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateCorrection, self).get_context_data(**kwargs)
+        article_pk = self.request.GET.get('article_pk', None)
+        if article_pk is None:
+            raise Http404
+        try:
+            article = models.Article.objects.get(pk=int(article_pk))
+        except:
+            raise Http404
+        context['article'] = article
+        return context
+
+    def form_valid(self, form):
+        article_pk = self.request.GET.get('article_pk', None)
+        if article_pk is None:
+            raise Http404
+        try:
+            article = models.Article.objects.get(pk=int(article_pk))
+        except:
+            raise Http404
+
+        form.instance.article = article
+        return super(CreateCorrection, self).form_valid(form)
+
+class UpdateCorrection(PermissionRequiredMixin, UpdateView):
+    model = models.Correction
+    fields = ['update_type', 'text', 'notify_republishers', ]
+    permission_required = 'newsroom.change_correction'
+
+class DeleteCorrection(PermissionRequiredMixin, DeleteView):
+    model = models.Correction
+    permission_required = 'newsroom.delete_correction'
+
+    def get_success_url(self):
+        slug = self.object.article.slug
+        return reverse('newsroom:article.detail', args=(slug,))
 
 # Support functions for article editing
 
