@@ -130,10 +130,15 @@ class GroundViewList(ArticleList):
 class AuthorList(generic.ListView):
     model = models.Author
 
+    def get_queryset(self):
+        return models.Author.objects.exclude(freelancer='t')
+
 class AuthorDetail(ArticleList):
 
     def get_queryset(self):
         self.author = get_object_or_404(models.Author, pk=self.args[0])
+        if self.author.freelancer == 't':
+            raise Http404
         return models.Article.objects.list_view().filter(
             Q(author_01=self.author) | Q(author_02=self.author) |
             Q(author_03=self.author) | Q(author_04=self.author) |
