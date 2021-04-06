@@ -167,7 +167,7 @@
                     </th>
                 </tr>
                 {% for item in invoice.accepted_commissions %}
-                    {% if item.commission_due > 0 %}
+                    {% if item.commission_due != 0 %}
                         <tr>
                             <td>
                                 {{item.fund.description}}
