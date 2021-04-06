@@ -91,7 +91,7 @@ class CommissionForm(ModelForm):
     class Meta:
         model = Commission
         fields = ['author', 'article', 'fund', 'description', 'notes',
-                  'commission_due', 'taxable', 'vatable',  ]
+                  'commission_due', 'taxable', 'vatable', 'vat_amount' ]
 
 
 class CommissionFormset(ModelForm):

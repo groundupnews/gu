@@ -115,6 +115,10 @@ def invoice_list(request,
         author = get_object_or_404(Author, pk=user.author.pk)
         query = query &  Q(author=author)
 
+    requisition = request.GET.get("requisition", None)
+    if requisition:
+        query = query & Q(requisition_number=requisition)
+
     if author is None or author == 0:
         author_pk = 0
     else:

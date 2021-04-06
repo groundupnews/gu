@@ -422,6 +422,10 @@ class Commission(models.Model):
                                          verbose_name="amount")
     taxable = models.BooleanField(default=True)
     vatable = models.BooleanField(default=True)
+    vat_amount = models.DecimalField(max_digits=8,
+                                     decimal_places=2, default=0.00,
+                                     help_text="Leave at 0 "
+                                     "for system to calculate.")
     deleted = models.BooleanField(default=False)
     split = models.BooleanField(default=False)
 
@@ -601,6 +605,8 @@ class Commission(models.Model):
         if self.vatable:
                 vat = (self.invoice.vat / Decimal(100.00)) * \
                       self.commission_due
+        elif self.vat_amount != 0.00:
+            vat = self.vat_amount
         else:
             vat = Decimal(0.00)
         due = self.commission_due - tax + vat

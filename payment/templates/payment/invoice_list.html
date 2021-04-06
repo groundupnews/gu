@@ -94,6 +94,12 @@
             <a href="{% url "payments:commissions.detail.analysis" %}">
                 Analysis
             </a>
+            &nbsp;|&nbsp;
+            <form action="{% url "payments:invoice.list" %}" style="display:inline">
+                <label for="requisition">Find requisition</label>
+                <input type="text" id="requisition" name="requisition">
+                <input type="submit" value="Find">
+            </form>
         {% endif %}
         &nbsp;|&nbsp;
         <button onclick="downloadcsv('invoices.csv')">
