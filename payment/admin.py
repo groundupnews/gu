@@ -75,8 +75,12 @@ class FundAdmin(admin.ModelAdmin):
     list_filter = ('deprecated', 'ledger',)
     ordering = ['name']
 
+class PayeRequisitionAdmin(admin.ModelAdmin):
+    search_fields = ('payee__first_names', 'payee__last_name', )
+    list_display = ('pk', 'payee', 'date_from', 'date_to', 'created', 'modified', )
 
 admin.site.register(models.RateCard)
 admin.site.register(models.Fund, FundAdmin)
 admin.site.register(models.Commission, CommissionAdmin)
 admin.site.register(models.Invoice, InvoiceAdmin)
+admin.site.register(models.PayeRequisition, PayeRequisitionAdmin)

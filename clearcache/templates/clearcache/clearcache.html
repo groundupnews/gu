@@ -17,7 +17,7 @@ Clear Cache {{block.super}}
 		    <form action="{% url 'cache:clearcache' %}" method="post">
 			{% csrf_token %}
 			<div style="display: none;" {{ form }}</div>
-			<input type="submit" value="Clear Cache" />
+			<input class="btn btn-primary" type="submit" value="Clear Cache" />
 		    </form>
 		</div>
 		 {% endif %}

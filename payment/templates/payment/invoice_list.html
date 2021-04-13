@@ -95,6 +95,7 @@
                 Analysis
             </a>
             &nbsp;|&nbsp;
+            <a href="{% url 'payments:payerequisition.create' %}">PAYE</a>
             <form action="{% url "payments:invoice.list" %}" style="display:inline">
                 <label for="requisition">Find requisition</label>
                 <input type="text" id="requisition" name="requisition">

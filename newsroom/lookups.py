@@ -22,7 +22,7 @@ class AuthorLookup(LookupChannel):
 
     model = Author
 
-    help_text = "Hello!"
+    help_text = "Name of author"
 
     def get_query(self, q, request):
         query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \

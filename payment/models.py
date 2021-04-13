@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.utils.timezone import make_aware
 from django.db import transaction
 
+from dateutil import relativedelta
+
 from filebrowser.fields import FileBrowseField
 from newsroom.models import Article, Author, LEVEL_CHOICES
 from newsroom import utils
@@ -344,7 +346,7 @@ class Invoice(models.Model):
                 self.process_splits()
         except Exception as e:
             msg = "Error saving invoice: " + str(e)
-            messages.add_message(request, messages.ERROR, msg)
+            # messages.add_message(request, messages.ERROR, msg)
             print(msg)
             logger.error(msg)
 
@@ -627,3 +629,67 @@ class Commission(models.Model):
 
     class Meta:
         ordering = ['invoice', 'created', ]
+
+
+class PayeRequisition(models.Model):
+    payee = models.ForeignKey(Author, on_delete=models.CASCADE)
+    date_from = models.DateTimeField()
+    date_to = models.DateTimeField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def get_absolute_url(self):
+        return reverse('payments:invoice.list')
+
+    @staticmethod
+    def get_payee():
+        try:
+            payee = PayeRequisition.objects.latest('date_to').payee
+        except PayeRequisition.DoesNotExist:
+            payee = Author.objects.get(pk=1)
+        return payee
+
+    def get_date_from(date_to=None):
+        try:
+            date_from = PayeRequisition.objects.latest('date_to').date_to
+        except PayeRequisition.DoesNotExist:
+            if date_to:
+                date_from = date_to - relativedelta.relativedelta(months=1)
+            else:
+                date_from = timezone.now() - relativedelta.relativedelta(months=1)
+        return date_from
+
+    @staticmethod
+    def generate_invoices(payee=None, date_from=None, date_to=None):
+        with transaction.atomic():
+            this = PayeRequisition()
+            if date_to is None:
+                this.date_to = timezone.now()
+            else:
+                this.date_to = date_to
+            if payee is None:
+                payee = PayeRequisition.get_payee()
+            if date_from is None:
+                date_from = PayeRequisition.get_date_from(this.date_to)
+
+            invoices = Invoice.objects.filter(status='4'). \
+                exclude(tax_paid=Decimal(0.00)).filter(author__freelancer='f'). \
+                filter(date_notified_payment__gte=date_from).\
+                filter(date_notified_payment__lt=this.date_to)
+            dic = {}
+            for invoice in invoices:
+                if invoice.fund not in dic:
+                    dic[invoice.fund] = []
+                desc = "PAYE for " + str(invoice.requisition_number)
+                dic[invoice.fund].append((desc, invoice.tax_paid))
+            for fund, entries in dic.items():
+                invoice = Invoice.create_invoice(payee)
+                for entry in entries:
+                    commission = Commission()
+                    commission.invoice = invoice
+                    commission.description = entry[0]
+                    commission.commission_due = entry[1]
+                    commission.save()
+            this.date_from = date_from
+            this.payee = payee
+            this.save()

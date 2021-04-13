@@ -15,6 +15,9 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from django.http import HttpResponse
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView
 
 from newsroom.models import Author
 
@@ -465,3 +468,18 @@ def invoice_pdf(request, pk):
     response =  HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
     return response
+
+class CreatePayeRequisition(PermissionRequiredMixin, FormView):
+    form_class = forms.PayeRequisitionForm
+    permission_required = 'payment.add_payerequisition'
+    template_name = "payment/payerequisition_form.html"
+    success_url = '/invoices/'
+
+    def get_initial(self):
+        return { 'payee': models.PayeRequisition.get_payee(),
+                 'date_from': models.PayeRequisition.get_date_from(),
+                 'date_to': timezone.now() }
+
+    def form_valid(self, form):
+        form.generate_invoices()
+        return super().form_valid(form)

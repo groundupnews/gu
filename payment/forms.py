@@ -1,9 +1,12 @@
-from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
+from ajax_select.fields import AutoCompleteSelectField
+from ajax_select.fields import AutoCompleteSelectMultipleField
+from ajax_select import make_ajax_field
 from django import forms
 from django.forms import Form, ModelForm
 from django.contrib import messages
 from newsroom.models import Article, Author
 from payment.models import Commission, Invoice, Fund, COMMISSION_DESCRIPTION_CHOICES
+from payment.models import PayeRequisition
 
 BIRTH_YEAR_CHOICES = range(1920,2016)
 COMMISSION_YEAR_CHOICES = range(2012,2050)
@@ -138,3 +141,15 @@ class CommissionAnalysisForm(ModelForm):
     class Meta:
         model = Commission
         fields = ['descriptions', 'funds', 'authors', 'date_from', 'date_to', ]
+
+
+class PayeRequisitionForm(ModelForm):
+
+    def generate_invoices(self):
+        PayeRequisition.generate_invoices(self.cleaned_data['payee'],
+                                          self.cleaned_data['date_from'],
+                                          self.cleaned_data['date_to'])
+
+    class Meta:
+        model = PayeRequisition
+        fields = ['payee', 'date_from', 'date_to', ]
