@@ -20,7 +20,7 @@
 		        {% for correction in object_list %}
 			    <li>
                                 <div class="correction_type">
-                                    {{correction.created|date:"Y-m-d H:j"}} -
+                                    {{correction.created|date:"Y-m-d H:i"}} -
                                     <b>{{correction.get_update_type_display}}</b>
 			            for <a href="{% url 'newsroom:article.detail' correction.article.slug %}#article-corrections">{{correction.article.title}}
                                     </a>
