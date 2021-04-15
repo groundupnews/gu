@@ -674,9 +674,10 @@ class PayeRequisition(models.Model):
 
             invoices = Invoice.objects.filter(status='4'). \
                 exclude(tax_paid=Decimal(0.00)).filter(author__freelancer='f'). \
-                filter(date_notified_payment__gte=date_from).\
-                filter(date_notified_payment__lt=this.date_to). \
+                filter(date_time_processed__gte=date_from).\
+                filter(date_time_processed__lt=this.date_to). \
                 order_by('requisition_number')
+
             dic = {}
             for invoice in invoices:
                 if invoice.fund not in dic:
