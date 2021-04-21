@@ -184,7 +184,7 @@
                                 {% endif %}
                             </td>
                             <td style="text-align: right;">
-                                R&nbsp;{{item.commission_due|intcomma}}
+                                R&nbsp;{{item.commission_due|floatformat:2|intcomma}}
                             </td>
                             <td>
                                 {{item.fund.name}}

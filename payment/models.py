@@ -233,13 +233,13 @@ class Invoice(models.Model):
                              default='standard')
     ####
     # paid = models.BooleanField(default=False)
-    amount_paid = models.DecimalField(max_digits=8,
-                                      decimal_places=2, default=0.00,
+    amount_paid = models.DecimalField(max_digits=10,
+                                      decimal_places=4, default=0.00,
                                       verbose_name="amount")
-    tax_paid = models.DecimalField(max_digits=8,
-                                   decimal_places=2, default=0.00)
-    vat_paid = models.DecimalField(max_digits=8,
-                                   decimal_places=2, default=0.00)
+    tax_paid = models.DecimalField(max_digits=10,
+                                   decimal_places=4, default=0.00)
+    vat_paid = models.DecimalField(max_digits=10,
+                                   decimal_places=4, default=0.00)
     invoice = FileBrowseField(max_length=200,
                               directory="commissions/invoices/",
                               blank=True, extensions=EXTENSIONS)
@@ -281,10 +281,10 @@ class Invoice(models.Model):
     def calc_payment(self):
         commissions = Commission.objects.for_authors().\
                       filter(invoice=self)
-        total_uncorrected = Decimal(0.00)
-        total_paid = Decimal(0.00)
-        total_tax = Decimal(0.00)
-        total_vat = Decimal(0.00)
+        total_uncorrected = Decimal(0.0000)
+        total_paid = Decimal(0.0000)
+        total_tax = Decimal(0.0000)
+        total_vat = Decimal(0.0000)
         for commission in commissions:
             (due, vat, tax, uncorrected) = commission.calc_payment()
             total_paid = total_paid + due
@@ -419,13 +419,13 @@ class Commission(models.Model):
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)
     date_notified_approved = models.DateTimeField(blank=True, null=True)
-    commission_due = models.DecimalField(max_digits=7,
-                                         decimal_places=2, default=0.00,
+    commission_due = models.DecimalField(max_digits=10,
+                                         decimal_places=4, default=0.00,
                                          verbose_name="amount")
     taxable = models.BooleanField(default=True)
     vatable = models.BooleanField(default=True)
-    vat_amount = models.DecimalField(max_digits=8,
-                                     decimal_places=2, default=0.00,
+    vat_amount = models.DecimalField(max_digits=10,
+                                     decimal_places=4, default=0.00,
                                      help_text="Leave at 0 "
                                      "for system to calculate.")
     deleted = models.BooleanField(default=False)
@@ -598,17 +598,17 @@ class Commission(models.Model):
         return estimate
 
     def calc_payment(self):
-        vat = Decimal(0.00)
+        vat = Decimal(0.0000)
         if self.taxable:
             tax = (self.invoice.tax_percent / Decimal(100.00)) * \
                   self.commission_due
         else:
-            tax = Decimal(0.00)
+            tax = Decimal(0.0000)
         if self.vatable:
                 vat = (self.invoice.vat / Decimal(100.00)) * \
                       self.commission_due
         else:
-            vat = Decimal(0.00)
+            vat = Decimal(0.0000)
 
         if self.vat_amount != 0.00:
             vat = self.vat_amount
@@ -673,7 +673,7 @@ class PayeRequisition(models.Model):
                 date_from = PayeRequisition.get_date_from(this.date_to)
 
             invoices = Invoice.objects.filter(status='4'). \
-                exclude(tax_paid=Decimal(0.00)).filter(author__freelancer='f'). \
+                exclude(tax_paid=Decimal(0.0000)).filter(author__freelancer='f'). \
                 filter(date_time_processed__gte=date_from).\
                 filter(date_time_processed__lt=this.date_to). \
                 order_by('requisition_number')
