@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Invoice approved</title>
+        <title>Payment approved</title>
     </head>
 
     <body>
@@ -13,14 +13,14 @@
         </p>
 
         <p>
-            RE: COMMISSIONS APPROVED
+            RE: {{ invoice.invoice_type|uppper}} APPROVED
         </p>
 
-        <p> Below is a list of commissions due to you. Please go to
+        <p> Below is a list of payment items due to you. Please go to
         <a href=
            "http://{{site.domain}}{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">
             this link</a>, make sure your details are correct,
-            and approve the payment.  </p>
+            and approve the payment.</p>
 
         {% include "payment/invoice_common.txt" %}
 

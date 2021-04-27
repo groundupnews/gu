@@ -109,15 +109,13 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Publish', {
             'fields': ('category', 'topics', 'main_topic',
-                       'region', 'recommended', 'slug', 'published', ),
+                       'region', ('recommended',  'undistracted_layout', ),
+                       'slug', 'published', ),
         }),
-        ('Image (advanced)', {
+        ('Summary Image and text', {
             'classes': ('grp-collapse grp-closed',),
             'fields': (
-                ('primary_image', 'primary_image_size', ),
-                ('external_primary_image'),
-                ('primary_image_caption', 'primary_image_alt',),
-                ('summary_image', 'summary_image_size', ),
+                'summary_image', 'summary_image_size',
                 'summary_image_alt', 'cached_summary_text',
                 'summary_text', 'summary_template',),
         }),
@@ -127,7 +125,7 @@ class ArticleAdmin(admin.ModelAdmin):
                        ('letters_on', 'comments_on', 'collapse_comments', ),
                        'stickiness', 'exclude_from_list_views',
                        'use_editor',
-                       ('template', 'template_process', 'undistracted_layout', ),
+                       ('template', 'template_process', ),
                        'additional_head_scripts', 'additional_body_scripts',
                        'activate_slideshow',
                        ('last_tweeted', 'notified_authors',),

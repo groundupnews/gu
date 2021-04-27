@@ -43,6 +43,15 @@
          background-color: lightgray;
          padding: 12px;
      }
+     /* Remove arrows on input numbers */
+     input::-webkit-outer-spin-button,
+     input::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+         margin: 0;
+     }
+     input[type=number] {
+         -moz-appearance: textfield;
+     }
      {% endif %}
     </style>
 {% endblock %}
@@ -85,7 +94,7 @@
         {% elif invoice.status == "2" %}
             {{invoice.author}} has approved this {{description}}
         {% elif invoice.status == "3" %}
-            The editors have approved this {{description}} for payment
+            The editors have approved this {{description}}
         {% elif invoice.status == "4" %}
             Paid on {{invoice.date_time_processed|date:"j M Y"}}
         {% elif invoice.status == "5" %}

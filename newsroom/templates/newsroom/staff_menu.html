@@ -101,7 +101,7 @@
 {% if perms.payment.change_invoice %}
     <li>
         <a href="{% url 'payments:invoice.list' %}">
-            Invoices
+            Invoices & requisitions
         </a>
     </li>
 {% endif %}
@@ -109,7 +109,7 @@
 {% if perms.payment.change_commission %}
     <li>
         <a href="{% url 'payments:commissions.detail.add' %}">
-            Add commission
+            Add payment item
         </a>
     </li>
 {% endif %}

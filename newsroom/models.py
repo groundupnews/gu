@@ -297,7 +297,7 @@ class ArticleQuerySet(models.QuerySet):
 class Article(models.Model):
     title = models.CharField(max_length=250)
     subtitle = models.CharField(max_length=250, blank=True)
-    summary_image = FileBrowseField("Image", max_length=200,
+    summary_image = FileBrowseField("summary image", max_length=200,
                                     directory="images/",
                                     blank=True)
     summary_image_size = models.CharField(
@@ -396,7 +396,8 @@ class Article(models.Model):
         models.TextField(blank=True,
                          help_text="Include things like additional javascript "
                          "that should come at bottom of article")
-    undistracted_layout = models.BooleanField(default=False)
+    undistracted_layout = models.BooleanField(default=False,
+                                              verbose_name="full width layout")
     template_process = models.BooleanField(default=False)
     # Neccessary for importing old Drupal articles
     disqus_id = models.CharField(blank=True, max_length=20)

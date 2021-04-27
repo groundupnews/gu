@@ -307,9 +307,20 @@ img.summary-image {
 }
 
 div.commission-due-input input {
-    width: 75px;
+    width: 79px;
 }
 
+.commission-entry-form {
+    margin-bottom: 12px;
+}
+
+.commission-entry-form td {
+    padding: 6px;
+}
+
+.commission-entry-form input[type="submit"] {
+    margin-top: 6px;
+}
 
 ul.icons {
     list-style-type: none;
@@ -606,7 +617,7 @@ p.author-description, p.disclaimer, p.correction {
 }
 
 #invoice-table .fund-input select {
-    max-width: 105px;
+    max-width: 95px;
 }
 
 #invoice-table span.status0 {

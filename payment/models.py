@@ -324,6 +324,14 @@ class Invoice(models.Model):
                 commission.invoice = new_invoice
                 commission.save()
 
+    def invoice_type(self):
+        if self.author.freelancer == "f":
+            return "invoice"
+        elif self.author.freelancer == "c":
+            return "requisition"
+        else:
+            return "payment"
+
     def accepted_commissions(self):
         return self.commission_set.filter(fund__isnull=False).filter(deleted=False)
 
@@ -629,6 +637,7 @@ class Commission(models.Model):
 
     class Meta:
         ordering = ['invoice', 'created', ]
+        verbose_name = "payment item"
 
 
 class PayeRequisition(models.Model):

@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Invoice paid</title>
+        <title>Payment paid</title>
     </head>
 
     <body>
@@ -11,7 +11,7 @@
         <p>Dear {{invoice.author.first_names}} {{invoice.author.last_name}}</p>
 
         <p>
-            RE: INVOICE {{invoice.short_string}} PAID: R{{invoice.amount_paid}}
+            RE: {{ invoice.invoice_type|upper}} PAID: R{{invoice.amount_paid}}
         </p>
 
         <p>
@@ -21,8 +21,8 @@
         </p>
 
         <p>
-            <a href="http://{{site.domain}}{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">Invoice
-            {{invoice.short_string}}</a> has been paid to you.
+            <a href="http://{{site.domain}}{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">{{invoice.invoice_type|title}}
+            {{invoice.short_string}}</a> has been settled.
         </p>
 
         <p>Please note that it can take up to three working days for the

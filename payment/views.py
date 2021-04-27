@@ -320,7 +320,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
             can_edit = True
 
     if invoice.author.freelancer == "c":
-        description = "commission reconciliation"
+        description = "payment reconciliation"
     else:
         description = "invoice"
 

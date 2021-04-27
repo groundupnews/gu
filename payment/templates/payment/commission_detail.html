@@ -1,32 +1,41 @@
 {% extends "base_20161106.html" %}
 
 {% block title %}
-    Commission {{block.super}}
+    Payment Item {{block.super}}
 {% endblock %}
 
 {% block content %}
     {{ form.media }}
     <style>
      .date-field {width: 40px;}
+     input::-webkit-outer-spin-button,
+     input::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+         margin: 0;
+     }
+     input[type=number] {
+         -moz-appearance: textfield;
+     }
     </style>
 
     <div id="commission-analysis-detail">
         {% if pk %}
             {% with invoice=commission.invoice %}
-                <h2>Edit commission {{pk}} for
+                <h2>Edit Payment Item {{pk}} for
                     <a href="{% url 'payments:invoice.detail' invoice.author.pk invoice.invoice_num %}">
                         Invoice: {{invoice.short_string}}</h2>
                     </a>
             {% endwith %}
         {% else %}
-            <h2>New commission</h2>
+            <h2>New Payment Item</h2>
         {% endif %}
         <form action="{% if pk %}
                       {% url 'payments:commissions.detail' pk %}
         {% else %}
                       {% url 'payments:commissions.detail.add' %}
         {% endif %}"
-              method="post">
+              method="post"
+              class="commission-entry-form">
             {% csrf_token %}
             <table>
                 {{form.as_table}}
