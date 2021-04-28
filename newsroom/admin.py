@@ -39,8 +39,8 @@ class CorrectionInline(admin.StackedInline):
 class ArticleForm(forms.ModelForm):
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
                                            initial="medium")
-    primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
-                                           initial="extra_large")
+    # primary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES,
+    #                                       initial="extra_large")
 
     '''Remove height and width from TinyMCE image insertions.
     '''

@@ -13,7 +13,7 @@
         </p>
 
         <p>
-            RE: {{ invoice.invoice_type|uppper}} APPROVED
+            RE: {{ invoice.invoice_type|upper}} APPROVED
         </p>
 
         <p> Below is a list of payment items due to you. Please go to
