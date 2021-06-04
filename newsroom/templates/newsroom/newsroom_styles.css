@@ -980,14 +980,16 @@ Single-colored icons can be modified like so:
     margin: 15px auto 15px auto;
 }
 
-.topic-intro h1, .topic-intro h2 {
+.topic-intro h1, .topic-intro h2, .topic-intro h3 {
+    max-width: 600px;
+    margin: auto;
     margin-top: 14px;
     margin-bottom: 12px;
     font-family: 'Roboto Slab', serif;
     text-align: center;
 }
 
-.topic-intro p, .topic-intro ul, .topic-intro form {
+.topic-intro p, .topic-intro ul, .topic-intro form, .topic-intro table {
     font-size: 1.8rem;
     max-width: 600px;
     margin: auto;
