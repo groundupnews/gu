@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 with transaction.atomic():
                     for line in lines:
                         line = line.strip()
-                        puzzle, difficulty = line.split(" ")
+                        puzzle, difficulty,solution = line.split(",")
                         if len(puzzle) != 81:
                             print("Puzzle length is incorrect", puzzle)
                             continue
@@ -40,10 +40,15 @@ class Command(BaseCommand):
                         except Sudoku.DoesNotExist:
                             pass
                         if p is None:
-                            s = Sudoku()
+                            p = Sudoku.objects.filter(published=start_date)
+                            if p.count() > 0:
+                                s = p[0]
+                            else:
+                                s = Sudoku()
+                                s.published = start_date
                             s.puzzle = puzzle
                             s.difficulty = difficulty
-                            s.published = start_date
+                            s.solution = solution
                             s.save()
                             start_date += timezone.timedelta(skip)
             except IntegrityError:
