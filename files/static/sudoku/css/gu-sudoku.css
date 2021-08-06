@@ -1,0 +1,26 @@
+#BelowTheBanner h1, #BelowTheBanner h2, #BelowTheBanner p, #BelowTheBanner ul, #BelowTheBanner ol, #BelowTheBanner li {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+}
+
+#BelowTheBanner h1, #BelowTheBanner h2 {
+    text-align: center;
+}
+
+.sudoku-control {
+    line-height: inherit !important;
+}
+
+.sudoku-control button {
+    font-size: 1.0em;
+    background-color: white;
+}
+
+.sudoku-stopwatch {
+    height: inherit !important;
+}
+
+#BelowTheBanner p, #BelowTheBanner ul, #BelowTheBanner ol, #BelowTheBanner li {
+    font-size: 18px;
+}

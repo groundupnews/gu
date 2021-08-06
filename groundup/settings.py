@@ -414,6 +414,8 @@ else:
 PIWIK_SITEID = 1
 PIWIK_ENTRIES = 40
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 from .local_settings import *
 
 if DEBUG is True:

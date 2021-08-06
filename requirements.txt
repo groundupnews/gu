@@ -1,7 +1,9 @@
 beautifulsoup4==4.6.0
-Django==3.0.14
-django-filebrowser==3.13.1
-django-grappelli==2.14.2
+django-filebrowser==3.14.1
+django-grappelli==2.15.1
+Django==3.2.6
+
+
 facebook-sdk
 # google-api-python-client
 html2text
@@ -16,7 +18,7 @@ Pillow
 # a bug in psycop is fixed. See https://stackoverflow.com/questions/38807296/django-1-9-2-assertionerror-database-connection-isnt-set-to-utc#39649018
 psycopg2-binary>=2.8,<2.9
 
-python3-memcached
+python-memcached
 pycrypto
 pytz
 requests
