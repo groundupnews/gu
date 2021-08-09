@@ -24,9 +24,13 @@
             </h2>
 
             {% if include_summary == "1" %}
-	        <p class="home__articles__article__text__summary">
-	            {{article.cached_summary_text|safe}}
-	        </p>
+                {% if article.summary_text %}
+                    {{article.summary_text|safe}}
+                {% else %}
+	            <p class="home__articles__article__text__summary">
+	                {{article.cached_summary_text|safe}}
+	            </p>
+                {% endif %}
             {% endif %}
 
             <div class="home__articles_article__details">
