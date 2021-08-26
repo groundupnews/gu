@@ -414,7 +414,7 @@ class Commission(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, blank=True, null=True,
                                 on_delete=models.CASCADE)
-    description = models.CharField(max_length=50, blank=True,
+    description = models.CharField(max_length=100, blank=True,
                                    verbose_name="secondary description",
                                    default="Article author",
                                    choices=COMMISSION_DESCRIPTION_CHOICES)
@@ -726,8 +726,8 @@ class PayeRequisition(models.Model):
             for invoice in invoices:
                 if invoice.fund not in dic:
                     dic[invoice.fund] = []
-                desc = "PAYE for " + str(invoice.requisition_number) + \
-                    " (" + str(invoice.author) + ")"
+                desc = str(invoice.requisition_number) + \
+                    " - " + str(invoice.author)[0:88]
                 dic[invoice.fund].append((desc, invoice.tax_paid))
             for fund, entries in dic.items():
                 invoice = Invoice.create_invoice(payee)
