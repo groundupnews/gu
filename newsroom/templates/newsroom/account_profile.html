@@ -12,6 +12,23 @@
                 <a href='{% url "payments:invoice.list" %}'>Invoices</a>
             </li>
         {% endif %}
+        {% if allowance %}
+            <li>
+                <form id="allowance-form"
+                      action="{% url 'newsroom:user.profile' %}"
+                      method="post">{% csrf_token %}
+                    I need an expense allowance for {% now "F Y" %}. I agree
+                    to submit at least three articles this month.
+                    <input class="btn btn-primary" type="submit"
+                           value="Ask for allowance">
+                </form>
+            </li>
+        {% endif %}
+        {% if allowance_processed %}
+            <li>
+                Your allowance commission has been requested for this month.
+            </li>
+        {% endif %}
         <li><a href="{% url "account_change_password" %}">
             Change password</a>
         </li>

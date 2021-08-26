@@ -85,6 +85,7 @@ class Author(models.Model):
     level = models.CharField(max_length=15, choices=LEVEL_CHOICES,
                              default='standard')
     email = models.EmailField(blank=True)
+    allowance = models.BooleanField(default=False)
     title = models.CharField(max_length=20, blank=True)
     telephone = models.CharField(max_length=200, blank=True)
     cell = models.CharField(max_length=200, blank=True)

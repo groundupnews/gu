@@ -7,7 +7,7 @@ from django.test import Client, TestCase
 from django.utils import timezone
 from django.urls import reverse
 from newsroom.models import Article, Author, Category, Topic
-from payment.models import Commission, Fund, Invoice
+from payment.models import Commission, Fund, Invoice, RateCard
 
 
 class InvoiceTest(TestCase):
@@ -146,6 +146,11 @@ class InvoiceTest(TestCase):
         article20.author_01 = author2
         article20.save()
 
+        rate_card = RateCard()
+        rate_card.allowance = 500.00
+        rate_card.date_from = timezone.datetime(2020,1,1)
+        rate_card.save()
+
     def test_commissions(self):
         fund = Fund.objects.get(name="Bertha|Reporters")
         author1 = Author.objects.get(email="joe@example.com")
@@ -258,3 +263,13 @@ class InvoiceTest(TestCase):
         self.assertEqual(response.status_code, 200)
         response = c.get('/commissions/analysis')
         self.assertEqual(response.status_code, 200)
+
+    def test_allowance(self):
+        author = Author.objects.get(email="joe@example.com")
+        print(author)
+        self.assertEqual(Commission.can_bill_allowance(author), False)
+        author.allowance = True
+        author.save()
+        self.assertEqual(Commission.can_bill_allowance(author), True)
+        Commission.create_allowance(author)
+        self.assertEqual(Commission.can_bill_allowance(author), False)

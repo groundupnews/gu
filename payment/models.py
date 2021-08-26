@@ -137,6 +137,7 @@ class RateCard(models.Model):
     complex_feature = models.FloatField(default=0.0)
     bonus = models.FloatField(default=0.0)
     bonus_article = models.PositiveSmallIntegerField(default=4)
+    allowance = models.FloatField(default=0.0)
     level_intern = models.FloatField(default=0.5)
     level_standard = models.FloatField(default=1.0)
     level_senior = models.FloatField(default=1.35)
@@ -430,6 +431,7 @@ class Commission(models.Model):
     commission_due = models.DecimalField(max_digits=10,
                                          decimal_places=4, default=0.00,
                                          verbose_name="amount")
+    allowance = models.BooleanField(default=False)
     taxable = models.BooleanField(default=True)
     vatable = models.BooleanField(default=True)
     vat_amount = models.DecimalField(max_digits=10,
@@ -452,7 +454,6 @@ class Commission(models.Model):
         if self.fund is not None and self.date_approved is None:
             self.date_approved = timezone.now()
         super(Commission, self).save(*args, **kwargs)
-
 
     def estimate_bonus(self):
         if self.article and self.article.is_published() \
@@ -634,6 +635,37 @@ class Commission(models.Model):
             return " ".join([str(self.pk), str(self.article)])
         else:
             return str(self.pk)
+
+    @staticmethod
+    def can_bill_allowance(author):
+        if author.allowance is True:
+            now = timezone.datetime.now()
+            month_start = timezone.datetime(now.year, now.month, 1)
+            month_start = make_aware(month_start)
+            num_comms = Commission.objects.filter(invoice__author=author). \
+                filter(allowance=True).filter(created__gte=month_start).count()
+            if num_comms == 0:
+                return True
+        return False
+
+    @staticmethod
+    def create_commission(author):
+        commission = Commission()
+        commission.sys_generated = False
+        commission.date_generated = timezone.now()
+        invoice = Invoice.get_open_invoice_for_author(author)
+        commission.invoice = invoice
+        commission.save()
+        return commission
+
+    @staticmethod
+    def create_allowance(author):
+        commission = Commission.create_commission(author)
+        commission.allowance = True
+        rate_card = RateCard.get_current_record()
+        commission.commission_due = rate_card.allowance
+        commission.save()
+        return commission
 
     class Meta:
         ordering = ['invoice', 'created', ]

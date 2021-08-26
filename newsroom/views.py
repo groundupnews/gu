@@ -29,6 +29,7 @@ from django.conf import settings as django_settings
 
 from . import models, settings, utils
 from .forms import ArticleForm, ArticleListForm, AdvancedSearchForm
+from payment.models import Commission
 
 logger = logging.getLogger(__name__)
 
@@ -615,12 +616,25 @@ def has_author(user):
 
 
 def account_profile(request):
+    if request.method == "POST":
+        if request.user.is_authenticated is True:
+            if has_author(request.user):
+                if Commission.can_bill_allowance(request.user.author):
+                    Commission.create_allowance(request.user.author)
+    allowance = False
+    allowance_processed = False
     if request.user.is_authenticated is True:
         if has_author(request.user):
+            allowance = Commission.can_bill_allowance(request.user.author)
+            if allowance is False and request.user.author.allowance is True:
+                allowance_processed = True
             if request.user.author.password_changed is False:
                 messages.add_message(request, messages.WARNING,
                                      "Please change your password.")
-    return render(request, "newsroom/account_profile.html")
+    return render(request, "newsroom/account_profile.html", {
+        'allowance': allowance,
+        'allowance_processed': allowance_processed
+    })
 
 def advanced_search(request):
     page = None
