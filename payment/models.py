@@ -643,7 +643,9 @@ class Commission(models.Model):
             month_start = timezone.datetime(now.year, now.month, 1)
             month_start = make_aware(month_start)
             num_comms = Commission.objects.filter(invoice__author=author). \
-                filter(allowance=True).filter(created__gte=month_start).count()
+                filter(allowance=True). \
+                filter(deleted=False). \
+                filter(created__gte=month_start).count()
             if num_comms == 0:
                 return True
         return False
