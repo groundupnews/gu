@@ -663,6 +663,7 @@ class Commission(models.Model):
     @staticmethod
     def create_allowance(author):
         commission = Commission.create_commission(author)
+        commission.description = "Expenses"
         commission.allowance = True
         rate_card = RateCard.get_current_record()
         commission.commission_due = rate_card.allowance
@@ -725,7 +726,8 @@ class PayeRequisition(models.Model):
             for invoice in invoices:
                 if invoice.fund not in dic:
                     dic[invoice.fund] = []
-                desc = "PAYE for " + str(invoice.requisition_number)
+                desc = "PAYE for " + str(invoice.requisition_number) + \
+                    + " (" + str(invoice.author) + ")"
                 dic[invoice.fund].append((desc, invoice.tax_paid))
             for fund, entries in dic.items():
                 invoice = Invoice.create_invoice(payee)
