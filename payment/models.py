@@ -727,7 +727,7 @@ class PayeRequisition(models.Model):
                 if invoice.fund not in dic:
                     dic[invoice.fund] = []
                 desc = "PAYE for " + str(invoice.requisition_number) + \
-                    + " (" + str(invoice.author) + ")"
+                    " (" + str(invoice.author) + ")"
                 dic[invoice.fund].append((desc, invoice.tax_paid))
             for fund, entries in dic.items():
                 invoice = Invoice.create_invoice(payee)
