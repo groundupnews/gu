@@ -1,7 +1,7 @@
 .footer-container {
     display: flex;
     justify-content: center;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
 }
 
 
@@ -33,7 +33,7 @@
 .footer-nav__links {
     display: flex;
     flex-direction: column;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     flex-basis: 80%;
     justify-content: space-between;
@@ -73,7 +73,7 @@ li.footer-nav__link {
 }
 
 .footer-contact__header {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-size: 28px;
     line-height: 32px;
     margin-top: 0px;

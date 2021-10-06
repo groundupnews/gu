@@ -6,19 +6,21 @@
 }
 
 .article__title {
-    font-family: 'Roboto Slab', serif;
-    font-size: 3.4rem;
-    line-height: 41px;
+    font-family: Inter,  san-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 50px;
+    letter-spacing: -1px;
+    margin-top: 15px;
     margin-bottom: 15px;
-    color: #000;
 }
 
 .article__subtitle {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 2rem;
+    font-family: Inter,  san-serif;
+    font-size: 22px;
+    line-height: 28px;
     margin-top: 15px;
     margin-bottom: 15px;
-    line-height: 28px;
 }
 
 .article__info {
@@ -87,7 +89,7 @@
 }
 
 .article__image__caption {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     background-color: #EFEFEF;
     color: #4b5253;
     font-weight: 600;
@@ -97,14 +99,13 @@
 }
 
 #article_body .caption {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', san-serif;
     background-color: #EFEFEF;
-    color: #4b5253;
-    font-weight: 600;
+    color: black;
     font-size: 14px;
-    line-height: 22px;
+    /* line-height: 22px;*/
     padding: 15px;
-    margin-top: -20px;
+    margin-top: -9px;*/
 }
 
 .article__content img {
@@ -112,31 +113,32 @@
 }
 
 div.editor-summary {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     background-color: #D6D6DA;
     padding-left: 30px;
     font-size: 1.6rem;
 }
 
 .article blockquote {
-    font-family: 'Roboto slab', sans-serif;
+    font-family: Inter,  san-serif;
     border-left: 5px solid #00b1F0;
     padding: 0 0 0 12px;
     margin: 6px 0 6px 0;
     padding-left: 20px;
     font-size: 2rem;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .pquote {
-    font-family: 'Roboto slab', sans-serif;
+    font-family: Inter,  san-serif;
     margin-top: 50px;
     margin-bottom: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 150%;
     font-size: 2.4rem;
+    font-weight: 600;
 }
 
 .pquote:before {
@@ -145,21 +147,21 @@ div.editor-summary {
     padding-top: 30px;
     padding-right: 20px;
     font-family: sans-serif;
-    color: #00b1F0;
+    color: #0250bb;
     font-weight: 600;
 }
 
 .article p, .article ul li, .article ol li {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.8rem;
+    font-family: Inter,  san-serif;
+    font-size: 2.2rem;
     margin-top: 2rem;
-    margin-bottom: 2rem;
 }
 
 .subheading, #article_body h2 {
-    font-family: 'Roboto slab', sans-serif;
+    font-family: Inter,  san-serif;
     margin-top: 30px;
     margin-bottom: 20px;
+    font-weight: bold;
     font-size: 2.4rem;
 }
 
@@ -183,19 +185,14 @@ div.editor-summary {
 }
 
 .article__copyright {
-    /* margin-top: 20px;*/
-    /* margin-bottom: 20px;*/
     padding: 16px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
 }
 
 .article__copyright p {
-    font-family: 'Open Sans', sans-serif;
+    font-family:  'Inter', san-serif;
     font-size: 14px;
-    line-height: 160%;
-    font-style: italic;
-    font-weight: 600;
 }
 
 .article__copyright p img {
@@ -233,7 +230,7 @@ div.editor-summary {
 }
 
 .article__comment__title {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     font-size: 2rem;
     text-align: center;
@@ -252,7 +249,7 @@ div.editor-summary {
 }
 
 .article__letter__button {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', san-serif;
     font-weight: 600;
     font-size: 2rem;
     background-color: #00B1F0;
@@ -268,7 +265,7 @@ div.editor-summary {
 
 
 .article__topics, .article__next {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     color: #4d4d4d;
     padding: 12px;
@@ -317,7 +314,7 @@ div.editor-summary {
 }
 
 .article .letters-header {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     margin-top: 30px;
     margin-bottom: 30px;
 }
@@ -334,7 +331,7 @@ div.editor-summary {
 }
 
 .panel-title > a:nth-child(1) {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-weight: bold;
     margin-left: 0px;
     color: #fff;
@@ -351,7 +348,7 @@ article figure, article p.caption {
     float: left;
     font-weight: 600;
     padding-right: 6px;
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
 }
 
 
@@ -365,12 +362,6 @@ article figure, article p.caption {
 }
 
 .article #related {
-    /*
-    font-family: 'Open Sans', sans-serif;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding: 15px;
-    background-color: #EEE;*/
     border-bottom: 1px solid #ebebe0;
 }
 
@@ -378,7 +369,7 @@ article figure, article p.caption {
     color: #00B1F0;
 }
 .article #related h3 {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     margin-top: 10px;
     margin-bottom: 20px;
 }
@@ -407,14 +398,6 @@ article figure, article p.caption {
     .article__content {
         margin-right: 0px;
         margin-bottom: 30px;
-    }
-
-    .article__title {
-        font-family: 'Roboto Slab', serif;
-        font-size: 2.8rem;
-        line-height: 34px;
-        margin-top: 15px;
-        margin-bottom: 15px;
     }
 
 /*    .article__subtitle {
@@ -533,22 +516,3 @@ article figure, article p.caption {
     font-size: 80%;
     border-bottom: 1px solid #ebebe0;
 }
-
-
-/* Preferable drop-case code that doesn't seem to be working at present */
-/*
-@supports (initial-letter: 7) or (-webkit-initial-letter: 7) {
-    #article_body p:nth-child(3):first-letter {
-        font-family: 'Roboto Slab', serif;
-        font-weight: 600;
-        color: #00B1F0;
-        font-size: 62px;
-        line-height: .7;
-        intial-letter: 7;
-        -webkit-initial-letter: 7;
-    }
-}
-
-@supports (not(initial-letter: 5)) and (not(-webkit-initial-letter: 5)) {
-}
-*/

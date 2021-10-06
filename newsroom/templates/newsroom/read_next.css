@@ -2,7 +2,7 @@
 }
 
 .recommended__header {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 40px;
@@ -14,7 +14,7 @@
 }
 
 .recommended__article {
-    display: flex;    
+    display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
 }
@@ -32,7 +32,7 @@
 }
 
 .recommended__article__text {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     color: #151F22;
 }
 

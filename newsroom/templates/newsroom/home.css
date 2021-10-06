@@ -41,7 +41,7 @@
 }
 
 .home__articles__article__text__summary {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 18px;
     line-height: 27px;
     padding-top: 12px;
@@ -87,7 +87,7 @@
 
 
 .home__articles__article__text__category {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 18px;
     line-height: 27px;
     color: #00b1F0;
@@ -95,21 +95,22 @@
 }
 
 .home__articles__article__text__date {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 14px;
     line-height: 16px;
     color: #666;
 }
 
 .home__articles__article__text__title {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
+    font-weight: 700 !important;
     font-size: 3rem;
     line-height: 40px;
     margin-top: 5px;
 }
 
 .home__articles__article__text__title a {
-   color: black;
+    color: black;
 }
 
 .home__articles__article__text__title a:hover {
@@ -117,13 +118,13 @@
 }
 
 .home__articles__article__text__summary {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 20px;
     line-height: 27px;
 }
 
 .home__articles__article__text__byline {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 14px;
     line-height: 20px;
 }
@@ -164,19 +165,19 @@
 }
 
 .home .more_articles__letters h2 {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 40px;
 }
 
 .home .more_articles__letters h3 {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-size: 2rem;
 }
 
 #latest-letters p {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     border-bottom: 2px solid #D6D6DA;
     padding-top: 5px;
     padding-bottom: 30px;
@@ -187,7 +188,7 @@
 }
 
 .home .more_articles__popular_qanda h2 {
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -232,7 +233,7 @@ h2#qanda {
 .home .more_articles__popular_qanda ol li:before, .home .more_articles__popular_qanda ul li:before {
     font-weight: bold;
     font-size: 3rem;
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     line-height: 1;
     width: 5%;
 }
@@ -240,7 +241,7 @@ h2#qanda {
 .home .more_articles__popular_qanda ol li a, .home .more_articles__popular_qanda ul li a {
     width: 90%;
     padding-left: 10px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-weight: 600;
     color: #333;
     font-size: 1.6rem;
@@ -305,11 +306,11 @@ h2#qanda {
     }
 */
 
-    .home__articles__article__text__title {
-        font-size: 20px;
-        line-height: 28px;
-        margin-top: 5px;
-    }
+    /* .home__articles__article__text__title { */
+    /*     font-size: 20px; */
+    /*     line-height: 28px; */
+    /*     margin-top: 5px; */
+    /* } */
 
     .home__articles__article__text__summary {
         font-size: 16px;

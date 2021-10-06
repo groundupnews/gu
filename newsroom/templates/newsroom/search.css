@@ -13,7 +13,7 @@
     padding: 15px;
     display: flex;
     align-items: center;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     flex-direction: column;
 }
 
@@ -145,7 +145,7 @@
 
 .search-result__title {
     color: #000;
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
     font-size: 2.2rem;
     line-height: 30px;
     margin-top: 5px;
@@ -157,20 +157,20 @@
 
 .search-result__sub-title {
     color: #000;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 18px;
     line-height: 27px;
 }
 
 .search-result__byline {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 14px;
     line-height: 16px;
     color: #666;
 }
 
 .search-result__pub-date {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     font-size: 14px;
     line-height: 16px;
     color: #666;
@@ -185,7 +185,7 @@
 }
 
 .search-result__download-button {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Inter,  san-serif;
     background-color: #00B1F0;
     background-image: none;
     border: none;

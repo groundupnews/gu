@@ -27,7 +27,7 @@ a.social-media__icon:nth-child(3), a.social-media__icon:nth-child(4) {
     color: white;
     text-decoration: none;
     text-transform: uppercase;
-    font-family: 'Roboto Slab', serif;
+    font-family: Inter,  san-serif;
 }
 
 .social-media__newsletter h1 {
