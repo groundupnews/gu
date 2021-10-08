@@ -9,18 +9,18 @@
     font-family: Inter,  san-serif;
     font-size: 40px;
     font-weight: 700;
-    line-height: 50px;
+    line-height: 45px;
     letter-spacing: -1px;
     margin-top: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .article__subtitle {
     font-family: Inter,  san-serif;
     font-size: 22px;
     line-height: 28px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .article__info {
@@ -61,8 +61,10 @@
 }
 
 .article__details__date-by {
-    padding-top: 6px;
-    margin-bottom: 6px;
+    padding-top: 4px;
+    margin-bottom: 4px;
+    font-size: 1.5rem;
+    line-height: 16px;
 }
 
 .article__details__share {
@@ -105,7 +107,8 @@
     font-size: 14px;
     /* line-height: 22px;*/
     padding: 15px;
-    margin-top: -9px;*/
+    margin-top: 0;
+    /* margin-top: -9px;*/
 }
 
 .article__content img {
@@ -153,8 +156,9 @@ div.editor-summary {
 
 .article p, .article ul li, .article ol li {
     font-family: Inter,  san-serif;
-    font-size: 2.2rem;
-    margin-top: 2rem;
+    font-size: 1.9rem;
+    margin-top: 14px;
+    margin-bottom: 0;
 }
 
 .subheading, #article_body h2 {
@@ -515,4 +519,9 @@ article figure, article p.caption {
     padding-bottom: 12px;
     font-size: 80%;
     border-bottom: 1px solid #ebebe0;
+}
+
+.embed-responsive-16by9 {
+    margin-top: 12px;
+
 }

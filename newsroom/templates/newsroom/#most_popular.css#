@@ -12,7 +12,6 @@
     color: #151F22;
     font-weight: 400;
     font-size: 1.7rem;
-    margin-bottom: 0;
 }
 
 #qanda ul {

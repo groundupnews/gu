@@ -1,7 +1,7 @@
 .home__article__summary {
     margin-top: 12px;
     padding-bottom: 6px;
-    border-bottom: 1px solid   #e6e6e6;
+    border-bottom: 2px solid   #e6e6e6;
 }
 
 
@@ -105,7 +105,7 @@
     font-family: Inter,  san-serif;
     font-weight: 700 !important;
     font-size: 3rem;
-    line-height: 40px;
+    line-height: 37px;
     margin-top: 5px;
 }
 
@@ -196,7 +196,7 @@
 
 .random_qanda, .random_letter, #toy {
     /* max-width: 500px;*/
-    background-color: lightgray;
+    background-color: #e6e6e6;
     padding: 12px;
 }
 

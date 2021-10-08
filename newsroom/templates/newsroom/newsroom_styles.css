@@ -71,9 +71,10 @@ article p.intro {
     font-weight: bold;
 }
 
-a {
+a, a:focus, a:hover {
     color: #0250bb;
 }
+
 
 /***********/
 
@@ -203,16 +204,6 @@ a {
 
     font-size: 1.53rem;
 }
-
-/* #top-article a, .article-summary a { */
-/*     color: #333; */
-/*     text-decoration: none; */
-/* } */
-
-/* #top-article .first-summary-title a:hover, */
-/* .summary-title a:hover { */
-/*     color: #26AAE2; */
-/* } */
 
 .thumbnail {
     margin-bottom: 10px;
