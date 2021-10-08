@@ -54,7 +54,7 @@
 }
 
 .home__articles_article__details a {
-    color: #00b1F0;
+    color: #0250bb;
 }
 
 /*
@@ -90,7 +90,7 @@
     font-family: Inter,  san-serif;
     font-size: 18px;
     line-height: 27px;
-    color: #00b1F0;
+    color: #0250bb;
     font-weight: 600;
 }
 
@@ -130,7 +130,7 @@
 }
 
 .home__articles__article__text__byline a {
-    color: #00b1F0;
+    color: #0250bb;
 }
 
 #home__sudoku {
@@ -249,7 +249,7 @@ h2#qanda {
 
 .home .more_articles__popular_qanda ol li a:hover, .home .more_articles__popular_qanda ul li a:hover {
     text-decoration: none;
-    color: #00b1F0;
+    color: #0250bb;
 }
 
 /*@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) { */
