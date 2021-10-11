@@ -342,13 +342,6 @@ ul.icons li {
     -ms-transition: all .3s;
 }
 
-div.editor-summary {
-    background-color: #E6E7E8;
-    padding: 12px;
-}
-
-
-
 @media (max-width: 699px) {
     #footer-container {
         width: 80%;

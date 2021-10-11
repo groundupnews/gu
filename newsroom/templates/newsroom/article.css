@@ -5,7 +5,7 @@
     margin-bottom: 30px;
 }
 
-.article__title {
+.article__title, #recopy__title {
     font-family: Inter,  san-serif;
     font-size: 36px;
     font-weight: 700;
@@ -15,7 +15,7 @@
     margin-bottom: 12px;
 }
 
-.article__subtitle {
+.article__subtitle, #recopy__subtitle {
     font-family: Inter,  san-serif;
     font-size: 20px;
     line-height: 28px;
@@ -113,12 +113,25 @@
     max-width: 100%;
 }
 
-div.editor-summary {
+.editor-summary {
+    margin-top: 14px;
+}
+
+.editor-summary ~ .editor-summary {
+    color: inherit;
+    margin-top: 0;
+}
+
+.editor-summary {
     font-family: Inter,  san-serif;
     background-color: #D6D6DA;
     padding-left: 30px;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
+
+
 
 .article blockquote {
     font-family: Inter,  san-serif;
