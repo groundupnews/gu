@@ -192,7 +192,7 @@ div.editor-summary {
     border-bottom: 1px solid #eee;
 }
 
-.article__copyright p {
+#article-copyright p {
     font-family:  'Inter', san-serif;
     font-size: 14px;
 }
