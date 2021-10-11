@@ -7,7 +7,7 @@
 
 .article__title {
     font-family: Inter,  san-serif;
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 700;
     line-height: 45px;
     letter-spacing: -1px;
@@ -17,7 +17,7 @@
 
 .article__subtitle {
     font-family: Inter,  san-serif;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 28px;
     margin-top: 12px;
     margin-bottom: 12px;
@@ -27,8 +27,6 @@
     margin-top: 12px;
     display:block;
 }
-
-
 
 .article__content {
     background-color: #fff;
@@ -357,6 +355,7 @@ article figure, article p.caption {
 
 
 #article_body  {
+    padding-bottom: 12px;
     margin-bottom: 14px;
     border-bottom: 1px solid #eee;
 }
@@ -477,6 +476,10 @@ article figure, article p.caption {
         padding-left: 25px;
     }
 
+    .article p, .article ul li, .article ol li {
+        font-family: Inter,  san-serif;
+        font-size: 1.7rem;
+    }
 }
 
 @media (min-width: 769px) {
