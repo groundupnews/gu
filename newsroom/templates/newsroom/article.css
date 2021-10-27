@@ -496,10 +496,8 @@ article figure, article p.caption {
     }
 }
 
-@media (min-width: 769px) {
-    .article__sidebar--undistracted .recommended__article__title {
-        font-size: 2rem;
-    }
+.recommended__article__title {
+    font-size: 2rem;
 }
 
 

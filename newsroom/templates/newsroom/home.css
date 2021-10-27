@@ -232,7 +232,7 @@ h2#qanda {
 
 .home .more_articles__popular_qanda ol li:before, .home .more_articles__popular_qanda ul li:before {
     font-weight: bold;
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-family: Inter,  san-serif;
     line-height: 1;
     width: 5%;
