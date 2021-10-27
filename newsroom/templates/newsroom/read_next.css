@@ -5,7 +5,7 @@
     font-family: Inter,  san-serif;
     font-weight: 600;
     margin-top: 10px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .recommended__article-list {
@@ -16,7 +16,6 @@
 .recommended__article {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 30px;
 }
 
 .recommended__article__img-container {
