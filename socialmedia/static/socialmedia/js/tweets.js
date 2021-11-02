@@ -35,7 +35,7 @@ function createCallback( s ){
 
 // Appended to automatically generated tweets to make them unique
 tweet_suffixes = [
-    ".",
+    " ",
     ":",
     " :",
     " |",
