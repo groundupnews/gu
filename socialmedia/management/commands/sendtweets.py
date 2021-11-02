@@ -7,6 +7,7 @@ import sys
 import tweepy
 from socialmedia.settings import TIME_BETWEEN_TWEETS
 from newsroom.models import Article
+from newsroom.utils import get_first_image
 import traceback
 
 
@@ -62,14 +63,22 @@ def process(days, max_tweets):
                     text += " @" + str(handle.name)
                 try:
                     if tweet.image:
-                        image_file = settings.MEDIA_ROOT + str(tweet.image)
+                        image_file = str(tweet.image)
+                        print("Image: ", image_file)
                         api.update_with_media(filename=image_file, status=text)
                         print("Sendtweets: Sending tweet with image: {}".
                               format(text))
                     else:
-                        api.update_status(status=text)
-                        print("Sendtweets: Sending tweet: {}".
-                              format(text))
+                        image_file = get_first_image(article.body)
+                        if image_file:
+                            print("Image: ", image_file)
+                            api.update_with_media(filename=image_file, status=text)
+                            print("Sendtweets: Sending tweet with image: {}".
+                                  format(text))
+                        else:
+                            api.update_status(status=text)
+                            print("Sendtweets: Sending tweet: {}".
+                                  format(text))
                     tweet.status = "sent"
                     tweet.save()
                     article.last_tweeted = timezone.now()
