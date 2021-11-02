@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.sites.models import Site
 import sys
 import tweepy
+from urllib.parse import unquote
 from socialmedia.settings import TIME_BETWEEN_TWEETS
 from newsroom.models import Article
 from newsroom.utils import get_first_image
@@ -63,15 +64,17 @@ def process(days, max_tweets):
                     text += " @" + str(handle.name)
                 try:
                     if tweet.image:
-                        image_file = str(tweet.image)
+                        image_file = settings.MEDIA_ROOT + str(tweet.image)
                         print("Image: ", image_file)
                         api.update_with_media(filename=image_file, status=text)
                         print("Sendtweets: Sending tweet with image: {}".
                               format(text))
                     else:
-                        image_file = get_first_image(article.body)
+                        image_file = unquote(get_first_image(article.body))
+                        image_file = settings.MEDIA_ROOT + \
+                            image_file[len(settings.MEDIA_URL):]
+                        print("Image: ", image_file)
                         if image_file:
-                            print("Image: ", image_file)
                             api.update_with_media(filename=image_file, status=text)
                             print("Sendtweets: Sending tweet with image: {}".
                                   format(text))
