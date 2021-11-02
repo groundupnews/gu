@@ -103,11 +103,22 @@
 
 .home__articles__article__text__title {
     font-family: Inter,  san-serif;
-    font-weight: 700 !important;
-    font-size: 2.3rem;
+    font-weight: bold !important;
+    font-size: 2.5rem;
     line-height: 3rem;
     margin-top: 5px;
 }
+
+@media (min-width: 769px) {
+    .home__articles__article__text__title {
+        font-family: Inter,  san-serif;
+        font-weight: bold !important;
+        font-size: 3rem;
+        line-height: 3.2rem;
+        margin-top: 5px;
+    }
+}
+
 
 .home__articles__article__text__title a {
     color: black;
