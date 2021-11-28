@@ -540,3 +540,33 @@ article figure, article p.caption {
     margin-top: 12px;
 
 }
+{% if article.undistracted_layout %}
+
+@media (min-width: 992px) {
+
+    p {
+        max-width: 700px;
+    }
+
+    p.very-wide img {
+        margin-left: -96px;
+        width: 140% !important;
+    }
+
+    p.wide  {
+        margin-left: -50px;
+        width: 110% !important;
+    }
+
+    p.caption-wide {
+        font-family: Inter,  san-serif;
+        font-size: 14px;
+        line-height: 22px;
+        padding: 15px;
+        padding-top: 5px;
+        background-color: white !important;
+    }
+
+
+}
+{% endif %}

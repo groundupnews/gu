@@ -20,4 +20,10 @@ CKEDITOR.stylesSet.add( 'gu_styles', [
       attributes: { 'class': 'subheading' } },
     { name: 'Youtube', element: 'div',
       attributes: { 'class': 'youtube'}},
+    { name: 'Wide image', element: 'p',
+      attributes: { 'class': 'wide'}},
+    { name: 'Very wide image', element: 'p',
+      attributes: { 'class': 'very-wide'}},
+    { name: 'Wide caption', element: 'p',
+      attributes: { 'class': 'caption-wide'}},
 ] );
