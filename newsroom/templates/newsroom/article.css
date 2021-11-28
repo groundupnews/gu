@@ -544,7 +544,7 @@ article figure, article p.caption {
 
 @media (min-width: 992px) {
 
-    p {
+    p, ul {
         max-width: 700px;
     }
 
