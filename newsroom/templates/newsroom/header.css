@@ -120,7 +120,8 @@ nav#main-menu > ul > li > a {
 /* vertical-align: super; */
     height: 40px;
     margin-right: 15px;
-    margin-top: -34px;
+    /*margin-top: -34px;*/
+    margin-top: 0;
 }
 }
 
@@ -148,5 +149,3 @@ nav#main-menu > ul > li > a {
     content: "\f002";
     font-size: 0.95em;
 }
-
-
