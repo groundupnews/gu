@@ -547,7 +547,7 @@ article figure, article p.caption {
         margin-left: 30px;
         margin-right: 30px;
         font-size: 2.2rem;
-        font-size: 3rem;
+        font-size: 2.7rem;
     }
     .article ul {
         margin-left: 5px;
@@ -555,18 +555,18 @@ article figure, article p.caption {
     .article ul li {
         margin-left: 10px;
         font-size: 2.2rem;
-        font-size: 3rem;
+        font-size: 2.7rem;
     }
 
     .article p.intro {
         font-size: 2.4rem !important;
-        font-size: 3.2rem !important;
+        font-size: 2.9rem !important;
     }
     h2.subheading, #article_body h2 {
         margin-left: 30px;
         margin-right: 30px;
         font-size: 2.7rem !important;
-        font-size: 3.5em !important;
+        font-size: 3.2em !important;
     }
 
     #article_body .editor-summary h2, h2.editor-summary  {
@@ -604,18 +604,18 @@ article figure, article p.caption {
         padding-left: 32px !important;
         padding-right: 32px !important;
         font-size: 2.2rem !important;
-        font-size: 3rem !important;
+        font-size: 2.7rem !important;
     }
     .article__title {
         font-size: 4.2rem;
-        font-size: 5.2rem;
-        line-height: 6rem;
+        font-size: 4.9rem;
+        line-height: 5.7rem;
         margin-bottom: 18px;
     }
     .article__subtitle {
         font-size: 2.3rem;
-        font-size: 3.2rem;
-        line-height: 4rem;
+        font-size: 2.9rem;
+        line-height: 3.7rem;
     }
 
 }
