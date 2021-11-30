@@ -566,7 +566,7 @@ article figure, article p.caption {
         margin-left: 30px;
         margin-right: 30px;
         font-size: 2.7rem !important;
-        font-size: 3.2em !important;
+        font-size: 2.9rem !important;
     }
 
     #article_body .editor-summary h2, h2.editor-summary  {
@@ -615,7 +615,7 @@ article figure, article p.caption {
     .article__subtitle {
         font-size: 2.3rem;
         font-size: 2.9rem;
-        line-height: 3.7rem;
+        line-height: 3.5rem;
     }
 
 }
