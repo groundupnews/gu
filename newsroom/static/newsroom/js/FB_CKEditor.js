@@ -5,6 +5,7 @@ function extractPath(fileUrl) {
     const lenMedia = "/media/".length - 1;
     const versions = "/_versions/";
     const lenVer = "/_versions/".length;
+    const lenUpload = "uploads/".length;
 
     dir = dir.substring(lenMedia);
     if (dir.substring(0, lenVer) === versions) {
@@ -12,7 +13,9 @@ function extractPath(fileUrl) {
     }
     dir = dir.substring(1);
     dir = decodeURI(dir);
-    if (dir.includes("uploads/images")) dir = "images";
+    if (dir.substr(0, lenUpload) === "uploads/") {
+        dir = dir.substr(lenUpload);
+    }
     return dir;
 }
 
@@ -30,11 +33,11 @@ jQuery(document).ready(function ($) {
     console.log("fileUrl", fileUrl);
     if (fileUrl) {
         dir = decodeURI(extractPath(fileUrl));
+        console.log("dir immediately after extract", dir);
     } else {
         dir = localStorage.getItem('fb_dir');
         if(dir) {
             dir = decodeURI(dir);
-            if (dir.substr(0, "uploads".length) === "uploads") dir = "images";
         } else {
             dir = "images";
         }

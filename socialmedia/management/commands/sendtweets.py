@@ -71,17 +71,15 @@ def process(days, max_tweets):
                               format(text))
                     else:
                         image_file = unquote(get_first_image(article.body))
-                        image_file = settings.MEDIA_ROOT + \
-                            image_file[len(settings.MEDIA_URL):]
-                        print("Image: ", image_file)
                         if image_file:
+                            image_file = settings.MEDIA_ROOT + \
+                                image_file[len(settings.MEDIA_URL):]
                             api.update_with_media(filename=image_file, status=text)
                             print("Sendtweets: Sending tweet with image: {}".
                                   format(text))
                         else:
                             api.update_status(status=text)
-                            print("Sendtweets: Sending tweet: {}".
-                                  format(text))
+                            print("Sendtweets: Sending tweet: {}".format(text))
                     tweet.status = "sent"
                     tweet.save()
                     article.last_tweeted = timezone.now()
