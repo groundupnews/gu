@@ -7,7 +7,6 @@ function get_body() {
 
 let total_words = function(elem) {
     const word_array = elem.innerText.split(/[\s]+/);
-    console.log(word_array);
     const filtered = word_array.filter(function (el) {
         return el != null && el.trim() != "" && el != "&nbsp;";
     });
