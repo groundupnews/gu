@@ -679,8 +679,10 @@ p.author-description, p.disclaimer, p.correction {
 
 #support_gu {
 /*    border-top: 1px solid #eee;*/
-    color: red;
+    /* color: red; */
     font-weight: bold;
+    border-bottom: 1px solid  #ebebe0;
+    padding-bottom: 12px;
 }
 
 #support_gu .support_gu_why a {
@@ -688,10 +690,7 @@ p.author-description, p.disclaimer, p.correction {
     text-decoration: underline;
 }
 
-
 /* Advert */
-
-
 
 .frontpage-advert, #sidebar-advert, .image-max-100pc {
     max-width: 100%;
