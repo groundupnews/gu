@@ -8,7 +8,7 @@ from django.utils import timezone
 from letters.models import Letter
 from newsroom import utils
 from newsroom.models import Article, Category, Topic, Author, Correction
-from pgsearch.utils import searchPostgresDB
+from pgsearch.utils import searchArticlesAndPhotos
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
@@ -266,8 +266,7 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
-        articles = searchPostgresDB("cow dog", Article, 'english', False,
-                                    "title", "subtitle", "body")
+        articles = searchArticlesAndPhotos("cow dog")
         self.assertEqual(len(articles), 1)
 
     def test_corrections(self):

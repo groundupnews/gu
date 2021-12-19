@@ -24,7 +24,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from letters.models import Letter
 from letters.settings import DAYS_AGO
 from agony.models import QandA
-from pgsearch.utils import searchPostgresDB, searchArticlesAndPhotos
+from pgsearch.utils import searchArticlesAndPhotos
+#from pgsearch.utils import searchPostgresDB
 from django.conf import settings as django_settings
 
 from . import models, settings, utils
@@ -704,7 +705,6 @@ def advanced_search(request):
         except:
             logger.error("Advanced Search failed to get num_pages")
             num_pages = 1
-
 
     return render(request, 'search/search.html', {'query': query,
                                                   'page': page,

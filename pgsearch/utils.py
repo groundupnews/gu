@@ -10,8 +10,8 @@ from agony.models import QandA
 from django.utils import timezone
 
 
-from django.contrib.postgres.search import SearchVector, SearchRank, \
-    SearchQuery
+#from django.contrib.postgres.search import SearchVector, SearchRank, \
+#    SearchQuery
 
 import shlex
 import string
@@ -38,18 +38,18 @@ def createSearchQuery(list_of_terms):
         return None
 
 
-def searchPostgresDB(search_string, Table, config, rank, *fields):
-    list_of_terms = parseSearchString(search_string)
-    search_query = createSearchQuery(list_of_terms)
-    if rank is True:
-        vector = SearchVector(*fields, config=config)
-        objs = Table.objects.annotate(rank=SearchRank(vector, search_query)).\
-            order_by('-rank')
-    else:
-        objs = Table.objects.annotate(search=SearchVector(*fields,
-                                                          config=config),).\
-                filter(search=search_query)
-    return objs
+# def searchPostgresDB(search_string, Table, config, rank, *fields):
+#     list_of_terms = parseSearchString(search_string)
+#     search_query = createSearchQuery(list_of_terms)
+#     if rank is True:
+#         vector = SearchVector(*fields, config=config)
+#         objs = Table.objects.annotate(rank=SearchRank(vector, search_query)).\
+#             order_by('-rank')
+#     else:
+#         objs = Table.objects.annotate(search=SearchVector(*fields,
+#                                                           config=config),).\
+#                 filter(search=search_query)
+#     return objs
 
 
 def searchArticles(search_string=None,
@@ -171,7 +171,7 @@ def searchArticlesAndPhotos(search_string=None,
                                   values("pk", "title", "subtitle", "cached_summary_image",
                                          "obj_type", "slug", "body",
                                          "fullname",  "published")
-
+        
     if inc_photos:
         photos = searchPhotos(search_string, author_pk,
                               from_date, to_date). \
