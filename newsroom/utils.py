@@ -239,11 +239,11 @@ def linkImages(soup):
         return soup_copy
 
 def warnImageTooBig(soup):
-    base_https_url = "https://" + Site.objects.get_current().domain
-    base_http_url = "http://" + Site.objects.get_current().domain
-    images = soup.find_all('img')
-    for img in images:
-        try:
+    try:
+        base_https_url = "https://" + Site.objects.get_current().domain
+        base_http_url = "http://" + Site.objects.get_current().domain
+        images = soup.find_all('img')
+        for img in images:
             if base_https_url == img['src'][:len(base_https_url)]:
                 img['src'] = img['src'][len(base_https_url):]
             if base_http_url == img['src'][:len(base_http_url)]:
@@ -261,7 +261,7 @@ def warnImageTooBig(soup):
                 img['class'] = img.get('class', []) + ['too_big']
             elif size > 150000:
                 img['class'] = img.get('class', []) + ['warn_big']
-        except:
+    except:
             pass
 
 def replaceBadHtmlWithGood(html):

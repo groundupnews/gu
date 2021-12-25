@@ -4,8 +4,8 @@ header {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     padding: 12px 4px 10px 4px;
-    position: sticky;
-    top: -52px;
+    /*position: sticky;
+    top: -52px;*/
     z-index: 1000;
     width: 100%;
 }
