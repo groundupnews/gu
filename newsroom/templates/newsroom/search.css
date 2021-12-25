@@ -7,13 +7,16 @@
     padding: 15px;
 }
 
+@media (min-width:787px) {
+
+
 .adv-filter-box {
     background-color: #fff;
     margin-bottom: 15px;
     padding: 15px;
-    display: flex;
     align-items: center;
     font-family: Inter,  san-serif;
+    display: flex;
     flex-direction: column;
 }
 
@@ -22,9 +25,11 @@
 }
 
 .adv-filter-form__row {
-    display: flex;
     margin-bottom: 10px;
+    display: flex;
 }
+
+
 
 .adv-filter-header {
     display: flex;
@@ -216,14 +221,24 @@
     }
 
 }
-
+}
 @media (max-width: 1024px) {
-    .adv-filter-box {
-        display: none;
+    .adv-filter-form input, .adv-filter-form select {
+        max-width: 100%;
+        margin-bottom: 12px;
+    }
+    .adv-filter-form {
+        margin-bottom: 16px;
+    }
+    .adv-filter-submit {
+        margin-bottom: 12px;
     }
 }
 
 @media (max-width: 768px) {
+    .adv-filter-form input {
+        display block;
+    }
     .search-result {
         flex-direction: column;
     }
