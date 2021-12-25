@@ -647,34 +647,45 @@ def advanced_search(request):
         inc_articles = True
         inc_photos = False
     else:
-        inc_articles = True if search_type == 'article' or search_type == 'both' else False
+        inc_articles = True \
+            if search_type == 'article' or search_type == 'both' else False
 
     if request.GET.get('search_type') == 'image':
         inc_photos = True
         inc_articles = False
     else:
-        inc_photos = True if search_type == 'image' or search_type == 'both' else False
+        inc_photos = True \
+            if search_type == 'image' or search_type == 'both' else False
 
     adv_search_form = AdvancedSearchForm(request.GET or None)
 
     if adv_search_form.is_valid():
         cleaned_adv_form = adv_search_form.cleaned_data
-        author_pk = cleaned_adv_form.get("author").pk if cleaned_adv_form.get("author") else None
-        category_pk = cleaned_adv_form.get("category").pk if cleaned_adv_form.get("category") else None
-        topic_pk = cleaned_adv_form.get("topics").pk if cleaned_adv_form.get("topics") else None
-        try:
-            article_list = searchArticlesAndPhotos(cleaned_adv_form.get("adv_search"),
-                                                   inc_articles,
-                                                   inc_photos,
-                                                   author_pk,
-                                                   first_author_only,
-                                                   category_pk,
-                                                   topic_pk,
-                                                   cleaned_adv_form.get("date_from"),
-                                                   cleaned_adv_form.get("date_to"))
-        except:
-            logger.error("Advanced Search Failed calling searchArticlesAndPhotos")
+        author_pk = cleaned_adv_form.get("author").pk \
+            if cleaned_adv_form.get("author") else None
+        category_pk = cleaned_adv_form.get("category").pk \
+            if cleaned_adv_form.get("category") else None
+        topic_pk = cleaned_adv_form.get("topics").pk \
+            if cleaned_adv_form.get("topics") else None
+        if request.GET.get("is_simple") == "true" and \
+           cleaned_adv_form.get("adv_search") == "":
             article_list = models.Article.objects.none()
+        else:
+            try:
+                article_list = searchArticlesAndPhotos(
+                    cleaned_adv_form.get("adv_search"),
+                    inc_articles,
+                    inc_photos,
+                    author_pk,
+                    first_author_only,
+                    category_pk,
+                    topic_pk,
+                    cleaned_adv_form.get("date_from"),
+                    cleaned_adv_form.get("date_to"))
+            except:
+                logger.error(
+                    "Advanced Search Failed calling searchArticlesAndPhotos")
+                article_list = models.Article.objects.none()
     else:
         article_list = models.Article.objects.none()
 
@@ -705,13 +716,14 @@ def advanced_search(request):
             logger.error("Advanced Search failed to get num_pages")
             num_pages = 1
 
-    return render(request, 'search/search.html', {'query': query,
-                                                  'page': page,
-                                                  'page_num': page_num,
-                                                  'num_pages': num_pages,
-                                                  'num_items': len(article_list),
-                                                  'search_type': search_type,
-                                                  'adv_search_form': adv_search_form})
+    return render(request, 'search/search.html',
+                  {'query': query,
+                   'page': page,
+                   'page_num': page_num,
+                   'num_pages': num_pages,
+                   'num_items': len(article_list),
+                   'search_type': search_type,
+                   'adv_search_form': adv_search_form})
 
 
 
