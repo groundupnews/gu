@@ -1,0 +1,41 @@
+{% if article.pk and perms.newsroom.change_article %}
+    <div id="edit-menu">
+        <ul>
+            <li>
+                <a class="btn btn-primary btn-sm" href="{% url 'admin:newsroom_article_change' article.pk %}">
+                    Edit in admin
+                </a></li>
+            {% if not article.is_published %}
+                <li class="btn" id="publish-now">
+                    <a href="#">
+                        Publish
+                    </a>
+                </li>
+            {% endif %}
+            {% if article.stickiness > 0 %}
+                <li id="make-unsticky">
+                    <a class="btn btn-primary btn-sm" href="#">
+                        Unsticky
+                    </a>
+                </li>
+            {% else %}
+                <li id="make-top-story">
+                    <a class="btn btn-primary btn-sm" href="#">
+                        Make top story
+                    </a>
+                </li>
+            {% endif %}
+            <li>
+                <button class="btn btn-primary btn-sm" id="edit-toggle" onclick="toggleEditables(this)">
+                    Edit on
+                </button>
+            </li>
+            <li>
+                <a class="btn btn-primary btn-sm" id="edit-menu-save" href="#"
+                   onclick="document.getElementById('saveedits').click()" style="display:none">
+                    Save
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

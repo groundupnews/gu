@@ -17,6 +17,82 @@ function getPureArticle()
 }
 
 
+{% if can_edit %}
+
+var edit_mode = false;
+
+function initializeEditors()
+{
+    function update_form(editor, field) {
+	document.getElementById(field).value =
+	    CKEDITOR.instances[editor].getData();
+    }
+
+    CKEDITOR.inline( 'article_title', {
+	customConfig: "{% static 'newsroom/js/ck_inline_plaintext_config.js' %}"
+    });
+    CKEDITOR.inline( 'article_subtitle', {
+	customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+    });
+    {% if article.cached_primary_image %}
+    CKEDITOR.inline( 'article_primary_image_caption', {
+	customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
+    });
+    {% endif %}
+
+    CKEDITOR.inline( 'article_body', {
+	customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
+    });
+
+    for(const instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].on('change', function() {
+            document.getElementById("edit-menu-save").style.display = "inherit";
+            let id = instance.replace("article_", "id_");
+            update_form(instance, id);
+        });
+    }
+}
+
+function destroyEditors()
+{
+    for(const instance in CKEDITOR.instances)
+        CKEDITOR.instances[instance].destroy();
+}
+
+function setEditables()
+{
+    let elems = document.getElementsByClassName("editable");
+    for (let elem of elems) {
+        if (edit_mode) {
+            elem.contentEditable = 'true';
+            if (elem.style.display == "none") {
+                elem.style.display = "inherit";
+            }
+            elem.classList.add('edit-on');
+        } else {
+            destroyEditors();
+            elem.contentEditable = 'false';
+            if (elem.textContent.trim() == "") {
+                elem.style.display = "none";
+            }
+            elem.classList.remove('edit-on');
+        }
+    }
+    if (edit_mode) initializeEditors();
+}
+
+function toggleEditables(elem)
+{
+    edit_mode = !edit_mode;
+    if (edit_mode)
+        elem.textContent = "Edit off";
+    else
+        elem.textContent = "Edit on";
+    setEditables();
+}
+
+{% endif %}
+
 jQuery(document).ready(function ($) {
 
     $('#twitter-share').click(function(){
@@ -76,54 +152,31 @@ jQuery(document).ready(function ($) {
 	return false;
     });
 
-    function update_form(editor, field) {
-	document.getElementById(field).value =
-	    CKEDITOR.instances[editor].getData();
-    }
+/*    $('#article_form').on('submit', function(e){
 
-    CKEDITOR.inline( 'article_title', {
-	customConfig: "{% static 'newsroom/js/ck_inline_plaintext_config.js' %}"
+        e.preventDefault();
+
+        $.ajax({
+            type : "POST",
+            url: "{% url 'newsroom:article.detail' article.slug %}",
+            data: {
+                document.getElementById(article_form).serialize();
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                dataType: "json",
+            },
+
+            success: function(data){
+                $('#output').html(data.msg)
+            },
+
+            failure: function() {
+                alert("Failure!");
+            }
+        });
+
+
     });
-    CKEDITOR.inline( 'article_subtitle', {
-	customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
-    });
-    {% if article.cached_primary_image %}
-    CKEDITOR.inline( 'article_primary_image_caption', {
-	customConfig: "{% static 'newsroom/js/ck_inline_basic_config.js' %}"
-    });
-    {% endif %}
-
-    CKEDITOR.inline( 'article_body', {
-	customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
-    });
-
-
-    CKEDITOR.instances.article_title.on('change', function()
-	{
-	    update_form("article_title",
-			"id_title");
-	});
-
-    CKEDITOR.instances.article_subtitle.on('change', function()
-	{
-	    update_form("article_subtitle",
-			"id_subtitle");
-	});
-
-
-    {% if article.cached_primary_image %}
-    CKEDITOR.instances.article_primary_image_caption.on('change', function()
-	{
-	    update_form("article_primary_image_caption",
-			"id_primary_image_caption");
-	});
-    {% endif %}
-
-    CKEDITOR.instances.article_body.on('change', function()
-	{
-	    update_form("article_body",
-			"id_body");
-	});
+*/
     {% endif %}
 });
 

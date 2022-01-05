@@ -82,12 +82,12 @@
 	</li>
         {% if request.user.is_staff %}
             <li class="dropdown-btn">
-	        <a href="#">
-                    Admin<i class="glyphicon glyphicon-chevron-down"></i>
-                </a>
-	        <ul class="dropdown-menu">
-                    {% include 'newsroom/staff_menu.html' %}
-	        </ul>
+	    <a href="#">
+            Admin<i class="glyphicon glyphicon-chevron-down"></i>
+            </a>
+	    <ul class="dropdown-menu">
+            {% include 'newsroom/staff_menu.html' %}
+	    </ul>
             </li>
         {% elif request.user.is_authenticated %}
             <li>

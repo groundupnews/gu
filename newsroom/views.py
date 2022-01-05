@@ -100,7 +100,8 @@ class HomePage(ArticleList):
 
 
 home_page_view = HomePage.as_view()
-home_page_view = last_modified(last_article_modified)(home_page_view)
+# For last modified caching, uncomment this. Extreme but works.
+# home_page_view = last_modified(last_article_modified)(home_page_view)
 
 
 class OpinionAnalysisList(ArticleList):

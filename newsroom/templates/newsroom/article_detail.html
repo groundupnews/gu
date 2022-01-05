@@ -66,10 +66,16 @@
 {% endblock %}
 
 
-{% block admin-area-additional %}
-    {% if request.user.is_staff %}
-        <div id="editing-article">
-        </div>
+{% block admin-area %}
+    {% if request.user.is_staff and can_edit %}
+	<div id="admin-area">
+            {% include 'newsroom/edit_menu.html' %}
+            <div id="admin-user">
+		You: {{request.user}}
+            </div>
+            <div id="editing-article">
+            </div>
+	</div>
     {% endif %}
 {% endblock %}
 

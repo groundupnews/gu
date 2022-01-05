@@ -645,8 +645,8 @@ p.author-description, p.disclaimer, p.correction {
 
 #admin-area {
     position: fixed;
-    top: 80px;
-    right: 10vw;
+    top: 90px;
+    right: 1vw;
     margin-bottom: 20px;
 }
 
@@ -656,7 +656,7 @@ p.author-description, p.disclaimer, p.correction {
     }
 }
 
-#admin-user, .editing-user {
+#admin-user, .editing-user, #editing-article {
     font-weight: bold;
     background-color: #e5ffff;
     padding: 10px;
@@ -664,9 +664,29 @@ p.author-description, p.disclaimer, p.correction {
     display: block;
 }
 
-.editing-user {
+#editing-article, .editing-user {
     background-color: pink;
 }
+
+#editing-article {
+    display: none;
+}
+
+#edit-menu ul {
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+#edit-menu li {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 10px;
+    list-style-type: none;
+}
+
 
 #support-article p {
     margin-top: 3px;
@@ -1008,11 +1028,16 @@ Single-colored icons can be modified like so:
 /********************/
 
 {% if can_edit %}
+
 img.warn_big {
     border: 2px solid yellow;
 }
 img.too_big {
     border: 2px solid red;
+}
+
+.edit-on {
+    border: 1px dotted gray;
 }
 
 {% endif %}

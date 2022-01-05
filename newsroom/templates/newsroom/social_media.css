@@ -13,12 +13,11 @@ a.social-media__icon:nth-child(3), a.social-media__icon:nth-child(4) {
 }
 
 .social-media__icon img {
-    min-width: 100px;
-    min-height: 100px;
+    max-width: 120px;
+    max-height: 120px;
 }
 
 .social-media__newsletter {
-    margin: 12px auto 12px auto;
     padding-top: 12px;
     padding-bottom: 12px;
     background-color: #151F22;
@@ -28,10 +27,11 @@ a.social-media__icon:nth-child(3), a.social-media__icon:nth-child(4) {
     text-decoration: none;
     text-transform: uppercase;
     font-family: Inter,  san-serif;
+    display: inline-block;
 }
 
 .social-media__newsletter h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-top: 10px;
     margin-bottom: 10px;
 }

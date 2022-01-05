@@ -68,16 +68,26 @@ $(document).ready(function() {
 		        $("#article-content").prepend($msg);
 	        }
 	        if ($("#editing-article").length) {
-		    num_users = json["users"].length;
+		    let num_users = json["users"].length;
 		    var editor_html = "";
-		    for (var i = 0; i < num_users; ++i) {
-		        editor_html += "<span class='editing-user'>" +
-			               json["users"][i] +
-			               "</span>";
-		    }
-		    $("#editing-article").html(editor_html);
+                    if (num_users) {
+                        editor_html += "Other editors<br/>"
+                        for (var i = 0; i < num_users; ++i) {
+		            editor_html += "<span class='editing-user'>" +
+			                            json["users"][i] +
+			        "</span>";
+		        }
+                        document.getElementById('editing-article').innerHTML =
+                            editor_html;
+                        document.getElementById('editing-article').
+                            style.display = "block";
+                    } else {
+                        document.getElementById('editing-article').style.
+                            display = "none";
+                    }
                     if (checkFormChanged()) {
-                        $("#admin-user").html("{{request.user}} (changed)");
+                        document.getElementById("admin-user").innerHTML =
+                            "You: {{request.user}} (changed)";
                     }
 	        }
 	    },

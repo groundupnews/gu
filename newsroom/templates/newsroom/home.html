@@ -1,7 +1,7 @@
 {% extends 'newsroom/article_list.html' %}
 
 {% block title %}
-  GroundUp: South African news that matters
+    GroundUp: South African news that matters
 {% endblock %}
 
 {% block article-list %}
@@ -28,13 +28,11 @@
                 <div class="more_articles__qanda">{% include "agony/qanda_snippet.html" %}</div>
             </div>
             <div class="col-xs-12 col-md-6">
-                <div class="more_articles__letters">{% include 'letters/letters.html' %}</div>
+                <div class="more_articles__letters">
+                    {% include 'letters/letters.html' %}
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {% include 'newsroom/social_media.html' %}
-            </div>
-        </div>
+        {% include 'newsroom/social_media.html' %}
     </div>
 {% endblock %}

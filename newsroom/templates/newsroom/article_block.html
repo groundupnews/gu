@@ -1,14 +1,11 @@
 
 <div class="{% if article.undistracted_layout %}col-xs-12  col-md-push-1 col-md-10"{% else %}col-xs-12 col-md-8"{% endif %}>
-    <h1 id="article_title" class="article__title" {% if can_edit %} contenteditable="true" {% endif %} >
+    <h1 id="article_title" class="article__title {% if can_edit %} editable {% endif %}" >
         {{ article.title|safe }}
     </h1>
     {% if article.subtitle %}
         <h2 id="article_subtitle"
-            class="article__subtitle"
-            {% if can_edit %}
-            contenteditable="true"
-            {% endif %}>
+            class="article__subtitle {% if can_edit %} editable {% endif %}">
             {{ article.subtitle|safe }}
         </h2>
     {% else %}
@@ -16,8 +13,9 @@
         {% endcomment %}
         {% if can_edit %}
 	    <h2 id="article_subtitle"
-                class="article__subtitle"
-                contenteditable="true">{{ article.subtitle|safe }}</h2>
+                class="article__subtitle editable">
+                {{ article.subtitle|safe }}
+            </h2>
         {% endif %}
     {% endif %}
     <div class="article__details__date-by">
@@ -55,7 +53,7 @@
                 {% if article.primary_image_caption %}
 	            <figcaption id="article_primary_image_caption"
 		                {% if can_edit %}
-		                contenteditable="true"
+                                class="editable"
 		                {% endif %} >
 	                {{article.primary_image_caption|safe}}
 	            </figcaption>
@@ -64,7 +62,7 @@
 	            {% endcomment %}
 	            {% if can_edit %}
 	                <figcaption id="article_primary_image_caption"
-                                    contenteditable="true">
+                                    class="editable">
 	                    {{article.primary_image_caption|safe}}
 	                </figcaption>
 	            {% endif %}
@@ -75,7 +73,7 @@
 
     <div id="article_body"
          {% if can_edit %}
-         contenteditable="true"
+         class="editable"
          {% endif %}>
         {{article_body|safe}}
     </div>

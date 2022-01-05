@@ -120,15 +120,6 @@
                 {% endblock %}
 
 	        {% block admin-area %}
-	            {% if request.user.is_staff and can_edit %}
-	                <div id="admin-area">
-	                    <div id="admin-user">
-		                {{request.user}}
-	                    </div>
-	                    {% block admin-area-additional %}
-	                    {% endblock %}
-	                </div>
-	            {% endif %}
 	        {% endblock %}
             </div>
 
