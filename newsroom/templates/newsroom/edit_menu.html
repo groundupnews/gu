@@ -25,8 +25,23 @@
             {% if not article.is_published %}
                 <li>
                     <button id="publish-now"
-                            class="btn btn-primary btn-sm">
+                            class="btn btn-primary btn-sm btn-warning">
                         Publish
+                    </button>
+                </li>
+            {% endif %}
+
+            {% if article.stickiness > 0 %}
+                <li >
+                    <button id="make-unsticky"
+                            class="btn btn-primary btn-sm btn-warning">
+                        Unsticky
+                    </button>
+                </li>
+            {% else %}
+                <li id="make-top-story">
+                    <button class="btn btn-primary btn-sm btn-warning">
+                        Make top story
                     </button>
                 </li>
             {% endif %}
@@ -44,25 +59,11 @@
                 {% else %}
                     <li >
                         <button id="make-secret-link"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary btn-sm btn-warning">
                             Make private link
                         </button>
                     </li>
                 {% endif %}
-            {% endif %}
-            {% if article.stickiness > 0 %}
-                <li >
-                    <button id="make-unsticky"
-                            class="btn btn-primary btn-sm">
-                        Unsticky
-                    </button>
-                </li>
-            {% else %}
-                <li id="make-top-story">
-                    <button class="btn btn-primary btn-sm">
-                        Make top story
-                    </button>
-                </li>
             {% endif %}
         </ul>
     </div>
