@@ -1,41 +1,49 @@
 {% if article.pk and perms.newsroom.change_article %}
     <div id="edit-menu">
+        <button id="admin-toggle">X</button>
+
         <ul>
             <li>
-                <a class="btn btn-primary btn-sm" href="{% url 'admin:newsroom_article_change' article.pk %}">
-                    Edit in admin
-                </a></li>
-            {% if not article.is_published %}
-                <li class="btn" id="publish-now">
-                    <a href="#">
-                        Publish
-                    </a>
-                </li>
-            {% endif %}
-            {% if article.stickiness > 0 %}
-                <li id="make-unsticky">
-                    <a class="btn btn-primary btn-sm" href="#">
-                        Unsticky
-                    </a>
-                </li>
-            {% else %}
-                <li id="make-top-story">
-                    <a class="btn btn-primary btn-sm" href="#">
-                        Make top story
-                    </a>
-                </li>
-            {% endif %}
-            <li>
-                <button class="btn btn-primary btn-sm" id="edit-toggle" onclick="toggleEditables(this)">
-                    Edit on
+                <button class="btn btn-warning btn-sm" id="edit-menu-save"
+                        style="display:none;"
+                        onclick="document.getElementById('saveedits').click()">
+                    Save
                 </button>
             </li>
             <li>
-                <a class="btn btn-primary btn-sm" id="edit-menu-save" href="#"
-                   onclick="document.getElementById('saveedits').click()" style="display:none">
-                    Save
+                <button class="btn btn-primary btn-sm" id="edit-toggle" onclick="toggleEditables(this)">
+                    Edit
+                </button>
+            </li>
+            <li>
+                <a
+                    class="btn btn-primary btn-sm"
+                    href="{% url 'admin:newsroom_article_change' article.pk %}">
+                    Edit in admin
                 </a>
             </li>
+            {% if not article.is_published %}
+                <li>
+                    <button id="publish-now"
+                        class="btn btn-primary btn-sm">
+                        Publish
+                    </button>
+                </li>
+            {% endif %}
+            {% if article.stickiness > 0 %}
+                <li >
+                    <button id="make-unsticky"
+                            class="btn btn-primary btn-sm">
+                        Unsticky
+                    </button>
+                </li>
+            {% else %}
+                <li id="make-top-story">
+                    <button class="btn btn-primary btn-sm">
+                        Make top story
+                    </button>
+                </li>
+            {% endif %}
         </ul>
     </div>
 {% endif %}

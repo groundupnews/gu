@@ -60,6 +60,18 @@
         <script src="{% static 'newsroom/js/ckeditor/ckeditor.js' %}"></script>
         <script src="{% static 'newsroom/js/ck_styles.js' %}"></script>
         <script src="{% static 'newsroom/js/ck_init.js' %}"></script>
+        {% comment %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/css/bootstrap-datetimepicker.min.css"></link>
+
+        <style>
+         .bootstrap-datetimepicker-widget.dropdown-menu {
+             width: 24em;
+            }
+        </style>
+         {% endcomment %}
+         <link rel="stylesheet"
+               href="{% static 'newsroom/datetimepicker/jquery.datetimepicker.min.css' %}" />
+
     {% endif %}
     {{article.additional_head_scripts|safe}}
 
@@ -108,5 +120,17 @@
   {% if article.activate_slideshow %}
     <script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
     <script>{% include 'newsroom/article_slider.js' %}</script>
+  {% endif %}
+
+  {% if can_edit %}
+      <script type="text/javascript"
+              src="{% static 'newsroom/datetimepicker/jquery.datetimepicker.full.min.js' %}">
+      </script>
+      {% comment %}
+      <script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js">
+      </script>
+      <script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/js/bootstrap-datetimepicker.min.js">
+      </script>
+      {% endcomment %}
   {% endif %}
 {% endblock %}

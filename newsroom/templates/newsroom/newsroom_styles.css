@@ -647,7 +647,12 @@ p.author-description, p.disclaimer, p.correction {
     position: fixed;
     top: 90px;
     right: 1vw;
+    padding-left: 3px;
     margin-bottom: 20px;
+    z-index: 1000;
+    background-color: azure;
+    font-size: 10px;
+    overflow-y: hidden;
 }
 
 @media (max-width: 768px) {
@@ -1029,6 +1034,10 @@ Single-colored icons can be modified like so:
 
 {% if can_edit %}
 
+#admin-toggle {
+    font-size: 3px;
+}
+
 img.warn_big {
     border: 2px solid yellow;
 }
@@ -1038,6 +1047,17 @@ img.too_big {
 
 .edit-on {
     border: 1px dotted gray;
+}
+
+#article_published {
+    margin-top: 6px;
+    margin-bottom:6px;
+}
+
+[data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #888;
+    font-style: italic;
 }
 
 {% endif %}

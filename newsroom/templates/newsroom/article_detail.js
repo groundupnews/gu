@@ -53,6 +53,32 @@ function initializeEditors()
     }
 }
 
+function initializeInputFields()
+{
+    $('#article_published').datetimepicker({
+        format: 'Y-m-d H:i',
+        defaultDate:
+        {% if article.published %}
+        '{{article.published|date:"Y-m-d"}}'
+        {% else %}
+        new Date()
+        {% endif %},
+	defaultTime:
+        {% if article.published %}
+        '{{article.published|date:"H:i"}}'
+        {% else %}
+        false
+        {% endif %},
+        step: 15
+    });
+
+    $('#article_published').on('change', function() {
+        document.getElementById("edit-menu-save").style.display = "inherit";
+        document.getElementById('id_published').value =
+            document.getElementById('article_published').value;
+    });
+}
+
 function destroyEditors()
 {
     for(const instance in CKEDITOR.instances)
@@ -64,14 +90,26 @@ function setEditables()
     let elems = document.getElementsByClassName("editable");
     for (let elem of elems) {
         if (edit_mode) {
-            elem.contentEditable = 'true';
-            if (elem.style.display == "none") {
+            if ("contentEditable" in elem) {
+                elem.contentEditable = 'true';
+            } else {
                 elem.style.display = "inherit";
+            }
+            if (elem.style.display == "none") {
+                if (elem.classList.contains("editable-inline")) {
+                    elem.style.display = "inline";
+                } else {
+                    elem.style.display = "inherit";
+                }
             }
             elem.classList.add('edit-on');
         } else {
             destroyEditors();
-            elem.contentEditable = 'false';
+            if ("contentEditable" in elem) {
+                elem.contentEditable = 'false';
+            } else {
+                elem.style.display = "none";
+            }
             if (elem.textContent.trim() == "") {
                 elem.style.display = "none";
             }
@@ -79,16 +117,42 @@ function setEditables()
         }
     }
     if (edit_mode) initializeEditors();
+
 }
 
 function toggleEditables(elem)
 {
     edit_mode = !edit_mode;
     if (edit_mode)
-        elem.textContent = "Edit off";
+        elem.textContent = "View";
     else
-        elem.textContent = "Edit on";
+        elem.textContent = "Edit";
     setEditables();
+}
+
+function setPlaceholders()
+{
+    let elems = document.getElementsByClassName('editable');
+
+    for (let ele of elems) {
+        if (ele.hasAttribute('data-placeholder')) {
+            // Get the placeholder attribute
+            const placeholder = ele.getAttribute('data-placeholder');
+
+            // Set the placeholder as initial content if it's empty
+            ele.innerHTML.replace(/\s+/g, '').replace('<br>', '') === '' && (ele.innerHTML = placeholder);
+
+            ele.addEventListener('focus', function (e) {
+                let value = e.target.innerHTML.replace(/\s+/g, '').replace('<br>', '');
+                value === placeholder && (e.target.innerHTML = '');
+            });
+
+            ele.addEventListener('blur', function (e) {
+                let value = e.target.innerHTML.replace(/\s+/g, '').replace('<br>', '');
+                value === '' && (e.target.innerHTML = placeholder);
+            });
+        }
+    }
 }
 
 {% endif %}
@@ -131,6 +195,7 @@ jQuery(document).ready(function ($) {
 
     {% if can_edit %}
 
+    let admin_open = true;
     var content_div = $('#content-main');
 
     $("#publish-now" ).click(function() {
@@ -152,31 +217,21 @@ jQuery(document).ready(function ($) {
 	return false;
     });
 
-/*    $('#article_form').on('submit', function(e){
-
-        e.preventDefault();
-
-        $.ajax({
-            type : "POST",
-            url: "{% url 'newsroom:article.detail' article.slug %}",
-            data: {
-                document.getElementById(article_form).serialize();
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                dataType: "json",
-            },
-
-            success: function(data){
-                $('#output').html(data.msg)
-            },
-
-            failure: function() {
-                alert("Failure!");
-            }
-        });
-
-
+    $("#admin-toggle").click(function() {
+        if (admin_open) {
+            document.getElementById('admin-area').style.height = "20px";
+            document.getElementById('admin-area').style.width = "20px";
+        } else {
+            document.getElementById('admin-area').style.height = "inherit";
+            document.getElementById('admin-area').style.width = "inherit";
+        }
+        admin_open = !admin_open;
     });
-*/
+
+    initializeInputFields();
+    setEditables();
+    setPlaceholders();
+
     {% endif %}
 });
 

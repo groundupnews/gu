@@ -13,7 +13,8 @@
         {% endcomment %}
         {% if can_edit %}
 	    <h2 id="article_subtitle"
-                class="article__subtitle editable">
+                class="article__subtitle editable"
+                data-placeholder="Subtitle">
                 {{ article.subtitle|safe }}
             </h2>
         {% endif %}
@@ -26,6 +27,14 @@
         {% else %}
             Unpublished
         {% endif %}
+        {% if can_edit %}
+            <input id='article_published'
+                   class="editable editable-input editable-inline"
+                   placeholder="Publication date"
+                   type='text'
+                   value='{% if article.published %}{{article.published|date:"Y-m-d H:i"}}{% endif %}' />
+        {% endif %}
+
         | {{ article.cached_byline|safe }}
         <span class="article__info">
             <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">{{article.category|title}}</a>{% if display_region %} | <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">{{display_region|title}}</a>
@@ -74,6 +83,7 @@
     <div id="article_body"
          {% if can_edit %}
          class="editable"
+         placeholder="Article body"
          {% endif %}>
         {{article_body|safe}}
     </div>
