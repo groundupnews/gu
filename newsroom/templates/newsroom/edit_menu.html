@@ -25,28 +25,30 @@
             {% if not article.is_published %}
                 <li>
                     <button id="publish-now"
-                        class="btn btn-primary btn-sm">
+                            class="btn btn-primary btn-sm">
                         Publish
                     </button>
                 </li>
             {% endif %}
-            {% if article.secret_link %}
-                <li >
-                    <a id="view-secret-link"
-                       href="{% url 'newsroom:article.gen_preview' article.pk %}"
-                       class="btn btn-primary btn-sm"
-                       title="{{article.secret_link}}"
-                       target="_blank">
-                        View private link
-                    </a>
-                </li>
-            {% else %}
-                <li >
-                    <button id="make-secret-link"
-                            class="btn btn-primary btn-sm">
-                        Make private link
-                    </button>
-                </li>
+            {% if not article.is_published %}
+                {% if article.secret_link %}
+                    <li >
+                        <a id="view-secret-link"
+                           href="{% url 'newsroom:article.gen_preview' article.pk %}"
+                           class="btn btn-primary btn-sm"
+                           title="{{article.secret_link}}"
+                           target="_blank">
+                            View private link
+                        </a>
+                    </li>
+                {% else %}
+                    <li >
+                        <button id="make-secret-link"
+                                class="btn btn-primary btn-sm">
+                            Make private link
+                        </button>
+                    </li>
+                {% endif %}
             {% endif %}
             {% if article.stickiness > 0 %}
                 <li >
