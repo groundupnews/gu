@@ -368,6 +368,12 @@ def article_post(request, slug):
                 messages.add_message(request, messages.INFO,
                                      "This article is no longer sticky.")
                 article.unsticky()
+            elif request.POST["input_secret_link"] == "YES":
+                article.save()
+                resp = article_gen_preview(request, article.pk)
+                messages.add_message(request, messages.INFO,
+                                     "Private link created.")
+                return resp
             else:
                 messages.add_message(request, messages.INFO,
                                      "Changes saved.")

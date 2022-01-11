@@ -642,6 +642,7 @@ class Article(models.Model):
         for _ in range(40):
             self.secret_link += chr(random.randint(97,122))
 
+
     def save(self, *args, **kwargs):
         if self.secret_link_view != "n" and self.secret_link == "":
             self.make_secret_link()

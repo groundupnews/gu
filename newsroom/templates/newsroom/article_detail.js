@@ -217,6 +217,12 @@ jQuery(document).ready(function ($) {
 	return false;
     });
 
+    $("#make-secret-link" ).click(function() {
+	$("#input-secret-link").val("YES");
+	$("#saveedits").click();
+	return false;
+    });
+
     $("#admin-toggle").click(function() {
         if (admin_open) {
             document.getElementById('admin-area').style.height = "20px";
