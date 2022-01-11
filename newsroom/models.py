@@ -755,7 +755,7 @@ class MostPopular(models.Model):
     @staticmethod
     def get_most_popular_html():
         article_list = MostPopular.get_most_popular_list()
-        if article_list is not None and len(article_list) > 1:
+        if article_list is not None and len(article_list) > 0:
             try:
                 html = "<ol class='most-popular'>"
                 for article in article_list:
