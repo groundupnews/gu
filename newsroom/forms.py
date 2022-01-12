@@ -25,7 +25,8 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = models.Article
         fields = ['title', 'subtitle', 'use_editor', 'published',
-                  'primary_image_caption', 'body', 'user', 'version', ]
+                  'category', 'region', 'primary_image_caption',
+                  'body', 'user', 'version', ]
 
 
 class AdvancedSearchForm(forms.Form):

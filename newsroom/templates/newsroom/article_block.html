@@ -37,9 +37,16 @@
 
         | {{ article.cached_byline|safe }}
         <span class="article__info">
-            <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">{{article.category|title}}</a>{% if display_region %} | <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">{{display_region|title}}</a>
-    </span>
-    {% endif %}
+            <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">{{article.category|title}}</a>{% if display_region %} | <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">{{display_region|title}}{% endif %}</a>
+        </span>
+        {% if can_edit %}
+            <select id="article_category"
+                    class="editable editable-input editable-inline">
+            </select>
+            <select id="article_region"
+                    class="editable editable-input editable-inline">
+            </select>
+        {% endif %}
     </div>
 
     {% if article.cached_primary_image %}
@@ -123,9 +130,9 @@
             Fikile Mbalula is <a href="https://www.groundup.org.za/article/fikile-mbalula-demands-r2-million-our-reporters/">going after us for R2 million</a>. We must be doing something right. Support news that matters. Please <a href="/donate/">donate</a> to GroundUp.
         </p>
         <p style="text-align: center;">
-<a href="https://pos.snapscan.io/qr/STB24E42"><img alt="Snapscan" src="https://www.snapscan.co.za/assets/images/svg/logo-snapscan-c701680e76dba9d96275174e2c034052b0d09e90bbf384e908804565d4369820.svg" style="width:120px;" /></a><br />
-			<span class="mobile-only"><a href="https://pos.snapscan.io/qr/STB24E42">Donate using SnapScan</a>. </span><br />
-			<a href="https://pos.snapscan.io/qr/STB24E42"><img alt="Snapscan QR code" class="barcode" src="/sites/default/files/groundup-snapscan.png" style="width:200px !important; height:200px !important max-width:95% !important;" /></a>
+            <a href="https://pos.snapscan.io/qr/STB24E42"><img alt="Snapscan" src="https://www.snapscan.co.za/assets/images/svg/logo-snapscan-c701680e76dba9d96275174e2c034052b0d09e90bbf384e908804565d4369820.svg" style="width:120px;" /></a><br />
+	    <span class="mobile-only"><a href="https://pos.snapscan.io/qr/STB24E42">Donate using SnapScan</a>. </span><br />
+	    <a href="https://pos.snapscan.io/qr/STB24E42"><img alt="Snapscan QR code" class="barcode" src="/sites/default/files/groundup-snapscan.png" style="width:200px !important; height:200px !important max-width:95% !important;" /></a>
 
         </p>
     </div>

@@ -77,6 +77,19 @@ function initializeInputFields()
         document.getElementById('id_published').value =
             document.getElementById('article_published').value;
     });
+
+    document.getElementById('article_category').innerHTML = document.getElementById('id_category').innerHTML;
+    $('#article_category').on('change', function() {
+        document.getElementById("edit-menu-save").style.display = "inherit";
+        document.getElementById('id_category').value =
+            document.getElementById('article_category').value;
+    });
+    document.getElementById('article_region').innerHTML = document.getElementById('id_region').innerHTML;
+    $('#article_region').on('change', function() {
+        document.getElementById("edit-menu-save").style.display = "inherit";
+        document.getElementById('id_region').value =
+            document.getElementById('article_region').value;
+    });
 }
 
 function destroyEditors()
@@ -90,10 +103,8 @@ function setEditables()
     let elems = document.getElementsByClassName("editable");
     for (let elem of elems) {
         if (edit_mode) {
-            if ("contentEditable" in elem) {
+            if ("contentEditable" in elem && !(elem.classList.contains("editable-input"))) {
                 elem.contentEditable = 'true';
-            } else {
-                elem.style.display = "inherit";
             }
             if (elem.style.display == "none") {
                 if (elem.classList.contains("editable-inline")) {
@@ -105,9 +116,10 @@ function setEditables()
             elem.classList.add('edit-on');
         } else {
             destroyEditors();
-            if ("contentEditable" in elem) {
+            if ("contentEditable" in elem && !(elem.classList.contains("editable-input"))) {
                 elem.contentEditable = 'false';
-            } else {
+            }
+            if (elem.classList.contains("editable-input")) {
                 elem.style.display = "none";
             }
             if (elem.textContent.trim() == "") {
@@ -117,7 +129,6 @@ function setEditables()
         }
     }
     if (edit_mode) initializeEditors();
-
 }
 
 function toggleEditables(elem)
