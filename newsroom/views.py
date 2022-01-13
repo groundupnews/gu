@@ -29,7 +29,8 @@ from pgsearch.utils import searchArticlesAndPhotos
 from django.conf import settings as django_settings
 
 from . import models, settings, utils
-from .forms import ArticleForm, ArticleListForm, AdvancedSearchForm
+from .forms import ArticleForm, ArticleNewForm, \
+                    ArticleListForm, AdvancedSearchForm
 from payment.models import Commission
 
 logger = logging.getLogger(__name__)
@@ -331,7 +332,6 @@ Nevertheless, some refactoring needed here.
 
 '''
 
-
 def article_post(request, slug):
     form = ArticleForm(request.POST)
     if form.is_valid():
@@ -514,6 +514,27 @@ def article_detail(request, slug):
         else:
             raise Http404
 
+@staff_member_required
+def article_new(request):
+    if request.method == 'POST':
+        form = ArticleNewForm(request.POST)
+        if request.user.has_perm('newsroom.add_article'):
+            if form.is_valid():
+                article = form.save()
+                return HttpResponseRedirect(reverse(
+                    'newsroom:article.detail',
+                    args=(article.slug,)))
+            else:
+                messages.add_message(request, messages.ERROR,
+                                     "Please correct errors")
+        else:
+            return HttpResponseForbidden()
+    else:
+        form = ArticleNewForm()
+    return render(request, 'newsroom/article_new.html', {
+        'form': form,
+    })
+
 
 def article_print(request, slug):
     article = get_object_or_404(models.Article, slug=slug)
@@ -535,6 +556,7 @@ def copy_article(request, slug):
                       {'article': article})
     else:
         raise Http404
+
 
 
 ####################################################

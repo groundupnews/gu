@@ -273,7 +273,8 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     def get_absolute_url(self):
-        return reverse('newsroom:category.detail', args=[self.slug, ])
+        return reverse('newsroom:category.detail',
+                       args=[self.slug, ])
 
     def __str__(self):
         return self.name
@@ -676,11 +677,13 @@ class Article(models.Model):
         self.body = self.clean_typography(self.body)
         self.version = self.version + 1
         if self.pk:
-            self.body = utils.insertPixel(self.body, self.pk, self.slug)
+            self.body = utils.insertPixel(self.body, self.pk,
+                                          self.slug)
         super(Article, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('newsroom:article.detail', args=[self.slug, ])
+        return reverse('newsroom:article.detail',
+                       args=[self.slug, ])
 
     def __str__(self):
         return str(self.pk) + " " + self.title
@@ -791,7 +794,8 @@ class Correction(models.Model):
         return str(self.article) + " " + self.get_update_type_display()
 
     def get_absolute_url(self):
-        return reverse('newsroom:article.detail', args=[self.article.slug, ]) + \
+        return reverse('newsroom:article.detail',
+                       args=[self.article.slug, ]) + \
             "#update-" + str(self.pk)
 
     class Meta:

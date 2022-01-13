@@ -226,6 +226,9 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.article_detail), name='article.detail'),
 
+    url(r'^article_add/',
+         views.article_new, name='article.create'),
+
     url(r'^article-print/(?P<slug>[-\w]+)/$',
         cache_except_staff(
             decorator=cache_page(settings.CACHE_PERIOD,

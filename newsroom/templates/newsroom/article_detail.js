@@ -44,6 +44,10 @@ function initializeEditors()
 	customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
     });
 
+    CKEDITOR.inline( 'article_copyright', {
+	customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}"
+    });
+
     for(const instance in CKEDITOR.instances) {
         CKEDITOR.instances[instance].on('change', function() {
             document.getElementById("edit-menu-save").style.display = "inherit";

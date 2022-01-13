@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    New article{{block.super}}
+{% endblock %}
+
+{% block css-override %}
+    <style>
+     p input {
+         width: 750px;
+     }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="content-area">
+                    <h1>New article</h1>
+                    <div class="col-md-offset-2">
+                        <form action="{% url 'newsroom:article.create'  %}"
+                              method="post">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <input
+                                class="btn btn-primary"
+                                type="submit" value="New">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript-includes %}
+
+    {{block.super}}
+
+    <script>
+     "use strict;"
+
+     function isAlphaNumeric(w) {
+	return w.match(/^[a-z0-9]+$/i) !== null;
+     }
+
+     function makeSlug(text) {
+         const ignoreList = [
+             "", " ", "a", "an", "the", "of", "and",
+             "or", "are", "is", "&nbsp;", "this",
+             "that", "there",
+         ];
+         let words = text.split(' ');
+         let keptWords = [];
+         for (const word of words) {
+             let newWord = "";
+             for (const c of word) {
+                 if (isAlphaNumeric(c)) {
+                     newWord += c;
+                 }
+             }
+             if (!ignoreList.includes(newWord)) {
+                 keptWords.push(newWord.toLowerCase());
+             }
+         }
+         return keptWords.join('-');
+     }
+
+     document.getElementById('id_title').
+              addEventListener(
+         'input', function(e) {
+             document.getElementById('id_slug').value =
+                 makeSlug(e.target.value);
+             document.getElementById('word-count').textContent =
+                 e.target.value.length;
+     });
+
+     document.addEventListener('DOMContentLoaded', function() {
+         let title = document.getElementById('id_title');
+         let span = document.createElement('span');
+         title.parentNode.insertBefore(span, title.nextSibling);
+         span.id = "word-count";
+         span.style.marginLeft = "12px";
+         span.textContent = "0";
+     });
+    </script>
+
+{% endblock %}

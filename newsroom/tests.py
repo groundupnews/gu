@@ -297,6 +297,9 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 200)
         response = client.get(reverse('newsroom:correction.delete', args=[1]))
         self.assertEqual(response.status_code, 200)
+        response = client.get(reverse('newsroom:article.create'))
+        self.assertEqual(response.status_code, 200)
+
         client = Client()
         response = client.get(reverse('newsroom:correction.update', args=[1]))
         self.assertEqual(response.status_code, 302)
@@ -304,6 +307,8 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 302)
         response = client.get(reverse('newsroom:correction.create') +
                                       "?article_pk=" + str(article.pk))
+        self.assertEqual(response.status_code, 302)
+        response = client.get(reverse('newsroom:article.create'))
         self.assertEqual(response.status_code, 302)
 
     def test_flatpages(self):

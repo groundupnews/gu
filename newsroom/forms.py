@@ -26,8 +26,13 @@ class ArticleForm(forms.ModelForm):
         model = models.Article
         fields = ['title', 'subtitle', 'use_editor', 'published',
                   'category', 'region', 'primary_image_caption',
-                  'body', 'user', 'version', ]
+                  'body', 'copyright', 'user', 'version', ]
 
+class ArticleNewForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Article
+        fields = ['title', 'slug',]
 
 class AdvancedSearchForm(forms.Form):
     RESULTS_PER_PAGE = [(10, '10 Results Per Page'),

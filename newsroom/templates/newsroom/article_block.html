@@ -142,7 +142,9 @@
     {% include 'newsroom/article_topics.html' %}
     {% include 'newsroom/article_next_article.html' %}
     {% include 'newsroom/article_letters.html' %}
-    <div class="article__copyright" id="article-copyright">
+    <div
+        class="article__copyright {% if can_edit %} editable {% endif %}"
+        id="article_copyright">
         {{article.copyright|safe}}
     </div>
 
