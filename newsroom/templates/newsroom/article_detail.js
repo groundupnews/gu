@@ -72,8 +72,7 @@ function initializeInputFields()
         '{{article.published|date:"H:i"}}'
         {% else %}
         false
-        {% endif %},
-        step: 15
+        {% endif %}
     });
 
     $('#article_published').on('change', function() {
