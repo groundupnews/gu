@@ -224,12 +224,24 @@ jQuery(document).ready(function ($) {
 	return false;
     });
 
-
     $("#make-top-story" ).click(function() {
 	$("#input-top-story").val("YES");
 	$("#saveedits").click();
 	return false;
     });
+
+    $("#make-fullwidth" ).click(function() {
+	$("#input-fullwidth").val("YES");
+	$("#saveedits").click();
+	return false;
+    });
+
+    $("#make-halfwidth" ).click(function() {
+	$("#input-halfwidth").val("YES");
+	$("#saveedits").click();
+	return false;
+    });
+
 
     $("#make-secret-link" ).click(function() {
 	$("#input-secret-link").val("YES");

@@ -373,6 +373,16 @@ def article_post(request, slug):
                 article_gen_preview(request, article.pk)
                 messages.add_message(request, messages.INFO,
                                      "Private link created.")
+            elif request.POST["input_fullwidth"] == "YES":
+                article.undistracted_layout = True
+                article.save()
+                messages.add_message(request, messages.INFO,
+                                     "Full width article.")
+            elif request.POST["input_halfwidth"] == "YES":
+                article.undistracted_layout = False
+                article.save()
+                messages.add_message(request, messages.INFO,
+                                     "Normal width article.")
             else:
                 messages.add_message(request, messages.INFO,
                                      "Changes saved.")

@@ -45,6 +45,23 @@
                     </button>
                 </li>
             {% endif %}
+
+            {% if article.undistracted_layout  %}
+                <li >
+                    <button id="make-halfwidth"
+                            class="btn btn-primary btn-sm btn-warning">
+                        Normal width
+                    </button>
+                </li>
+            {% else %}
+                <li id="make-fullwidth">
+                    <button class="btn btn-primary btn-sm btn-warning">
+                        Full width
+                    </button>
+                </li>
+            {% endif %}
+
+
             {% if not article.is_published %}
                 {% if article.secret_link %}
                     <li >
