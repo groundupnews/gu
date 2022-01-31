@@ -227,7 +227,7 @@ urlpatterns = [
         (views.article_detail), name='article.detail'),
 
     url(r'^article_add/',
-         views.article_new, name='article.create'),
+         views.article_new, name='article.add'),
 
     url(r'^article-print/(?P<slug>[-\w]+)/$',
         cache_except_staff(

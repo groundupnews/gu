@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
     ];
 
 
-    config.extraPlugins = 'find,sourcearea,codemirror,indentblock,wordcount';
+    config.extraPlugins = 'find,sourcearea,indentblock,wordcount';
 
     config.removeButtons = 'Cut,Copy,Paste,PasteText,PasteFromWord';
 

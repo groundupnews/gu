@@ -1,8 +1,23 @@
+{% if can_edit %}
+    {{ form.media }}
+{% endif %}
 
 <div class="{% if article.undistracted_layout %}col-xs-12  col-md-push-1 col-md-10"{% else %}col-xs-12 col-md-8"{% endif %}>
-    <h1 id="article_title" class="article__title {% if can_edit %} editable {% endif %}" >
+    {% if can_edit %}
+        <div>
+            {{form.errors}}
+        </div>
+    {% endif %}
+    <h1 id="article_title" class="article__title {% if can_edit %} editable {% endif %}"
+        {% if can_edit %}
+        style="display:inline-block"
+        {% endif %}>
         {{ article.title|safe }}
     </h1>
+    {% if can_edit %}
+        <span id="headline_len" class="edit-only" data-display="inline-block"
+              style="position: absolute; left: -20px; top: 30px;"></span>
+    {% endif %}
     {% if article.subtitle %}
         <h2 id="article_subtitle"
             class="article__subtitle {% if can_edit %} editable {% endif %}">
@@ -20,33 +35,118 @@
         {% endif %}
     {% endif %}
     <div class="article__details__date-by">
-        {% if article.published %}
-            <time datetime='{{ article.published|date:"c" }}'>
-                {{ article.published|date:"j F Y"}}
-            </time>
-        {% else %}
-            Unpublished
-        {% endif %}
+        <time
+              {% if article.published %}
+              datetime='{{ article.published|date:"c" }}'
+        >
+            {{ article.published|date:"j F Y"}}
+              {% else %}
+            datetime="">Unpublished
+              {% endif %}
+        </time>
+        {% if can_edit %} <span id="view_published"></span>{% endif %}
+        | <span>{{ article.cached_byline|safe }}</span>
         {% if can_edit %}
-            <input id='article_published'
-                   class="editable editable-input editable-inline"
-                   placeholder="Publication date"
-                   type='text'
-                   value='{% if article.published %}{{article.published|date:"Y-m-d H:i"}}{% endif %}' />
+            <div id="article-extra-edit-options">
+                <span>
+                    <button class="btn btn-primary edit-only" type="button"
+                            data-toggle="collapse" data-target="#authorAdvanced"
+                            aria-expanded="false" aria-controls="authorAdvanced"
+                            title="Author options">
+                        Authors &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="authorAdvanced">
+                    <div class="card card-body">
+                        <div id="author-advanced" class="edit-only">
+                            <div id="view_author_01_text" title="1st author"></div>
+                            <div id="view_author_02_text" title="2nd author"></div>
+                            <div id="view_author_03_text" title="3rd author"></div>
+                            <div id="view_author_04_text" title="4th author"></div>
+                            <div id="view_author_05_text" title="5th author"></div>
+                            <div id="view_byline"
+                                 title="Customised byline (overrides author selection)">
+                            </div>
+                            <div id="view_byline_style">Byline style:&nbsp;</div>
+                            <div id="view_editor_feedback" title="Editor feedback"></div>
+                        </div>
+                    </div>
+                </div>
+                <span>
+                    <button class="btn btn-primary edit-only" type="button"
+                            data-toggle="collapse" data-target="#Advanced"
+                            aria-expanded="false" aria-controls="Advanced"
+                            title="Advanced options">
+                        Advanced &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="Advanced">
+                    <div class="card card-body">
+                        <div id="advanced" class="edit-only">
+                            <div id="view_slug" class="edit-only">
+                                Slug:
+                            </div>
+                            <div id="view_include_in_rss" class="edit-only">
+                                Include in RSS:
+                            </div>
+                            <div id="view_recommended" class="edit-only">
+                                Recommended:
+                            </div>
+                            <div id="view_exclude_from_list_views"
+                                 class="edit-only">
+                                Exclude from list views:
+                            </div>
+                            <div id="view_promote_article"
+                                 class="edit-only">
+                                Promote article:
+                            </div>
+                            <div id="view_encourage_republish"
+                                 class="edit-only">
+                                Encourage republish:
+                            </div>
+                            <div id="view_letters_on" class="edit-only">
+                                Letters on:
+                            </div>
+                            <div id="view_exclude_from_list_views"
+                                 class="edit-only">
+                                Exclude from list views:
+                            </div>
+                            <div id="view_stickiness" class="edit-only">
+                                Stickiness:
+                            </div>
+                            <div id="view_additional_head_scripts"
+                                 class="edit-only">
+                            </div>
+                            <div id="view_additional_body_scripts"
+                                 class="edit-only">
+                            </div>
+                            <div>
+                                <span id="view_secret_link"
+                                      class="edit-only"
+                                      data-display="inline">
+                                    Secret link:
+                                </span> &nbsp;
+                                <span id="view_secret_link_view"
+                                      class="edit-only"
+                                      data-display="inline">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
-
-        | {{ article.cached_byline|safe }}
         <span class="article__info">
-            <a class="article__category" href="{%  url 'newsroom:category.detail' article.category.slug %}">{{article.category|title}}</a>{% if display_region %} | <a class="article__region" href="{% url 'newsroom:region.detail' article.region.name %}">{{display_region|title}}{% endif %}</a>
+            <a class="article__category"
+               href="{%  url 'newsroom:category.detail' article.category.slug %}"
+            >{{article.category|title}}</a>
+            {% if can_edit %}<span id="view_category"></span>{% endif %}
+            {% if display_region %} |
+                <a class="article__region"
+                   href="{% url 'newsroom:region.detail' article.region.name %}"
+                >{{display_region|title}}{% endif %}</a>
+                {% if can_edit %}<span id="view_region"></span>{% endif %}
         </span>
-        {% if can_edit %}
-            <select id="article_category"
-                    class="editable editable-input editable-inline">
-            </select>
-            <select id="article_region"
-                    class="editable editable-input editable-inline">
-            </select>
-        {% endif %}
     </div>
 
     {% if article.cached_primary_image %}
@@ -74,8 +174,7 @@
 	                {{article.primary_image_caption|safe}}
 	            </figcaption>
 	        {% else %}
-	            {% comment %}Editors must have empty caption to edit
-	            {% endcomment %}
+	            {# Editors must have empty caption to edit #}
 	            {% if can_edit %}
 	                <figcaption id="article_primary_image_caption"
                                     class="editable">
@@ -90,7 +189,6 @@
     <div id="article_body"
          {% if can_edit %}
          class="editable"
-         placeholder="Article body"
          {% endif %}>
         {{article_body|safe}}
     </div>
@@ -117,10 +215,10 @@
         {% endif %}
     {% endwith %}
     {% if can_edit %}
+        <p id="article__statistics"></p>
         <p>
             <a href="{% url 'newsroom:correction.create' %}?article_pk={{article.pk}}">Add correction or update</a>
         </p>
-        <p id="article__statistics"></p>
     {% endif %}
     {% if article.main_topic %}
         {% include "newsroom/read_similar.html" %}
@@ -161,30 +259,15 @@
     </div>
 </div>
 
+
 {% if can_edit %}
-    <div style="display:none;">
+    <div class="col-xs-12 col-md-8" style="display:none;">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
 	      method="post">{% csrf_token %}
-            {{form.as_p}}
-            <input id="input-is-published"
-	           value="{{article.is_published}}"
-	           name="is_published">
-            <input id="input-top-story"
-	           value="NO"
-	           name="input_top_story">
-            <input id="input-unsticky"
-	           value="NO"
-	           name="input_unsticky">
-            <input id="input-fullwidth"
-	           value="NO"
-	           name="input_fullwidth">
-            <input id="input-halfwidth"
-	           value="NO"
-	           name="input_halfwidth">
-            <input id="input-secret-link"
-	           value="NO"
-	           name="input_secret_link">
+            <table>
+                {{form.as_table}}
+            </table>
             <input id="saveedits" type="submit"
 	           value="Save">
         </form>

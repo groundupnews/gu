@@ -1,24 +1,25 @@
-
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
+	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
 	{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+	{ name: 'forms', groups: [ 'forms' ] },
+	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
 	{ name: 'links', groups: [ 'links' ] },
 	{ name: 'insert', groups: [ 'insert' ] },
-	{ name: 'forms', groups: [ 'forms' ] },
-	{ name: 'tools', groups: [ 'tools' ] },
-	{ name: 'others', groups: [ 'others' ] },
-	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
 	{ name: 'styles', groups: [ 'styles' ] },
 	{ name: 'colors', groups: [ 'colors' ] },
+	{ name: 'tools', groups: [ 'tools' ] },
+	{ name: 'others', groups: [ 'others' ] },
 	{ name: 'about', groups: [ 'about' ] }
     ];
 
-    config.extraPlugins = 'saveedits';
+    config.extraPlugins = 'find,sourcedialog,indentblock';
+    config.removePlugins = 'exportpdf';
 
-    config.removeButtons = 'Underline,Subscript,Superscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Anchor,Image,Table,HorizontalRule,SpecialChar,Maximize,About,Styles,Format,Blockquote,Outdent,Indent,BulletedList,NumberedList,Strike,About,Source,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
+    config.removeButtons = 'NewPage,Save,ExportPdf,Preview,Print,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Anchor,Image,Table,HorizontalRule,PageBreak,Iframe,Styles,Format,Maximize,ShowBlocks,About,Templates';
+
     config.scayt_sLang = 'en_GB';
     config.scayt_autoStartup = true;
     config.htmlEncodeOutput = false;

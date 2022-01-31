@@ -53,24 +53,12 @@
 	</link>
     {% endif %}
     {% if can_edit %}
-        {% comment %}
-        <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
-        {% endcomment %}
         <script src="{% static 'newsroom/js/statistics.js' %}"></script>
-        <script src="{% static 'newsroom/js/ckeditor/ckeditor.js' %}"></script>
+        <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
         <script src="{% static 'newsroom/js/ck_styles.js' %}"></script>
         <script src="{% static 'newsroom/js/ck_init.js' %}"></script>
-        {% comment %}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/css/bootstrap-datetimepicker.min.css"></link>
-
-        <style>
-         .bootstrap-datetimepicker-widget.dropdown-menu {
-             width: 24em;
-            }
-        </style>
-         {% endcomment %}
-         <link rel="stylesheet"
-               href="{% static 'newsroom/datetimepicker/jquery.datetimepicker.min.css' %}" />
+        <link rel="stylesheet"
+              href="{% static 'newsroom/datetimepicker/jquery.datetimepicker.min.css' %}" />
 
     {% endif %}
     {{article.additional_head_scripts|safe}}
@@ -126,11 +114,5 @@
       <script type="text/javascript"
               src="{% static 'newsroom/datetimepicker/jquery.datetimepicker.full.min.js' %}">
       </script>
-      {% comment %}
-      <script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js">
-      </script>
-      <script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/js/bootstrap-datetimepicker.min.js">
-      </script>
-      {% endcomment %}
   {% endif %}
 {% endblock %}

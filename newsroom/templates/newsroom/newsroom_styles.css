@@ -579,6 +579,11 @@ p.author-description, p.disclaimer, p.correction {
     margin-top: 3px;
 }
 
+.errorlist {
+    color: red;
+    list-style: none;
+}
+
 #letter-form .errorlist, #invoice-form .errorlist, #commission-detail .errorlist {
     color: red;
     list-style: none;
@@ -1065,6 +1070,20 @@ img.too_big {
     content: attr(data-placeholder);
     color: #888;
     font-style: italic;
+}
+
+#author-advanced, #advanced {
+    border: 1px solid #888;
+    border-radius: 5px;
+    padding: 6px;
+}
+#author-advanced > div, #advanced > div  {
+    margin: 8px;
+}
+
+#article-extra-edit-options {
+    margin: 12px;
+    margin-left: 0;
 }
 
 {% endif %}

@@ -1,29 +1,28 @@
 
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
+	{ name: 'editing', groups: [ 'find', 'selection',
+                                     'spellchecker', 'editing' ] },
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-	{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker',
-                                     'editing' ] },
+		{ name: 'forms', groups: [ 'forms' ] },
+		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks',
+                                       'align', 'bidi', 'paragraph' ] },
 	{ name: 'links', groups: [ 'links' ] },
 	{ name: 'insert', groups: [ 'insert' ] },
-	{ name: 'forms', groups: [ 'forms' ] },
-	{ name: 'tools', groups: [ 'tools' ] },
-	{ name: 'others', groups: [ 'others' ] },
-	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align',
-                                       'paragraph' ] },
-
+	'/',
 	{ name: 'styles', groups: [ 'styles' ] },
 	{ name: 'colors', groups: [ 'colors' ] },
-	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+	{ name: 'tools', groups: [ 'tools' ] },
+	{ name: 'others', groups: [ 'others' ] },
 	{ name: 'about', groups: [ 'about' ] },
-	{ name: 'tools', groups: [ 'tools' ] }
+	{ name: 'document', groups: [ 'document', 'doctools', 'mode' ] }
     ];
 
-    config.extraPlugins = 'find,codemirror,sourcedialog,indentblock,saveedits';
+    config.removeButtons = 'ExportPdf,NewPage,Preview,Print,Templates,Save,Cut,Copy,Paste,PasteText,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,PageBreak,About';
 
-    config.removeButtons = 'Underline,Subscript,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Maximize,Strike,Source,About,AutoComplete,autoFormat,CommentSelectedRange,UncommentSelectedRange';
-
+    config.extraPlugins = 'find,sourcedialog,indentblock';
+    config.removePlugins = 'exportpdf';
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';
     config.scayt_autoStartup = true;

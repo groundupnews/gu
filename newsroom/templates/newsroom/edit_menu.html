@@ -1,3 +1,5 @@
+{% load newsroom_extras %}
+
 {% if article.pk and perms.newsroom.change_article %}
     <div id="edit-menu">
         <button id="admin-toggle">X</button>
@@ -22,66 +24,30 @@
                     Edit in admin
                 </a>
             </li>
-            {% if not article.is_published %}
-                <li>
-                    <button id="publish-now"
-                            class="btn btn-primary btn-sm btn-warning">
-                        Publish
-                    </button>
-                </li>
-            {% endif %}
-
-            {% if article.stickiness > 0 %}
+            {% if article.secret_link and not article.is_published %}
                 <li >
-                    <button id="make-unsticky"
-                            class="btn btn-primary btn-sm btn-warning">
-                        Unsticky
-                    </button>
-                </li>
-            {% else %}
-                <li id="make-top-story">
-                    <button class="btn btn-primary btn-sm btn-warning">
-                        Make top story
-                    </button>
+                    <a id="view-secret-link"
+                       href="{% url 'newsroom:article.gen_preview' article.pk %}"
+                       class="btn btn-primary btn-sm"
+                       title="{{article.secret_link}}"
+                       target="_blank">
+                        View private link
+                    </a>
                 </li>
             {% endif %}
 
-            {% if article.undistracted_layout  %}
-                <li >
-                    <button id="make-halfwidth"
-                            class="btn btn-primary btn-sm btn-warning">
-                        Normal width
-                    </button>
-                </li>
-            {% else %}
-                <li id="make-fullwidth">
-                    <button class="btn btn-primary btn-sm btn-warning">
-                        Full width
-                    </button>
-                </li>
-            {% endif %}
-
-
-            {% if not article.is_published %}
-                {% if article.secret_link %}
-                    <li >
-                        <a id="view-secret-link"
-                           href="{% url 'newsroom:article.gen_preview' article.pk %}"
-                           class="btn btn-primary btn-sm"
-                           title="{{article.secret_link}}"
-                           target="_blank">
-                            View private link
-                        </a>
-                    </li>
-                {% else %}
-                    <li >
-                        <button id="make-secret-link"
-                                class="btn btn-primary btn-sm btn-warning">
-                            Make private link
-                        </button>
-                    </li>
+            {# Form buttons that change things #}
+            {% for field in form %}
+                {% contains_class field.field 'button-action' as right_class %}
+                {% if right_class %}
+                    {% visible_btn article.pk field.field as visible %}
+                    {% if visible %}
+                        {% display_btn field "<li>" "</li>" "btn btn-primary btn-sm btn-warning" as btn %}
+                        {{ btn|safe }}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            {% endfor %}
+
         </ul>
     </div>
 {% endif %}

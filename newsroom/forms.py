@@ -1,5 +1,8 @@
+from ajax_select.fields import AutoCompleteSelectField
+from ajax_select.fields import AutoCompleteSelectMultipleField
+from ajax_select import make_ajax_field
 from django import forms
-
+from django.utils.html import strip_tags
 from . import models, utils
 from newsroom.settings import SEARCH_MAXLEN
 
@@ -13,20 +16,111 @@ class ArticleListForm(forms.Form):
     date_to = forms.DateTimeField(required=False)
 
 
+article_ajaxes = ['author_01',  'author_02', 'author_03',
+                  'author_04', 'author_05',]
+
+article_inputs = article_ajaxes + \
+    ['published', 'category', 'region',
+     'byline', 'byline_style', 'editor_feedback',
+     'slug', 'recommended', 'include_in_rss', 'use_editor', 'stickiness',
+     'exclude_from_list_views', 'promote_article', 'letters_on',
+     'stickiness', 'secret_link', 'secret_link_view',
+     'encourage_republish', 'additional_head_scripts', 'additional_body_scripts',]
+
+article_specials = ['version', ]
+
+article_contenteditables = ['title', 'subtitle',
+                            'primary_image_caption',
+                            'body', 'copyright', ]
+
+article_form_fields =  article_inputs + article_contenteditables + \
+    article_specials
+
 class ArticleForm(forms.ModelForm):
+
+    author_01 = AutoCompleteSelectField("authors", required=False,
+                                        help_text=None, label="First author")
+    author_02 = AutoCompleteSelectField("authors", required=False,
+                                        help_text=None, label="Second author")
+    author_03 = AutoCompleteSelectField("authors", required=False,
+                                        help_text=None, label="Third author")
+    author_04 = AutoCompleteSelectField("authors", required=False,
+                                        help_text=None, label="Fourth author")
+    author_05 = AutoCompleteSelectField("authors", required=False,
+                                        help_text=None, label="Fourth author")
+
+    btn_publish_now = forms.CharField(required=False, label='Publish',
+                                    widget=forms.TextInput(
+                                    attrs={'class': 'button-action',
+                                        'data-visible': 'is_published',
+                                        'data-not': '1'}))
+
+    btn_unsticky = forms.CharField(required=False, label='Unsticky',
+                                widget=forms.TextInput(
+                                attrs={'class': 'button-action',
+                                       'data-visible': 'stickiness'}))
+    btn_top_story = forms.CharField(required=False, label='Top story',
+                                    widget=forms.TextInput(
+                                    attrs={'class': 'button-action',
+                                           'data-not': '1',
+                                           'data-visible': 'stickiness'}))
+
+    btn_full_width = forms.CharField(required=False, label='Full width',
+                                    widget=forms.TextInput(
+                                    attrs={'class': 'button-action',
+                                        'data-not': '1',
+                                        'data-visible': 'undistracted_layout'}))
+    btn_half_width = forms.CharField(required=False, label='Half width',
+                                    widget=forms.TextInput(
+                                    attrs={'class': 'button-action',
+                                           'data-visible': 'undistracted_layout'}))
+
+    btn_secret_link = forms.CharField(required=False, label='Make private URL',
+                                    widget=forms.TextInput(
+                                    attrs={'class': 'button-action',
+                                        'data-visible': 'secret_linkable'}))
+
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
+        fields = [f for f in self.visible_fields()
+                  if f.name in article_form_fields]
+        for field in fields:
+            field.field.widget.attrs['placeholder'] = field.label;
+            field.field.widget.attrs['data-article-form'] = "y";
+            if field.name in article_contenteditables:
+                field.field.widget.attrs['data-type'] = 'contenteditable'
+                if field.name in ['title',]:
+                    field.field.widget.attrs['data-editor'] = \
+                        'ck_inline_plaintext_config.js?v=20220131.1'
+                elif field.name in ['subtitle', 'primary_image_caption', ]:
+                    field.field.widget.attrs['data-editor'] = \
+                        'ck_inline_basic_config.js?v=20220131.1'
+                else:
+                    field.field.widget.attrs['data-editor'] = \
+                        'ck_inline_config.js?v=20220131.1'
+            elif field.name in article_inputs:
+                field.field.widget.attrs['data-type'] = 'input'
+                field.field.widget.attrs['data-display'] = 'inline';
+                if field.name in article_ajaxes:
+                    field.field.widget.attrs['data-ajax'] = 'y'
+
+
 
     def clean(self, *args, **kwargs):
         if self.cleaned_data["use_editor"]:
             body = self.cleaned_data["body"]
             self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
-
+            self.cleaned_data["title"] = strip_tags(self.cleaned_data["title"])
+            subtitle = self.cleaned_data['subtitle']
+            if len(subtitle) > 3 and subtitle[-4:] == "<br>":
+                self.cleaned_data['subtitle'] = subtitle[0:-4]
         super(ArticleForm, self).clean(*args, **kwargs)
+
+
 
     class Meta:
         model = models.Article
-        fields = ['title', 'subtitle', 'use_editor', 'published',
-                  'category', 'region', 'primary_image_caption',
-                  'body', 'copyright', 'user', 'version', ]
+        fields = article_form_fields
 
 class ArticleNewForm(forms.ModelForm):
 

@@ -333,70 +333,69 @@ Nevertheless, some refactoring needed here.
 '''
 
 def article_post(request, slug):
-    form = ArticleForm(request.POST)
+    if request.user.has_perm("newsroom.change_article") == False:
+        return HttpResponseForbidden()
+    article = get_object_or_404(models.Article, slug=slug)
+    form = ArticleForm(request.POST, instance=article)
     if form.is_valid():
-        if request.user.has_perm("newsroom.change_article"):
-            article = get_object_or_404(models.Article, slug=slug)
-            if article.version > form.cleaned_data["version"]:
-                messages.add_message(request, messages.ERROR,
-                                     utils.get_edit_lock_msg(article.user))
-                for field in form.changed_data:
-                    setattr(article, field,
-                            form.cleaned_data[field])
-                    return render(request, article.template,
-                                  {'article': article,
-                                   'display_region': None,
-                                   'blocks': get_blocks('Article'),
-                                   'can_edit': False,
-                                   'article_letters': None,
-                                   'most_popular_html': None,
-                                   'form': form})
-            for field in form.cleaned_data:
-                setattr(article, field, form.cleaned_data[field])
-            article.user = request.user
+        if article.version > form.cleaned_data["version"]:
+            messages.add_message(request, messages.ERROR,
+                                 utils.get_edit_lock_msg(article.user))
+            for field in form.changed_data:
+                setattr(article, field,
+                        form.cleaned_data[field])
+                return render(request, article.template,
+                              {'article': article,
+                               'display_region': None,
+                               'blocks': get_blocks('Article'),
+                               'can_edit': False,
+                               'article_letters': None,
+                               'most_popular_html': None,
+                               'form': form})
+        for field in form.cleaned_data:
+            setattr(article, field, form.cleaned_data[field])
+        article.user = request.user
+        article.save(force_update=True)
+        # Check if user clicked "Publish" button
+        if request.POST["btn_publish_now"] == "y":
+            article.publish_now()
+            messages.add_message(request, messages.INFO,
+                                 "Article published.")
+        elif request.POST["btn_unsticky"] == "y":
+            article.unsticky()
+            messages.add_message(request, messages.INFO,
+                                 "This article is no longer sticky.")
+        elif request.POST["btn_top_story"] == "y":
+            article.make_top_story()
+            messages.add_message(request, messages.INFO,
+                                 "This is the top article.")
+        elif request.POST["btn_secret_link"] == "y":
             article.save()
-            # Check if user clicked "Publish" button
-            if request.POST["is_published"] == "Now":
-                article.publish_now()
-                messages.add_message(request, messages.INFO,
-                                     "Article published.")
-            elif request.POST["input_top_story"] == "YES":
-                article.make_top_story()
-                messages.add_message(request, messages.INFO,
-                                     "This is the top article.")
-            elif request.POST["input_unsticky"] == "YES":
-                messages.add_message(request, messages.INFO,
-                                     "This article is no longer sticky.")
-                article.unsticky()
-            elif request.POST["input_secret_link"] == "YES":
-                article.save()
-                article_gen_preview(request, article.pk)
-                messages.add_message(request, messages.INFO,
-                                     "Private link created.")
-            elif request.POST["input_fullwidth"] == "YES":
-                article.undistracted_layout = True
-                article.save()
-                messages.add_message(request, messages.INFO,
-                                     "Full width article.")
-            elif request.POST["input_halfwidth"] == "YES":
-                article.undistracted_layout = False
-                article.save()
-                messages.add_message(request, messages.INFO,
-                                     "Normal width article.")
-            else:
-                messages.add_message(request, messages.INFO,
-                                     "Changes saved.")
-            return HttpResponseRedirect(reverse('newsroom:article.detail',
-                                                args=(slug,)))
+            article_gen_preview(request, article.pk)
+            messages.add_message(request, messages.INFO,
+                                 "Private link created.")
+        elif request.POST["btn_full_width"] == "y":
+            article.undistracted_layout = True
+            article.save()
+            messages.add_message(request, messages.INFO,
+                                 "Full width article.")
+        elif request.POST["btn_half_width"] == "y":
+            article.undistracted_layout = False
+            article.save()
+            messages.add_message(request, messages.INFO,
+                                 "Normal width article.")
         else:
-            return HttpResponseForbidden()
+            messages.add_message(request, messages.INFO,
+                                 "Changes saved.")
+        return HttpResponseRedirect(reverse('newsroom:article.detail',
+                                            args=(article.slug,)))
     else:
         if form.data["title"] == "":
             messages.add_message(request, messages.ERROR,
                                  "Title can't be blank.")
         else:
             messages.add_message(request, messages.ERROR,
-                                 "Something went wrong.")
+                                 "Please fix the error(s)." + str(form.errors))
         return HttpResponseRedirect(reverse('newsroom:article.detail',
                                             args=(slug,)))
 

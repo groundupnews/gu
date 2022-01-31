@@ -636,6 +636,11 @@ class Article(models.Model):
             replace(u'&#8221;', u'”').\
             replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
 
+    def secret_linkable(self):
+        if self.is_published() or self.secret_link:
+            return False
+        return True
+
     def make_secret_link(self):
         t = timezone.now()
         self.secret_link = str(t.year) + str(t.month) + str(t.day) + \

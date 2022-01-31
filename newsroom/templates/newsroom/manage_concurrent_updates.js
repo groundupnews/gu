@@ -21,6 +21,10 @@ $(document).ready(function() {
 
     function checkFormChanged()
     {
+        let save = document.getElementById("edit-menu-save");
+        if (save && save.style.display !== "none") {
+            return true;
+        }
         if (editors_enabled) {
             if ($("#article_form").serialize() != form_original_data) {
                 return true;
