@@ -23,7 +23,7 @@
                 <div id="content-area">
                     <h1>New article</h1>
                     <div class="col-md-offset-2">
-                        <form action="{% url 'newsroom:article.add'  %}?edit='y''"
+                        <form action="{% url 'newsroom:article.add'  %}?edit=y"
                               method="post">
                             {% csrf_token %}
                             {{form.as_p}}
