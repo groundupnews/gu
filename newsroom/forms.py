@@ -47,7 +47,7 @@ class ArticleForm(forms.ModelForm):
     author_04 = AutoCompleteSelectField("authors", required=False,
                                         help_text=None, label="Fourth author")
     author_05 = AutoCompleteSelectField("authors", required=False,
-                                        help_text=None, label="Fourth author")
+                                        help_text=None, label="Fifth author")
 
     btn_publish_now = forms.CharField(required=False, label='Publish',
                                     widget=forms.TextInput(
@@ -91,13 +91,13 @@ class ArticleForm(forms.ModelForm):
                 field.field.widget.attrs['data-type'] = 'contenteditable'
                 if field.name in ['title',]:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_plaintext_config.js?v=20220131.1'
+                        'ck_inline_plaintext_config.js?v=20220131.2'
                 elif field.name in ['subtitle', 'primary_image_caption', ]:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_basic_config.js?v=20220131.1'
+                        'ck_inline_basic_config.js?v=20220131.2'
                 else:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_config.js?v=20220131.1'
+                        'ck_inline_config.js?v=20220131.2'
             elif field.name in article_inputs:
                 field.field.widget.attrs['data-type'] = 'input'
                 field.field.widget.attrs['data-display'] = 'inline';
@@ -110,7 +110,11 @@ class ArticleForm(forms.ModelForm):
         if self.cleaned_data["use_editor"]:
             body = self.cleaned_data["body"]
             self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
-            self.cleaned_data["title"] = strip_tags(self.cleaned_data["title"])
+            try:
+                self.cleaned_data["title"] = \
+                    strip_tags(self.cleaned_data["title"]).trim()
+            except:
+                pass
             subtitle = self.cleaned_data['subtitle']
             if len(subtitle) > 3 and subtitle[-4:] == "<br>":
                 self.cleaned_data['subtitle'] = subtitle[0:-4]

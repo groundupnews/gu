@@ -23,7 +23,7 @@
                 <div id="content-area">
                     <h1>New article</h1>
                     <div class="col-md-offset-2">
-                        <form action="{% url 'newsroom:article.add'  %}"
+                        <form action="{% url 'newsroom:article.add'  %}?edit='y''"
                               method="post">
                             {% csrf_token %}
                             {{form.as_p}}
@@ -78,7 +78,10 @@
              document.getElementById('id_slug').value =
                  makeSlug(e.target.value);
              document.getElementById('word-count').textContent =
-                 e.target.value.length;
+                 e.target.value.trim().length + "/" +
+                 e.target.value.split(" ").filter(function(x) {
+                     return x.length > 0;
+                 }).length;
      });
 
      document.addEventListener('DOMContentLoaded', function() {
@@ -87,7 +90,7 @@
          title.parentNode.insertBefore(span, title.nextSibling);
          span.id = "word-count";
          span.style.marginLeft = "12px";
-         span.textContent = "0";
+         span.textContent = "0/0";
      });
     </script>
 

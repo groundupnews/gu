@@ -23,10 +23,17 @@ function getPureArticle()
     return pure_article;
 }
 
+function charsAndWordsLength(str)
+{
+    return str.trim().length + "/" +
+        str.trim().split(" ").filter(function(x) {
+            return x.length > 0;
+        }).length;
+}
 
 {% if can_edit %}
 
-let edit_mode = false;
+let edit_mode;
 
 function setupFormSubmit()
 {
@@ -53,9 +60,10 @@ function setupFormSubmit()
                 const copyFrom = document.getElementById(copyFromId);
                 if (copyFrom) elem.value = copyFrom.innerHTML;
             }
-            console.log(document.getElementById('article_title').innerHTML);
             document.getElementById('article_title').innerHTML =
-                document.getElementById('article_title').textContent;
+                document.getElementById('article_title').innerHTML.
+                replace(/<\/?[^>]+(>|$)/g, "").trim();
+            console.log(document.getElementById('article_title').innerHTML);
         });
 }
 
@@ -173,12 +181,13 @@ function setupInputFields()
                 style.display = "inherit";
         }
     });
-    document.getElementById('headline_len').textContent = document.getElementById('article_title').textContent.
-        trim().length;
+
+    document.getElementById('headline_len').textContent =
+        charsAndWordsLength(document.getElementById('article_title').textContent);
     document.getElementById('article_title').addEventListener(
         'input', function(e) {
-            document.getElementById('headline_len').textContent = document.getElementById('article_title').
-                textContent.trim().length;
+            document.getElementById('headline_len').textContent =
+                charsAndWordsLength(e.target.textContent);
         });
 }
 
@@ -252,46 +261,7 @@ function toggleEditables(elem)
     else
         elem.textContent = "Edit";
     setEditables();
-    setPlaceholders();
 }
-
-function setPlaceholders()
-{
-    /* Not happy with this yet so simply returning for now. */
-    return;
-
-    /* Code that I'm unhappy with starts here. */
-    // let elems = document.getElementsByClassName('editable');
-
-    // for (let elem of elems) {
-    //     let id = elem.id.replace(article_prefix, id_prefix);
-    //     let formField = document.getElementById(id);
-    //     const placeholder = formField.getAttribute('placeholder');
-
-    //     if (!placeholder) continue;
-
-    //     if (elem.classList.contains("editable-input")) {
-    //         //elem.setAttribute('placeholder', placeholder);
-    //     } else {
-    //         // Set the placeholder in contenteditables as initial content if it's empty
-    //         if (elem.innerHTML.replace(/\s+/g, '').replace('<br>', '') === '' ||
-    //             elem.innerHTML.trim() === "<p><br></p>") {
-    //             let e = document.getElementById(elem.id + "_placeholder");
-    //             if (!e) {
-    //                 e = document.createElement('span');
-    //                 e.id = elem.id + "_placeholder";
-    //                 e.classList.add('edit-only');
-    //                 elem.parentNode.insertBefore(e, elem);
-    //                 e.textContent = placeholder;
-    //             }
-    //         } else {
-    //             let e = document.getElementById(elem.id + "_placeholder");
-    //             if (e) e.textContent = "";
-    //         }
-    //     }
-    // }
-}
-
 
 {% endif %}
 
@@ -343,14 +313,15 @@ jQuery(document).ready(function ($) {
     shareButtons();
 
     {% if can_edit %}
-
+    edit_mode = false;
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('edit') === "y") edit_mode = true;
     setupAdminPanel();
     setupButtons();
     setupFormSubmit();
     //initializeInputFields();
     setupInputFields();
     setEditables();
-
     {% endif %}
 });
 

@@ -532,7 +532,7 @@ def article_new(request):
                 article = form.save()
                 return HttpResponseRedirect(reverse(
                     'newsroom:article.detail',
-                    args=(article.slug,)))
+                    args=(article.slug,)) + "?edit=y")
             else:
                 messages.add_message(request, messages.ERROR,
                                      "Please correct errors")
