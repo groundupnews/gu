@@ -16,13 +16,18 @@
 	<div class="row">
 	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
 		<h1>Correction or Update</h1>
-                <p>Article title:
-                    {% if article %}
-                        <a href="{% url "newsroom:article.detail" article.slug %}">{{article.title}}</a>{{ article.title }}
-                    {% else %}
-                        <a href="{% url "newsroom:article.detail" object.article.slug %}">{{object.article.title}}</a>
-                    {% endif %}
+                <p>
+                    <a href="{% url "newsroom:article.detail" article.slug %}">
+                        Return to article without making correction or update
+                    </a>
                 </p>
+
+                <h2>
+                    {{article.title}}
+                </h2>
+                <h3>
+                    {{ article.subtitle }}
+                </h3>
                 <form id="correction-form" method="post">{% csrf_token %}
                     <table class="table">
                         {{ form.as_table }}

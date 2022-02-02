@@ -20,18 +20,21 @@ from django.views.decorators.http import last_modified
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.forms import inlineformset_factory
+from django.conf import settings as django_settings
 
 from letters.models import Letter
 from letters.settings import DAYS_AGO
 from agony.models import QandA
 from pgsearch.utils import searchArticlesAndPhotos
-#from pgsearch.utils import searchPostgresDB
-from django.conf import settings as django_settings
 
 from . import models, settings, utils
 from .forms import ArticleForm, ArticleNewForm, \
                     ArticleListForm, AdvancedSearchForm
 from payment.models import Commission
+from socialmedia.models import Tweet
+from socialmedia.forms import TweetForm
+from republisher.models import RepublisherArticle
 
 logger = logging.getLogger(__name__)
 
@@ -235,6 +238,17 @@ class TopicDetail(ArticleList):
 class ListCorrection(generic.ListView):
     model = models.Correction
 
+def get_correction_article(request):
+    article_pk = request.GET.get('article_pk', None)
+    if article_pk is None:
+        raise Http404
+    try:
+        return models.Article.objects.get(pk=int(article_pk))
+    except:
+        raise Http404
+
+
+
 class CreateCorrection(PermissionRequiredMixin, CreateView):
     model = models.Correction
     fields = ['update_type', 'text', 'notify_republishers', ]
@@ -242,14 +256,7 @@ class CreateCorrection(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateCorrection, self).get_context_data(**kwargs)
-        article_pk = self.request.GET.get('article_pk', None)
-        if article_pk is None:
-            raise Http404
-        try:
-            article = models.Article.objects.get(pk=int(article_pk))
-        except:
-            raise Http404
-        context['article'] = article
+        context['article'] = get_correction_article(self.request)
         return context
 
     def form_valid(self, form):
@@ -269,6 +276,12 @@ class UpdateCorrection(PermissionRequiredMixin, UpdateView):
     fields = ['update_type', 'text', 'notify_republishers', ]
     permission_required = 'newsroom.change_correction'
 
+    def get_context_data(self, **kwargs):
+        context = super(UpdateCorrection, self).get_context_data(**kwargs)
+        context['article'] = get_correction_article(self.request)
+        return context
+
+
 class DeleteCorrection(PermissionRequiredMixin, DeleteView):
     model = models.Correction
     permission_required = 'newsroom.delete_correction'
@@ -276,6 +289,12 @@ class DeleteCorrection(PermissionRequiredMixin, DeleteView):
     def get_success_url(self):
         slug = self.object.article.slug
         return reverse('newsroom:article.detail', args=(slug,))
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteCorrection, self).get_context_data(**kwargs)
+        context['article'] = get_correction_article(self.request)
+        return context
+
 
 # Support functions for article editing
 
@@ -336,9 +355,22 @@ def article_post(request, slug):
     if request.user.has_perm("newsroom.change_article") == False:
         return HttpResponseForbidden()
     article = get_object_or_404(models.Article, slug=slug)
+    version = article.version
     form = ArticleForm(request.POST, instance=article)
-    if form.is_valid():
-        if article.version > form.cleaned_data["version"]:
+
+    TweetFormSet = inlineformset_factory(models.Article, Tweet, form=TweetForm)
+    tweetFormSet = TweetFormSet(request.POST, instance=article,
+                                prefix="tweets")
+
+    RepublisherFormSet = inlineformset_factory(models.Article, RepublisherArticle,
+                                         fields=('republisher', 'status', ))
+    republisherFormSet = RepublisherFormSet(request.POST,
+                                            instance=article,
+                                            prefix="republishers")
+
+    if form.is_valid() and tweetFormSet.is_valid() and \
+       republisherFormSet.is_valid():
+        if version > form.cleaned_data["version"]:
             messages.add_message(request, messages.ERROR,
                                  utils.get_edit_lock_msg(article.user))
             for field in form.changed_data:
@@ -351,11 +383,23 @@ def article_post(request, slug):
                                'can_edit': False,
                                'article_letters': None,
                                'most_popular_html': None,
-                               'form': form})
-        for field in form.cleaned_data:
-            setattr(article, field, form.cleaned_data[field])
+                               'form': form,
+                               'tweetFormSet': tweetFormSet,
+                               'republisherFormSet': republisherFormSet})
+        # for field in form.cleaned_data:
+        #     if form.fields[field].has_changed:
+        #         print("Changed", field)
+        #         if field == "topics":
+        #             for topic in form.cleaned_data[field]:
+        #                 print(topic)
+        #                 article.topics.add(models.Topic.objects.get(pk=int(topic)))
+        #         else:
+        #             setattr(article, field, form.cleaned_data[field])
+        article = form.save()
         article.user = request.user
         article.save(force_update=True)
+        tweetFormSet.save()
+        republisherFormSet.save()
         # Check if user clicked "Publish" button
         if request.POST["btn_publish_now"] == "y":
             article.publish_now()
@@ -390,12 +434,27 @@ def article_post(request, slug):
         return HttpResponseRedirect(reverse('newsroom:article.detail',
                                             args=(article.slug,)))
     else:
-        if form.data["title"] == "":
+        if form.is_valid() == False:
             messages.add_message(request, messages.ERROR,
-                                 "Title can't be blank.")
-        else:
+                                 "Please fix the problem below.")
+            for err in form.errors:
+                messages.add_message(request, messages.ERROR, str(err))
+
+        if tweetFormSet.is_valid() == False:
             messages.add_message(request, messages.ERROR,
-                                 "Please fix the error(s)." + str(form.errors))
+                                 "Please fix problem(s) with the tweets.")
+            for err in tweetFormSet.errors:
+                messages.add_message(request, messages.ERROR, str(err))
+
+        if republisherFormSet.is_valid() == False:
+            messages.add_message(request, messages.ERROR,
+                                 "There was an error with the republishers.")
+            for count, err in enumerate(republisherFormSet.errors):
+                if '__all__' in err:
+                    messages.add_message(request, messages.ERROR,
+                                         "Republisher " + str(count) +
+                                         ": "  + ",".join(err['__all__']))
+
         return HttpResponseRedirect(reverse('newsroom:article.detail',
                                             args=(slug,)))
 
@@ -446,21 +505,34 @@ def article_preview(request, secret_link):
                    order_by('-published'),
                    'agony': QandA.objects.published().order_by("-published"),
                    'content_type': 'article',
-                   'form': None})
+                   'form': None,
+                   'tweetFormSet': None,
+                   'republisherFormSet': None})
 
 def article_detail(request, slug):
-    # messages.add_message(request, messages.INFO,
-    #                     "We're only publishing urgent "
-    #                     "news until 11 January. Have a "
-    #                     "safe holiday season.")
     if request.method == 'POST':
         return article_post(request, slug)
     else:  # GET
         article = get_object_or_404(models.Article, slug=slug)
         if request.user.has_perm('newsroom.change_article'):
             form = ArticleForm(instance=article)
+
+            TweetFormSet = inlineformset_factory(models.Article, Tweet, form=TweetForm, extra=1,
+                                                 can_delete_extra=False)
+            tweetFormSet = TweetFormSet(instance=article, prefix="tweets")
+
+            RepublisherFormSet = inlineformset_factory(models.Article,
+                                                       RepublisherArticle,
+                                                       extra=5,
+                                                       can_delete_extra=False,
+                                                       fields=('republisher',
+                                                               'status',))
+            republisherFormSet = RepublisherFormSet(instance=article,
+                                              prefix="republishers")
         else:
             form = None
+            tweetFormSet = None
+            republisherFormSet = None
         if article.is_published() or request.user.is_staff:
             if request.user.is_staff and not article.is_published():
                 messages.add_message(request, messages.INFO,
@@ -519,7 +591,9 @@ def article_detail(request, slug):
                            order_by('-published'),
                            'agony': QandA.objects.published().order_by("-published"),
                            'content_type': 'article',
-                           'form': form})
+                           'form': form,
+                           'tweetFormSet': tweetFormSet,
+                           'republisherFormSet': republisherFormSet})
         else:
             raise Http404
 

@@ -58,7 +58,8 @@
                 </span>
                 <div class="collapse" id="authorAdvanced">
                     <div class="card card-body">
-                        <div id="author-advanced" class="edit-only">
+                        <div id="author-advanced"
+                             class="edit-only article-card-form">
                             <div id="view_author_01_text" title="1st author"></div>
                             <div id="view_author_02_text" title="2nd author"></div>
                             <div id="view_author_03_text" title="3rd author"></div>
@@ -72,6 +73,56 @@
                         </div>
                     </div>
                 </div>
+
+                <span>
+                    <button class="btn btn-primary edit-only" type="button"
+                            data-toggle="collapse" data-target="#topicsDiv"
+                            aria-expanded="false" aria-controls="topicsDiv"
+                            title="Topics">
+                        Topics ({{article.topics.count}}) &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="topicsDiv">
+                    <div class="card card-body">
+                        <div id="topicsDiv" class="edit-only article-card-form">
+                            <div id="view_topics_text">Topics: </div>
+                            <div id="view_main_topic_text">Main: </div>
+                        </div>
+                    </div>
+                </div>
+
+                <span>
+                    <button class="btn btn-primary edit-only" type="button"
+                            data-toggle="collapse" data-target="#tweetsDiv"
+                            aria-expanded="false" aria-controls="tweetsDiv"
+                            title="Tweets">
+                        Tweets ({{article.tweet_set.count}}) &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="tweetsDiv">
+                    <div class="card card-body">
+                        <div id="view_tweets" class="edit-only article-card-form">
+                        </div>
+                    </div>
+                </div>
+
+
+                <span>
+                    <button class="btn btn-primary edit-only" type="button"
+                            data-toggle="collapse" data-target="#republishersDiv"
+                            aria-expanded="false" aria-controls="republishersDiv"
+                            title="Republishers">
+                        Republishers ({{article.republisherarticle_set.count}}) &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="republishersDiv">
+                    <div class="card card-body">
+                        <div id="view_republishers"
+                             class="edit-only article-card-form">
+                        </div>
+                    </div>
+                </div>
+
                 <span>
                     <button class="btn btn-primary edit-only" type="button"
                             data-toggle="collapse" data-target="#Advanced"
@@ -82,7 +133,8 @@
                 </span>
                 <div class="collapse" id="Advanced">
                     <div class="card card-body">
-                        <div id="advanced" class="edit-only">
+                        <div id="advanced"
+                             class="edit-only article-card-form">
                             <div id="view_slug" class="edit-only">
                                 Slug:
                             </div>
@@ -124,12 +176,16 @@
                                 <span id="view_secret_link"
                                       class="edit-only"
                                       data-display="inline">
-                                    Secret link:
+                                    Private URL:
                                 </span> &nbsp;
                                 <span id="view_secret_link_view"
                                       class="edit-only"
                                       data-display="inline">
                                 </span>
+                            </div>
+                            <div>
+                                PK: {{article.pk}} Created: {{article.created|date:"c"}} <br/>
+                                Modified: {{article.modified|date:"c"}} by {{article.user}}
                             </div>
                         </div>
                     </div>
@@ -206,8 +262,10 @@
                             {{correction.text|safe}}
                         </span>
                         {% if can_edit %}
-                            <a href="{% url 'newsroom:correction.update' correction.pk %}">Edit</a> |
-                            <a href="{% url 'newsroom:correction.delete' correction.pk %}">Delete</a>
+                            <a href="{% url 'newsroom:correction.update' correction.pk %}?article_pk={{article.pk}}">
+                                Edit</a> |
+                            <a href="{% url 'newsroom:correction.delete' correction.pk %}?article_pk={{article.pk}}">
+                                Delete</a>
                         {% endif %}
                     </div>
                 {% endfor  %}
@@ -217,8 +275,17 @@
     {% if can_edit %}
         <p id="article__statistics"></p>
         <p>
-            <a href="{% url 'newsroom:correction.create' %}?article_pk={{article.pk}}">Add correction or update</a>
+            <button id="article_add_correction" class="btn btn-primary" type="button">
+                Add correction or update
+            </button>
         </p>
+        <script>
+         document.getElementById("article_add_correction").
+                  addEventListener('click', function() {
+                      window.open("{% url 'newsroom:correction.create' %}?article_pk={{article.pk}}",
+                                  "correctionWindow", "popup=1,left=100,top=100");
+                  });
+        </script>
     {% endif %}
     {% if article.main_topic %}
         {% include "newsroom/read_similar.html" %}
@@ -268,6 +335,22 @@
             <table>
                 {{form.as_table}}
             </table>
+            <div id="tweet_formset">
+                {{ tweetFormSet.management_form }}
+                {% for form in tweetFormSet %}
+                    <div class="tweet-form inline-form">
+                        {{form.as_p}}
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="republisher_formset">
+                {{ republisherFormSet.management_form }}
+                {% for form in republisherFormSet %}
+                    <div class="republisher-form inline-form">
+                        {{form}}
+                    </div>
+                {% endfor %}
+            </div>
             <input id="saveedits" type="submit"
 	           value="Save">
         </form>

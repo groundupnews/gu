@@ -428,8 +428,10 @@ class Article(models.Model):
     commissions_processed = models.BooleanField(default=False)
 
     # Randomly generated link for prepublication view of articles
-    secret_link = models.CharField(max_length=64, blank=True)
+    secret_link = models.CharField(max_length=64, verbose_name="private URL",
+                                   blank=True)
     secret_link_view = models.CharField(choices=SECRET_LINK_CHOICES,
+                                        verbose_name="private URL view",
                                         max_length=1, default="n")
     # secret_link_editable = models.BooleanField(default=False)
 
@@ -685,6 +687,9 @@ class Article(models.Model):
             self.body = utils.insertPixel(self.body, self.pk,
                                           self.slug)
         super(Article, self).save(*args, **kwargs)
+        if self.main_topic not in self.topics.all():
+            self.topics.add(self.main_topic)
+            super(Article, self).save(force_update=True)
 
     def get_absolute_url(self):
         return reverse('newsroom:article.detail',

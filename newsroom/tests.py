@@ -293,9 +293,12 @@ class ArticleTest(TestCase):
         correction.update_type = "C"
         correction.text = "This is a test of the corrections."
         correction.save()
-        response = client.get(reverse('newsroom:correction.update', args=[1]))
+        correction = Correction.objects.get(pk=correction.pk)
+        response = client.get(reverse('newsroom:correction.update', args=[correction.pk]) +
+                                      "?article_pk=" + str(correction.article.pk))
         self.assertEqual(response.status_code, 200)
-        response = client.get(reverse('newsroom:correction.delete', args=[1]))
+        response = client.get(reverse('newsroom:correction.delete', args=[correction.pk])  +
+                                      "?article_pk=" + str(correction.article.pk))
         self.assertEqual(response.status_code, 200)
         response = client.get(reverse('newsroom:article.add'))
         self.assertEqual(response.status_code, 200)

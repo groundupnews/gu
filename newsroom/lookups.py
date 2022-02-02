@@ -1,6 +1,6 @@
 from ajax_select import LookupChannel, register
 from django.db.models import Q
-from newsroom.models import Article, Author
+from newsroom.models import Article, Author, Topic
 
 
 @register('articles')
@@ -29,6 +29,21 @@ class AuthorLookup(LookupChannel):
                 Q(first_names__icontains=q)
         return self.model.objects.filter(query).filter(email__isnull=False).\
             order_by("last_name")
+
+    def format_item_display(self, item):
+        return str(item)
+
+@register('topics')
+class TopicLookup(LookupChannel):
+
+    model = Topic
+
+    help_text = "Topic"
+
+    def get_query(self, q, request):
+        query = Q(name__icontains=q) | Q(pk__icontains=q) | \
+                Q(slug__icontains=q)
+        return self.model.objects.filter(query).order_by("name")
 
     def format_item_display(self, item):
         return str(item)

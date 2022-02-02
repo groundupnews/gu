@@ -56,6 +56,8 @@ $(document).ready(function() {
 		    msg = "User " + edited_by +
 		        " has edited the article. This is no longer " +
 		        "the latest version. Editing disabled."
+                    let btn = document.getElementById("edit-menu-save");
+                    if (btn) btn.disabled = true;
                     if (checkFormChanged() == true) {
 		        alert(msg);
                     }

@@ -1072,18 +1072,45 @@ img.too_big {
     font-style: italic;
 }
 
-#author-advanced, #advanced {
+.article-card-form {
     border: 1px solid #888;
     border-radius: 5px;
     padding: 6px;
+    margin: 2px;
 }
-#author-advanced > div, #advanced > div  {
-    margin: 8px;
+
+.article-card-form > div {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 #article-extra-edit-options {
     margin: 12px;
     margin-left: 0;
+}
+
+div.inline-form {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 12px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: 80% !important;
+}
+
+div.tweet-form p {
+    font-size: 90% !important;
+}
+
+div.tweet-form input:nth-child(2){
+    width: 400px !important;
+}
+
+div.inline-form label {
+    margin-right: 3px;
+}
+
+div.inline-form input, div.inline-form select {
+    margin-right: 6px;
 }
 
 {% endif %}

@@ -63,7 +63,14 @@ function setupFormSubmit()
             document.getElementById('article_title').innerHTML =
                 document.getElementById('article_title').innerHTML.
                 replace(/<\/?[^>]+(>|$)/g, "").trim();
-            console.log(document.getElementById('article_title').innerHTML);
+
+            // Move back tweets
+            const tweets = document.getElementById('tweet_formset');
+            form.appendChild(tweets);
+
+            // Move back republishers
+            const republishers = document.getElementById('republisher_formset');
+            form.appendChild(republishers);
         });
 }
 
@@ -145,21 +152,21 @@ function setupInputFields()
             if (elem.getAttribute('data-ajax') == "y") {
                 let deckElem = document.getElementById(
                     elem.id.replace("_text", deck_suffix));
-                if (deckElem) {
-                    viewElem.appendChild(deckElem);
-                    let trashIcons = deckElem.
-                        getElementsByClassName('ui-icon-trash');
-                    if (trashIcons.length) {
-                        trashIcons[0].addEventListener(
-                            "click",function() {
-                                document.getElementById("edit-menu-save").
-                                    style.display = "inherit";
-                            });
-                    }
-                }
+                if (deckElem) viewElem.appendChild(deckElem);
             }
         }
     }
+
+    // Enable save if trash icon clicked
+    const trash_icons = document.getElementsByClassName('ui-icon-trash');
+    console.log(trash_icons.length);
+    for (let trash of trash_icons) {
+        trash.addEventListener('click', function() {
+            document.getElementById("edit-menu-save").
+                style.display = "inherit";
+        });
+    }
+
 
     // Specific field processing
     $('#id_published').datetimepicker({
@@ -189,6 +196,28 @@ function setupInputFields()
             document.getElementById('headline_len').textContent =
                 charsAndWordsLength(e.target.textContent);
         });
+}
+
+function setupTweets()
+{
+    const view_tweets = document.getElementById('view_tweets')
+    const tweets = document.getElementById('tweet_formset');
+    view_tweets.appendChild(tweets);
+    view_tweets.addEventListener('input', function() {
+        document.getElementById("edit-menu-save").
+            style.display = "inherit";
+    });
+}
+
+function setupRepublishers()
+{
+    const view_republishers = document.getElementById('view_republishers')
+    const republishers = document.getElementById('republisher_formset');
+    view_republishers.appendChild(republishers);
+    view_republishers.addEventListener('input', function() {
+        document.getElementById("edit-menu-save").
+            style.display = "inherit";
+    });
 }
 
 function destroyEditors()
@@ -319,8 +348,9 @@ jQuery(document).ready(function ($) {
     setupAdminPanel();
     setupButtons();
     setupFormSubmit();
-    //initializeInputFields();
     setupInputFields();
+    setupTweets();
+    setupRepublishers();
     setEditables();
     {% endif %}
 });

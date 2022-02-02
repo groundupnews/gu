@@ -36,7 +36,7 @@ class Tweet(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     wait_time = models.PositiveIntegerField(help_text="Number of minutes "
                                             "after publication "
-                                            "till tweet.")
+                                            "till tweet.", default=0)
     status = models.CharField(max_length=20,
                               choices=SCHEDULE_RESULTS,
                               default="scheduled")
