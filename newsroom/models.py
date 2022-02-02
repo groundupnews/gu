@@ -679,6 +679,8 @@ class Article(models.Model):
             self.cached_small_image = ""
         self.title = self.clean_typography(self.title)
         self.subtitle = self.clean_typography(self.subtitle)
+        self.title = utils.remove_br(self.title)
+        self.subtitle = utils.remove_trailing_br(self.subtitle)
         self.primary_image_caption = \
             self.clean_typography(self.primary_image_caption)
         self.body = self.clean_typography(self.body)
@@ -687,7 +689,7 @@ class Article(models.Model):
             self.body = utils.insertPixel(self.body, self.pk,
                                           self.slug)
         super(Article, self).save(*args, **kwargs)
-        if self.main_topic not in self.topics.all():
+        if self.main_topic and self.main_topic not in self.topics.all():
             self.topics.add(self.main_topic)
             super(Article, self).save(force_update=True)
 

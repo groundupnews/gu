@@ -49,6 +49,15 @@ def remove_unnecessary_white_space(html):
     html = re.sub(' +', ' ', html)
     return blankpara_regex.sub(r'', html)
 
+def remove_br(str):
+    if str:
+        return str.replace("<br>","")
+    return str
+
+def remove_trailing_br(str):
+    if str and len(str) >= 4 and str[-4:] == "<br>":
+        return str[-4:]
+    return str
 
 def replaceImgHeightWidthWithClass(soup):
     try:
