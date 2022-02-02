@@ -237,7 +237,7 @@
 
 @media (max-width: 768px) {
     .adv-filter-form input {
-        display block;
+        display: block;
     }
     .search-result {
         flex-direction: column;
