@@ -110,25 +110,25 @@ class ArticleForm(forms.ModelForm):
 
 
 
-    def clean(self, *args, **kwargs):
-        if self.cleaned_data["use_editor"]:
-            try:
-                body = self.cleaned_data["body"]
-                self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
-            except:
-                pass
-            try:
-                self.cleaned_data["title"] = \
-                    strip_tags(self.cleaned_data["title"]).trim()
-            except:
-                pass
-            try:
-                subtitle = self.cleaned_data['subtitle']
-                if len(subtitle) > 3 and subtitle[-4:] == "<br>":
-                    self.cleaned_data['subtitle'] = subtitle[0:-4]
-            except:
-                pass
-        super(ArticleForm, self).clean(*args, **kwargs)
+    # def clean(self, *args, **kwargs):
+    #     if self.cleaned_data["use_editor"]:
+    #         try:
+    #             body = self.cleaned_data["body"]
+    #             self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
+    #         except:
+    #             pass
+    #         try:
+    #             self.cleaned_data["title"] = \
+    #                 strip_tags(self.cleaned_data["title"]).trim()
+    #         except:
+    #             pass
+    #         try:
+    #             subtitle = self.cleaned_data['subtitle']
+    #             if len(subtitle) > 3 and subtitle[-4:] == "<br>":
+    #                 self.cleaned_data['subtitle'] = subtitle[0:-4]
+    #         except:
+    #             pass
+    #     super(ArticleForm, self).clean(*args, **kwargs)
 
 
 

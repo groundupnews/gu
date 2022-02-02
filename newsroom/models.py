@@ -4,7 +4,7 @@ import traceback
 import random
 from urllib.parse import urlparse
 
-import smartypants
+
 from allauth.account.signals import password_changed
 from django.conf import settings as django_settings
 from django.contrib.auth.models import User
@@ -629,15 +629,6 @@ class Article(models.Model):
     def calc_summary_text_no_html(self):
         return strip_tags(self.cached_summary_text)
 
-    def clean_typography(self, text):
-        return smartypants.smartypants(text).\
-            replace("&nbsp;", " ").\
-            replace("  ", " ").\
-            replace(u'&#8217;', u'’').\
-            replace(u'&#8220;', u'“').\
-            replace(u'&#8221;', u'”').\
-            replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
-
     def secret_linkable(self):
         if self.is_published() or self.secret_link:
             return False
@@ -677,13 +668,15 @@ class Article(models.Model):
             self.cached_small_image = self.calc_small_image()
         except:
             self.cached_small_image = ""
-        self.title = self.clean_typography(self.title)
-        self.subtitle = self.clean_typography(self.subtitle)
+        self.title = utils.clean_typography(self.title)
         self.title = utils.remove_br(self.title)
+        self.subtitle = utils.clean_typography(self.subtitle)
         self.subtitle = utils.remove_trailing_br(self.subtitle)
         self.primary_image_caption = \
-            self.clean_typography(self.primary_image_caption)
-        self.body = self.clean_typography(self.body)
+            utils.clean_typography(self.primary_image_caption)
+        self.body = utils.clean_typography(self.body)
+        if self.use_editor:
+            self.body = utils.replaceBadHtmlWithGood(self.body)
         self.version = self.version + 1
         if self.pk:
             self.body = utils.insertPixel(self.body, self.pk,

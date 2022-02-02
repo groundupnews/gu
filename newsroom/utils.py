@@ -1,6 +1,7 @@
 import random
 import re
 import string
+import smartypants
 from random import randint
 import os
 from urllib.parse import unquote
@@ -43,6 +44,15 @@ that arise in the editor.
 
 blankpara_regex = re.compile(r'<p[^>]*?>\s*?</p>|<p[^>]*?>\s*?&nbsp;\s*?</p>')
 
+def clean_typography(text):
+    return smartypants.smartypants(text).\
+        replace("&nbsp;", " ").\
+        replace("  ", " ").\
+        replace(u'&#8217;', u'’').\
+        replace(u'&#8220;', u'“').\
+        replace(u'&#8221;', u'”').\
+        replace(u'\xa0 ', u' ').replace(u' \xa0', u' ')
+
 
 def remove_unnecessary_white_space(html):
     html = re.sub('&nbsp;', ' ', html)
@@ -56,7 +66,7 @@ def remove_br(str):
 
 def remove_trailing_br(str):
     if str and len(str) >= 4 and str[-4:] == "<br>":
-        return str[-4:]
+        return str[0:-4]
     return str
 
 def replaceImgHeightWidthWithClass(soup):
