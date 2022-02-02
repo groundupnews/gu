@@ -49,7 +49,7 @@
         {% if can_edit %}
             <div id="article-extra-edit-options">
                 <span>
-                    <button class="btn btn-primary edit-only" type="button"
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
                             data-toggle="collapse" data-target="#authorAdvanced"
                             aria-expanded="false" aria-controls="authorAdvanced"
                             title="Author options">
@@ -60,7 +60,15 @@
                     <div class="card card-body">
                         <div id="author-advanced"
                              class="edit-only article-card-form">
-                            <div id="view_author_01_text" title="1st author"></div>
+                            <div>
+                                <span id="view_author_01_text"
+                                      title="1st author"></span>
+                                <button id="new-author"
+                                        class="btn btn-primary"
+                                        style="position: absolute; right: 50px">
+                                    New author
+                                </button>
+                            </div>
                             <div id="view_author_02_text" title="2nd author"></div>
                             <div id="view_author_03_text" title="3rd author"></div>
                             <div id="view_author_04_text" title="4th author"></div>
@@ -75,7 +83,7 @@
                 </div>
 
                 <span>
-                    <button class="btn btn-primary edit-only" type="button"
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
                             data-toggle="collapse" data-target="#topicsDiv"
                             aria-expanded="false" aria-controls="topicsDiv"
                             title="Topics">
@@ -85,14 +93,20 @@
                 <div class="collapse" id="topicsDiv">
                     <div class="card card-body">
                         <div id="topicsDiv" class="edit-only article-card-form">
-                            <div id="view_topics_text">Topics: </div>
+                            <div <span id="view_topics_text">Topics: </span>
+                                <button id="new-topic"
+                                        class="btn btn-primary"
+                                        style="position: absolute; right: 50px">
+                                    New Topic
+                                </button>
+                            </div>
                             <div id="view_main_topic_text">Main: </div>
                         </div>
                     </div>
                 </div>
 
                 <span>
-                    <button class="btn btn-primary edit-only" type="button"
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
                             data-toggle="collapse" data-target="#tweetsDiv"
                             aria-expanded="false" aria-controls="tweetsDiv"
                             title="Tweets">
@@ -108,7 +122,7 @@
 
 
                 <span>
-                    <button class="btn btn-primary edit-only" type="button"
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
                             data-toggle="collapse" data-target="#republishersDiv"
                             aria-expanded="false" aria-controls="republishersDiv"
                             title="Republishers">
@@ -124,7 +138,25 @@
                 </div>
 
                 <span>
-                    <button class="btn btn-primary edit-only" type="button"
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
+                            data-toggle="collapse" data-target="#CorrectionsDiv"
+                            aria-expanded="false" aria-controls="CorrectionsDiv"
+                            title="Corrections">
+                        Corrections ({{article.correction_set.count}}) &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="CorrectionsDiv">
+                    <div class="card card-body">
+                        <div id="advanced"
+                             class="edit-only article-card-form">
+                            <div id="view_corrections" class="edit-only">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <span>
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
                             data-toggle="collapse" data-target="#Advanced"
                             aria-expanded="false" aria-controls="Advanced"
                             title="Advanced options">
@@ -133,8 +165,7 @@
                 </span>
                 <div class="collapse" id="Advanced">
                     <div class="card card-body">
-                        <div id="advanced"
-                             class="edit-only article-card-form">
+                        <div class="edit-only article-card-form">
                             <div id="view_slug" class="edit-only">
                                 Slug:
                             </div>
@@ -261,12 +292,6 @@
                         <span class="article__correction_text">
                             {{correction.text|safe}}
                         </span>
-                        {% if can_edit %}
-                            <a href="{% url 'newsroom:correction.update' correction.pk %}?article_pk={{article.pk}}">
-                                Edit</a> |
-                            <a href="{% url 'newsroom:correction.delete' correction.pk %}?article_pk={{article.pk}}">
-                                Delete</a>
-                        {% endif %}
                     </div>
                 {% endfor  %}
             </div>
@@ -274,18 +299,6 @@
     {% endwith %}
     {% if can_edit %}
         <p id="article__statistics"></p>
-        <p>
-            <button id="article_add_correction" class="btn btn-primary" type="button">
-                Add correction or update
-            </button>
-        </p>
-        <script>
-         document.getElementById("article_add_correction").
-                  addEventListener('click', function() {
-                      window.open("{% url 'newsroom:correction.create' %}?article_pk={{article.pk}}",
-                                  "correctionWindow", "popup=1,left=100,top=100");
-                  });
-        </script>
     {% endif %}
     {% if article.main_topic %}
         {% include "newsroom/read_similar.html" %}
@@ -343,6 +356,16 @@
                     </div>
                 {% endfor %}
             </div>
+
+            <div id="correction_formset">
+                {{ correctionFormSet.management_form }}
+                {% for form in correctionFormSet %}
+                    <div class="correction-form inline-form">
+                        {{form.as_p}}
+                    </div>
+                {% endfor %}
+            </div>
+
             <div id="republisher_formset">
                 {{ republisherFormSet.management_form }}
                 {% for form in republisherFormSet %}

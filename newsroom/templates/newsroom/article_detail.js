@@ -71,6 +71,10 @@ function setupFormSubmit()
             // Move back republishers
             const republishers = document.getElementById('republisher_formset');
             form.appendChild(republishers);
+
+            // Move back corrections
+            const corrections = document.getElementById('correction_formset');
+            form.appendChild(corrections);
         });
 }
 
@@ -159,7 +163,6 @@ function setupInputFields()
 
     // Enable save if trash icon clicked
     const trash_icons = document.getElementsByClassName('ui-icon-trash');
-    console.log(trash_icons.length);
     for (let trash of trash_icons) {
         trash.addEventListener('click', function() {
             document.getElementById("edit-menu-save").
@@ -189,6 +192,18 @@ function setupInputFields()
         }
     });
 
+    document.getElementById("new-author").
+        addEventListener('click', function() {
+            window.open("{% url 'admin:newsroom_author_add' %}", "author_new_win",
+                        "popup=1,left=100,top=100");
+        });
+
+    document.getElementById("new-topic").
+        addEventListener('click', function() {
+            window.open("{% url 'admin:newsroom_topic_add' %}", "topic_new_win",
+                        "popup=1,left=100,top=100");
+        });
+
     document.getElementById('headline_len').textContent =
         charsAndWordsLength(document.getElementById('article_title').textContent);
     document.getElementById('article_title').addEventListener(
@@ -204,6 +219,17 @@ function setupTweets()
     const tweets = document.getElementById('tweet_formset');
     view_tweets.appendChild(tweets);
     view_tweets.addEventListener('input', function() {
+        document.getElementById("edit-menu-save").
+            style.display = "inherit";
+    });
+}
+
+function setupCorrections()
+{
+    const view_corrections = document.getElementById('view_corrections')
+    const corrections = document.getElementById('correction_formset');
+    view_corrections.appendChild(corrections);
+    view_corrections.addEventListener('input', function() {
         document.getElementById("edit-menu-save").
             style.display = "inherit";
     });
@@ -351,6 +377,7 @@ jQuery(document).ready(function ($) {
     setupInputFields();
     setupTweets();
     setupRepublishers();
+    setupCorrections();
     setEditables();
     {% endif %}
 });
