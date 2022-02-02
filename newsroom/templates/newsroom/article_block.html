@@ -247,7 +247,7 @@
             {% if display_region %} |
                 <a class="article__region"
                    href="{% url 'newsroom:region.detail' article.region.name %}"
-                >{{display_region|title}}{% endif %}</a>
+                >{{display_region|title}}</a>{% endif %}
                 {% if can_edit %}<span id="view_region"></span>{% endif %}
         </span>
     </div>
