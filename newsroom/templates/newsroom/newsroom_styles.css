@@ -40,7 +40,7 @@ article p > img {
 #gu_counter {
     width: 1px;
     height: 1px;
-    visibility: none;
+    visibility: hidden;
 }
 
 /**************************/
