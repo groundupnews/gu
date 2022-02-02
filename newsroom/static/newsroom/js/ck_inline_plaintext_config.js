@@ -15,12 +15,13 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'about', groups: [ 'about' ] }
     ];
     config.extraPlugins = 'find,sourcedialog,indentblock';
-    config.removePlugins = 'exportpdf';
+    config.removePlugins =
+        'contextmenu,liststyle,tabletools,tableselection,exportpdf';
+    config.removeButtons = 'NewPage,Save,ExportPdf,Preview,Print,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Bold,Italic,Underline,Subscript,Strike,Superscript,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Link,Unlink,Anchor,Image,Table,HorizontalRule,PageBreak,Iframe,Styles,Format,Font,FontSize,BGColor,TextColor,Maximize,ShowBlocks,About,Templates,Scayt';
 
-    config.removeButtons = 'NewPage,Save,ExportPdf,Preview,Print,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Bold,Italic,Underline,Subscript,Strike,Superscript,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Link,Unlink,Anchor,Image,Table,HorizontalRule,PageBreak,Iframe,Styles,Format,Font,FontSize,BGColor,TextColor,Maximize,ShowBlocks,About,Templates';
-
-    config.scayt_sLang = 'en_GB';
-    config.scayt_autoStartup = true;
+    // config.scayt_sLang = 'en_GB';
+    config.scayt_autoStartup = false;
+    config.disableNativeSpellChecker = false;
     config.htmlEncodeOutput = false;
     config.entities = false;
     config.enterMode = CKEDITOR.ENTER_BR;

@@ -1,8 +1,7 @@
 
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
-	{ name: 'editing', groups: [ 'find', 'selection',
-                                     'spellchecker', 'editing' ] },
+	{ name: 'editing', groups: [ 'find', 'selection', 'editing' ] },
 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
 		{ name: 'forms', groups: [ 'forms' ] },
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
@@ -19,13 +18,15 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'document', groups: [ 'document', 'doctools', 'mode' ] }
     ];
 
-    config.removeButtons = 'ExportPdf,NewPage,Preview,Print,Templates,Save,Cut,Copy,Paste,PasteText,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,PageBreak,About';
+    config.removeButtons = 'ExportPdf,NewPage,Preview,Print,Templates,Save,Cut,Copy,Paste,PasteText,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,PageBreak,About,Scayt';
 
     config.extraPlugins = 'find,sourcedialog,indentblock';
-    config.removePlugins = 'exportpdf';
+    config.removePlugins =
+        'contextmenu,liststyle,tabletools,tableselection,exportpdf';
     config.stylesSet = 'gu_styles';
-    config.scayt_sLang = 'en_GB';
-    config.scayt_autoStartup = true;
+    // config.scayt_sLang = 'en_GB';
+    config.scayt_autoStartup = false;
+    config.disableNativeSpellChecker = false;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse/?pop=3';
     config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse/?pop=3&dir=images';
     config.allowedContent = true;

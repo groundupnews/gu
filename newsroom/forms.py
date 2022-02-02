@@ -53,12 +53,6 @@ class ArticleForm(forms.ModelForm):
     topics = AutoCompleteSelectMultipleField("topics", required=False,
                                              help_text=None, label="Topics")
 
-    btn_publish_now = forms.CharField(required=False, label='Publish',
-                                    widget=forms.TextInput(
-                                    attrs={'class': 'button-action',
-                                        'data-visible': 'is_published',
-                                        'data-not': '1'}))
-
     btn_unsticky = forms.CharField(required=False, label='Unsticky',
                                 widget=forms.TextInput(
                                 attrs={'class': 'button-action',
@@ -84,6 +78,13 @@ class ArticleForm(forms.ModelForm):
                                     attrs={'class': 'button-action',
                                         'data-visible': 'secret_linkable'}))
 
+    btn_publish_now = forms.CharField(required=False, label='Publish',
+                                    widget=forms.TextInput(
+                                    attrs={'class': 'button-action',
+                                        'data-visible': 'is_published',
+                                        'data-not': '1'}))
+
+
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
         fields = [f for f in self.visible_fields()
@@ -95,13 +96,13 @@ class ArticleForm(forms.ModelForm):
                 field.field.widget.attrs['data-type'] = 'contenteditable'
                 if field.name in ['title',]:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_plaintext_config.js?v=20220131.2'
+                        'ck_inline_plaintext_config.js?v=20220202'
                 elif field.name in ['subtitle', 'primary_image_caption', ]:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_basic_config.js?v=20220131.2'
+                        'ck_inline_basic_config.js?v=20220202'
                 else:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_config.js?v=20220131.2'
+                        'ck_inline_config.js?v=20220202'
             elif field.name in article_inputs:
                 field.field.widget.attrs['data-type'] = 'input'
                 field.field.widget.attrs['data-display'] = 'inline';
