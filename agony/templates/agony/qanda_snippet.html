@@ -2,7 +2,7 @@
     {% if agony_slice %}
 
         <div class="latest-qanda">
-            <h2>Latest questions and answers</h2>
+            <h2>Our answers to your questions</h2>
             <ul>
                 {% for qanda in agony_slice %}
                     <li><a href="{% url 'agony:detail' qanda.pk %}">{{qanda}}</a></li>

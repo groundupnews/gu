@@ -63,11 +63,13 @@
                             <div>
                                 <span id="view_author_01_text"
                                       title="1st author"></span>
-                                <button id="new-author"
-                                        class="btn btn-primary"
-                                        style="position: absolute; right: 50px">
-                                    New author
-                                </button>
+                                {% if perms.newsroom.add_author %}
+                                    <button id="new-author"
+                                            class="btn btn-primary"
+                                            style="position: absolute; right: 50px">
+                                        New author
+                                    </button>
+                                {% endif %}
                             </div>
                             <div id="view_author_02_text" title="2nd author"></div>
                             <div id="view_author_03_text" title="3rd author"></div>
@@ -93,12 +95,15 @@
                 <div class="collapse" id="topicsDiv">
                     <div class="card card-body">
                         <div id="topicsDiv" class="edit-only article-card-form">
-                            <div <span id="view_topics_text">Topics: </span>
-                                <button id="new-topic"
-                                        class="btn btn-primary"
-                                        style="position: absolute; right: 50px">
-                                    New Topic
-                                </button>
+                            <div>
+                                <span id="view_topics_text">Topics: </span>
+                                {% if perms.newsroom.add_topic %}
+                                    <button id="new-topic"
+                                            class="btn btn-primary"
+                                            style="position: absolute; right: 50px">
+                                        New Topic
+                                    </button>
+                                {% endif %}
                             </div>
                             <div id="view_main_topic_text">Main: </div>
                         </div>
@@ -115,7 +120,18 @@
                 </span>
                 <div class="collapse" id="tweetsDiv">
                     <div class="card card-body">
-                        <div id="view_tweets" class="edit-only article-card-form">
+                        <div>
+                            <span id="view_tweets"
+                                  class="edit-only article-card-form">
+                                {% if perms.socialmedia.add_twitterhandle %}
+                                    <button id="new-twit"
+                                            class="btn btn-primary"
+                                            style="position: absolute; right: 50px">
+                                        New tweeter
+                                    </button>
+                                {% endif %}
+
+                            </span>
                         </div>
                     </div>
                 </div>

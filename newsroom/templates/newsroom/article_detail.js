@@ -192,17 +192,32 @@ function setupInputFields()
         }
     });
 
-    document.getElementById("new-author").
-        addEventListener('click', function() {
-            window.open("{% url 'admin:newsroom_author_add' %}", "author_new_win",
-                        "popup=1,left=100,top=100");
-        });
+    if (document.getElementById("new-author")) {
+        document.getElementById("new-author").
+            addEventListener('click', function() {
+                window.open("{% url 'admin:newsroom_author_add' %}",
+                            "author_new_win",
+                            "popup=1,left=100,top=100");
+            });
+    }
 
-    document.getElementById("new-topic").
-        addEventListener('click', function() {
-            window.open("{% url 'admin:newsroom_topic_add' %}", "topic_new_win",
-                        "popup=1,left=100,top=100");
-        });
+    if (document.getElementById("new-topic")) {
+        document.getElementById("new-topic").
+            addEventListener('click', function() {
+                window.open("{% url 'admin:newsroom_topic_add' %}",
+                            "topic_new_win",
+                            "popup=1,left=100,top=100");
+            });
+    }
+
+    if (document.getElementById("new-twit")) {
+        document.getElementById("new-twit").
+            addEventListener('click', function() {
+                window.open("{% url 'admin:socialmedia_twitterhandle_add' %}",
+                            "twit_new_win",
+                            "popup=1,left=100,top=100");
+            });
+    }
 
     document.getElementById('headline_len').textContent =
         charsAndWordsLength(document.getElementById('article_title').textContent);
