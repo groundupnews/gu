@@ -321,7 +321,7 @@ def get_first_image(html):
 def insertPixel(html, pk, slug):
     # Not worth crashing for
     soup = BeautifulSoup(html, "html.parser")
-    style = "height:1px; width:1px; visibility:none;"
+    style = "height:1px; width:1px; visibility:hidden;"
     img = soup.find('img', id='gu_counter')
     if img is None:
         paras = soup.find_all('p')
