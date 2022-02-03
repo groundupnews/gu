@@ -1,5 +1,9 @@
 CKEDITOR.disableAutoInline = true;
 
+CKEDITOR.plugins.addExternal( 'youtube',
+                              '/static/newsroom/js/ckeditor/plugins/youtube/',
+                              'plugin.js' );
+
 //CKEDITOR.plugins.addExternal( 'codemirror', '/static/newsroom/js/ckeditor/plugins/codemirror/', 'plugin.js' );
 
 //CKEDITOR.plugins.addExternal( 'saveedits', '/static/newsroom/js/ckeditor/plugins/saveedits/', 'plugin.js' );

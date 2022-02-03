@@ -18,9 +18,9 @@ CKEDITOR.editorConfig = function( config ) {
 	{ name: 'document', groups: [ 'document', 'doctools', 'mode' ] }
     ];
 
-    config.removeButtons = 'ExportPdf,NewPage,Preview,Print,Templates,Save,Cut,Copy,Paste,PasteText,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,PageBreak,About,Scayt,Iframe';
+    config.removeButtons = 'ExportPdf,NewPage,Preview,Print,Templates,Save,Cut,Copy,Paste,PasteText,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,PageBreak,About,Scayt';
 
-    config.extraPlugins = 'find,sourcedialog,indentblock';
+    config.extraPlugins = 'find,sourcedialog,indentblock,youtube';
     config.removePlugins =
         'contextmenu,liststyle,tabletools,tableselection,exportpdf';
     config.stylesSet = 'gu_styles';
@@ -29,6 +29,8 @@ CKEDITOR.editorConfig = function( config ) {
     config.disableNativeSpellChecker = false;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse/?pop=3';
     config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse/?pop=3&dir=images';
+    config.extraAllowedContent = '*(*)';
     config.allowedContent = true;
+
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
 };

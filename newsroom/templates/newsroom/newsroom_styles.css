@@ -123,6 +123,10 @@ a, a:focus, a:hover {
 
 /* Youtube, Soundcloud and Support ads in CKeditor */
 
+.youtube-embed-wrapper {
+    margin-top: 12px;
+}
+
 .youtube {
     background-color: blue;
 }

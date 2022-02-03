@@ -114,17 +114,19 @@ function initializeEditors()
     }
 
     const contentEditables = document.querySelectorAll(
-        '[data-type="contenteditable"]')
+        '[data-type="contenteditable"]');
 
     for (let elem of contentEditables) {
         let id = elem.id.replace(id_prefix, article_prefix);
-        const base = "{% static 'newsroom/js/' %}";
-        const config = base + elem.getAttribute("data-editor");
+        if (elem.getAttribute("data-editor")) {
+            const base = "{% static 'newsroom/js/' %}";
+            const config = base + elem.getAttribute("data-editor");
 
-        if (document.getElementById(id)) {
-            CKEDITOR.inline(id, {
-                customConfig: config
-            });
+            if (document.getElementById(id)) {
+                CKEDITOR.inline(id, {
+                    customConfig: config
+                });
+            }
         }
     }
 
@@ -132,6 +134,26 @@ function initializeEditors()
         CKEDITOR.instances[instance].on('change', function() {
             document.getElementById("edit-menu-save").style.display = "inherit";
         });
+    }
+}
+
+function setupNonCkeEditables()
+{
+    const contentEditables = document.querySelectorAll(
+        '[data-type="contenteditable"]');
+
+    for (let elem of contentEditables) {
+        if (!elem.getAttribute("data-editor")) {
+            let id = elem.id.replace(id_prefix, article_prefix);
+            if (document.getElementById(id)) {
+                document.getElementById(id).
+                    setAttribute('title', elem.getAttribute('placeholder'));
+                document.getElementById(id).addEventListener('input', function() {
+                    document.getElementById("edit-menu-save").
+                        style.display = "inherit";
+                });
+            }
+        }
     }
 }
 
@@ -389,6 +411,7 @@ jQuery(document).ready(function ($) {
     setupAdminPanel();
     setupButtons();
     setupFormSubmit();
+    setupNonCkeEditables();
     setupInputFields();
     setupTweets();
     setupRepublishers();

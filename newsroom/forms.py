@@ -94,21 +94,18 @@ class ArticleForm(forms.ModelForm):
             if field.name in article_contenteditables:
                 field.field.widget.attrs['data-type'] = 'contenteditable'
                 if field.name in ['title',]:
+                    pass
+                elif field.name in ['subtitle']:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_plaintext_config.js?v=20220202b'
-                elif field.name in ['subtitle', 'primary_image_caption', ]:
-                    field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_basic_config.js?v=20220202b'
+                        'ck_inline_basic_config.js?v=20220203h'
                 else:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_config.js?v=20220203b'
+                        'ck_inline_config.js?v=20220203h'
             elif field.name in article_inputs:
                 field.field.widget.attrs['data-type'] = 'input'
                 field.field.widget.attrs['data-display'] = 'inline';
                 if field.name in article_ajaxes:
                     field.field.widget.attrs['data-ajax'] = 'y'
-
-
 
     # def clean(self, *args, **kwargs):
     #     if self.cleaned_data["use_editor"]:
@@ -129,8 +126,6 @@ class ArticleForm(forms.ModelForm):
     #         except:
     #             pass
     #     super(ArticleForm, self).clean(*args, **kwargs)
-
-
 
     class Meta:
         model = models.Article
