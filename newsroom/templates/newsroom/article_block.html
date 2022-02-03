@@ -36,8 +36,8 @@
     {% endif %}
     <div class="article__details__date-by">
         <time
-              {% if article.published %}
-              datetime='{{ article.published|date:"c" }}'
+            {% if article.published %}
+                datetime='{{ article.published|date:"Y-m-d H:i:sO" }}'
         >
             {{ article.published|date:"j F Y"}}
               {% else %}
