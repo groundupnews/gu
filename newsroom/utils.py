@@ -55,6 +55,7 @@ def clean_typography(text):
 
 
 def remove_unnecessary_white_space(html):
+    html = html.replace('<p><br/></p>', '')
     html = re.sub('&nbsp;', ' ', html)
     html = re.sub(' +', ' ', html)
     return blankpara_regex.sub(r'', html)
@@ -298,7 +299,6 @@ def replaceBadHtmlWithGood(html):
     soup = processSoundCloudDivs(soup)
     soup = linkImages(soup)
     warnImageTooBig(soup)
-
     return str(soup)
 
 

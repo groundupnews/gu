@@ -84,7 +84,6 @@ class ArticleForm(forms.ModelForm):
                                         'data-visible': 'is_published',
                                         'data-not': '1'}))
 
-
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
         fields = [f for f in self.visible_fields()
