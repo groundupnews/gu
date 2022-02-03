@@ -22,12 +22,15 @@ CKEDITOR.editorConfig = function( config ) {
 
 
     config.extraPlugins = 'find,sourcearea,indentblock,wordcount';
+    config.removePlugins =
+        'contextmenu,liststyle,tabletools,tableselection,exportpdf';
 
     config.removeButtons = 'Cut,Copy,Paste,PasteText,PasteFromWord';
 
     config.stylesSet = 'gu_styles';
     config.scayt_sLang = 'en_GB';
-    config.scayt_autoStartup = true;
+    config.scayt_autoStartup = false;
+    config.disableNativeSpellChecker = false;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse/?pop=3';
     config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse/?pop=3&dir=images';
     config.allowedContent = true;

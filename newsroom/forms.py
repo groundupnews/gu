@@ -101,7 +101,7 @@ class ArticleForm(forms.ModelForm):
                         'ck_inline_basic_config.js?v=20220202'
                 else:
                     field.field.widget.attrs['data-editor'] = \
-                        'ck_inline_config.js?v=20220202'
+                        'ck_inline_config.js?v=20220203'
             elif field.name in article_inputs:
                 field.field.widget.attrs['data-type'] = 'input'
                 field.field.widget.attrs['data-display'] = 'inline';
