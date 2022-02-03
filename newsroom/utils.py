@@ -6,6 +6,7 @@ from random import randint
 import os
 from urllib.parse import unquote
 
+import html
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -158,9 +159,10 @@ def processYouTubeDivs(soup):
     youtubedivs = soup.find_all('div', {'class': "youtube"})
     for div in youtubedivs:
         div["class"] = "embed-responsive embed-responsive-16by9"
-        d = BeautifulSoup(div.string, "html.parser")
-        div.string = ""
-        div.append(d)
+        if div.contents and len(div.contents) > 0:
+            d = BeautifulSoup(html.unescape(str(div.contents[0])), "html.parser")
+            div.clear()
+            div.append(d)
     return soup
 
 
