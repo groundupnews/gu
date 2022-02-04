@@ -31,6 +31,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse/?pop=3&dir=images';
     config.extraAllowedContent = '*(*)';
     config.allowedContent = true;
-
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
+    config.youtube_responsive = true;
 };

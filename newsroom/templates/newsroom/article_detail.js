@@ -55,10 +55,20 @@ function setupFormSubmit()
 
             // Copy contenteditables
             let elems = form.querySelectorAll('[data-type="contenteditable"]');
+            if (edit_mode == false) {
+                edit_mode = true;
+                initializeEditors();
+            }
             for (let elem of elems) {
                 const copyFromId = elem.id.replace(id_prefix, article_prefix);
-                const copyFrom = document.getElementById(copyFromId);
-                if (copyFrom) elem.value = copyFrom.innerHTML;
+                if (elem.getAttribute('data-editor')) {
+                    if (copyFromId in CKEDITOR.instances) {
+                        elem.value = CKEDITOR.instances[copyFromId].getData();
+                    }
+                } else {
+                    const copyFrom = document.getElementById(copyFromId);
+                    if (copyFrom) elem.value = copyFrom.innerHTML;
+                }
             }
             document.getElementById('article_title').innerHTML =
                 document.getElementById('article_title').innerHTML.
@@ -108,11 +118,6 @@ function setupButtons()
 
 function initializeEditors()
 {
-    function update_form(editor, field) {
-	document.getElementById(field).value =
-	    CKEDITOR.instances[editor].getData();
-    }
-
     const contentEditables = document.querySelectorAll(
         '[data-type="contenteditable"]');
 
