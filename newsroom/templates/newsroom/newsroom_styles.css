@@ -1024,6 +1024,10 @@ Single-colored icons can be modified like so:
     margin-bottom: 12px;
 }
 
+.submit-btn {
+    margin-bottom: 12px;
+}
+
 /*** Sticky Footer ***/
 
 

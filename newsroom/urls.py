@@ -63,6 +63,14 @@ urlpatterns = [
     url(r'^user/$', views.account_profile,
         name="user.profile"),
 
+    ##############################
+    # Author create and update
+
+    path('author/create/', views.AuthorCreate.as_view(), name='author_create'),
+    path('author/update/<int:pk>/', views.AuthorUpdate.as_view(),
+         name='author_update'),
+
+
     ###############################
     # Article list generate
 

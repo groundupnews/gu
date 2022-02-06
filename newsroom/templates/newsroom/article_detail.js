@@ -35,6 +35,21 @@ function charsAndWordsLength(str)
 
 let edit_mode;
 
+/* Works with ajax_select to receive data from a popup window in which an author was created.
+   Sets first available author field with the new author. */
+function receiveAuthor(author)
+{
+    const nums = ["01", "02", "03", "04", "05"]
+    for (const num of nums) {
+        const id = "id_author_" + num + "_on_deck";
+        const author_div = document.getElementById(id);
+        if (author_div.innerHTML === "") {
+            $("#id_author_" + num).trigger('didAddPopup',[author.pk, author.name]);
+            break;
+        }
+    }
+}
+
 function setupFormSubmit()
 {
     document.getElementById("saveedits").addEventListener(
@@ -222,8 +237,8 @@ function setupInputFields()
     if (document.getElementById("new-author")) {
         document.getElementById("new-author").
             addEventListener('click', function() {
-                window.open("{% url 'admin:newsroom_author_add' %}",
-                            "author_new_win",
+                window.open("{% url 'newsroom:author_create' %}",
+                            "author_create_window",
                             "popup=1,left=100,top=100");
             });
     }

@@ -30,7 +30,7 @@ from pgsearch.utils import searchArticlesAndPhotos
 
 from . import models, settings, utils
 from .forms import ArticleForm, ArticleNewForm, \
-                    ArticleListForm, AdvancedSearchForm
+                    ArticleListForm, AdvancedSearchForm, AuthorForm
 from payment.models import Commission
 from socialmedia.models import Tweet
 from socialmedia.forms import TweetForm
@@ -141,6 +141,7 @@ class AuthorList(generic.ListView):
 
 class AuthorDetail(ArticleList):
 
+    template_name = "newsroom/author_detail.html"
     def get_queryset(self):
         self.author = get_object_or_404(models.Author, pk=self.args[0])
         if self.author.freelancer == 't':
@@ -156,6 +157,7 @@ class AuthorDetail(ArticleList):
         context['heading'] = "Articles by " + str(self.author)
         context['image'] = self.author.photo
         context['description'] = self.author.description
+        context['author'] = self.author
         return context
 
 
@@ -863,9 +865,21 @@ def advanced_search(request):
 #                   status=404)
 
 
+class AuthorCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'newsroom.add_author'
+    model = models.Author
+    form_class = AuthorForm
+
+
+class AuthorUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'newsroom.add_author'
+    model = models.Author
+    form_class = AuthorForm
+
+
+
 ''' Used to test logging
 '''
-
 
 def testLoggingDebug():
     logger.debug("Debug logging test")

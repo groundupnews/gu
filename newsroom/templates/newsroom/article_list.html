@@ -5,41 +5,32 @@
 {% endblock %}
 
 {% block content %}
-    {% block article-list %}
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 topic-intro">
-                        {% block content-intro %}
-                            <div>
-	                        {% if heading %}
-		                    <h1 id="summary-list-heading">
-		                        {{heading|safe}}
-		                    </h1>
-	                        {% endif %}
-	                        {% if image %}
-		                    <div>
-		                        <img src="{{MEDIA_URL}}{{image}}" />
-		                    </div>
-	                        {% endif %}
-	                            {% if description %}
-		                        <p>{{description|safe}}</p>
-	                            {% endif %}
-                            </div>
-	                {% endblock %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 topic-intro">
+                {% block content-intro %}
+                    <div>
+	                {% if heading %}
+		            <h1 id="summary-list-heading">
+		                {{heading|safe}}
+		            </h1>
+	                {% endif %}
+	                {% if image %}
+		            <div>
+		                <img src="{{MEDIA_URL}}{{image}}" />
+		            </div>
+	                {% endif %}
+	                {% if description %}
+		            <p>{{description|safe}}</p>
+	                {% endif %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-
-                        <div  class="home__article-list">
-		            {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
-	                    {% include 'paginator.html' %}
-	                </div>
-	            </div>
-                </div>
+	        {% endblock %}
             </div>
+        </div>
+        {% include 'newsroom/article_list_snippet.html' %}
+    </div>
+{% endblock %}
 
-    {% endblock %}
-
+{% block javascript-includes %}
+    {{block.super}}
 {% endblock %}

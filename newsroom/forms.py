@@ -11,6 +11,17 @@ SEARCH_TYPES=[('article', 'Articles'),
              ('image', 'Images'),
              ('both', 'Both')]
 
+class AuthorForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = models.Author
+        fields = [
+            'first_names', 'last_name', 'freelancer', 'level', 'email',
+            'allowance',
+        ]
+
+
 class ArticleListForm(forms.Form):
     date_from = forms.DateTimeField()
     date_to = forms.DateTimeField(required=False)
