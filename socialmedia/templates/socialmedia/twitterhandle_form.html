@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Twitter Handle
+{% endblock %}
+
+{% block additional_head %}
+    {{block.super}}
+    <style>
+     #twitterhandle-form {
+          width: 225px;
+     }
+     #twitterhandle-form label {
+         display: block;
+         margin-top: 12px;
+     }
+     #submit-button {
+         width: 100%;
+     }
+     #twitterhandle-form ul.errorlist {
+         padding: 0;
+     }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-sm-9 col-sm-push-3">
+		<h1>Twitterhandle {% if object %}edit{% else  %}create{% endif %}</h1>
+                <form id="twitterhandle-form" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <input
+                        id="submit-button"
+                        class="btn btn-primary submit-btn"
+                        type="submit"
+                        value="{% if object %}Update{% else %}Create{% endif %}">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript-includes %}
+    {{block.super}}
+    <script>
+     {% include "handle_slug.js" %}
+     document.getElementById("id_name").addEventListener(
+         "input", function(e) {
+             document.getElementById('id_slug').value =
+                 makeSlug(e.target.value);
+     });
+     document.getElementById("id_name").focus();
+    </script>
+{% endblock %}

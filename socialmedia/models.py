@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from newsroom.models import Article
 from filebrowser.fields import FileBrowseField
 from .common import SCHEDULE_RESULTS
@@ -21,6 +23,15 @@ class TwitterHandle(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.name[0] == "@":
+            self.name = self.name[1:]
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('socialmedia:twitterhandle.detail', args=[self.pk, ])
+
 
 
 def calc_chars_left(tweet_text, image, tags):

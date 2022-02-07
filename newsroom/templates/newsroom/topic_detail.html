@@ -1,27 +1,39 @@
-{% extends 'newsroom/article_list.html' %}
-{% load static %}
-
+{% extends 'base.html' %}
 {% block title %}
-    {{block.super}}
+    Topic: {{topic}}{{block.super}}
 {% endblock %}
 
-
-{% block content-intro %}
-    <div class="article-list-top">
-        <div class="topic-intro">
-
-            {% if topic.introduction %}
-                {{topic.introduction|safe}}
-            {% else %}
-                <h1 id="topic-heading">{{ topic.name|upper }}</h1>
-            {% endif %}
-
-            {% if topic.icon %}
-                <div id="topic-icon">
-	            <img src="{{ MEDIA_URL}}{{topic.icon }}" alt="" />
-                </div>
-            {% endif %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                {% if not topic.introduction %}
+		    <h1 style="text-align: center;">
+		        {{topic}}
+		    </h1>
+                {% else %}
+                    {{topic.introduction|safe}}
+                {% endif %}
+            </div>
         </div>
-</div>
+        {% include "newsroom/article_list_snippet.html" %}
+    </div>
+{% endblock %}
 
+{% block javascript-includes %}
+    {{block.super}}
+
+    {% if request.user.is_staff %}
+        <script>
+         (function() {
+             if (window.opener) {
+                 window.opener.receiveAjaxField("topics", {
+                     'value': '{{topic.name}}',
+                     'pk' : '{{topic.pk}}'
+                 });
+                 window.close();
+             }
+         })();
+        </script>
+    {% endif %}
 {% endblock %}

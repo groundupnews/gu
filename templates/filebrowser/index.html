@@ -20,16 +20,15 @@
     <script language="javascript" type="text/javascript" src="{% static "filebrowser/js/FB_TinyMCE.js" %}"></script>
     {% if query.mce_rdomain %}<script language="javascript">document.domain = "{{ query.mce_rdomain }}"</script>{% endif %}
     {% endifequal %}
-    {% ifequal query.pop '3' %} <!-- CKeditor (former "FCKeditor") -->
+    {% ifequal query.pop '3' %} <!-- CKeditor (former "FCKeditor") and article update-->
     <script language="javascript" type="text/javascript" src="{% static "newsroom/js/FB_CKEditor.js" %}"></script>
     {% endifequal %}
     {% ifequal query.pop '4' %} <!-- TinyMCE v4 -->
     <script language="javascript" type="text/javascript" src="{% static "filebrowser/js/FB_TinyMCEv4.js" %}"></script>
     {% endifequal %}
     {% ifequal query.pop '5' %} <!-- TinyMCE v5 -->
-    <script language="javascript" type="text/javascript" src="{% static "filebrowser/js/FB_TinyMCEv5.js" %}"></script>
+        <script language="javascript" type="text/javascript" src="{% static "filebrowser/js/FB_TinyMCEv5.js" %}"></script>
     {% endifequal %}
-
     {{ media }}
     <script type="text/javascript" charset="utf-8">
         (function($) {

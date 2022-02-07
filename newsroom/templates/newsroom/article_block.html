@@ -231,6 +231,29 @@
                                 </span>
                             </div>
                             <div>
+                                <span id="view_summary_image"
+                                      class="edit-only">
+                                    Summary image:
+                                </span>
+                                <span>
+                                    <button class="btn btn-primary"
+                                            id="select-file">
+                                        Select file
+                                    </a>
+                                </span>
+                            </div>
+                            <div id="view_summary_image_size"
+                                 class="edit-only">
+                                Summary image size:
+                            </div>
+                            <div id="view_summary_image_alt"
+                                 class="edit-only">
+                                Summary image alt:
+                            </div>
+                            <div id="view_summary_text"
+                                 class="edit-only">
+                            </div>
+                            <div>
                                 PK: {{article.pk}} Created: {{article.created|date:"c"}} <br/>
                                 Modified: {{article.modified|date:"c"}} by {{article.user}}
                             </div>
@@ -357,7 +380,7 @@
 
 
 {% if can_edit %}
-    <div class="col-xs-12 col-md-8" style="display:none;">
+    <div class="col-xs-12 col-md-8" style="">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
 	      method="post">{% csrf_token %}

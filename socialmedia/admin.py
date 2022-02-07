@@ -44,7 +44,7 @@ class TweetInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
     extra = 1
 
-    class Media:
-        js = [
-            '/static/socialmedia/js/tweets.js',
-        ]
+    # class Media:
+    #     js = [
+    #         '/static/socialmedia/js/tweets.js',
+    #     ]

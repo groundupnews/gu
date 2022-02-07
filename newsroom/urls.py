@@ -66,9 +66,9 @@ urlpatterns = [
     ##############################
     # Author create and update
 
-    path('author/create/', views.AuthorCreate.as_view(), name='author_create'),
+    path('author/create/', views.AuthorCreate.as_view(), name='author.add'),
     path('author/update/<int:pk>/', views.AuthorUpdate.as_view(),
-         name='author_update'),
+         name='author.update'),
 
 
     ###############################
@@ -76,6 +76,13 @@ urlpatterns = [
 
     url(r'^generate_article_list/$',
         views.generate_article_list, name='generate_article_list'),
+
+    ##############################
+    # Topic create and update
+
+    path('topic_edit/create/', views.TopicCreate.as_view(), name='topic_create'),
+    path('topic_edit/update/<int:pk>/', views.TopicUpdate.as_view(),
+         name='topic_update'),
 
     ###############################
     # Article preview

@@ -1,4 +1,4 @@
-TIME_BETWEEN_TWEETS = 90;
+const TIME_BETWEEN_TWEETS = 90;
 
 function calc_tweet_chars(item) {
     var num_chars = $("#id_tweet_set-" + item + "-tweet_text").val().length;
@@ -9,7 +9,6 @@ function calc_tweet_chars(item) {
     var tag_length = 0;
 
     var selector = "#tweet_set" + item + " .tag_accounts ul li";
-    console.log("D0: ", $(selector).length);
     $(selector).each(function(i) {
 	var s = $(this).text().trim();
         if (s.length > 0) {
@@ -34,7 +33,7 @@ function createCallback( s ){
 }
 
 // Appended to automatically generated tweets to make them unique
-tweet_suffixes = [
+const tweet_suffixes = [
     " ",
     ":",
     " :",
@@ -70,11 +69,13 @@ function generate_tweets()
     var num_tweets = $("#tweet_set-group div.grp-tbody").length - 1;
     // Find first blank tweet
     for (var i = 0; i < num_tweets; ++i) {
-	s = i.toString();
-	if ($("#id_tweet_set-" + s + "-wait_time").val().trim().length > 0) {
+	let s = i.toString();
+
+	if ($("#id_tweet_set-" + s + "-tweet_text").val().trim().length > 0) {
 	    wait_time = Number($("#id_tweet_set-" + s + "-wait_time").val())
 		+ TIME_BETWEEN_TWEETS;
 	    text = $("#id_tweet_set-" + s + "-tweet_text").val().trim();
+
 	    if (text.length > 0) {
 		tweet_text = text;
 		image_link = $("#id_tweet_set-" + s + "-image").val().trim();
@@ -90,22 +91,13 @@ function generate_tweets()
 	for (var i = start_index; i < num_tweets && j < tweet_suffixes.length;
 	     ++i, ++j) {
 	    var s = i.toString();
+
 	    var selector = $("#id_tweet_set-" + s + "-tweet_text");
 	    if (selector.val().trim().length == 0)
 		$(selector).val(tweet_text + tweet_suffixes[j]);
 	    selector = $("#id_tweet_set-" + s + "-image");
 	    if (selector.val().trim().length == 0)
 		$(selector).val(image_link);
-
-	    selector = $("#id_tweet_set-" + s + "-wait_time");
-	    if (selector.val().trim().length == 0) {
-		$(selector).val(wait_time.toString());
-		wait_time = wait_time + TIME_BETWEEN_TWEETS;
-	    }
-	    else {
-		wait_time = Number(selector.val()) +
-		    TIME_BETWEEN_TWEETS;
-	    }
 	    calc_tweet_chars(s);
 	}
     }
@@ -147,18 +139,21 @@ $(window).on('load', function() {
     observer.observe(target, config);
 
 
+    let link = document.createElement("a");
+    link.id = "generate_tweets";
+    link.href = "#";
+    link.innerHTML = "<strong>Generate tweets</strong>";
     $("#tweet_set-group div.grp-row").
-	append("|&nbsp;<a href='#' id='generate_tweets'><strong>Generate tweets</strong></a>");
+	append("|&nbsp;");
+    $("#tweet_set-group div.grp-row").append(link);
 
-    $("#tweet_set-group div.grp-row").
-	on("click", "#generate_tweets",
-	   function()
-	   {
-	       generate_tweets();
-	       return false;
-	   });
+    document.getElementById("generate_tweets").addEventListener(
+        'click', function(e) {
+	    generate_tweets();
+            event.preventDefault();
+        }, false);
 
-//    $("#tweet_set-group h2.grp-collapse-handler").click(
+    //    $("#tweet_set-group h2.grp-collapse-handler").click(
     $("#tweet_set-group").mouseenter(
 	function() {
 	    var num_tweets = $("#tweet_set-group div.grp-tbody").length - 2;

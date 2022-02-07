@@ -1,8 +1,11 @@
 from django.test import TestCase
 from django.test import Client
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.contrib.auth.models import Permission
+
 from newsroom.models import Article, Category
 from .models import Tweet, TwitterHandle
-from django.contrib.auth.models import User
 
 class TwitterTest(TestCase):
 
@@ -48,3 +51,31 @@ class TwitterTest(TestCase):
         t = Tweet.objects.all()[0]
         self.assertEqual(t.characters_left, 152)
         self.assertEqual(t.status, "sent")
+
+    def test_handle(self):
+        handle = TwitterHandle.objects.all()[0]
+        client = Client()
+        response = client.get(reverse('socialmedia:twitterhandle.add'))
+        self.assertEqual(response.status_code, 302)
+        response = client.get(reverse('socialmedia:twitterhandle.update', args=([handle.pk])))
+        self.assertEqual(response.status_code, 302)
+        response = client.get(reverse('socialmedia:twitterhandle.detail', args=([handle.pk])))
+        self.assertEqual(response.status_code, 302)
+
+        user = User.objects.create_user('staff', 'staff@example.com', 'abcde')
+        user.is_staff = True
+        user.is_active = True
+        permission1 = Permission.objects.get(codename='add_twitterhandle')
+        user.user_permissions.add(permission1)
+        permission2 = Permission.objects.get(codename='change_twitterhandle')
+        user.user_permissions.add(permission2)
+        user.save()
+
+        staff = Client()
+        staff.login(username='staff', password='abcde')
+        response = staff.get(reverse('socialmedia:twitterhandle.add'))
+        self.assertEqual(response.status_code, 200)
+        response = staff.get(reverse('socialmedia:twitterhandle.update', args=([handle.pk])))
+        self.assertEqual(response.status_code, 200)
+        response = staff.get(reverse('socialmedia:twitterhandle.detail', args=([handle.pk])))
+        self.assertEqual(response.status_code, 200)

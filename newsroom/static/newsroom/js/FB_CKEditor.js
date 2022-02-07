@@ -78,7 +78,18 @@ function OpenFile(fileUrl) {
         localStorage.setItem('fb_dir', extractPath(fileUrl));
     }
     console.log("Openfile fb_dir b", localStorage.getItem('fb_dir'));
-    window.top.opener.CKEDITOR.tools.callFunction(CKEditorFuncNum, fileUrl);
+    const params = new URLSearchParams(location.search);
+    if (params.get('summary')) {
+        if (window.opener && window.opener.document &&
+            window.opener.document.getElementById("id_summary_image")) {
+            // Remove "/media/"
+            window.opener.document.getElementById("id_summary_image").value =
+                decodeURI(fileUrl.substr(7));
+            window.opener.showSave();
+        }
+    } else {
+        window.top.opener.CKEDITOR.tools.callFunction(CKEditorFuncNum, fileUrl);
+    }
     window.top.close();
     window.top.opener.focus();
 }

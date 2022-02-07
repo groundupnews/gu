@@ -3,9 +3,13 @@ from ajax_select.fields import AutoCompleteSelectMultipleField
 from ajax_select import make_ajax_field
 from django import forms
 from django.utils.html import strip_tags
+from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 from . import models, utils
 from newsroom.settings import SEARCH_MAXLEN
 
+IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)
+                      for item in ADMIN_VERSIONS]
+IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
 
 SEARCH_TYPES=[('article', 'Articles'),
              ('image', 'Images'),
@@ -34,9 +38,10 @@ article_inputs = article_ajaxes + \
     ['published', 'category', 'region',
      'byline', 'byline_style', 'editor_feedback',
      'slug', 'recommended', 'include_in_rss', 'use_editor', 'stickiness',
+     'summary_image', 'summary_image_size', 'summary_image_alt', 'summary_text',
      'exclude_from_list_views', 'promote_article', 'letters_on',
      'stickiness', 'secret_link', 'secret_link_view',
-     'encourage_republish', 'additional_head_scripts', 'additional_body_scripts',]
+     'encourage_republish', 'additional_head_scripts', 'additional_body_scripts', ]
 
 article_specials = ['version', ]
 
@@ -63,6 +68,8 @@ class ArticleForm(forms.ModelForm):
                                         help_text=None, label="Main topic")
     topics = AutoCompleteSelectMultipleField("topics", required=False,
                                              help_text=None, label="Topics")
+    summary_image = forms.CharField(required=False)
+    summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
 
     btn_unsticky = forms.CharField(required=False, label='Unsticky',
                                 widget=forms.TextInput(
@@ -117,26 +124,6 @@ class ArticleForm(forms.ModelForm):
                 field.field.widget.attrs['data-display'] = 'inline';
                 if field.name in article_ajaxes:
                     field.field.widget.attrs['data-ajax'] = 'y'
-
-    # def clean(self, *args, **kwargs):
-    #     if self.cleaned_data["use_editor"]:
-    #         try:
-    #             body = self.cleaned_data["body"]
-    #             self.cleaned_data["body"] = utils.replaceBadHtmlWithGood(body)
-    #         except:
-    #             pass
-    #         try:
-    #             self.cleaned_data["title"] = \
-    #                 strip_tags(self.cleaned_data["title"]).trim()
-    #         except:
-    #             pass
-    #         try:
-    #             subtitle = self.cleaned_data['subtitle']
-    #             if len(subtitle) > 3 and subtitle[-4:] == "<br>":
-    #                 self.cleaned_data['subtitle'] = subtitle[0:-4]
-    #         except:
-    #             pass
-    #     super(ArticleForm, self).clean(*args, **kwargs)
 
     class Meta:
         model = models.Article

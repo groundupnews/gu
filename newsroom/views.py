@@ -218,6 +218,7 @@ class TopicList(generic.ListView):
         return context
 
 class TopicDetail(ArticleList):
+    template_name = "newsroom/topic_detail.html"
 
     def get_queryset(self):
         self.topic = get_object_or_404(models.Topic, slug=self.args[0])
@@ -872,10 +873,23 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = 'newsroom.add_author'
+    permission_required = 'newsroom.change_author'
     model = models.Author
     form_class = AuthorForm
 
+
+topic_fields = ['name', 'slug', 'introduction', 'newest_first',]
+
+class TopicCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'newsroom.add_topic'
+    model = models.Topic
+    fields = topic_fields
+
+
+class TopicUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'newsroom.change_topic'
+    model = models.Topic
+    fields = topic_fields
 
 
 ''' Used to test logging

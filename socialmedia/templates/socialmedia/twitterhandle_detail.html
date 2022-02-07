@@ -1,19 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Author: {{author}}{{block.super}}
+    Twitterhandle: {{object}}{{block.super}}
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-		<h1 style="text-align: center;">
-		    Articles for {{author}}
-		</h1>
+                <h1>Twitter handle</h1>
+                    <p>Name: {{object.name}}</p>
+                    <p>Slug: {{object.slug}}</p>
             </div>
         </div>
-        {% include "newsroom/article_list_snippet.html" %}
     </div>
 {% endblock %}
 
@@ -24,9 +23,9 @@
         <script>
          (function() {
              if (window.opener) {
-                 window.opener.receiveAuthor({
-                     'name': '{{author}}',
-                     'pk' : '{{author.pk}}'
+                 window.opener.receiveAjaxField("tweets-0-tag_accounts", {
+                     'value': '{{object.name}}',
+                     'pk' : '{{object.pk}}'
                  });
                  window.close();
              }

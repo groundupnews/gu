@@ -158,6 +158,39 @@ class ArticleTest(TestCase):
         url = '/author/' + str(author.pk) + '/'
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
+        url = reverse('newsroom:author.add');
+        response = client.get(url)
+        url = reverse('newsroom:topic_create');
+        response = client.get(url)
+        self.assertEqual(response.status_code, 302)
+        reponse = client.get(url);
+        self.assertEqual(response.status_code, 302)
+
+        user = User.objects.create_user('staff', 'staff@example.com', 'abcde')
+        user.is_staff = True
+        user.is_active = True
+        permission1 = Permission.objects.get(name='Can add author')
+        user.user_permissions.add(permission1)
+        permission2 = Permission.objects.get(name='Can change author')
+        user.user_permissions.add(permission2)
+        permission3 = Permission.objects.get(name='Can add topic')
+        user.user_permissions.add(permission3)
+        permission4 = Permission.objects.get(name='Can change topic')
+        user.user_permissions.add(permission4)
+        user.save()
+
+        staff = Client()
+        staff.login(username='staff', password='abcde')
+        url = reverse('newsroom:author.update', args=[author.pk,])
+        response = staff.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        response = staff.get(url)
+        self.assertEqual(response.status_code, 200)
+        url = reverse('newsroom:topic_update', args=[topic.pk,])
+        response = staff.get(url)
+        self.assertEqual(response.status_code, 200)
+
 
     def test_duplicate_save(self):
         a = Article()

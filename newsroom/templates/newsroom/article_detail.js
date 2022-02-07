@@ -35,6 +35,11 @@ function charsAndWordsLength(str)
 
 let edit_mode;
 
+function showSave()
+{
+    document.getElementById("edit-menu-save").style.display = "inherit";
+}
+
 /* Works with ajax_select to receive data from a popup window in which an author was created.
    Sets first available author field with the new author. */
 function receiveAuthor(author)
@@ -45,10 +50,23 @@ function receiveAuthor(author)
         const author_div = document.getElementById(id);
         if (author_div.innerHTML === "") {
             $("#id_author_" + num).trigger('didAddPopup',[author.pk, author.name]);
+            showSave();
             break;
         }
     }
 }
+
+/* Works with ajax_select to receive data from a popup window that
+   created a lookup database entry.
+*/
+function receiveAjaxField(field, obj)
+{
+    const id = "id_" + field + "_on_deck";
+    const div = document.getElementById(id);
+    $("#id_" + field).trigger('didAddPopup',[obj.pk, obj.value]);
+    showSave();
+}
+
 
 function setupFormSubmit()
 {
@@ -152,7 +170,7 @@ function initializeEditors()
 
     for(const instance in CKEDITOR.instances) {
         CKEDITOR.instances[instance].on('change', function() {
-            document.getElementById("edit-menu-save").style.display = "inherit";
+            showSave();
         });
     }
 }
@@ -169,8 +187,7 @@ function setupNonCkeEditables()
                 document.getElementById(id).
                     setAttribute('title', elem.getAttribute('placeholder'));
                 document.getElementById(id).addEventListener('input', function() {
-                    document.getElementById("edit-menu-save").
-                        style.display = "inherit";
+                    showSave();
                 });
             }
         }
@@ -185,8 +202,7 @@ function setupInputFields()
     for (let elem of elems) {
         elem.addEventListener(
             'input', function() {
-                document.getElementById("edit-menu-save").
-                    style.display = "inherit";
+                showSave();
             });
         const id = elem.id.replace(id_prefix, view_prefix);
         let viewElem = document.getElementById(id);
@@ -207,8 +223,7 @@ function setupInputFields()
     const trash_icons = document.getElementsByClassName('ui-icon-trash');
     for (let trash of trash_icons) {
         trash.addEventListener('click', function() {
-            document.getElementById("edit-menu-save").
-                style.display = "inherit";
+            showSave();
         });
     }
 
@@ -229,16 +244,15 @@ function setupInputFields()
         false
         {% endif %},
         onChangeDateTime: function() {
-            document.getElementById("edit-menu-save").
-                style.display = "inherit";
+            showSave();
         }
     });
 
     if (document.getElementById("new-author")) {
         document.getElementById("new-author").
             addEventListener('click', function() {
-                window.open("{% url 'newsroom:author_create' %}",
-                            "author_create_window",
+                window.open("{% url 'newsroom:author.add' %}",
+                            "author.add_window",
                             "popup=1,left=100,top=100");
             });
     }
@@ -246,20 +260,30 @@ function setupInputFields()
     if (document.getElementById("new-topic")) {
         document.getElementById("new-topic").
             addEventListener('click', function() {
-                window.open("{% url 'admin:newsroom_topic_add' %}",
-                            "topic_new_win",
+                console.log("New topic");
+                window.open("{% url 'newsroom:topic_create' %}",
+                            "topic_create_window",
                             "popup=1,left=100,top=100");
             });
     }
 
+    if (document.getElementById("select-file")) {
+        document.getElementById("select-file").
+            addEventListener('click', function() {
+                window.open("/admin/filebrowser/browse/?pop=3&summary=1",
+                            "select_file_win",
+                            "popup=1,left=100,top=100");
+            });
+    }
     if (document.getElementById("new-twit")) {
         document.getElementById("new-twit").
             addEventListener('click', function() {
-                window.open("{% url 'admin:socialmedia_twitterhandle_add' %}",
+                window.open("{% url 'socialmedia:twitterhandle.add' %}",
                             "twit_new_win",
                             "popup=1,left=100,top=100");
             });
     }
+
 
     document.getElementById('headline_len').textContent =
         charsAndWordsLength(document.getElementById('article_title').textContent);
@@ -276,8 +300,7 @@ function setupTweets()
     const tweets = document.getElementById('tweet_formset');
     view_tweets.appendChild(tweets);
     view_tweets.addEventListener('input', function() {
-        document.getElementById("edit-menu-save").
-            style.display = "inherit";
+        showSave();
     });
 }
 
@@ -287,8 +310,7 @@ function setupCorrections()
     const corrections = document.getElementById('correction_formset');
     view_corrections.appendChild(corrections);
     view_corrections.addEventListener('input', function() {
-        document.getElementById("edit-menu-save").
-            style.display = "inherit";
+        showSave();
     });
 }
 
@@ -298,8 +320,7 @@ function setupRepublishers()
     const republishers = document.getElementById('republisher_formset');
     view_republishers.appendChild(republishers);
     view_republishers.addEventListener('input', function() {
-        document.getElementById("edit-menu-save").
-            style.display = "inherit";
+        showSave();
     });
 }
 

@@ -64,6 +64,7 @@ urlpatterns = [
     path('', include('payment.urls')),
     path('', include('letters.urls')),
     path('', include('agony.urls')),
+    path('', include('socialmedia.urls')),
     path('', include('target.urls')),
     path('', include('sudoku.urls')),
     path('', include('analyzer.urls')),
