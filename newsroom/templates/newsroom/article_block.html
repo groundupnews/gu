@@ -380,7 +380,7 @@
 
 
 {% if can_edit %}
-    <div class="col-xs-12 col-md-8" style="">
+    <div class="col-xs-12 col-md-8" style="display: none">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
 	      method="post">{% csrf_token %}
