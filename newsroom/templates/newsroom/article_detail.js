@@ -46,8 +46,13 @@ function showSave()
 function receiveSummaryImage(url)
 {
     document.getElementById("id_summary_image").value =
-        decodeURI(decodeURI(url.substr("{{MEDIA_URL}}".length)));
+        decodeURI(url.substr("{{MEDIA_URL}}".length));
     showSave();
+}
+
+function getSummaryImage()
+{
+    return "{{MEDIA_URL}}" + encodeURI(document.getElementById("id_summary_image").value);
 }
 
 /* Works with ajax_select to receive data from a popup window in which an author was created.
@@ -271,7 +276,6 @@ function setupInputFields()
     if (document.getElementById("new-topic")) {
         document.getElementById("new-topic").
             addEventListener('click', function() {
-                console.log("New topic");
                 window.open("{% url 'newsroom:topic_create' %}",
                             "topic_create_window",
                             "popup=1,left=100,top=100");
@@ -281,7 +285,7 @@ function setupInputFields()
     if (document.getElementById("select-file")) {
         document.getElementById("select-file").
             addEventListener('click', function() {
-                window.open("/admin/filebrowser/browse/?pop=3&summary=1",
+                window.open("/admin/filebrowser/browse/?pop=3&summary=1&dir=images",
                             "select_file_win",
                             "popup=1,left=100,top=100");
             });

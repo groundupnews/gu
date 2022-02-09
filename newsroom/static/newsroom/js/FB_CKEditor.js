@@ -21,19 +21,22 @@ function extractPath(fileUrl) {
 
 jQuery(document).ready(function ($) {
     // First make sure we're dealing with images
+    let dir;
     let urlSearchParams = new URLSearchParams(window.location.search);
     let params = Object.fromEntries(urlSearchParams.entries());
 
     if (!("dir" in params) || !(params["dir"].includes("images"))) return;
+    let fileUrl;
+    if ('summary' in params) {
+        fileUrl = window.opener.getSummaryImage();
+    } else {
+        fileUrl = window.opener.CKEDITOR.document.$.
+            getElementsByClassName('cke_dialog_image_url')[0].
+            querySelector('input').value;
+    }
 
-    let fileUrl = window.opener.CKEDITOR.document.$.
-        getElementsByClassName('cke_dialog_image_url')[0].
-        querySelector('input').value;
-    console.log("fb_dir", localStorage.getItem('fb_dir'));
-    console.log("fileUrl", fileUrl);
     if (fileUrl) {
         dir = decodeURI(extractPath(fileUrl));
-        console.log("dir immediately after extract", dir);
     } else {
         dir = localStorage.getItem('fb_dir');
         if(dir) {
@@ -42,7 +45,6 @@ jQuery(document).ready(function ($) {
             dir = "images";
         }
     }
-    console.log("dir", dir);
 
     if (dir && !("attempted" in params)) {
         params["dir"] = dir
@@ -72,12 +74,9 @@ function gup( name ) {
 
 function OpenFile(fileUrl) {
     let CKEditorFuncNum = gup('CKEditorFuncNum');
-    console.log("Openfile fileUrl", extractPath(fileUrl));
-    console.log("Openfile fb_dir a", localStorage.getItem('fb_dir'));
     if (fileUrl.includes("images")) {
         localStorage.setItem('fb_dir', extractPath(fileUrl));
     }
-    console.log("Openfile fb_dir b", localStorage.getItem('fb_dir'));
     const params = new URLSearchParams(location.search);
     if (params.get('summary')) {
         if (window.opener && window.opener.document &&

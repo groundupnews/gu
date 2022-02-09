@@ -6,7 +6,7 @@ BEAUTIFUL_SOUP_PARSER = getattr(settings, 'NEWSROOM_BEAUTIFUL_SOUP_PARSER',
                                 "lxml")
 ARTICLE_SUMMARY_IMAGE_SIZE = getattr(settings,
                                      'NEWSROOM_ARTICLE_TEASER_IMAGE_SIZE',
-                                     "medium")
+                                     "LEAVE")
 ARTICLE_PRIMARY_IMAGE_SIZE = getattr(settings,
                                      'NEWSROOM_ARTICLE_TEASER_IMAGE_SIZE',
                                      "extra_large")
