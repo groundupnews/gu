@@ -23,6 +23,10 @@ function getPureArticle()
     return pure_article;
 }
 
+{% if can_edit %}
+
+let edit_mode;
+
 function charsAndWordsLength(str)
 {
     return str.trim().length + "/" +
@@ -31,13 +35,19 @@ function charsAndWordsLength(str)
         }).length;
 }
 
-{% if can_edit %}
-
-let edit_mode;
-
 function showSave()
 {
     document.getElementById("edit-menu-save").style.display = "inherit";
+}
+
+/* Receive the file url from the FileBrowser's FB_CKEditor.js
+* (in static/newsroom/js) and remove the MEDIA URL from it.
+*/
+function receiveSummaryImage(url)
+{
+    document.getElementById("id_summary_image").value =
+        decodeURI(decodeURI(url.substr("{{MEDIA_URL}}".length)));
+    showSave();
 }
 
 /* Works with ajax_select to receive data from a popup window in which an author was created.

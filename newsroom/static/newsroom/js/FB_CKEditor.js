@@ -82,10 +82,9 @@ function OpenFile(fileUrl) {
     if (params.get('summary')) {
         if (window.opener && window.opener.document &&
             window.opener.document.getElementById("id_summary_image")) {
-            // Remove "/media/"
-            window.opener.document.getElementById("id_summary_image").value =
-                decodeURI(fileUrl.substr(7));
-            window.opener.showSave();
+            window.opener.receiveSummaryImage(fileUrl);
+            window.top.close();
+            window.top.opener.focus();
         }
     } else {
         window.top.opener.CKEDITOR.tools.callFunction(CKEditorFuncNum, fileUrl);
