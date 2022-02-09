@@ -128,6 +128,7 @@ function setupFormSubmit()
             // Move back corrections
             const corrections = document.getElementById('correction_formset');
             form.appendChild(corrections);
+            document.body.style.cursor = 'wait';
         });
 }
 

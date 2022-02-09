@@ -1121,4 +1121,8 @@ div.inline-form input, div.inline-form select {
     margin-right: 6px;
 }
 
+#edit-summary-image span {
+    display: inline;
+}
+
 {% endif %}
