@@ -56,7 +56,7 @@
         <script src="{% static 'newsroom/js/statistics.js' %}"></script>
         <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
         <script src="{% static 'newsroom/js/ck_styles.js' %}?v=20220203"></script>
-        <script src="{% static 'newsroom/js/ck_init.js' %}?v=20220203"></script>
+        <script src="{% static 'newsroom/js/ck_init.js' %}?v=20220211b"></script>
         <link rel="stylesheet"
               href="{% static 'newsroom/datetimepicker/jquery.datetimepicker.min.css' %}" />
 
@@ -74,6 +74,8 @@
 		You: {{request.user}}
             </div>
             <div id="editing-article">
+            </div>
+            <div id="article__statistics">
             </div>
 	</div>
     {% endif %}

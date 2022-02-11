@@ -82,6 +82,14 @@ function receiveAjaxField(field, obj)
     showSave();
 }
 
+function updateStats() {
+    document.getElementById("article__statistics").innerHTML =
+        "Words: " + total_words(document.getElementById("article_body")) +
+        "<br/>" +
+        "Billable: " + billable_words(document.getElementById("article_body"));
+}
+
+
 
 function setupFormSubmit()
 {
@@ -149,6 +157,7 @@ function setupAdminPanel()
         }
         admin_open = !admin_open;
     });
+    updateStats();
 }
 
 function setupButtons()
@@ -189,6 +198,9 @@ function initializeEditors()
             showSave();
         });
     }
+    CKEDITOR.instances['article_body'].on('change', function() {
+        updateStats();
+    });
 }
 
 function setupNonCkeEditables()
