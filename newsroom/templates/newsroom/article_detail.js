@@ -94,7 +94,12 @@ function updateStats() {
 function setupFormSubmit()
 {
     document.getElementById("saveedits").addEventListener(
-        "click", function() {
+        "click", function(e) {
+            if (document.getElementById("article_title").textContent == "") {
+                alert("Title can't be blank");
+                e.preventDefault();
+                return;
+            }
             // Move back input elements that were moved
             let form = document.getElementById("article_form");
             const inputElems = document.querySelectorAll('[data-type="input"]');
@@ -221,6 +226,21 @@ function setupNonCkeEditables()
         }
     }
 }
+
+function copyForm() {
+    const contentEditables = document.querySelectorAll(
+        '[data-type="contenteditable"]');
+    for (let elem of contentEditables) {
+        let id = elem.id.replace(id_prefix, article_prefix);
+        if (document.getElementById(id)) {
+            document.getElementById(id).innerHTML =
+                elem.value;
+        }
+    }
+    updateStats();
+}
+
+
 
 function setupInputFields()
 {
@@ -476,9 +496,13 @@ jQuery(document).ready(function ($) {
     edit_mode = false;
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('edit') === "y") edit_mode = true;
+    if ({{from_form}}) edit_mode = true;
     setupAdminPanel();
     setupButtons();
     setupFormSubmit();
+    if ({{from_form}}) {
+        copyForm();
+    }
     setupNonCkeEditables();
     setupInputFields();
     setupTweets();

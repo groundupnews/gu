@@ -4,8 +4,27 @@
 
 <div class="{% if article.undistracted_layout %}col-xs-12  col-md-push-1 col-md-10"{% else %}col-xs-12 col-md-8"{% endif %}>
     {% if can_edit %}
-        <div>
-            {{form.errors}}
+        <div id="article-error-list" class="alert-danger">
+            {% if form.errors %}
+                {{form.errors}}
+            {% endif %}
+            {% for err in tweetFormSet.errors %}
+                {% if err %}
+                    {{err}}
+                {% endif %}
+            {% endfor %}
+            {% for err in republisherFormSet.errors %}
+                {% for key, val in err.items %}
+                    {% if key %}
+                        {{val}}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            {% for err in correctionFormSet.errors %}
+                {% if err %}
+                    {{ err }}
+                {% endif %}
+            {% endfor %}
         </div>
     {% endif %}
     <h1 id="article_title" class="article__title {% if can_edit %} editable {% endif %}"

@@ -394,7 +394,8 @@ def article_post(request, slug):
                                'form': form,
                                'tweetFormSet': tweetFormSet,
                                'republisherFormSet': republisherFormSet,
-                               'correctionFormSet': correctionFormSet})
+                               'correctionFormSet': correctionFormSet,
+                               'from_form': 0})
         article = form.save()
         article.user = request.user
         article.save(force_update=True)
@@ -435,35 +436,21 @@ def article_post(request, slug):
         return HttpResponseRedirect(reverse('newsroom:article.detail',
                                             args=(article.slug,)))
     else:
-        if form.is_valid() == False:
-            messages.add_message(request, messages.ERROR,
-                                 "Please fix the problem below.")
-            for err in form.errors:
-                messages.add_message(request, messages.ERROR, str(err))
+        messages.add_message(request, messages.ERROR,
+                             "Please fix the problem(s). Changes not yet saved.")
 
-        if tweetFormSet.is_valid() == False:
-            messages.add_message(request, messages.ERROR,
-                                 "Please fix problem(s) with the tweets.")
-            for err in tweetFormSet.errors:
-                messages.add_message(request, messages.ERROR, str(err))
-
-        if correctionFormSet.is_valid() == False:
-            messages.add_message(request, messages.ERROR,
-                                 "Please fix problem(s) with the corrections.")
-            for err in correctionFormSet.errors:
-                messages.add_message(request, messages.ERROR, str(err))
-
-        if republisherFormSet.is_valid() == False:
-            messages.add_message(request, messages.ERROR,
-                                 "There was an error with the republishers.")
-            for count, err in enumerate(republisherFormSet.errors):
-                if '__all__' in err:
-                    messages.add_message(request, messages.ERROR,
-                                         "Republisher " + str(count) +
-                                         ": "  + ",".join(err['__all__']))
-
-        return HttpResponseRedirect(reverse('newsroom:article.detail',
-                                            args=(slug,)))
+        return render(request, article.template,
+                      {'article': article,
+                       'display_region': None,
+                       'blocks': get_blocks('Article'),
+                       'can_edit': True,
+                       'article_letters': None,
+                       'most_popular_html': None,
+                       'form': form,
+                       'tweetFormSet': tweetFormSet,
+                       'republisherFormSet': republisherFormSet,
+                       'correctionFormSet': correctionFormSet,
+                       'from_form': 1})
 
 
 @staff_member_required
@@ -515,7 +502,8 @@ def article_preview(request, secret_link):
                    'form': None,
                    'tweetFormSet': None,
                    'republisherFormSet': None,
-                   'correctionFormSet': None})
+                   'correctionFormSet': None,
+                   'from_form': 0})
 
 def article_detail(request, slug):
     if request.method == 'POST':
@@ -613,7 +601,8 @@ def article_detail(request, slug):
                            'form': form,
                            'tweetFormSet': tweetFormSet,
                            'republisherFormSet': republisherFormSet,
-                           'correctionFormSet': correctionFormSet})
+                           'correctionFormSet': correctionFormSet,
+                           'from_form': 0})
         else:
             raise Http404
 

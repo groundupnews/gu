@@ -53,7 +53,6 @@ article_form_fields =  article_inputs + article_contenteditables + \
     article_specials
 
 class ArticleForm(forms.ModelForm):
-
     author_01 = AutoCompleteSelectField("authors", required=False,
                                         help_text=None, label="First author")
     author_02 = AutoCompleteSelectField("authors", required=False,
