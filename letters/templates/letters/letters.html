@@ -4,7 +4,7 @@
       <h2>Latest reader letter{{ letter_slice|length|pluralize }}</h2>
       {% for letter in letter_slice %}
 	<h3>{{letter.title}}</h3>
-        <p>{{ letter.text|truncatechars:100 }} <a href="{{letter.get_absolute_url}}">Read more...</a></p>
+        <p>{{ letter.text|truncatechars:100 }} <a href="{{letter.get_absolute_url}}">Read more</a></p>
       {% endfor %}
     </div>
   {% endif %}
