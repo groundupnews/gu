@@ -346,46 +346,6 @@ ul.icons li {
     -ms-transition: all .3s;
 }
 
-@media (max-width: 699px) {
-    #footer-container {
-        width: 80%;
-    }
-}
-
-@media (min-width: 700px) {
-    #footer-container {
-        display: grid;
-        grid-template-columns: 33% 33% 33%;
-        grid-template-rows: auto;
-    }
-    #copyright {
-        grid-row: 1;
-        grid-column: 1 / 2;
-    }
-
-    #address {
-        grid-row: 1;
-        grid-column: 2 / 3;
-    }
-
-    #contact {
-        grid-row: 1;
-        grid-column: 3 / 4;
-    }
-}
-
-
-footer {
-    background-color: #151F22;
-    color: white;
-}
-
-#footer-container {
-    margin: auto;
-    max-width: 1170px;
-    padding: 12px;
-}
-
 .subtitle {
     font-size: 24px;
     margin-top: 12px;
