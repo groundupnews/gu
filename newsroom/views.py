@@ -468,7 +468,16 @@ def article_post(request, slug):
                                             args=(article.slug,)))
     else:
         messages.add_message(request, messages.ERROR,
-                             "Please fix the problem(s). Changes not yet saved.")
+                             "Please fix the error(s). Changes not yet saved.")
+        if tweetFormSet.is_valid() == False:
+            messages.add_message(request, messages.ERROR,
+                            "There is an error with the tweets.")
+        if republisherFormSet.is_valid() == False:
+            messages.add_message(request, messages.ERROR,
+                            "There is an error with the republishers.")
+        if correctionFormSet.is_valid() == False:
+            messages.add_message(request, messages.ERROR,
+                            "There is an error with the corrections.")
         return render(request, article.template,
                       { ** get_context(article),
                         ** {
