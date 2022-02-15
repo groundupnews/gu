@@ -344,6 +344,41 @@ def check_concurrent_edit(request):
     else:
         raise Http404
 
+'''Used by various article views to get default context they all need
+'''
+def get_context(article):
+    date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
+    if article.region and (article.region.name not in
+                           ["None", "", "(None)", ]):
+        display_region = article.region.name.rpartition("/")[2]
+    else:
+        display_region = ""
+
+    try:
+        dict = {
+            'article': article,
+            'display_region': display_region,
+            'recommended': article.get_recommended(),
+            'related': article.get_related(),
+            'blocks': get_blocks('Article'),
+            'article_body': article.body,
+            'article_letters': article.letter_set.published(),
+            'most_popular_html': models.MostPopular.get_most_popular_html(),
+            'letters': Letter.objects.published().filter(published__gte=date_from).
+            order_by('-published'),
+            'agony': QandA.objects.published().order_by("-published"),
+            'content_type': 'article',
+            'form': None,
+            'tweetFormSet': None,
+            'republisherFormSet': None,
+            'correctionFormSet': None,
+            'from_form': 0,
+            'can_edit': False
+        }
+    except Exception as e:
+        logging.error("Couldn't get extra context for article: " + str(article.pk))
+        dict = {'article': article}
+    return dict
 
 '''These functions were originally two generic Django class views (DetailView
 and UpdateView). But the logic was hidden behind Django's opaque and not very
@@ -378,24 +413,20 @@ def article_post(request, slug):
 
     if form.is_valid() and tweetFormSet.is_valid() and \
        republisherFormSet.is_valid() and correctionFormSet.is_valid():
+        # Check we edited the latest version
         if version > form.cleaned_data["version"]:
             messages.add_message(request, messages.ERROR,
                                  utils.get_edit_lock_msg(article.user))
-            for field in form.changed_data:
-                setattr(article, field,
-                        form.cleaned_data[field])
-                return render(request, article.template,
-                              {'article': article,
-                               'display_region': None,
-                               'blocks': get_blocks('Article'),
-                               'can_edit': False,
-                               'article_letters': None,
-                               'most_popular_html': None,
-                               'form': form,
-                               'tweetFormSet': tweetFormSet,
-                               'republisherFormSet': republisherFormSet,
-                               'correctionFormSet': correctionFormSet,
-                               'from_form': 0})
+            return render(request, article.template,
+                          { ** get_context(article),
+                            ** {'form': form,
+                                'tweetFormSet': tweetFormSet,
+                                'republisherFormSet': republisherFormSet,
+                                'correctionFormSet': correctionFormSet,
+                                'from_form': 1,
+                                'can_edit': True
+                            }
+                          })
         article = form.save()
         article.user = request.user
         article.save(force_update=True)
@@ -438,19 +469,17 @@ def article_post(request, slug):
     else:
         messages.add_message(request, messages.ERROR,
                              "Please fix the problem(s). Changes not yet saved.")
-
         return render(request, article.template,
-                      {'article': article,
-                       'display_region': None,
-                       'blocks': get_blocks('Article'),
-                       'can_edit': True,
-                       'article_letters': None,
-                       'most_popular_html': None,
-                       'form': form,
-                       'tweetFormSet': tweetFormSet,
-                       'republisherFormSet': republisherFormSet,
-                       'correctionFormSet': correctionFormSet,
-                       'from_form': 1})
+                      { ** get_context(article),
+                        ** {
+                            'can_edit': True,
+                            'form': form,
+                            'tweetFormSet': tweetFormSet,
+                            'republisherFormSet': republisherFormSet,
+                            'correctionFormSet': correctionFormSet,
+                            'from_form': 1
+                        }
+                      })
 
 
 @staff_member_required
@@ -478,32 +507,7 @@ def article_preview(request, secret_link):
     if article.secret_link_view == 'n':
         return HttpResponseForbidden()
 
-    if article.region and (article.region.name not in
-                           ["None", "", "(None)", ]):
-        display_region = article.region.name.rpartition("/")[2]
-    else:
-        display_region = ""
-    date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
-    return render(request, article.template,
-                  {'article': article,
-                   'display_region': display_region,
-                   'recommended': article.get_recommended(),
-                   'related': article.get_related(),
-                   'blocks': get_blocks('Article'),
-                   'can_edit': False,
-                   'article_body': article.body,
-                   'article_letters': article.letter_set.published(),
-                   'most_popular_html': models.MostPopular.get_most_popular_html(),
-                   'letters': Letter.objects.published().
-                   filter(published__gte=date_from).
-                   order_by('-published'),
-                   'agony': QandA.objects.published().order_by("-published"),
-                   'content_type': 'article',
-                   'form': None,
-                   'tweetFormSet': None,
-                   'republisherFormSet': None,
-                   'correctionFormSet': None,
-                   'from_form': 0})
+    return render(request, article.template, get_context(article))
 
 def article_detail(request, slug):
     if request.method == 'POST':
@@ -544,13 +548,6 @@ def article_detail(request, slug):
             if request.user.is_staff and not article.is_published():
                 messages.add_message(request, messages.INFO,
                                      "This article is not published.")
-
-            if article.region and (article.region.name not in
-                                   ["None", "", "(None)", ]):
-                display_region = article.region.name.rpartition("/")[2]
-            else:
-                display_region = ""
-
             can_edit = False
             if request.user.is_staff and \
                request.user.has_perm("newsroom.change_article"):
@@ -581,28 +578,16 @@ def article_detail(request, slug):
                     c = Context({"article": article})
                     article_body = t.render(c)
 
-            date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
-
             return render(request, article.template,
-                          {'article': article,
-                           'display_region': display_region,
-                           'recommended': article.get_recommended(),
-                           'related': article.get_related(),
-                           'blocks': get_blocks('Article'),
-                           'can_edit': can_edit,
-                           'article_body': article_body,
-                           'article_letters': article.letter_set.published(),
-                           'most_popular_html': models.MostPopular.get_most_popular_html(),
-                           'letters': Letter.objects.published().
-                           filter(published__gte=date_from).
-                           order_by('-published'),
-                           'agony': QandA.objects.published().order_by("-published"),
-                           'content_type': 'article',
-                           'form': form,
-                           'tweetFormSet': tweetFormSet,
-                           'republisherFormSet': republisherFormSet,
-                           'correctionFormSet': correctionFormSet,
-                           'from_form': 0})
+                          { **get_context(article),
+                            ** {
+                                'can_edit': can_edit,
+                                'form': form,
+                                'tweetFormSet': tweetFormSet,
+                                'republisherFormSet': republisherFormSet,
+                                'correctionFormSet': correctionFormSet
+                            }
+                          })
         else:
             raise Http404
 
