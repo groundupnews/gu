@@ -21,7 +21,7 @@
     {% if query.mce_rdomain %}<script language="javascript">document.domain = "{{ query.mce_rdomain }}"</script>{% endif %}
     {% endifequal %}
     {% ifequal query.pop '3' %} <!-- CKeditor (former "FCKeditor") and article update-->
-    <script language="javascript" type="text/javascript" src="{% static 'newsroom/js/FB_CKEditor.js' %}?v=20220209"></script>
+    <script language="javascript" type="text/javascript" src="{% static 'newsroom/js/FB_CKEditor.js' %}?v=20220216"></script>
     {% endifequal %}
     {% ifequal query.pop '4' %} <!-- TinyMCE v4 -->
     <script language="javascript" type="text/javascript" src="{% static 'filebrowser/js/FB_TinyMCEv4.js' %}"></script>
