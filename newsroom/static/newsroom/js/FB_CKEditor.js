@@ -39,7 +39,8 @@ jQuery(document).ready(function ($) {
         dir = decodeURI(extractPath(fileUrl));
     } else {
         dir = localStorage.getItem('fb_dir');
-        if(dir) {
+        const ms = localStorage.getItem('fb_dir_ms');
+        if(dir && ms && ((Date.now() - ms) < 3600000)) {
             dir = decodeURI(dir);
         } else {
             dir = "images";
@@ -76,6 +77,7 @@ function OpenFile(fileUrl) {
     let CKEditorFuncNum = gup('CKEditorFuncNum');
     if (fileUrl.includes("images")) {
         localStorage.setItem('fb_dir', extractPath(fileUrl));
+        localStorage.setItem('fb_dir_ms', Date.now());
     }
     const params = new URLSearchParams(location.search);
     if (params.get('summary')) {
