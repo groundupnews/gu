@@ -109,8 +109,7 @@ def searchArticles(search_string=None,
         except:
             pass
 
-    articles = Article.objects.published().filter(query). \
-                              order_by("-published").distinct()
+    articles = Article.objects.published().filter(query)
 
     return articles
 
@@ -149,7 +148,7 @@ def searchPhotos(search_string=None,
             query = query & Q(date_taken__lte=to_date)
         except:
             pass
-    photos = Photograph.objects.filter(query).order_by("-date_taken").distinct()
+    photos = Photograph.objects.filter(query)
 
     return photos
 
@@ -170,8 +169,8 @@ def searchArticlesAndPhotos(search_string=None,
                                            fullname=F("cached_byline_no_links")). \
                                   values("pk", "title", "subtitle", "cached_summary_image",
                                          "obj_type", "slug", "body",
-                                         "fullname",  "published")
-        
+                                         "fullname",  "published").order_by('-published').distinct()
+
     if inc_photos:
         photos = searchPhotos(search_string, author_pk,
                               from_date, to_date). \
@@ -183,10 +182,11 @@ def searchArticlesAndPhotos(search_string=None,
                                                        output_field=CharField())). \
                               values("pk", "alt", "suggested_caption", "image",
                                      "obj_type", "alt", "alt",
-                                     "fullname", "date_taken")
+                                     "fullname", "date_taken").order_by('-date_taken').distinct()
 
     if inc_articles and inc_photos:
-        result = articles.union(photos).order_by('-published')
+        result = list(articles) + list(photos)
+                        #key=lambda x: getattr(x, "published", getattr(x, "date_taken")), reverse=True)
     elif inc_articles:
         result = articles
     elif inc_photos:

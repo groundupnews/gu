@@ -20,11 +20,6 @@ aside {
     margin-bottom: 12px;
 }
 
-article {
-    /* margin-top: 18px;
-    padding-top: 18px;*/
-}
-
 article li {
     margin-bottom: 9px;
 }
@@ -100,16 +95,6 @@ a, a:focus, a:hover {
     margin-top: 3px;
 }
 
-/******************/
-
-/* sidebar social media */
-
-
-/**************/
-
-/* sidebar recommended */
-
-/**************/
 
 /* Generic white background for page */
 
@@ -922,11 +907,6 @@ Single-colored icons can be modified like so:
 .pagination>li:last-child>a, .pagination>li:last-child>span {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
-}
-
-.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
-    /*background-color: #00B1F0;
-    border-color: #00B1F0;*/
 }
 
 

@@ -5,126 +5,117 @@
 {% block search %} {% endblock %}
 
 {% block title %}
-  Search {{block.super}}
+    Search {{block.super}}
 {% endblock %}
 
+{% block css-override %}
+    <style>
+     label {
+         display:block;
+     }
+     #id_search_type {
+         list-style: none;
+     }
+     #id_search_type li, #id_search_type label {
+         display: inline;
+         padding-left: 6px;
+     }
+     td {
+         padding-bottom: 9px;
+         padding-left: 12px;
+     }
+     #adv-filter-form {
+         margin-bottom: 12px;
+     }
+     .single-block {
+         margin-bottom: 16px;
+         border-bottom: 1px solid black;
+     }
+
+    </style>
+{% endblock %}
 
 {% block content %}
 
-  <div class="container search-page">
-    <div class="search-results">
-      {% if page.object_list %}
-        <div class="search-results__header">
-	  <h1>Search results</h1>
-          {% include 'search/_search_param_list.html' %}
+    <div class="container search-page">
+        <div class="row">
+            <div class="col-xs-12">
+                {% if page.object_list %}
+	            <h1>Search results</h1>
+                    {% include 'search/_search_param_list.html' %}
+                {% endif %}
+                {% include "search/advanced_search.html" %}
+            </div>
         </div>
-        {% include "search/advanced_search.html" %}
-        {% if search_type == "article" or search_type == "both" %}
-          <div class="search-results__body">
-	    {% for article in page.object_list %}
-              {% if article.obj_type == 0 %}
-                <div class="search-result">
-                  <div class="search-result__image">
-                    <img src="{{ article.cached_summary_image }}" />
-                  </div>
-                  <div class="search-result__details">
-                    <p class="search-result__pub-date">
-                      {{article.published|date:"j F Y"}} | ARTICLE
-                    </p>
-                    <h2 class="search-result__title">
-                      <a href="{% url "newsroom:article.detail" article.slug %}">
-                        {{ article.title|safe }}
-                      </a>
-                    </h2>
-                    <h3 class="search-result__sub-title">
-                      {% highlight article.subtitle with query %}
-                    </h3>
-                    <p class="search-result__byline">
-                      {{article.fullname}}
-                    </p>
-                    <p>
-                      {% highlight article.body with query %}
-                    </p>
-                  </div>
-                </div>
-              {% elif article.obj_type == 1 %}
-                <div class="search-result">
-                  <div class="search-result__image">
-
-                    <img
-                        src="{% version article.cached_summary_image 'medium' %}"
-                        alt="{{ article.subtitle }}"
-                    />
-
-                  </div>
-                  <div class="search-result__details">
-                    <p class="search-result__pub-date">
-                      {{article.published|date:"j F Y"}} | IMAGE
-                    </p>
-                    <a href="{% url "gallery:photo.detail" article.pk %}">
-                      <h2 class="search-result__title">{{ article.title|safe }}</h2>
-                    </a>
-                    <h3 class="search-result__sub-title">
-                      {{article.subtitle}}
-                    </h3>
-                    <p class="search-result__byline">
-                      By {{article.fullname}}
-                    </p>
-                  </div>
-                </div>
-              {% endif %}
-	    {% empty %}
-	      <p>No results found.</p>
-	    {% endfor %}
-            {% block pagination %}
-	      {% include 'paginator.html' with page_obj=page query=query %}
-	    {% endblock %}
-          </div>
-        {% else %} {% comment %} Images {% endcomment %}
-          <div class="search-results__body search-results__body-images">
+        <div class="row">
             {% for article in page.object_list %}
-              <div class="search-result search-result-images">
-                <div class="search-result__image search-result__image-images">
-                  <img
-                      src="{% version article.image 'medium' %}"
-                      alt="{{ article.alt }}"
-                  />
+                <div class="col-xs-12
+                            {% if search_type == "article" or search_type == "both" %}
+                            col-md-9
+                            {% else %}
+                            col-md-3
+                            {% endif %}">
+                    {% if article.obj_type == 0 %}
+                        <div class="container single-block">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-3">
+                                    <p class="summary-image">
+                                        <img src="{{ article.cached_summary_image }}"
+                                             alt="" width="270" />
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <h4>
+                                        <a href="{% url "newsroom:article.detail" article.slug %}">
+                                            {{ article.title|safe }}
+                                        </a>
+                                    </h4>
+                                    <p>
+                                        {{article.published|date:"j F Y"}} | ARTICLE
+                                    </p>
+                                    <p>
+                                        {{article.fullname}}
+                                    </p>
+                                    <p>
+                                        {% highlight article.body with query %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div style="height:330px; overflow:hidden; margin-bottom: 18px;
+                                    padding-bottom: 18px; ">
+                            <h4 style="height:40px; overflow:hidden;">
+                                <a href="{% url "gallery:photo.detail" article.pk %}">
+                                    {{article.suggested_caption|truncatechars:"50"}}
+                                </a>
+                            </h4>
+                            <p>
+                                {{article.date_taken|date:"j F Y"}} | IMAGE
+                            </p>
+                            <p>
+                                {{article.fullname}}
+                            </p>
+
+                            <p class="summary-image">
+                                <img style="height:220px;"
+                                    src="{% version article.image 'medium' %}"
+                                    alt="{{ article.alt }}"
+                                />
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="search-result__details search-result__details-images">
-                  <p class="search-result__pub-date">
-                    {{article.date_taken|date:"j F Y"}} | IMAGE
-                  </p>
-                  <a href="{% url "gallery:photo.detail" article.pk %}">
-                    <h2 class="search-result__title">{{ article.alt }}</h2>
-                  </a>
-                  <h3 class="search-result__sub-title">
-                    {{article.suggested_caption}}
-                  </h3>
-                  <p class="search-result__byline">
-                    By {{article.fullname}}
-                  </p>
-                </div>
-              </div>
             {% empty %}
-	      <p>No results found.</p>
+                <div class="col-xs-12">
+	            <p>No results found</p>
+                </div>
             {% endfor %}
-	    {% block pagination_images %}
-	      {% include 'paginator.html' with page_obj=page query=query %}
-	    {% endblock %}
-          </div>
-        {% endif %}
-      {% else %}
-        <div class="search-results__header">
-          {% if adv_search_form.cleaned_data.adv_search %}
-            <h2>Nothing found for: {{adv_search_form.cleaned_data.adv_search}}</h2>
-          {% else %}
-            <h2>Please enter text to search for.</h2>
-          {% endif %}
         </div>
-        <div class="search-results__body">
-          {% include "search/advanced_search.html" %}
+        <div class="row">
+            {% block pagination %}
+	        {% include 'paginator.html' with page_obj=page query=query %}
+            {% endblock %}
         </div>
-      {% endif %}
     </div>
-  </div>
 {% endblock %}

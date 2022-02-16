@@ -57,9 +57,7 @@
         <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
         <script src="{% static 'newsroom/js/ck_styles.js' %}?v=20220203"></script>
         <script src="{% static 'newsroom/js/ck_init.js' %}?v=20220211b"></script>
-        <link rel="stylesheet"
-              href="{% static 'newsroom/datetimepicker/jquery.datetimepicker.min.css' %}" />
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     {% endif %}
     {{article.additional_head_scripts|safe}}
 
@@ -114,8 +112,6 @@
   {% endif %}
 
   {% if can_edit %}
-      <script type="text/javascript"
-              src="{% static 'newsroom/datetimepicker/jquery.datetimepicker.full.min.js' %}">
-      </script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   {% endif %}
 {% endblock %}

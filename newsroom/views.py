@@ -796,7 +796,8 @@ def advanced_search(request):
                     topic_pk,
                     cleaned_adv_form.get("date_from"),
                     cleaned_adv_form.get("date_to"))
-            except:
+            except Exception as e:
+                print("Exception", e)
                 logger.error(
                     "Advanced Search Failed calling searchArticlesAndPhotos")
                 article_list = models.Article.objects.none()
@@ -807,7 +808,7 @@ def advanced_search(request):
         num_results = int(request.GET.get('results_per_page'))
     except:
         if search_type == 'image':
-            num_results = settings.SEARCH_RESULTS_PER_PAGE * 2
+            num_results = settings.SEARCH_RESULTS_PER_PAGE * 4
         else:
             num_results = settings.SEARCH_RESULTS_PER_PAGE
 

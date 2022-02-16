@@ -9,17 +9,16 @@ var admin_open = true;
 
 function getPureArticle()
 {
-    var pure_article = "<h1>" + $("#article_title").text() + "</h1>";
-    if ($("#article_subtitle").length)
-	pure_article += "<h2>" + $("#article_subtitle").text() + "</h2>";
-    if ($(".article-byline").length) {
-	pure_article += "<p>" + $(".article-byline").text() + "</p>";
-    }
-    if ($(".article-dateline").length)
-	pure_article += "<p>" + $(".article-dateline").text() + "</p>";
-    if ($("#article-primary-image").length)
-	pure_article += $("#article-primary-image").html();
-    pure_article += $("#article_body").html();
+    let pure_article = "<h1>" +
+        document.getElementById("article_title").textContent + "</h1>";
+    if (document.getElementById("article_subtitle").length)
+	pure_article += "<h2>" + document.getElementById("article_subtitle").textContent + "</h2>";
+
+    pure_article += "<p>" + document.getElementById("article-byline").textContent + "</p>";
+    pure_article += "<p>" + "{{ article.published|date:'j F Y'}}" + "</p>";
+    if (document.getElementById("article-primary-image"))
+	pure_article += document.getElementById("article-primary-image").innerHTML;
+    pure_article += document.getElementById("article_body").innerHTML;
     return pure_article;
 }
 
@@ -277,24 +276,28 @@ function setupInputFields()
 
 
     // Specific field processing
-    $('#id_published').datetimepicker({
-        format: 'Y-m-d H:i',
-        defaultDate:
+    const d = new Date();
+    flatpickr("#id_published", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        defaultHour:
         {% if article.published %}
-        '{{article.published|date:"Y-m-d"}}'
+        '{{article.published|date:"H"}}'
         {% else %}
-        new Date()
+        d.getHours()
         {% endif %},
-        defaultTime:
+        defaultMinute:
         {% if article.published %}
-        '{{article.published|date:"H:i"}}'
+        '{{article.published|date:"i"}}'
         {% else %}
-        false
+        d.getMinutes()
         {% endif %},
-        onChangeDateTime: function() {
+        onChange: function(selectedDates, dateStr, instance) {
             showSave();
-        }
+        },
     });
+
 
     if (document.getElementById("new-author")) {
         document.getElementById("new-author").

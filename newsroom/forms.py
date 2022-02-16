@@ -158,8 +158,8 @@ class AdvancedSearchForm(forms.Form):
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
     date_from = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
                                     required=False,
-                                    input_formats=['%d/%m/%Y'])
+                                    input_formats=['%Y-%m-%d'])
     date_to = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
                                   required=False,
-                                  input_formats=['%d/%m/%Y'])
+                                  input_formats=['%Y-%m-%d'])
     results_per_page = forms.ChoiceField(choices=RESULTS_PER_PAGE, required=False)

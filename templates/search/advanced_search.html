@@ -1,10 +1,36 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<h4>
+    Advanced Search
+    <i id="adv-filter-arrow"
+       class="fas
+           {% if request.GET.is_simple %}
+           fa-angle-down
+           {% else%}
+           fa-angle-up
+           {%endif%}
+           fa-lg">
+    </i>
+</h4>
+<form action="/advanced_search/" id="adv-filter-form" method="GET"
+      {% if request.GET.is_simple %}
+      style="display:none;"
+      {% endif %}>
+
+    {{adv_search_form.as_p}}
+
+    <button class="btn btn-primary btn-submit" type="submit">Search</button>
+
+</form>
+
+{% comment %}
 <div class="adv-filter-box">
   <div class="adv-filter-header">
     <h3 class="adv-filter-heading">
       Advanced Search <i class="adv-filter-arrow fas
                                 {% if request.GET.is_simple %}
                                 fa-angle-down
-                                {%else%}
+                                {% else%}
                                 fa-angle-up
                                 {%endif%}
                                 fa-lg"></i>
@@ -65,34 +91,25 @@
   </form>
 </div>
 
+{% endcomment %}
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
- let showFields = function() {
-     let elems = document.getElementsByClassName(
-         'adv-filter__article_only');
-     let i;
-     for (i = 0; i < elems.length; i++) {
-         elems[i].style.display = 'inherit';
-     }
- }
+ flatpickr('[data-toggle="datepicker"]', {
+     allowInput: true
+ });
 
- let hideFields = function() {
-     let elems = document.getElementsByClassName(
-         'adv-filter__article_only');
-     let i;
-     for (i = 0; i < elems.length; i++) {
-         elems[i].style.display = 'none';
+ document.getElementById("adv-filter-arrow").addEventListener("click", function(e) {
+     if (e.target.classList.contains("fa-angle-down")) {
+         document.getElementById("adv-filter-form").style.display = "block";
+         e.target.classList.remove("fa-angle-down");
+         e.target.classList.add("fa-angle-up");
+     } else {
+         document.getElementById("adv-filter-form").style.display = "none";
+         e.target.classList.add("fa-angle-down");
+         e.target.classList.remove("fa-angle-up");
      }
- }
+ });
 
- document.getElementById('id_search_type_1').
-          addEventListener("click", function(){hideFields();});
- document.getElementById('id_search_type_0').
-          addEventListener("click", function() {showFields();});
- document.getElementById('id_search_type_2').
-          addEventListener("click", function() {showFields();});
- if (document.getElementById("id_search_type_1").checked == true) {
-     hideFields();
- } else {
-     showFields();
- };
 </script>

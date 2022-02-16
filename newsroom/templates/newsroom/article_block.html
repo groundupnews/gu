@@ -64,7 +64,7 @@
               {% endif %}
         </time>
         {% if can_edit %} <span id="view_published"></span>{% endif %}
-        | <span>{{ article.cached_byline|safe }}</span>
+        | <span id="article-byline">{{ article.cached_byline|safe }}</span>
         {% if can_edit %}
             <div id="article-extra-edit-options">
                 <span>
