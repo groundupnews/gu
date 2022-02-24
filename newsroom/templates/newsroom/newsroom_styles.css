@@ -1045,12 +1045,16 @@ div.inline-form {
     font-size: 80% !important;
 }
 
-div.tweet-form p {
+div.tweet-form p, div.correction-form p {
     font-size: 90% !important;
 }
 
 div.tweet-form input:nth-child(2){
     width: 400px !important;
+}
+
+div.correction-form textarea {
+    vertical-align: middle;
 }
 
 div.inline-form label {

@@ -783,13 +783,14 @@ class MostPopular(models.Model):
 
 class Correction(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    update_type = models.CharField(max_length=1, default="U",
+    update_type = models.CharField(max_length=1, default="C",
                                    choices=CORRECTION_CHOICES)
     text = models.TextField(blank=True)
-    notify_republishers = models.BooleanField(default=True,
+    notify_republishers = models.BooleanField(default=False,
                                               help_text="Only notifies those "
                                               "that have have already been sent "
                                               "article")
+    publishers_notified = models.BooleanField(default=False)
     user = models.ForeignKey(User, blank=True, null=True,
                              on_delete=models.CASCADE, editable=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)

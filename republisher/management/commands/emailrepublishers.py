@@ -25,7 +25,7 @@ def process():
         dont_send_before = republisherarticle.article.published + \
             datetime.timedelta(minutes=republisherarticle.wait_time)
         if timezone.now() >= dont_send_before:
-            prefix = "http://" + Site.objects.all()[0].domain
+            prefix = "https://" + Site.objects.all()[0].domain
             url = prefix + republisherarticle.article.get_absolute_url()
             article = republisherarticle.article
             if article.cached_primary_image and \

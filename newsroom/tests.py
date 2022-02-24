@@ -8,6 +8,9 @@ from django.utils import timezone
 from letters.models import Letter
 from newsroom import utils
 from newsroom.models import Article, Category, Topic, Author, Correction
+from republisher.models import Republisher, RepublisherArticle
+import republisher.management.commands.emailrepublishers as emailrepublishers
+import newsroom.management.commands.notifycorrections as notifycorrections
 from pgsearch.utils import searchArticlesAndPhotos
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
@@ -359,3 +362,59 @@ class ArticleTest(TestCase):
         client = Client()
         response = client.get('/about/')
         self.assertEqual(response.status_code, 200)
+
+    def add_corrections(self, articles):
+        j = 0
+        for a in articles:
+            if j % 2 == 0:
+                notify_republishers = True
+            else:
+                notify_republishers = False
+            j = j + 1
+            for i in range(2):
+                if i == 1:
+                    update_type = "C"
+                else:
+                    update_type = "U"
+                Correction.objects.create(
+                    article=a,
+                    update_type=update_type,
+                    text="We corrected the spelling of John Bloggs",
+                    notify_republishers=notify_republishers)
+
+    def test_correction_republisher_notification(self):
+        for i in range(5):
+            Republisher.objects.create(
+                name = "Name" + str(i),
+                email_addresses="email" + str(i) + "a@example.com," +
+                "email" + str(i) + "b@example.com",
+                message="Dear republisher " + str(i),
+                slug="republisher" + str(i))
+        republishers = Republisher.objects.all()
+        articles = Article.objects.published()
+        for a in articles:
+            for r in republishers:
+                republisher_article = RepublisherArticle.objects.create(
+                    article=a,
+                    republisher=r)
+        res = emailrepublishers.process()
+        self.assertEqual(res['failures'], 0)
+        self.assertEqual(res['successes'], len(articles) * len(republishers))
+        # We add a bunch of corrections, process them twice. Then repeat.
+        self.add_corrections(articles)
+        res = notifycorrections.process(1)
+        self.assertEqual(res['failures'], 0)
+        self.assertEqual(res['successes'], 10)
+        # Repeat with nothing happening
+        res = notifycorrections.process(1)
+        self.assertEqual(res['failures'], 0)
+        self.assertEqual(res['successes'], 0)
+        # And repeat from the top
+        self.add_corrections(articles)
+        res = notifycorrections.process(1)
+        self.assertEqual(res['failures'], 0)
+        self.assertEqual(res['successes'], 10)
+        # Repeat with nothing happening
+        res = notifycorrections.process(1)
+        self.assertEqual(res['failures'], 0)
+        self.assertEqual(res['successes'], 0)

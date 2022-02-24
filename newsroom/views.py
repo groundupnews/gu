@@ -406,7 +406,8 @@ def article_post(request, slug):
                                             instance=article,
                                             prefix="republishers")
     CorrectionFormSet = inlineformset_factory(models.Article, models.Correction,
-                                         fields=('update_type', 'text', ))
+                                         fields=('update_type', 'text',
+                                                 'notify_republishers', ))
     correctionFormSet = CorrectionFormSet(request.POST,
                                           instance=article,
                                           prefix="corrections")
@@ -540,12 +541,9 @@ def article_detail(request, slug):
             republisherFormSet = RepublisherFormSet(instance=article,
                                               prefix="republishers")
 
-            CorrectionFormSet = inlineformset_factory(models.Article,
-                                                      models.Correction,
-                                                      extra=1,
-                                                      can_delete_extra=False,
-                                                      fields=('update_type',
-                                                              'text',))
+            CorrectionFormSet = inlineformset_factory(
+                models.Article, models.Correction, extra=1, can_delete_extra=False,
+                fields=('update_type', 'text', 'notify_republishers',))
             correctionFormSet = CorrectionFormSet(instance=article,
                                                   prefix="corrections")
         else:
