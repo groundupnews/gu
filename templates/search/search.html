@@ -74,7 +74,7 @@
                                         {{article.published|date:"j F Y"}} | ARTICLE
                                     </p>
                                     <p>
-                                        {{article.fullname}}
+                                        {{article.fullname|safe}}
                                     </p>
                                     <p>
                                         {% highlight article.body with query %}
