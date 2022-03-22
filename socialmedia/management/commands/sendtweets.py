@@ -61,7 +61,7 @@ def process(days, max_tweets):
                         Site.objects.all()[0].domain + \
                         article.get_absolute_url()
                 for handle in tweet.tag_accounts.all():
-                    text += " @" + str(handle.name)
+                    text += " @" + str(handle.slug)
                 try:
                     if tweet.image:
                         image_file = settings.MEDIA_ROOT + str(tweet.image)
