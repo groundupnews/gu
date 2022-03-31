@@ -351,7 +351,7 @@
                             {{correction.get_update_type_display}} on
                             {{correction.created|date:"Y-m-d H:i"}}</span>
                         <span class="article__correction_text">
-                            {{correction.text|safe}}
+                            {{correction.text|linebreaks|safe}}
                         </span>
                     </div>
                 {% endfor  %}
