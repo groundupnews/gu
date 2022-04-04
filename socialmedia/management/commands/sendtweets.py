@@ -66,7 +66,8 @@ def process(days, max_tweets):
                     if tweet.image:
                         image_file = settings.MEDIA_ROOT + str(tweet.image)
                         print("Image: ", image_file)
-                        api.update_with_media(filename=image_file, status=text)
+                        media = api.media_upload(image_file)
+                        api.update_status(text, media_ids=[media.id,])
                         print("Sendtweets: Sending tweet with image: {}".
                               format(text))
                     else:
@@ -74,11 +75,12 @@ def process(days, max_tweets):
                         if image_file:
                             image_file = settings.MEDIA_ROOT + \
                                 image_file[len(settings.MEDIA_URL):]
-                            api.update_with_media(filename=image_file, status=text)
+                            media = api.media_upload(image_file)
+                            api.update_status(text, media_ids=[media.id,])
                             print("Sendtweets: Sending tweet with image: {}".
                                   format(text))
                         else:
-                            api.update_status(status=text)
+                            api.update_status(text)
                             print("Sendtweets: Sending tweet: {}".format(text))
                     tweet.status = "sent"
                     tweet.save()

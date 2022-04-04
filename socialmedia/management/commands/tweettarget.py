@@ -48,7 +48,8 @@ def process_new(days, max_tweets):
         image_file = settings.MEDIA_ROOT + "targets/target_" + str(target.pk) + \
             ".png"
         try:
-            api.update_with_media(filename=image_file, status=text)
+            media = api.media_upload(image_file)
+            api.update_status(text, media_ids=[media.id, ])
             print("TweetNewTargets: Sending target tweet", target.number)
             successes = successes + 1
             target.tweeted = True
