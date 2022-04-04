@@ -49,7 +49,7 @@ def process_new(days, max_tweets):
             ".png"
         try:
             media = api.media_upload(image_file)
-            api.update_status(text, media_ids=[media.id, ])
+            api.update_status(text, media_ids=[media.media_id, ])
             print("TweetNewTargets: Sending target tweet", target.number)
             successes = successes + 1
             target.tweeted = True
