@@ -41,7 +41,7 @@ class LatestArticlesRssFeed(Feed):
                 url = settings.STATIC_URL + LOGO
         else:
             url = settings.STATIC_URL + LOGO
-        full_url = 'http://%s%s' % (Site.objects.get_current().domain, url)
+        full_url = 'https://%s%s' % (Site.objects.get_current().domain, url)
         return full_url
 
     def item_enclosure_length(self, article):
