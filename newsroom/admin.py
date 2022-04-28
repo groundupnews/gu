@@ -6,6 +6,9 @@ from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Count, Sum
+from django.db.models import F
+
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 from letters.admin import LetterInline
 from payment.admin import CommissionInline, InvoiceInline
@@ -173,8 +176,33 @@ class RegionAdmin(admin.ModelAdmin):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('name', 'count_articles', )
+    search_fields = ['name', 'slug', ]
+    list_display = ('name', 'num_articles', 'num_qanda' )
     prepopulated_fields = {"slug": ("name", )}
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(
+            num_articles=Count('article', distinct=True),
+            num_qanda=Count('qanda', distinct=True)
+        )
+        return queryset
+
+    def num_articles(self, obj):
+        return obj.num_articles
+
+    num_articles.admin_order_field = 'num_articles'
+
+    def num_qanda(self, obj):
+        return obj.num_qanda
+
+    num_qanda.admin_order_field = 'num_qanda'
+
+    def total(self, obj):
+        return obj.total
+
+    total.admin_order_field = 'total'
+
 
 
 admin.site.register(models.Article, ArticleAdmin)

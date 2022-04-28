@@ -1,9 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
-from newsroom.models import Topic
 
-# Create your models here.
 
 class QandAQuerySet(models.QuerySet):
 
@@ -28,7 +26,8 @@ class QandA(models.Model):
                                   verbose_name="Agony aunt", default="")
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    topics = models.ManyToManyField(Topic, blank=True)
+    topics = models.ManyToManyField('newsroom.Topic',
+                                    blank=True)
 
     objects = QandAQuerySet.as_manager()
 

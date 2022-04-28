@@ -59,9 +59,9 @@
                 datetime='{{ article.published|date:"Y-m-d H:i:sO" }}'
         >
             {{ article.published|date:"j F Y"}}
-              {% else %}
+            {% else %}
             datetime="">Unpublished
-              {% endif %}
+            {% endif %}
         </time>
         {% if can_edit %} <span id="view_published"></span>{% endif %}
         | <span id="article-byline">{{ article.cached_byline|safe }}</span>

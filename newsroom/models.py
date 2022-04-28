@@ -18,6 +18,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from filebrowser.fields import FileBrowseField
 from socialmedia.common import SCHEDULE_RESULTS
+from agony.models import QandA
 
 from . import settings, utils
 
@@ -253,6 +254,9 @@ class Topic(models.Model):
 
     def count_articles(self):
         return Article.objects.filter(topics=self).count()
+
+    def count_qanda(self):
+        return QandA.objects.filter(topics=self).count()
 
     def get_absolute_url(self):
         return reverse('newsroom:topic.detail', args=[self.slug, ])
