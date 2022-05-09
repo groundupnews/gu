@@ -240,8 +240,8 @@ FILEBROWSER_LIST_PER_PAGE = 150
 
 
 FILEBROWSER_EXTENSIONS = {
-    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
-    'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv'],
+    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff', '.webp'],
+    'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv', '.docx', '.xls', '.xlsx', '.odt'],
     'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
     'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p']
 }
