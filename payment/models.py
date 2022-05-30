@@ -360,7 +360,7 @@ class Invoice(models.Model):
             logger.error(msg)
 
     @staticmethod
-    def create_invoice(author):
+    def create_invoice(author, description=None):
         max_invoice = Invoice.objects.filter(author=author).\
                   aggregate(Max('invoice_num'))
         if max_invoice["invoice_num__max"] is None:
@@ -370,6 +370,8 @@ class Invoice(models.Model):
         invoice = Invoice()
         invoice.author = author
         invoice.invoice_num = invoice_num
+        if description:
+            invoice.description = description
         set_corresponding_vals(author, invoice)
         invoice.save()
         return invoice
@@ -730,7 +732,7 @@ class PayeRequisition(models.Model):
                     " - " + str(invoice.author)[0:88]
                 dic[invoice.fund].append((desc, invoice.tax_paid))
             for fund, entries in dic.items():
-                invoice = Invoice.create_invoice(payee)
+                invoice = Invoice.create_invoice(payee, 'PAYE')
                 for entry in entries:
                     commission = Commission()
                     commission.invoice = invoice
