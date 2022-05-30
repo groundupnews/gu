@@ -615,7 +615,8 @@ p.author-description, p.disclaimer, p.correction {
     }
 }
 
-#admin-user, .editing-user, #editing-article, #article__statistics {
+#admin-user, .editing-user, #editing-article,
+#article__statistics, #article__completion {
     font-weight: bold;
     background-color: #e5ffff;
     padding: 10px;

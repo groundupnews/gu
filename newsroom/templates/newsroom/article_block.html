@@ -68,7 +68,14 @@
         {% if can_edit %}
             <div id="article-extra-edit-options">
                 <span>
-                    <button class="btn btn-primary btn-sm edit-only" type="button"
+                    <button class="btn
+                                   {% if article.author_01 %}
+                                   btn-primary
+                                   {% else %}
+                                   btn-danger
+                                   {% endif %}
+                                   btn-sm edit-only"
+                            type="button"
                             data-toggle="collapse" data-target="#authorAdvanced"
                             aria-expanded="false" aria-controls="authorAdvanced"
                             title="Author options">
@@ -104,12 +111,21 @@
                 </div>
 
                 <span>
-                    <button class="btn btn-primary btn-sm edit-only" type="button"
-                            data-toggle="collapse" data-target="#topicsDiv"
-                            aria-expanded="false" aria-controls="topicsDiv"
-                            title="Topics">
-                        Topics ({{article.topics.count}}) &#8595;
-                    </button>
+                    {% with article.topics.count as item_count %}
+                        <button class="btn
+                                       {% if item_count %}
+                                       btn-primary
+                                       {% else %}
+                                       btn-danger
+                                       {% endif %}
+                                       btn-sm edit-only"
+                                type="button"
+                                data-toggle="collapse" data-target="#topicsDiv"
+                                aria-expanded="false" aria-controls="topicsDiv"
+                                title="Topics">
+                            Topics ({{item_count}}) &#8595;
+                        </button>
+                    {% endwith %}
                 </span>
                 <div class="collapse" id="topicsDiv">
                     <div class="card card-body">
@@ -130,12 +146,21 @@
                 </div>
 
                 <span>
-                    <button class="btn btn-primary btn-sm edit-only" type="button"
-                            data-toggle="collapse" data-target="#tweetsDiv"
-                            aria-expanded="false" aria-controls="tweetsDiv"
-                            title="Tweets">
-                        Tweets ({{article.tweet_set.count}}) &#8595;
-                    </button>
+                    {% with article.tweet_set.count as item_count %}
+                        <button class="btn
+                                       {% if item_count %}
+                                       btn-primary
+                                       {% else %}
+                                       btn-danger
+                                       {% endif %}
+                                       btn-sm edit-only"
+                                type="button"
+                                data-toggle="collapse" data-target="#tweetsDiv"
+                                aria-expanded="false" aria-controls="tweetsDiv"
+                                title="Tweets">
+                            Tweets ({{item_count}}) &#8595;
+                        </button>
+                    {% endwith %}
                 </span>
                 <div class="collapse" id="tweetsDiv">
                     <div class="card card-body">
@@ -149,7 +174,6 @@
                                         New tweeter
                                     </button>
                                 {% endif %}
-
                             </span>
                         </div>
                     </div>
@@ -157,12 +181,20 @@
 
 
                 <span>
-                    <button class="btn btn-primary btn-sm edit-only" type="button"
-                            data-toggle="collapse" data-target="#republishersDiv"
+                    {% with article.republisherarticle_set.count as item_count %}
+                        <button class="btn
+                                       {% if item_count %}
+                                       btn-primary
+                                       {% else %}
+                                       btn-danger
+                                       {% endif %}
+                                       btn-sm edit-only" type="button"
+                                data-toggle="collapse" data-target="#republishersDiv"
                             aria-expanded="false" aria-controls="republishersDiv"
                             title="Republishers">
-                        Republishers ({{article.republisherarticle_set.count}}) &#8595;
+                            Republishers ({{item_count}}) &#8595;
                     </button>
+                    {% endwith %}
                 </span>
                 <div class="collapse" id="republishersDiv">
                     <div class="card card-body">

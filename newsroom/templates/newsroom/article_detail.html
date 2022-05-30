@@ -73,6 +73,34 @@
             </div>
             <div id="editing-article">
             </div>
+            <div id="article__completion">
+                {% if article.author_01 %}
+                    &#10003;
+                {% else %}
+                    &#10060;
+                {% endif %} Authors<br />
+                {% with article.topics.count as item_count %}
+                    {% if item_count %}
+                        &#10003;
+                    {% else %}
+                        &#10060;
+                    {% endif %} Topics<br />
+                {% endwith %}
+                {% with article.tweet_set.count as item_count %}
+                    {% if item_count %}
+                        &#10003;
+                    {% else %}
+                        &#10060;
+                    {% endif %} Tweets<br />
+                {% endwith %}
+                {% with article.republisherarticle_set.count as item_count %}
+                    {% if item_count %}
+                        &#10003;
+                    {% else %}
+                        &#10060;
+                    {% endif %} Republishers<br />
+                {% endwith %}
+            </div>
             <div id="article__statistics">
             </div>
 	</div>
