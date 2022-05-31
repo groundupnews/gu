@@ -127,6 +127,11 @@ def invoice_list(request,
     else:
         author_pk = author.pk
 
+    paye = request.GET.get('paye', 'n')
+
+    if paye == 'y':
+        query = query & Q(description__iexact='PAYE')
+
     invoices = models.Invoice.objects.filter(query).select_related("author")
     total_paid = sum([i.amount_paid + i.vat_paid + i.tax_paid
                       for i in invoices if i.status == "4"])

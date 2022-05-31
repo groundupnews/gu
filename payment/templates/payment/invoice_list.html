@@ -94,8 +94,13 @@
             <a href="{% url "payments:commissions.detail.analysis" %}">
                 Analysis
             </a>
-            &nbsp;|&nbsp;
-            <a href="{% url 'payments:payerequisition.create' %}">PAYE</a>
+            &nbsp;|&nbsp;PAYE&nbsp;
+            <a href="{% url 'payments:payerequisition.create' %}">Generate</a>
+            |
+            <a href="#"
+               onclick="window.open(window.location.href + '?paye=y', '_self')">
+                List
+            </a>
             <form action="{% url "payments:invoice.list" %}" style="display:inline">
                 <label for="requisition">Find requisition</label>
                 <input type="text" id="requisition" name="requisition">

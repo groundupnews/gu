@@ -9,7 +9,7 @@ urlpatterns = [
     path('invoices/', views.invoice_list, name="invoice.list"),
 
     path('invoices/<int:year_begin>/<int:month_begin>/'
-         '<int:year_end>/<int:month_end>/<int:author>',
+         '<int:year_end>/<int:month_end>/<int:author>/',
          views.invoice_list, name="invoice.list"),
 
     url(r'^invoices/([0-9]+)-([0-9]+)$', views.invoice_detail,
