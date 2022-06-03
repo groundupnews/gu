@@ -80,9 +80,13 @@
 
 {% block content %}
     <h1>{{description|title}} #{{invoice.short_string}} for
-        <a href="{% url "payments:invoice.list" 1900 1 5000 12 invoice.author.pk %}">
+        {% if not print_view %}
+            <a href="{% url "payments:invoice.list" 1900 1 5000 12 invoice.author.pk %}">
+                {{invoice.author}}
+            </a>
+        {% else %}
             {{invoice.author}}
-        </a>
+        {% endif %}
     </h1>
     <h2>
         {% if invoice.status == "-" %}
@@ -224,6 +228,14 @@
 
 {% block footer %}
     {% if print_view %}
+        <p style="margin-left:120px; font-size: x-small;">
+            Invoice to be paid by:<br/>
+            GroundUp News NPC<br/>
+            Suite 08 South Block Tannery Park<br/>
+            23A Belmont Road<br/>
+            Rondebosch 7700<br/>
+            VAT: 4270293717
+        </p>
     {% else %}
         {{block.super}}
     {% endif %}
