@@ -245,7 +245,7 @@ class InvoiceTest(TestCase):
         url = reverse('payments:invoice.list')
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
-        url = '/invoices/2000/1/2020/9/0'
+        url = '/invoices/2000/1/2020/9/0/'
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
 

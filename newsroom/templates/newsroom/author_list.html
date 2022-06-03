@@ -11,7 +11,7 @@
 	    <div class="col-xs-12 topic-intro">
                 <div class="content-generic">
 		    <h1>Writers</h1>
-		    <ul>
+		    <ol>
 		        {% for author in object_list %}
 			    <li>
 			        <a href="{% url 'newsroom:author.detail' author.pk %}">
@@ -19,7 +19,7 @@
 			    </a>
 			    </li>
 		        {% endfor %}
-		    </ul>
+		    </ol>
 	        </div>
 	    </div>
         </div>

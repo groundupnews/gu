@@ -958,7 +958,7 @@ Single-colored icons can be modified like so:
     text-align: center;
 }
 
-.topic-intro p, .topic-intro ul, .topic-intro form, .topic-intro table {
+.topic-intro p, .topic-intro ul, .topic-intro ol, .topic-intro form, .topic-intro table {
     font-size: 1.8rem;
     max-width: 600px;
     margin: auto;
