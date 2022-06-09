@@ -8,6 +8,8 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count, Sum
 from django.db.models import F
+from django.utils.html import mark_safe
+from django.urls import reverse
 
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 from letters.admin import LetterInline
@@ -76,33 +78,39 @@ class ArticleForm(forms.ModelForm):
 
 class ArticleAdmin(admin.ModelAdmin):
     form = ArticleForm
-    list_display = ('title', 'created', 'modified', 'published',
-                    'is_published', 'cached_byline_no_links', 'category',)
+    list_display = ('new_edit', 'old_edit', 'created',
+                    'modified', 'published',
+                    'is_published', 'cached_byline_no_links',
+                    'category', )
     prepopulated_fields = {"slug": ("title", )}
     search_fields = ['title', 'cached_byline_no_links', ]
     date_hierarchy = 'modified'
     ordering = ['-modified', ]
     list_filter = ['published', 'category', 'region', 'topics']
-    raw_id_fields = ('author_01', 'author_02', 'author_03', 'author_04',
-                     'author_05', 'topics', 'main_topic', )
+    raw_id_fields = ('author_01', 'author_02', 'author_03',
+                     'author_04', 'author_05',
+                     'topics', 'main_topic', )
     autocomplete_lookup_fields = {
         'fk': ['author_01', 'author_02', 'author_03',
                'author_04', 'author_05', 'main_topic', ],
         'm2m': ['topics', ]
     }
 
-    readonly_fields = ('cached_byline_no_links', 'cached_summary_text',
+    readonly_fields = ('cached_byline_no_links',
+                       'cached_summary_text',
                        'user', 'modified', )
 
     fieldsets = (
         ('Identifying Information', {
             'classes': ('wide',),
-            'fields': ('title', 'subtitle', 'cached_byline_no_links',
+            'fields': ('title', 'subtitle',
+                       'cached_byline_no_links',
                        'author_01',)
         }),
         ('Additional authors', {
             'classes': ('wide grp-collapse grp-closed',),
-            'fields': ('author_02', 'author_03', 'author_04', 'author_05',
+            'fields': ('author_02', 'author_03', 'author_04',
+                       'author_05',
                        ('byline', 'byline_style', ),
                        'editor_feedback')
         }),
@@ -145,6 +153,29 @@ class ArticleAdmin(admin.ModelAdmin):
         TweetInline, RepublisherInline, CorrectionInline,
         LetterInline, # CommissionInline,
     ]
+
+    @admin.display(description='new_edit')
+    def new_edit(self, obj):
+        return mark_safe('<a href="%s?edit=y">%s</a>' %
+                         (obj.get_absolute_url(),
+                          obj.title))
+    new_edit.allow_tags = True
+    new_edit.short_description = "New editor"
+
+    @admin.display(description='old_edit')
+    def old_edit(self, obj):
+        return mark_safe(
+            '<a href="%s?edit=y">%s</a>' %
+            (reverse('admin:newsroom_article_change',
+                     args=[obj.pk]),
+            'Old edit'))
+    old_edit.allow_tags = True
+    old_edit.short_description = "Old editor"
+
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        # self.list_display_links = (None, )
 
     def changelist_view(self, request, extra_context=None):
         extra_context = extra_context or {}

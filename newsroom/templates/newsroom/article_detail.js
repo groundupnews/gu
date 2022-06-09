@@ -498,7 +498,8 @@ jQuery(document).ready(function ($) {
     {% if can_edit %}
     edit_mode = false;
     const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.get('edit') === "y") edit_mode = true;
+    if(urlParams.get('edit') === "y")
+        toggleEditables(document.getElementById("edit-toggle"));
     if ({{from_form}}) edit_mode = true;
     setupAdminPanel();
     setupButtons();
