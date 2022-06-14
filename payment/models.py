@@ -719,7 +719,8 @@ class PayeRequisition(models.Model):
                 date_from = PayeRequisition.get_date_from(this.date_to)
 
             invoices = Invoice.objects.filter(status='4'). \
-                exclude(tax_paid=Decimal(0.0000)).filter(author__freelancer='f'). \
+                exclude(tax_paid=Decimal(0.0000)).exclude(author__freelancer='n'). \
+                exclude(author__freelancer='c'). \
                 filter(date_time_processed__gte=date_from).\
                 filter(date_time_processed__lt=this.date_to). \
                 order_by('requisition_number')
