@@ -150,6 +150,71 @@
     border-top: 1px solid   #e6e6e6;
 }
 
+
+#sudoku-teaser, #target-teaser {
+    padding: 9px;
+    margin-left: 12px;
+    margin-right: 12px;
+    background-color: #ffde9b;
+}
+
+#sudoku-teaser, #target-teaser {
+    margin-right: 42px;
+}
+
+#sudoku-teaser h2, #target-teaser h2 {
+    font-size: 20px;
+}
+
+#sudoku-teaser p, #target-teaser p {
+    font-size: 16px;
+}
+
+#target-teaser img {
+    max-width:175px;
+}
+
+#sudoku-teaser table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    border: 2px solid #0098df;
+    font-size: 12px;
+    width: 175px;
+    height: 175px;
+}
+
+#sudoku-teaser table td {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    border-right: 1px solid #0097de2b;
+    border-bottom: 1px solid #0097de2b;
+}
+
+@media (max-width: 768px) {
+    #sudoku-teaser, #target-teaser {
+        margin: 12px 0 12px 0;
+        padding: 6px 0 6px 6px;
+    }
+}
+
+@media (max-width: 390px) {
+    #sudoku-teaser, #target-teaser {
+        margin: 6px 0 0 0;
+        padding: 0 0 0 0;
+    }
+    #target-teaser img {
+        max-width:140px;
+        margin-top: 16px;
+    }
+    #sudoku-teaser table {
+        font-size: 9px;
+        width: 140px;
+        height: 140px;
+    }
+}
+
+
 .more_articles {
     width: 100%;
     justify-content: space-between;
@@ -340,9 +405,4 @@ h2#qanda {
         line-height: 3vw;
         padding-top: 1%;
     }
-}
-
-#sudoku-teaser table {
-    height: 200px;
-    width: 200px;
 }

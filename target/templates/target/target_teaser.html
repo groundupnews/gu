@@ -1,27 +1,21 @@
 {% load static %}
 <div id="target-teaser">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-md-6">
-                <h2 class="home__articles__article__text__title">Can you solve Target {{object.number}}?</h2>
-                <p class="home__articles__article__text__summary">
-                    <a
-                        href="{% url "target:detail" object.pk %}">Click
-                        to play.</a>
-                </p>
-                <p class="home__articles__article__text__summary"
-                >Start and end your week with GroundUp's Target,
-                    published Monday and Friday.
-                </p>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <a href="{% url "target:detail" object.pk %}">
-                    <img
-                        style="max-width:200px; display: block; margin-left: auto; margin-right: auto;"
-                        src="{% get_media_prefix %}targets/target_{{object.pk}}.png"
-                        alt="Image of target {{object.pk}}"
-                /></a>
-            </div>
-        </div>
+    <div class="row">
+    <div class="col-xs-6">
+        <a href="{% url "target:detail" object.pk %}">
+            <img
+                src="{% get_media_prefix %}targets/target_{{object.pk}}.png"
+                alt="Image of target {{object.pk}}"
+            />
+        </a>
+    </div>
+    <div class="col-xs-6">
+        <h2 class="home__articles__article__text__title">Target {{object.number}}</h2>
+        <p class="home__articles__article__text__summary">
+            <a
+                href="{% url "target:detail" object.pk %}">Can you solve it?</a>
+        </p>
+        <p class="home__articles__article__text__summary">Every Monday and Friday</p>
+    </div>
     </div>
 </div>

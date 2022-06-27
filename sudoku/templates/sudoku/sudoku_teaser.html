@@ -1,48 +1,30 @@
 {% load static %}
 <div id="sudoku-teaser">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-md-6">
-                <h2 class="home__articles__article__text__title">Sudoku {{object.number}}</h2>
-                <p class="home__articles__article__text__summary">
-                    <a
-                        href="{% url "sudoku:latest" %}">Click
-                        to play.</a>
-                </p>
-                <p class="home__articles__article__text__summary"
-                >A new Sudoku is available daily. Monday to Wednesday:
-                 easyish. Thursday to Sunday: hard to nearly impossible.
-                </p>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <table style="margin: auto;
-                              border-collapse: collapse;
-                              table-layout: fixed;
-                              border: 3px solid #0098df;">
-                    {% for item in object.puzzle %}
-                        {% autoescape off %}{% cycle '<tr>' '' '' '' '' '' '' '' '' %}{% endautoescape %}
-                        <td style="text-align: center;
-                                   width: 3vmin;
-                                   height: 3vmin;
-                                   margin: 0;
-                                   padding: 2px;
-                                   border-right: 1px solid #0097de2b;
-                                   border-bottom: 1px solid #0097de2b;
-                                   font-size: 1.2em;
-                                   font-weight: bold;
-                                   line-height: 1em;">
-                            <a href="{% url "sudoku:latest" %}">
-                            {% if item == "0" %}
-                                &nbsp;
-                            {% else %}
-                                {{item}}
-                            {% endif %}
-                            </a>
-                        </td>
-                        {% autoescape off %}{% cycle '' '' '' '' '' '' '' '' '</tr>' %}{% endautoescape %}
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
+    <div class="row">
+    <div class="col-xs-6">
+        <table>
+            {% for item in object.puzzle %}
+                {% autoescape off %}{% cycle '<tr>' '' '' '' '' '' '' '' '' %}{% endautoescape %}
+
+                <td>
+                    {% if item == "0" %}
+                        &nbsp;
+                    {% else %}
+                        {{item}}
+                    {% endif %}
+                </td>
+                {% autoescape off %}{% cycle '' '' '' '' '' '' '' '' '</tr>' %}{% endautoescape %}
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-xs-6">
+        <h2 class="home__articles__article__text__title">Sudoku {{object.number}}</h2>
+        <p class="home__articles__article__text__summary">
+            <a
+                href="{% url "sudoku:latest" %}">
+                Can you solve it?
+            </a>
+        </p>
+    </div>
     </div>
 </div>

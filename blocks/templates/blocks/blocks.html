@@ -93,14 +93,19 @@ _Recommend
 	    <div id="qanda">
 	        {% include 'agony/qanda_snippet.html' %}
 	    </div>
-        {% elif b.name == "_Target" %}
-	    <div id="home__target">
-	        {% include 'target/target_snippet.html' %}
-	    </div>
-        {% elif b.name == "_Sudoku" %}
-	    <div id="home__sudoku">
-	        {% include 'sudoku/sudoku_snippet.html' %}
-	    </div>
+        {% elif b.name == "_Target_Sudoku" %}
+            <div id="target-sudoku-teaser">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            {% include 'target/target_snippet.html' %}
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            {% include 'sudoku/sudoku_snippet.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% elif b.name == "_Toy" %}
 	    <div id="gu-toy">
 
