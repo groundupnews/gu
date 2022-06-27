@@ -199,10 +199,6 @@
 }
 
 @media (max-width: 390px) {
-    #sudoku-teaser, #target-teaser {
-        margin: 6px 0 0 0;
-        padding: 0 0 0 0;
-    }
     #target-teaser img {
         max-width:140px;
         margin-top: 16px;
