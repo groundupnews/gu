@@ -163,24 +163,27 @@
 }
 
 #sudoku-teaser h2, #target-teaser h2 {
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
 }
 
 #sudoku-teaser p, #target-teaser p {
-    font-size: 16px;
+    font-size: 12px;
+    margin-bottom: 12px;
 }
 
 #target-teaser img {
-    max-width:175px;
+    max-width: 125px;
 }
 
 #sudoku-teaser table {
     border-collapse: collapse;
     table-layout: fixed;
     border: 2px solid #0098df;
-    font-size: 12px;
-    width: 175px;
-    height: 175px;
+    font-size: xx-small;
+    width: 125px;
+    height: 125px;
 }
 
 #sudoku-teaser table td {
@@ -191,24 +194,6 @@
     border-bottom: 1px solid #0097de2b;
 }
 
-@media (max-width: 768px) {
-    #sudoku-teaser, #target-teaser {
-        margin: 12px 0 12px 0;
-        padding: 6px 0 6px 6px;
-    }
-}
-
-@media (max-width: 390px) {
-    #target-teaser img {
-        max-width:140px;
-        margin-top: 16px;
-    }
-    #sudoku-teaser table {
-        font-size: 9px;
-        width: 140px;
-        height: 140px;
-    }
-}
 
 
 .more_articles {

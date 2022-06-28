@@ -1,7 +1,7 @@
 {% load static %}
 <div id="sudoku-teaser">
     <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-4">
         <table>
             {% for item in object.puzzle %}
                 {% autoescape off %}{% cycle '<tr>' '' '' '' '' '' '' '' '' %}{% endautoescape %}
@@ -17,13 +17,16 @@
             {% endfor %}
         </table>
     </div>
-    <div class="col-xs-6">
-        <h2 class="home__articles__article__text__title">Sudoku {{object.number}}</h2>
-        <p class="home__articles__article__text__summary">
+    <div class="col-xs-8">
+        <h2>Sudoku {{object.number}}</h2>
+        <p>
             <a
                 href="{% url "sudoku:latest" %}">
                 Can you solve it?
             </a>
+        </p>
+        <p>
+            New puzzle daily
         </p>
     </div>
     </div>
