@@ -7,11 +7,13 @@
                 {% autoescape off %}{% cycle '<tr>' '' '' '' '' '' '' '' '' %}{% endautoescape %}
 
                 <td>
+                    <a href="{% url "sudoku:latest" %}">
                     {% if item == "0" %}
                         &nbsp;
                     {% else %}
                         {{item}}
                     {% endif %}
+                    </a>
                 </td>
                 {% autoescape off %}{% cycle '' '' '' '' '' '' '' '' '</tr>' %}{% endautoescape %}
             {% endfor %}
