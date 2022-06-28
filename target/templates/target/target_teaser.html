@@ -1,7 +1,7 @@
 {% load static %}
 <div id="target-teaser">
     <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-6 col-md-4">
         <a href="{% url "target:detail" object.pk %}">
             <img
                 src="{% get_media_prefix %}targets/target_{{object.pk}}.png"
@@ -9,7 +9,7 @@
             />
         </a>
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-6 col-md-8">
         <h2>Target {{object.number}}</h2>
         <p>
             <a
