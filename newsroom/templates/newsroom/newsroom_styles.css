@@ -221,6 +221,8 @@ a, a:focus, a:hover {
 
 img.summary-image {
     width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
     margin-top: 12px;
     margin-bottom: 12px;
 }
@@ -347,10 +349,6 @@ div.featured-photo {
     margin-bottom: 0px;
 }
 
-
-img.summary-image {
-    width: 100%;
-}
 
 .social-media i {
     background-color: white;
