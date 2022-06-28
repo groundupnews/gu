@@ -194,7 +194,12 @@
     border-bottom: 1px solid #0097de2b;
 }
 
-
+@media (max-width: 768px) {
+    #sudoku-teaser, #target-teaser {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
 
 .more_articles {
     width: 100%;
