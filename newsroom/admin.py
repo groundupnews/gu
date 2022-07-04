@@ -277,6 +277,7 @@ class CorrectionAdmin(admin.ModelAdmin):
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
 admin.site.register(models.Correction, CorrectionAdmin)
+admin.site.register(models.WetellBulletin)
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
@@ -298,7 +299,6 @@ class FlatPageAdmin(FlatPageAdmin):
             '/static/newsroom/js/ck_styles.js',
             '/static/newsroom/js/ck_init_admin.js',
         ]
-
 
 # Re-register FlatPageAdmin
 admin.site.unregister(FlatPage)

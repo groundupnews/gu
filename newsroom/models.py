@@ -812,6 +812,23 @@ class Correction(models.Model):
         ordering = ['-created', ]
 
 
+class WetellBulletin(models.Model):
+    service = models.PositiveIntegerField()
+    published = models.DateTimeField()
+    data = models.TextField()
+    created = models.DateTimeField(auto_now_add=True,
+                                   editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    class Meta:
+        ordering = ['-published', ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['service', 'published', ],
+                name='service_published', )
+        ]
+
+
 # Signals
 
 @receiver(password_changed)

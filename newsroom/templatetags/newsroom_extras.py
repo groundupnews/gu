@@ -1,7 +1,11 @@
+import json
+import logging
 from django.template.loader import render_to_string
 from django import template
+from newsroom.models import Article, WetellBulletin
+from django.template.loader import render_to_string
 
-from newsroom.models import Article
+logger = logging.getLogger("django")
 
 register = template.Library()
 
@@ -33,3 +37,22 @@ def display_btn(field, start_html, end_html, cls):
     result += "<button id='" + field.html_name + "' class='" + cls + "'>" + field.label + "</button>"
     result += end_html
     return result
+
+@register.simple_tag
+def wetell():
+    try:
+        bulletin = WetellBulletin.objects.latest('published')
+    except WetellBulletin.DoesNotExist:
+        logger.error("Wetell bulletin not found")
+        return
+
+    try:
+        context = json.loads(bulletin.data)
+    except Exception as e:
+        msg = "Error converting bulletin data" + str(e)
+        logger.error(msg)
+        return
+
+    context['published'] = bulletin.published
+    text = render_to_string('newsroom/wetell.html', context)
+    return text

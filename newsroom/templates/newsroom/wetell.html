@@ -1,0 +1,58 @@
+<h2 style="text-align:center;"
+    class="home__articles__article__text__title">{{name}}</h2>
+<p style="text-align:center;">{{published|date:"j F Y"}}</p>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <p>
+                {{intro}}
+            </p>
+            <button class="btn"
+                    data-toggle="collapse" data-target="#wetell-items"><b>Read today's selection of articles from around the world</b>
+            </button>
+
+            <div id="wetell-items"
+                 style="border: 1px solid gray;
+                     margin: 6px; padding: 6px;"
+                 class="collapse">
+                {% for item in items %}
+                    {% if item.link %}
+                        <p>
+                            <a href="{{item.link}}">
+                                {{item.title}}
+                            </a>
+                        </p>
+                        <p>
+                            {{ item.content}}
+                        </p>
+                        <p style="font-size: small">
+                            {{ item.published|slice:10 }}
+                        </p>
+                        <p style="font-size: small;">
+                            <i>
+                                Source:
+                                {% if item.source %}
+                                    {{item.source}}
+                                {% else %}
+                                    Unspecified
+                                {% endif %}
+                                {% if item.paywalled %}
+                                    &nbsp; |
+                                    (Warning: This article is paywalled)
+                                {% endif %}
+                            </i>
+                        </p>
+                    {% else %}
+                        <p><b>{{item.title}}</b></p>
+                        {% if item.content %}
+                            <p>
+                                {{item.content}}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>

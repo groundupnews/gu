@@ -11,8 +11,10 @@ _Social (Facebook, Twitter etc)
 _Promote
 _Related
 _Recommend
-
+_Wetell
 {% endcomment %}
+
+{% load newsroom_extras %}
 
 {% for b in blocks %}
     <div class="sidebar-block">
@@ -106,6 +108,8 @@ _Recommend
                     </div>
                 </div>
             </div>
+        {% elif b.name == "_Wetell" %}
+            {% wetell %}
         {% elif b.name == "_Toy" %}
 	    <div id="gu-toy">
 
