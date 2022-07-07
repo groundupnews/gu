@@ -4,6 +4,13 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <p><i>
+                This is quick daily overview of the main items in the news,
+                prepared by the experienced and quirky Jonathan Ancer. We've
+                introduced it as an experiment for a few months: if you like it,
+                we'll keep it. Let us know.</i>
+            </p>
+            <hr/>
             <p>
                 {{intro}}
             </p>
@@ -17,34 +24,26 @@
                  class="collapse">
                 {% for item in items %}
                     {% if item.link %}
-                        <p>
+                        <p style="margin-bottom:4px;">
                             <a href="{{item.link}}"
                                target="_blank">
                                 {{item.title}}
                             </a>
                         </p>
-                        <p>
+                        <p style="margin-bottom:4px;">
                             {{ item.content}}
                         </p>
-                        <p style="font-size: small">
+                        <p style="font-size: x-small;margin-top: 0;">
                             {{ item.published|slice:10 }}
-                        </p>
-                        <p style="font-size: small;">
-                            <i>
-                                Source:
-                                {% if item.source %}
-                                    {{item.source}}
-                                {% else %}
-                                    Unspecified
-                                {% endif %}
-                                {% if item.paywalled %}
-                                    &nbsp; |
-                                    (Warning: This article is paywalled)
-                                {% endif %}
-                            </i>
+                            {% if item.source %}
+                                &nbsp;|&nbsp;{{item.source}}
+                            {% endif %}
+                            {% if item.paywalled %}
+                                &nbsp;|&nbsp;Paywalled
+                            {% endif %}
                         </p>
                     {% else %}
-                        <p><b>{{item.title}}</b></p>
+                        <p style="margin-bottom: 4px;"><b>{{item.title}}</b></p>
                         {% if item.content %}
                             <p>
                                 {{item.content}}
