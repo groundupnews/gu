@@ -18,12 +18,13 @@ Handles menu click
          if ($('#search-box').hasClass('search-box-closed')) {
              $('#search-box').removeClass('search-box-closed');
              $("#id_q").focus();
-             $(this).html('<i class="fas fa-times"></i>');
+             $(this).html('X');
          } else {
              $('#search-box').addClass('search-box-closed');
-             $(this).html('<i class="fas fa-search"></i>');
+             $(this).html('🔍');
          }
      });
+
  });
 
 </script>

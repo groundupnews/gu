@@ -2,15 +2,13 @@
 
 <h4>
     Advanced Search
-    <i id="adv-filter-arrow"
-       class="fas
-           {% if request.GET.is_simple %}
-           fa-angle-down
-           {% else%}
-           fa-angle-up
-           {%endif%}
-           fa-lg">
-    </i>
+    <button id="adv-filter-arrow" role="button" class="adv-closed">
+        {% if request.GET.is_simple %}
+            ↓
+        {% else%}
+            ↑
+        {% endif %}
+    </button>
 </h4>
 <form action="/advanced_search/" id="adv-filter-form" method="GET"
       {% if request.GET.is_simple %}
@@ -101,14 +99,16 @@
  });
 
  document.getElementById("adv-filter-arrow").addEventListener("click", function(e) {
-     if (e.target.classList.contains("fa-angle-down")) {
+     if (e.target.classList.contains("adv-closed")) {
          document.getElementById("adv-filter-form").style.display = "block";
-         e.target.classList.remove("fa-angle-down");
-         e.target.classList.add("fa-angle-up");
+         e.target.classList.remove("adv-closed");
+         e.target.classList.add("adv-open");
+         e.target.textContent = "↑";
      } else {
          document.getElementById("adv-filter-form").style.display = "none";
-         e.target.classList.add("fa-angle-down");
-         e.target.classList.remove("fa-angle-up");
+         e.target.classList.add("adv-closed");
+         e.target.classList.remove("adv-open");
+         e.target.textContent = "↓";
      }
  });
 

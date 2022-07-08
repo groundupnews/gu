@@ -104,7 +104,7 @@
     flex-basis: 65%;
 }
 
-.adv-filter-arrow {
+#adv-filter-arrow {
     cursor: pointer;
     color: #00B1F0;
 }
