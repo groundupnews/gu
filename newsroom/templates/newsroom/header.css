@@ -126,8 +126,8 @@ nav#main-menu > ul > li > a {
 #toggle-search {
     margin-top: 8px;
     border-radius: 4px;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 #search-box input {
@@ -137,6 +137,11 @@ nav#main-menu > ul > li > a {
 #search-button {
     border-radius: 0 4px 4px 0;
     margin-left: -2px;
+}
+
+.nav > li > a {
+    padding-right: 12px;
+    padding-left: 12px;
 }
 
 .fa-search:before {
