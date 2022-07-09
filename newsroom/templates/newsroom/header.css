@@ -126,6 +126,8 @@ nav#main-menu > ul > li > a {
 #toggle-search {
     margin-top: 8px;
     border-radius: 4px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 #search-box input {
