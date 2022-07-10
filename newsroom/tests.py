@@ -294,11 +294,11 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 302)
         article = Article.objects.get(slug="test-article-1")
         self.assertTrue(len(article.secret_link) > 0)
-        response = client.get('/preview/' + article.secret_link)
+        response = client.get('/preview/' + article.secret_link + '/')
         self.assertEqual(response.status_code, 302)
         article.published = None
         article.save()
-        response = client.get('/preview/' + article.secret_link)
+        response = client.get('/preview/' + article.secret_link + '/')
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
