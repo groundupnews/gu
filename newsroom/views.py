@@ -508,7 +508,8 @@ def article_gen_preview(request, pk):
                                                 args=(article.secret_link,)))
 
 def article_preview(request, secret_link):
-    article = get_object_or_404(models.Article, secret_link=secret_link)
+    article = get_object_or_404(models.Article,
+                                secret_link=secret_link)
 
     if article.secret_link_view != 'o' and article.is_published():
         return HttpResponseRedirect(reverse('newsroom:article.detail',

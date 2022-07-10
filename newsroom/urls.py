@@ -87,7 +87,8 @@ urlpatterns = [
     ###############################
     # Article preview
 
-    url(r'^preview/(.*)$', views.article_preview, name='article.preview'),
+    path('preview/<slug:secret_link>/', views.article_preview,
+         name='article.preview'),
     path('prev_gen/<int:pk>', views.article_gen_preview,
          name='article.gen_preview'),
 
