@@ -14,7 +14,7 @@
             <p>
                 {{intro}}
             </p>
-            <button class="btn"
+            <button class="btn" id="open-wetell"
                     data-toggle="collapse" data-target="#wetell-items"><b>Click to read today's news</b>
             </button>
 
@@ -56,3 +56,13 @@
         </div>
     </div>
 </div>
+<script>
+ let wetell_fetch = true;
+ document.getElementById("open-wetell").addEventListener(
+     'click', function() {
+         if (wetell_fetch) {
+             fetch('https://wetell.news/embed/by_service/latest/6/');
+             wetell_fetch = false;
+         }
+ });
+</script>
