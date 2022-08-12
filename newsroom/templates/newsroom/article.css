@@ -28,6 +28,10 @@
     display:block;
 }
 
+ul:nth-child(3) > li {
+    font-weight: bold;
+}
+
 .article__content {
     background-color: #fff;
     padding: 15px;
