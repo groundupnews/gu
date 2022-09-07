@@ -23,10 +23,14 @@
 
     <style>
      h1 {
-	font-size: 36px !important;
+	 font-size: 32px !important;
+         line-height: 0 !important;
+         margin-bottom: 20px !important;
      }
      h2 {
-         font-size: 24px !important;
+         font-size: 22px !important;
+         margin-bottom: 12px;
+         line-height: 45px !important;
      }
      #target-container {
          margin-left: auto;
@@ -186,6 +190,13 @@
                 </p>
             {% endif %}
 
+            {% if target.clue %}
+                <p id="target-clue">
+                    <b>Clue:</b> {{target.clue|safe}}
+                </p>
+            {% endif %}
+
+
             {% include "target/target_grid.html" %}
             <p id="target-game-state"></p>
 
@@ -227,12 +238,6 @@
                 </ol>
             </div>
 
-
-            {% if target.clue %}
-                <p id="target-clue">
-                    Clue: {{target.clue|safe}}
-                </p>
-            {% endif %}
 
             {% if target.is_solution_public %}
                 <div id="target-solution">
