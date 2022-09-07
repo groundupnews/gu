@@ -14,6 +14,11 @@ def get_api(cfg):
     auth.set_access_token(cfg['access_token'], cfg['access_token_secret'])
     return tweepy.API(auth)
 
+def clue(target):
+    if target.clue:
+        return "\nClue: " + target.clue
+    else:
+        return ""
 
 def process_new(days, max_tweets):
     cfg = {
@@ -44,7 +49,8 @@ def process_new(days, max_tweets):
     for target in targets:
         text = target.tweet_text.strip() + " https://" + \
             Site.objects.all()[0].domain + \
-            target.get_absolute_url()
+            target.get_absolute_url() + \
+            clue(target)
         image_file = settings.MEDIA_ROOT + "targets/target_" + str(target.pk) + \
             ".png"
         try:
