@@ -9,10 +9,13 @@ from django.utils.html import strip_tags
 from django.contrib import messages
 from django.template.loader import render_to_string
 from time import time
+import logging
 
 from .forms import LetterForm
 from .models import Letter
 from newsroom.models import Article
+
+logger = logging.getLogger("django")
 
 
 def write_letter(request, pk):
@@ -86,13 +89,20 @@ def write_letter(request, pk):
                     'letters/acknowledge_letter.html',
                     {'letter': letter})
                 message = strip_tags(html_message)
-                send_mail(
-                    subject,
-                    message,
-                    settings.EDITOR,
-                    [letter.email],
-                    html_message=html_message
-                )
+                try:
+                    # THIS IS VERY VERY BAD
+                    # Emails should rather be sent using crontab
+                    # send_mail(
+                    #    subject,
+                    #    message,
+                    #    settings.EDITOR,
+                    #    [letter.email],
+                    #    html_message=html_message
+                    # )
+                    pass
+                except Exception as e:  
+                    msg = "Email to letter writer failed " + str(e)
+                    logger.error(msg)
                 return HttpResponseRedirect(reverse("letters:letter_thanks"))
             else:
                 messages.add_message(request, messages.ERROR,
