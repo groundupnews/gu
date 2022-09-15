@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load newsroom_extras %}
+{% block title %}
+    News in a Nutshell
+{% endblock %}
+{% block content %}
+    <style>
+     #content-area {
+         margin-left: auto;
+         margin-right: auto;
+         max-width: 600px;
+     }
+     #content-area h1 {
+         font-size: 38px;
+     }
+    </style>
+
+    <div id="content-area">
+        <h1>News in a Nutshell</h1>
+        <ul>
+            {% for bulletin in object_list %}
+                <li>
+                    <p>
+                        <a href="{% url 'newsroom:wetell.detail' bulletin.pk %}">
+                            {{bulletin.published|date:"l, j F Y"}}
+                        </a>
+                    </p>
+                    <p>
+                        {%  wetell_by_pk bulletin.pk %}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% include 'paginator.html' %}
+
+{% endblock %}

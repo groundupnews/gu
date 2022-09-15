@@ -1,5 +1,7 @@
 <h2 style="text-align:center;"
-    class="home__articles__article__text__title">{{name}}</h2>
+    class="home__articles__article__text__title">
+    <a href="{% url 'newsroom:wetell.list' %}">{{name}}</a>
+</h2>
 <p style="text-align:center;">{{published|date:"j F Y"}}</p>
 <div class="container">
     <div class="row">
@@ -38,7 +40,10 @@
                         <p style="font-size: x-small;margin-top: 0;">
                             {{ item.published|slice:10 }}
                             {% if item.source %}
-                                &nbsp;|&nbsp;{{item.source}}
+                                {% if item.published %}
+                                    &nbsp;|&nbsp;
+                                {% endif %}
+                                {{item.source}}
                             {% endif %}
                             {% if item.paywalled %}
                                 &nbsp;|&nbsp;Paywalled

@@ -1,0 +1,24 @@
+{% with bulletin.get_next_bulletin as bulletin_next %}
+    {% with bulletin.get_prev_bulletin as bulletin_prev %}
+        {% if bulletin_next or bulletin_prev %}
+            <div class="bulletin__next" id="bulletin__next">
+                {% if bulletin_next %}
+                    <p>
+                        Next:&nbsp;
+                        <a href="{% url "newsroom:wetell.detail" bulletin_next.pk %}">
+                            {{bulletin_next.published|date:"l, j F Y"}}
+                        </a>
+                    </p>
+                {% endif %}
+                {% if bulletin_prev %}
+                    <p>
+                        Previous:&nbsp;
+                        <a href="{% url "newsroom:wetell.detail" bulletin_prev.pk %}">
+                            {{bulletin_prev.published|date:"l, j F Y"}}
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endwith %}

@@ -1,5 +1,6 @@
 import datetime
 import logging
+import json
 
 from blocks.models import Group
 from bs4 import BeautifulSoup
@@ -17,7 +18,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from django.views import generic
 from django.views.decorators.http import last_modified
-from django.views.generic import View
+from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import inlineformset_factory
@@ -874,6 +875,35 @@ class TopicUpdate(PermissionRequiredMixin, UpdateView):
     model = models.Topic
     fields = topic_fields
 
+
+class WetellListView(ListView):
+    model = models.WetellBulletin
+    paginate_by = 10
+
+
+class WetellDetailView(DetailView):
+    model = models.WetellBulletin
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        try:
+            items = json.loads(self.object.data)
+        except Exception as e:
+            msg = "Error converting bulletin data" + str(e)
+            logger.error(msg)
+            context['bulletin'] = {}
+            return context
+
+        context['bulletin'] = items
+
+        return context
+
+
+class WetellLatestView(WetellDetailView):
+
+    def get_object(self):
+        return models.WetellBulletin.objects.latest('published')
 
 ''' Used to test logging
 '''

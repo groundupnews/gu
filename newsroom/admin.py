@@ -274,10 +274,18 @@ class CorrectionAdmin(admin.ModelAdmin):
         'fk': ['article',],
     }
 
+
+class WetellAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'service', 'published',
+                    'created', 'modified']
+    ordering = ['-modified']
+    search_fields = ['data']
+
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
 admin.site.register(models.Correction, CorrectionAdmin)
-admin.site.register(models.WetellBulletin)
+admin.site.register(models.WetellBulletin, WetellAdmin)
+
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):

@@ -94,6 +94,17 @@ urlpatterns = [
 
 
     ###############################
+    # Wetell
+    path('wetell/', views.WetellListView.as_view(),
+         name='wetell.list'),
+
+    path('wetell/latest/', views.WetellLatestView.as_view(),
+         name='wetell.latest'),
+
+    path('wetell/<int:pk>/', views.WetellDetailView.as_view(),
+         name='wetell.detail'),
+
+    ###############################
     # Old feature article redirects
     url(r'^article/redhills-ruins-cape-towns-forgotten-district-six_2043/$',
         RedirectView.as_view(url='/media/features/redhill/redhill_2043.html',

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load newsroom_extras %}
+{% block title %}
+    News in a Nutshell {{object.published}}
+{% endblock %}
+{% block content %}
+    <style>
+     #content-area {
+         max-width: 600px;
+         margin: auto;
+         font-size: 16px;
+     }
+     #content-area h2 {
+         text-align: left;
+         font-size: 22px;
+         margin-top: 22px;
+         margin-bottom: 9px;
+         line-height: 100%;
+     }
+     #wetell-next-prev {
+         border-top: 1px solid black;
+         margin-top: 16px;
+         padding-top: 12px;
+     }
+     #content-area h1 {
+         font-size: 38px;
+     }
+    </style>
+    <div id="content-area">
+        <h1>{{bulletin.name}}</h1>
+        <div class="article__details__date-by" style="margin-bottom: 12px;">
+            <time datetime='{{ object.published|date:"Y-m-d H:i:sO" }'>
+                {{ object.published|date:"l, j F Y" }}
+            </time>
+        </div>
+
+        <p style="font-style:italic;">
+            {{ bulletin.intro }}
+        </p>
+
+        {% for item in bulletin.items %}
+            {% if item.link %}
+                <p style="margin-bottom:4px; font-size: 120%;">
+                    <a href="{{item.link}}"
+                       target="_blank">
+                        {{item.title}}
+                    </a>
+                </p>
+                <p style="margin-bottom:4px;">
+                    {{ item.content}}
+                </p>
+                <p style="font-size: x-small;margin-top: 0;">
+                    {{ item.published|slice:10 }}
+                    {% if item.source %}
+                        {% if item.published %}
+                            &nbsp;|&nbsp;
+                        {% endif %}
+                        {{item.source}}
+                    {% endif %}
+                    {% if item.paywalled %}
+                        &nbsp;|&nbsp;Paywalled
+                    {% endif %}
+                </p>
+            {% else %}
+                <h2>{{item.title}}</h2>
+                {% if item.content %}
+                    <p>
+                        {{item.content}}
+                    </p>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <div id="wetell-next-prev">
+            {% include "newsroom/wetell_next_bulletin.html" with bulletin=object %}
+        </div>
+        <p>
+            <a href="{% url 'newsroom:wetell.list' %}">All bulletins</a>
+        </p>
+    </div>
+
+{% endblock %}

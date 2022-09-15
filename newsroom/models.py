@@ -812,6 +812,11 @@ class Correction(models.Model):
         ordering = ['-created', ]
 
 
+class WetellBulletinQuerySet(models.QuerySet):
+
+    def published(self):
+        return self.filter(published__lte=timezone.now())
+
 class WetellBulletin(models.Model):
     service = models.PositiveIntegerField()
     published = models.DateTimeField()
@@ -819,6 +824,37 @@ class WetellBulletin(models.Model):
     created = models.DateTimeField(auto_now_add=True,
                                    editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+    objects = WetellBulletinQuerySet.as_manager()
+
+    def __str__(self):
+        return str(self.published)
+
+    def get_absolute_url(self):
+        return reverse('newsroom:wetell.detail',
+                       args=[self.pk, ])
+
+    def get_next_bulletin(self):
+        next_bulletin = None
+        if self.published:
+            try:
+                next_bulletin = WetellBulletin.objects.published().\
+                    filter(published__gt=self.published).last()
+            except WetellBulletin.DoesNotExist:
+                pass
+        return next_bulletin
+
+
+    def get_prev_bulletin(self):
+        prev_bulletin = None
+        if self.published:
+            try:
+                prev_bulletin = WetellBulletin.objects.published().\
+                               filter(published__lt=self.published).first()
+            except WetellBulletin.DoesNotExist:
+                pass
+        return prev_bulletin
+
 
     class Meta:
         ordering = ['-published', ]

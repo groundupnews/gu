@@ -38,14 +38,7 @@ def display_btn(field, start_html, end_html, cls):
     result += end_html
     return result
 
-@register.simple_tag
-def wetell():
-    try:
-        bulletin = WetellBulletin.objects.latest('published')
-    except WetellBulletin.DoesNotExist:
-        logger.error("Wetell bulletin not found")
-        return
-
+def wetell_text(bulletin, intro_only=False):
     try:
         context = json.loads(bulletin.data)
     except Exception as e:
@@ -54,5 +47,28 @@ def wetell():
         return
 
     context['published'] = bulletin.published
-    text = render_to_string('newsroom/wetell.html', context)
+    if intro_only:
+        return context['intro']
+    else:
+        text = render_to_string('newsroom/wetell.html', context)
     return text
+
+@register.simple_tag
+def wetell_by_pk(pk, intro_only=True):
+    try:
+        bulletin = WetellBulletin.objects.get(pk=pk)
+    except WetellBulletin.DoesNotExist:
+        logger.error("Wetell bulletin not found")
+        return ""
+
+    return wetell_text(bulletin, intro_only)
+
+@register.simple_tag
+def wetell():
+    try:
+        bulletin = WetellBulletin.objects.latest('published')
+    except WetellBulletin.DoesNotExist:
+        logger.error("Wetell bulletin not found")
+        return
+
+    return wetell_text(bulletin)
