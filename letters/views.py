@@ -90,17 +90,15 @@ def write_letter(request, pk):
                     {'letter': letter})
                 message = strip_tags(html_message)
                 try:
-                    # THIS IS VERY VERY BAD
-                    # Emails should rather be sent using crontab
-                    # send_mail(
-                    #    subject,
-                    #    message,
-                    #    settings.EDITOR,
-                    #    [letter.email],
-                    #    html_message=html_message
-                    # )
+                    send_mail(
+                        subject,
+                        message,
+                        settings.EDITOR,
+                        [letter.email],
+                        html_message=html_message
+                    )
                     pass
-                except Exception as e:  
+                except Exception as e:
                     msg = "Email to letter writer failed " + str(e)
                     logger.error(msg)
                 return HttpResponseRedirect(reverse("letters:letter_thanks"))
