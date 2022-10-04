@@ -282,7 +282,7 @@ class ArticleTest(TestCase):
         response = client.get('/prev_gen/test-article-1/')
         self.assertEqual(response.status_code, 404)
         article = Article.objects.get(slug="test-article-1")
-        self.assertTrue(len(article.secret_link) == 0)
+        self.assertTrue(len(article.secret_link) > 40)
         user = User.objects.create_user('admin', 'admin@example.com', 'abcde')
         user.is_staff = True
         user.is_active = True

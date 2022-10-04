@@ -436,7 +436,7 @@ class Article(models.Model):
                                    blank=True)
     secret_link_view = models.CharField(choices=SECRET_LINK_CHOICES,
                                         verbose_name="private URL view",
-                                        max_length=1, default="n")
+                                        max_length=1, default="r")
     # secret_link_editable = models.BooleanField(default=False)
 
     # Cached fields

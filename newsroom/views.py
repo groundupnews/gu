@@ -519,6 +519,9 @@ def article_preview(request, secret_link):
     if article.secret_link_view == 'n':
         return HttpResponseForbidden()
 
+    messages.add_message(request, messages.ERROR,
+                         "This is a private link to an unpublished article.")
+
     return render(request, article.template, get_context(article))
 
 def article_detail(request, slug):
