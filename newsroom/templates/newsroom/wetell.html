@@ -2,19 +2,10 @@
     class="home__articles__article__text__title">
     <a href="{% url 'newsroom:wetell.list' %}">{{name}}</a>
 </h2>
-<p style="text-align:center;">{{published|date:"j F Y"}}</p>
+<p style="text-align:center;">{{published|date:"j F Y"}}<br />Compiled by Jonathan Ancer</p>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
-            {% comment %}
-            <p><i>
-                This is a quick daily overview of the main items in the news,
-                prepared by the experienced and quirky Jonathan Ancer. We've
-                introduced it as an experiment for a few months. If you like it,
-                we'll keep it. Let us know.</i>
-            </p>
-            <hr/>
-            {% endcomment %}
             <p>
                 {{intro}}
             </p>
