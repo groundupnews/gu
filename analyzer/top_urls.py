@@ -25,7 +25,7 @@ def webpage_url_filter(url):
     return True if url[-1] == "/" and url not in URLS_TO_EXCLUDE else False
 
 def retrieve_log(filename):
-    with open(filename) as f:
+    with open(filename, "r") as f:
         content = f.readlines()
     return [CLFParser.logDict(l) for l in content]
 
