@@ -21,6 +21,7 @@ class Republisher(models.Model):
     message = models.TextField(blank=True)
     slug = models.SlugField(max_length=20, blank=True)
     ask_for_analytics = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

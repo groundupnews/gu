@@ -36,6 +36,7 @@ from payment.models import Commission
 from socialmedia.models import Tweet
 from socialmedia.forms import TweetForm
 from republisher.models import RepublisherArticle
+from republisher.forms import RepublisherArticleForm
 
 logger = logging.getLogger(__name__)
 
@@ -402,7 +403,7 @@ def article_post(request, slug):
                                 prefix="tweets")
 
     RepublisherFormSet = inlineformset_factory(models.Article, RepublisherArticle,
-                                         fields=('republisher', 'status', ))
+                                               form=RepublisherArticleForm)
     republisherFormSet = RepublisherFormSet(request.POST,
                                             instance=article,
                                             prefix="republishers")
@@ -541,8 +542,7 @@ def article_detail(request, slug):
                                                        RepublisherArticle,
                                                        extra=5,
                                                        can_delete_extra=False,
-                                                       fields=('republisher',
-                                                               'status',))
+                                                       form=RepublisherArticleForm)
             republisherFormSet = RepublisherFormSet(instance=article,
                                               prefix="republishers")
 

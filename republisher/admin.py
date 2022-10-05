@@ -1,7 +1,12 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.Republisher)
+
+class RepublisherAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'name', 'active', 'email_addresses', ]
+    list_editable = ['name', 'active', 'email_addresses', ]
+
+admin.site.register(models.Republisher, RepublisherAdmin)
 
 
 class RepublisherInline(admin.TabularInline):
