@@ -151,9 +151,11 @@ class AdvancedSearchForm(forms.Form):
                                     widget=forms.RadioSelect(),
                                     required=False,
                                     initial='both')
-    author = forms.ModelChoiceField(queryset=models.Author.objects.all().order_by('first_names'),
-                                    required=False)
-    first_author = forms.BooleanField(label="First Author Only", required=False)
+    author = AutoCompleteSelectField("authors_only", required=False,
+                                     help_text=None, label="Author")
+    # forms.ModelChoiceField(queryset=models.Author.objects.all().order_by('first_names'),
+    #                                required=False)
+    first_author = forms.BooleanField(label="First author only", required=False)
     category = forms.ModelChoiceField(queryset=models.Category.objects.all(), required=False)
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
     date_from = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),

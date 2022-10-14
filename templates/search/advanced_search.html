@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
 <h4>
     Advanced Search
     <button id="adv-filter-arrow" role="button" class="adv-closed">
@@ -10,6 +9,7 @@
         {% endif %}
     </button>
 </h4>
+{{adv_search_form.media}}
 <form action="/advanced_search/" id="adv-filter-form" method="GET"
       {% if request.GET.is_simple %}
       style="display:none;"

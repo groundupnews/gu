@@ -33,6 +33,29 @@ class AuthorLookup(LookupChannel):
     def format_item_display(self, item):
         return str(item)
 
+
+@register('authors_only')
+class AuthorOnlyLookup(LookupChannel):
+    '''
+    Only includes real authors as opposed to companies used to
+    pay requisitions to etc.
+    '''
+    model = Author
+
+    help_text = "Name of author"
+
+    def get_query(self, q, request):
+        query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
+                Q(first_names__icontains=q)
+        return self.model.objects.filter(query).\
+            exclude(freelancer='t').\
+            filter(email__isnull=False).\
+            order_by("last_name")
+
+    def format_item_display(self, item):
+        return str(item)
+
+
 @register('topics')
 class TopicLookup(LookupChannel):
 
