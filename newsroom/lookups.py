@@ -44,6 +44,9 @@ class AuthorOnlyLookup(LookupChannel):
 
     help_text = "Name of author"
 
+    def check_auth(self, request):
+        return True
+
     def get_query(self, q, request):
         query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
                 Q(first_names__icontains=q)
