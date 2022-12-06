@@ -298,6 +298,8 @@ urlpatterns = [
 
     ####################################
 
-    url(r'^sitenews/rss/$', feeds.LatestArticlesRssFeed()),
-    url(r'^sitenews/atom/$', feeds.LatestArticlesAtomFeed()),
+    path('sitenews/rss/', feeds.LatestArticlesRssFeed()),
+    path('sitenews/atom/', feeds.LatestArticlesAtomFeed()),
+    path('sitenews/rss_full/', feeds.LatestFullArticlesRssFeed()),
+    path('sitenews/atom_full/', feeds.LatestFullArticlesAtomFeed()),
 ]

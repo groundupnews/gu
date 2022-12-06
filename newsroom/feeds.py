@@ -30,6 +30,9 @@ class LatestArticlesRssFeed(Feed):
     def item_description(self, article):
         return article.cached_summary_text
 
+    def item_author_name(self, article):
+        return article.cached_byline_no_links
+
     def item_updateddate(self, article):
         return article.modified
 
@@ -75,3 +78,11 @@ class LatestArticlesAtomFeed(LatestArticlesRssFeed):
 
     def item_copyright(self, article):
         return article.copyright
+
+
+class LatestFullArticlesRssFeed(LatestArticlesRssFeed):
+    description_template = 'newsroom/rss_feed.html'
+
+
+class LatestFullArticlesAtomFeed(LatestArticlesAtomFeed):
+    description_template = 'newsroom/rss_feed.html'
