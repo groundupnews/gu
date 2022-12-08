@@ -503,7 +503,7 @@ class Article(models.Model):
     there's less processing for website user requests.
     '''
 
-    def calc_byline(self, links=False):
+    def calc_byline(self, links=False, by_string="By ", and_string=" and "):
         if self.byline:
             return self.byline
         else:
@@ -522,14 +522,14 @@ class Article(models.Model):
             if len(names) == 0:
                 return ""
             elif len(names) == 1:
-                return "By " + names[0]
+                return by_string + names[0]
             elif len(names) == 2:
-                return "By " + names[0] + " and " + names[1]
+                return by_string + names[0] + " and " + names[1]
             else:
-                names[-1] = " and " + names[-1]
+                names[-1] = and_string + names[-1]
                 names_middle = [", " + name for name in names[1:-1]]
                 names_string = names[0] + "".join(names_middle) + names[-1]
-                return "By " + names_string
+                return by_string + names_string
         # byline_style is TextByPhotoBy
         else:
             return "Text by " + names[0] + ". Photos by " + names[1] + "."

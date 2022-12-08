@@ -24,6 +24,9 @@ class LatestArticlesRssFeed(Feed):
     def item_pubdate(self, article):
         return article.published
 
+    def item_categories(self, article):
+        return (article.category, )
+
     def item_copyright(self, article):
         return article.copyright
 
@@ -31,7 +34,7 @@ class LatestArticlesRssFeed(Feed):
         return article.cached_summary_text
 
     def item_author_name(self, article):
-        return article.cached_byline_no_links
+        return article.calc_byline(by_string="")
 
     def item_updateddate(self, article):
         return article.modified
@@ -81,8 +84,10 @@ class LatestArticlesAtomFeed(LatestArticlesRssFeed):
 
 
 class LatestFullArticlesRssFeed(LatestArticlesRssFeed):
+    title = "GroundUp News (full content)"
     description_template = 'newsroom/rss_feed.html'
 
 
 class LatestFullArticlesAtomFeed(LatestArticlesAtomFeed):
+    title = "GroundUp News (full content)"
     description_template = 'newsroom/rss_feed.html'
