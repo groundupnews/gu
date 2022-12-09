@@ -101,7 +101,8 @@ class AtomWithContent(Atom1Feed):
         super().add_item_elements(handler, item)
 
         if item['content'] is not None:
-            handler.addQuickElement(u'content', item['content'])
+            handler.addQuickElement(u'content', item['content'],
+                                    {"type": "html"})
 
 class LatestFullArticlesAtomFeed(LatestArticlesAtomFeed):
     title = "GroundUp News (full content)"
