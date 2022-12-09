@@ -3,15 +3,17 @@ import os
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
-from django.utils.feedgenerator import Atom1Feed
-from newsroom.settings import LOGO
+from django.utils.feedgenerator import Atom1Feed, Rss201rev2Feed
+from django.utils.encoding import iri_to_uri
 
+from newsroom.settings import LOGO
 from .models import Article
 
 
 class LatestArticlesRssFeed(Feed):
     title = "GroundUp News"
     link = "/feeds/"
+    feed_type = Rss201rev2Feed
     description = "Original news, features and opinion, "
     "mostly related to human rights, from South Africa."
 
@@ -88,6 +90,27 @@ class LatestFullArticlesRssFeed(LatestArticlesRssFeed):
     description_template = 'newsroom/rss_feed.html'
 
 
+class AtomWithContent(Atom1Feed):
+
+    def item_attributes(self, item):
+        attrs = super().item_attributes(item)
+        attrs['content'] = ''
+        return attrs
+
+    def add_item_elements(self, handler, item):
+        super().add_item_elements(handler, item)
+
+        if item['content'] is not None:
+            handler.addQuickElement(u'content', item['content'])
+
 class LatestFullArticlesAtomFeed(LatestArticlesAtomFeed):
     title = "GroundUp News (full content)"
-    description_template = 'newsroom/rss_feed.html'
+    feed_type = AtomWithContent
+
+    def item_extra_kwargs(self, item):
+        extra = super().item_extra_kwargs(item)
+        extra.update({'content': self.item_content(item)})
+        return extra
+
+    def item_content(self, article):
+        return article.body
