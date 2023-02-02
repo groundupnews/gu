@@ -43,19 +43,25 @@ def process():
                                        link['href'][0] == '/':
                     link['href'] = prefix + link['href']
             article.body = str(soup)
+            tag=""
+            if republisherarticle.republisher.name == "Daily Maverick":
+                tag="class=\"skip-lazy\""
             message = render_to_string('republisher/message.html',
                                        {'republisher':
                                         republisherarticle.republisher,
                                         'note': republisherarticle.note,
                                         'article':
                                         republisherarticle.article,
-                                        'url': url})
+                                        'url': url,
+                                        'dmtag': tag
+                                        })
             subject = "Article from GroundUp: " + \
                       republisherarticle.article.title
             email_addresses = republisherarticle.republisher.email_addresses
             email_list = [address.strip() for address in
                           email_addresses.split(",")]
             email_list.append(settings.REPUBLISHER_EMAIL_FROM)
+            #print(html2text.html2text(message))
             try:
                 send_mail(subject, html2text.html2text(message),
                           settings.REPUBLISHER_EMAIL_FROM,
