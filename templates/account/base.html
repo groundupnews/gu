@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block title %} GroundUp User Account {% endblock %}
-
+<!-->Override analytics block to prevent loading matomo files during login process. This should alleviate the login return issue<-->
+{% block analytics %}
+            
+{% endblock %}
 {% block css-override %}
   <style>
    
