@@ -315,6 +315,10 @@ class Article(models.Model):
         blank=True,
         help_text="Description of image for assistive technology.")
     summary_text = models.TextField(blank=True)
+    audio_summary= FileBrowseField("audio summary", max_length=200,
+                                    directory="sound/",
+                                    blank=True)
+    audio_publish=models.BooleanField(default=True)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_01",
                                   verbose_name="first author",
@@ -452,6 +456,7 @@ class Article(models.Model):
 
     objects = ArticleQuerySet.as_manager()
 
+   
     def is_published(self):
         return (self.published is not None) and \
             (self.published <= timezone.now())

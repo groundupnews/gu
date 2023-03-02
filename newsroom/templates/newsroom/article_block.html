@@ -1,6 +1,7 @@
 {% if can_edit %}
     {{ form.media }}
 {% endif %}
+{% load static %}
 
 <div class="{% if article.undistracted_layout %}col-xs-12  col-md-push-1 col-md-10"{% else %}col-xs-12 col-md-8"{% endif %}>
     {% if can_edit %}
@@ -224,6 +225,43 @@
 
                 <span>
                     <button class="btn btn-primary btn-sm edit-only" type="button"
+                            data-toggle="collapse" data-target="#RecorderDiv"
+                            aria-expanded="false" aria-controls="RecorderDiv"
+                            title="Audio">
+                        Audio &#8595;
+                    </button>
+                </span>
+                <div class="collapse" id="RecorderDiv">
+                    <div class="card card-body">
+                    {% if can_edit %}
+                        <div id="advanced" class="edit-only article-card-form">
+                                <div id="view_audio_publish" class="edit-only">
+                                Publish Audio?:
+                                </div>
+                                <div id="controls">
+  	                                <button id="recordButton">Record</button>
+  	                                <button id="pauseButton" disabled>Pause</button>
+  	                                <button id="stopButton" disabled>Stop</button>
+                                </div>
+                                <div>
+                                    <p id="rstatus"></p>
+                                    <p id="pk" hidden>{{article.pk}}</p>
+                                </div>
+                                {% csrf_token %}
+  	                            <p><strong>Recording:</strong></p>
+  	                                <ol style="list-style-type: none" id="recordingsList"></ol>
+  	                                <script src="{% static 'newsroom/recorder/recorder.js' %}"></script>
+  	                                <script src="{% static 'newsroom/recorder/app.js' %}"></script>
+                                <div id="view_audio_summary" display="none" class="edit-only">
+                                    Path to audio: 
+                                </div>
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+
+                <span>
+                    <button class="btn btn-primary btn-sm edit-only" type="button"
                             data-toggle="collapse" data-target="#Advanced"
                             aria-expanded="false" aria-controls="Advanced"
                             title="Advanced options">
@@ -326,6 +364,9 @@
                    href="{% url 'newsroom:region.detail' article.region.name %}"
                 >{{display_region|title}}</a>{% endif %}
                 {% if can_edit %}<span id="view_region"></span>{% endif %}
+            {% if article.audio_publish and article.audio_summary %}
+                 |  <audio controls style="height: 25px;"> <source src="{{MEDIA_URL}}{{article.audio_summary|addslashes}}"> </source> </audio>
+            {% endif %}
         </span>
     </div>
 
@@ -432,7 +473,7 @@
 
 
 {% if can_edit %}
-    <div class="col-xs-12 col-md-8" style="display: none">
+    <div class="col-xs-12 col-md-8" style="display:none;">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
 	      method="post">{% csrf_token %}

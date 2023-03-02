@@ -38,7 +38,7 @@ article_inputs = article_ajaxes + \
     ['published', 'category', 'region',
      'byline', 'byline_style', 'editor_feedback',
      'slug', 'recommended', 'include_in_rss', 'use_editor', 'stickiness',
-     'summary_image', 'summary_image_size', 'summary_image_alt', 'summary_text',
+     'summary_image', 'summary_image_size', 'summary_image_alt','audio_summary','audio_publish', 'summary_text',
      'exclude_from_list_views', 'promote_article', 'letters_on',
      'stickiness', 'secret_link', 'secret_link_view',
      'encourage_republish', 'additional_head_scripts', 'additional_body_scripts', ]
@@ -69,7 +69,9 @@ class ArticleForm(forms.ModelForm):
                                              help_text=None, label="Topics")
     summary_image = forms.CharField(required=False)
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
-
+    
+    audio_summary=forms.CharField(required=False)
+    audio_publish=forms.BooleanField(required=False)
     btn_unsticky = forms.CharField(required=False, label='Unsticky',
                                 widget=forms.TextInput(
                                 attrs={'class': 'button-action',
