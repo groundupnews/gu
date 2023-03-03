@@ -114,7 +114,7 @@ function createDownloadLink(blob) {
 	var url = URL.createObjectURL(blob);
 	var au = document.createElement('audio');
 	var li = document.createElement('li');
-    
+    var li2= document.createElement('li');
 
 	//add controls to the <audio> element
 	au.controls = true;
@@ -123,21 +123,12 @@ function createDownloadLink(blob) {
 	//add the new audio element to li
 	li.appendChild(au);
     
-    //In order to maintain only a single recording within the list we must replace existing data with the new recording. 
-    //replaceChild() requires an existing node hence we create a node from the list and if it doesn't exist we can just append the new data directly
-    var oldnode=recordingsList.childNodes[0];
-    if(oldnode){
-        recordingsList.replaceChild(li, oldnode);
-    }else{
-        recordingsList.appendChild(li)
-    }
-    
 	//Date needs to be stripped of non-numeric characters and only the date and time are used for the file name
     var cdate = new Date();
     var fdate=cdate.toISOString().replaceAll("-","");
     fdate=fdate.replaceAll("t","");
     fdate=fdate.replaceAll(":","");
-    fdate=fdate.substring(0,8)+fdate.substring(9,13);
+    fdate=fdate.substring(0,8)+fdate.substring(9,15);
 
     //Create filename. 
     var fname=pk.innerHTML+"_"+fdate+".wav";
@@ -169,7 +160,27 @@ function createDownloadLink(blob) {
     });
 
     
-    id_audio_summary.value="uploads/"+fname
+    id_audio_summary.value="uploads/"+fname;
+    var link = document.createElement('a');
+    //save to disk link
+	link.href = url;
+	link.download = "uploads/"+fname; //download forces the browser to donwload the file using the  filename
+	link.innerHTML = "uploads/"+fname;
+    li2.appendChild(link);
+    //In order to maintain only a single recording within the list we must replace existing data with the new recording. 
+    //replaceChild() requires an existing node hence we create a node from the list and if it doesn't exist we can just append the new data directly
+    var oldnode=recordingsList.childNodes[0];
+    if(oldnode){
+        recordingsList.replaceChild(li, oldnode);
+    }else{
+        recordingsList.appendChild(li)
+    }
+    oldnode=recordingsList.childNodes[1];
+    if(oldnode){
+        recordingsList.replaceChild(li2, oldnode);
+    }else{
+        recordingsList.appendChild(li2)
+    }
     showSave();
     
 }

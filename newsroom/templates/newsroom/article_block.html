@@ -238,6 +238,9 @@
                                 <div id="view_audio_publish" class="edit-only">
                                 Publish Audio?:
                                 </div>
+                                {% if article.audio_summary %}
+                                <a id="current_recording" href="{{MEDIA_URL}}{{article.audio_summary|addslashes}}">{{MEDIA_URL}}{{article.audio_summary|addslashes}}</a>
+                                {% endif %}
                                 <div id="controls">
   	                                <button id="recordButton">Record</button>
   	                                <button id="pauseButton" disabled>Pause</button>
@@ -252,9 +255,7 @@
   	                                <ol style="list-style-type: none" id="recordingsList"></ol>
   	                                <script src="{% static 'newsroom/recorder/recorder.js' %}"></script>
   	                                <script src="{% static 'newsroom/recorder/app.js' %}"></script>
-                                <div id="view_audio_summary" display="none" class="edit-only">
-                                    Path to audio: 
-                                </div>
+                                
                         </div>
                     {% endif %}
                     </div>
@@ -365,7 +366,7 @@
                 >{{display_region|title}}</a>{% endif %}
                 {% if can_edit %}<span id="view_region"></span>{% endif %}
             {% if article.audio_publish and article.audio_summary %}
-                 | Listen to this article surmised: <audio controls style="height: 25px;"> <source src="{{MEDIA_URL}}{{article.audio_summary|addslashes}}"> </source> </audio>
+                <br>Listen to article summary: <audio controls style="height: 23px; vertical-align:bottom;"> <source src="{{MEDIA_URL}}{{article.audio_summary|addslashes}}"> </source> </audio>
             {% endif %}
         </span>
     </div>
@@ -473,7 +474,7 @@
 
 
 {% if can_edit %}
-    <div class="col-xs-12 col-md-8" style="display:none;">
+    <div class="col-xs-12 col-md-8" style="display: none;">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
 	      method="post">{% csrf_token %}
