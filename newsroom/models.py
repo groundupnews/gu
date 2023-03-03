@@ -25,6 +25,7 @@ from filebrowser.base import FileObject
 
 from . import settings, utils
 
+
 logger = logging.getLogger("django")
 
 
@@ -319,7 +320,7 @@ class Article(models.Model):
         help_text="Description of image for assistive technology.")
     summary_text = models.TextField(blank=True)
     audio_summary= FileBrowseField("audio summary", max_length=200,
-                                    directory="sound/",
+                                    directory="sound/summaries/",
                                     blank=True)
     audio_publish=models.BooleanField(default=True)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
@@ -692,14 +693,18 @@ class Article(models.Model):
         self.version = self.version + 1
         if self.pk:
             self.body = utils.insertPixel(self.body, self.pk,
-                                          self.slug)
+                                        self.slug)
+        
         if not "sound" in self.audio_summary.name:
             fname=self.audio_summary.name[8:]
-            dest=r"media/uploads/sound/summaries/"+fname
-            loc=r"media/"+self.audio_summary.name
+            dest=django_settings.MEDIA_ROOT+r"uploads/sound/summaries/"+fname
+            loc=django_settings.MEDIA_ROOT+self.audio_summary.name
+            
             shutil.move(loc, dest)
-            audio_summ=FileObject(os.path.join(dest[6:]))
+            dest=dest[-48:]
+            audio_summ=FileObject(dest) 
             self.audio_summary=audio_summ
+            
 
         super(Article, self).save(*args, **kwargs)
         if self.main_topic and self.main_topic not in self.topics.all():
