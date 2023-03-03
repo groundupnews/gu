@@ -366,7 +366,10 @@
                 >{{display_region|title}}</a>{% endif %}
                 {% if can_edit %}<span id="view_region"></span>{% endif %}
             {% if article.audio_publish and article.audio_summary %}
-                <br>Listen to article summary: <audio controls style="height: 23px; vertical-align:bottom;"> <source src="{{MEDIA_URL}}{{article.audio_summary|addslashes}}"> </source> </audio>
+                <br>
+                <div style="line-height: 1.5;">
+                Listen to article summary: <audio controls style="height: 23px; vertical-align:bottom;"> <source src="{{MEDIA_URL}}{{article.audio_summary|addslashes}}"> </source> </audio>
+                </div>
             {% endif %}
         </span>
     </div>
