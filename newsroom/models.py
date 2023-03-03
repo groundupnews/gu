@@ -694,17 +694,18 @@ class Article(models.Model):
         if self.pk:
             self.body = utils.insertPixel(self.body, self.pk,
                                         self.slug)
-        
-        if not "sound" in self.audio_summary.name:
-            fname=self.audio_summary.name[8:]
-            dest=django_settings.MEDIA_ROOT+r"uploads/sound/summaries/"+fname
-            loc=django_settings.MEDIA_ROOT+self.audio_summary.name
-            
-            shutil.move(loc, dest)
-            dest=dest[-48:]
-            audio_summ=FileObject(dest) 
-            self.audio_summary=audio_summ
-            
+        try:
+            if not "sound" in self.audio_summary.name:
+                fname=self.audio_summary.name[8:]
+                dest=django_settings.MEDIA_ROOT+r"uploads/sound/summaries/"+fname
+                loc=django_settings.MEDIA_ROOT+self.audio_summary.name
+                
+                shutil.move(loc, dest)
+                dest=dest[-48:]
+                audio_summ=FileObject(dest) 
+                self.audio_summary=audio_summ
+        except:
+            self.audio_summary=""    
 
         super(Article, self).save(*args, **kwargs)
         if self.main_topic and self.main_topic not in self.topics.all():
