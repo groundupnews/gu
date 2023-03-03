@@ -2,6 +2,8 @@ import datetime
 import logging
 import traceback
 import random
+import shutil
+import os
 from urllib.parse import urlparse
 
 
@@ -19,6 +21,7 @@ from django.utils.html import strip_tags
 from filebrowser.fields import FileBrowseField
 from socialmedia.common import SCHEDULE_RESULTS
 from agony.models import QandA
+from filebrowser.base import FileObject
 
 from . import settings, utils
 
@@ -690,10 +693,19 @@ class Article(models.Model):
         if self.pk:
             self.body = utils.insertPixel(self.body, self.pk,
                                           self.slug)
+        if not "sound" in self.audio_summary.name:
+            fname=self.audio_summary.name[8:]
+            dest=r"media/uploads/sound/summaries/"+fname
+            loc=r"media/"+self.audio_summary.name
+            shutil.move(loc, dest)
+            audio_summ=FileObject(os.path.join(dest[6:]))
+            self.audio_summary=audio_summ
+
         super(Article, self).save(*args, **kwargs)
         if self.main_topic and self.main_topic not in self.topics.all():
             self.topics.add(self.main_topic)
             super(Article, self).save(force_update=True)
+        
 
     def get_absolute_url(self):
         return reverse('newsroom:article.detail',
