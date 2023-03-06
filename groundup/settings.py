@@ -234,7 +234,7 @@ MEDIA_URL = '/media/'
 AUDIO_URL = '/media/uploads/sound/summaries/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-AUDIO_ROOT = os.path.join(BASE_DIR, 'media/uploads/sound/summaries/')
+AUDIO_ROOT = os.path.join(MEDIA_ROOT, 'uploads/sound/summaries/')
 
 FILEBROWSER_DIRECTORY = "uploads/"
 
