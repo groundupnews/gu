@@ -59,6 +59,10 @@ function startRecording() {
 		rec.record();
         //Show recording message and clear existing recordings
         rstatus.innerHTML="Recording in progress...";
+        //clear audio element. And clear link to download audio
+        if(recordingsList.firstElementChild){
+        recordingsList.removeChild(recordingsList.firstElementChild);
+        }
         if(recordingsList.firstElementChild){
         recordingsList.removeChild(recordingsList.firstElementChild);
         }
@@ -143,10 +147,10 @@ function createDownloadLink(blob) {
 
 	//ajax call submits the form with csrf data and file to filebrowser upload method.		
    	$.ajax({
+        //update url field to use a settings variable from django.
         url: '../../admin/filebrowser/upload_file/',
         type: 'POST',
         data: form_data,
-
         success: function (response) {
             if (response.success) {
                rstatus.innerHTML="Recording stopped. Upload Success"

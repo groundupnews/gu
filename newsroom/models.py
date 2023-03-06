@@ -4,6 +4,7 @@ import traceback
 import random
 import shutil
 import os
+import re
 from urllib.parse import urlparse
 
 
@@ -694,18 +695,25 @@ class Article(models.Model):
         if self.pk:
             self.body = utils.insertPixel(self.body, self.pk,
                                         self.slug)
+                
         try:
             if not "sound" in self.audio_summary.name:
                 fname=self.audio_summary.name[8:]
-                dest=django_settings.MEDIA_ROOT+r"uploads/sound/summaries/"+fname
-                loc=django_settings.MEDIA_ROOT+self.audio_summary.name
-                
+                dest=os.path.join(django_settings.AUDIO_ROOT,fname)
+                loc=os.path.join(django_settings.MEDIA_ROOT,self.audio_summary.name)
+                #moving the file to a separate recordings directory. filebrowser upload only uploads to root
                 shutil.move(loc, dest)
-                dest=dest[-48:]
+                #slicing the dest string to remove the media root gives the necessary flatpage path.
+                dest=dest[len(django_settings.MEDIA_ROOT):]
                 audio_summ=FileObject(dest) 
                 self.audio_summary=audio_summ
+                #move all unused audio files to summary directory as well.
+                path = os.path.join(django_settings.MEDIA_ROOT,"uploads/")
+                for filename in os.listdir(path):
+                    if re.search(".wav", filename):
+                        shutil.move(os.path.join(path,filename),os.path.join(django_settings.AUDIO_ROOT,filename))
         except:
-            self.audio_summary=""    
+            pass
 
         super(Article, self).save(*args, **kwargs)
         if self.main_topic and self.main_topic not in self.topics.all():
