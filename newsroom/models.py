@@ -699,7 +699,7 @@ class Article(models.Model):
         try:
             if not "sound" in self.audio_summary.name:
                 fname=self.audio_summary.name[8:]
-                dest=os.path.join(django_settings.AUDIO_ROOT,fname)
+                dest=os.path.join(django_settings.MEDIA_ROOT,django_settings.AUDIO_DIR,fname)
                 loc=os.path.join(django_settings.MEDIA_ROOT,self.audio_summary.name)
                 #moving the file to a separate recordings directory. filebrowser upload only uploads to root
                 shutil.move(loc, dest)
@@ -711,7 +711,7 @@ class Article(models.Model):
                 path = os.path.join(django_settings.MEDIA_ROOT,"uploads/")
                 for filename in os.listdir(path):
                     if re.search(".wav", filename):
-                        shutil.move(os.path.join(path,filename),os.path.join(django_settings.AUDIO_ROOT,filename))
+                        shutil.move(os.path.join(path,filename),os.path.join(django_settings.MEDIA_ROOT,django_settings.AUDIO_DIR,filename))
         except:
             pass
 
