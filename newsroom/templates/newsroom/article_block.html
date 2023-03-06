@@ -251,10 +251,9 @@
                                     <p id="pk" hidden>{{article.pk}}</p>
                                 </div>
                                 {% csrf_token %}
-  	                            <p><strong>Recording:</strong></p>
-  	                                <ol style="list-style-type: none" id="recordingsList"></ol>
-  	                                <script src="{% static 'newsroom/recorder/recorder.js' %}"></script>
-  	                                <script src="{% static 'newsroom/recorder/app.js' %}"></script>
+  	                            <ol style="list-style-type: none" id="recordingsList"></ol>
+  	                            <script src="{% static 'newsroom/recorder/recorder.js' %}"></script>
+  	                            <script src="{% static 'newsroom/recorder/app.js' %}"></script>
                                 
                         </div>
                     {% endif %}
