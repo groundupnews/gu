@@ -29,7 +29,9 @@ jQuery(document).ready(function ($) {
     let fileUrl;
     if ('summary' in params) {
         fileUrl = window.opener.getSummaryImage();
-    } else {
+    } else if ('audio' in params){
+        fileUrl = window.opener.getAudioSummary();
+    }else {
         fileUrl = window.opener.CKEDITOR.document.$.
             getElementsByClassName('cke_dialog_image_url')[0].
             querySelector('input').value;
@@ -87,7 +89,14 @@ function OpenFile(fileUrl) {
             window.top.close();
             window.top.opener.focus();
         }
-    } else {
+    } else if (params.get('audio')) {
+        if (window.opener && window.opener.document &&
+            window.opener.document.getElementById("id_audio_summary")) {
+            window.opener.receiveAudioSummary(fileUrl);
+            window.top.close();
+            window.top.opener.focus();
+        }
+    }else {
         window.top.opener.CKEDITOR.tools.callFunction(CKEditorFuncNum, fileUrl);
     }
     window.top.close();

@@ -236,10 +236,21 @@
                     {% if can_edit %}
                         <div id="advanced" class="edit-only article-card-form">
                                 <div id="view_audio_publish" class="edit-only">
-                                Publish Audio?:
+                                Publish Audio:
                                 </div>
+                              
+                                <span data-display="inline">
+                                        <button id="select-audio"
+                                                style="display:inline; height:23px">
+                                            Choose Audio
+                                        </button>
+                                </span>
+                                <span id="view_audio_summary"
+                                      class="edit-only" style="display:inline;">
+                                    
+                                </span>
                                 {% if article.audio_summary %}
-                                <a id="current_recording" href="{{MEDIA_URL}}{{article.audio_summary|addslashes}}">{{MEDIA_URL}}{{article.audio_summary|addslashes}}</a>
+                                <a id="current_recording" href="{{MEDIA_URL}}{{article.audio_summary|addslashes}}">Download File</a>
                                 {% endif %}
                                 <div id="controls">
   	                                <button id="recordButton">Record</button>
@@ -474,9 +485,9 @@
     </div>
 </div>
 
-
+<!-->style="display:none;"<-->
 {% if can_edit %}
-    <div class="col-xs-12 col-md-8" style="display: none;">
+    <div class="col-xs-12 col-md-8" style="display:none;">
         <form action="{% url 'newsroom:article.detail' article.slug %}"
               id="article_form"
 	      method="post">{% csrf_token %}

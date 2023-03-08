@@ -54,6 +54,17 @@ function getSummaryImage()
     return "{{MEDIA_URL}}" + encodeURI(document.getElementById("id_summary_image").value);
 }
 
+function receiveAudioSummary(url)
+{
+    document.getElementById("id_audio_summary").value =
+        decodeURI(url.substr("{{MEDIA_URL}}".length));
+    showSave();
+}
+
+function getAudioSummary()
+{
+    return "{{MEDIA_URL}}" + encodeURI(document.getElementById("id_audio_summary").value);
+}
 /* Works with ajax_select to receive data from a popup window in which an author was created.
    Sets first available author field with the new author. */
 function receiveAuthor(author)
@@ -322,6 +333,14 @@ function setupInputFields()
             addEventListener('click', function() {
                 window.open("/admin/filebrowser/browse/?pop=3&summary=1&dir=images",
                             "select_file_win",
+                            "popup=1,left=100,top=100");
+            });
+    }
+    if (document.getElementById("select-audio")) {
+        document.getElementById("select-audio").
+            addEventListener('click', function() {
+                window.open("/admin/filebrowser/browse/?pop=3&audio=1&dir=sound/summaries",
+                            "select_audio_win",
                             "popup=1,left=100,top=100");
             });
     }

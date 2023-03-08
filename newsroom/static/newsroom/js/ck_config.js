@@ -33,6 +33,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.disableNativeSpellChecker = false;
     config.filebrowserBrowseUrl = '/admin/filebrowser/browse/?pop=3';
     config.filebrowserImageBrowseUrl = '/admin/filebrowser/browse/?pop=3&dir=images';
+    config.filebrowserAudioBrowseUrl = '/admin/filebrowser/browse/?pop=3&dir=sound/summaries';
     config.extraAllowedContent = '*(*)';
     config.allowedContent = true;
 

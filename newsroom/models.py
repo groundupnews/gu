@@ -323,7 +323,7 @@ class Article(models.Model):
     audio_summary= FileBrowseField("audio summary", max_length=200,
                                     directory="sound/summaries/",
                                     blank=True)
-    audio_publish=models.BooleanField(default=True)
+    audio_publish=models.BooleanField(default=False)
     author_01 = models.ForeignKey(Author, blank=True, null=True,
                                   related_name="author_01",
                                   verbose_name="first author",
@@ -711,7 +711,8 @@ class Article(models.Model):
                 path = os.path.join(django_settings.MEDIA_ROOT,"uploads/")
                 for filename in os.listdir(path):
                     if re.search(".wav", filename):
-                        shutil.move(os.path.join(path,filename),os.path.join(django_settings.MEDIA_ROOT,django_settings.AUDIO_DIR,filename))
+                        if os.path.exists(os.path.join(path,filename)):
+                            os.remove(os.path.join(path,filename))
         except:
             pass
 
