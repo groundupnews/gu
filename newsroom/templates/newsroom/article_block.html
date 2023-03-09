@@ -240,8 +240,8 @@
                                 </div>
                               
                                 <span data-display="inline">
-                                        <button id="select-audio"
-                                                style="display:inline; height:23px">
+                                        <button class="btn" id="select-audio"
+                                                style="display:inline;">
                                             Choose Audio
                                         </button>
                                 </span>
@@ -253,9 +253,9 @@
                                 <a id="current_recording" href="{{MEDIA_URL}}{{article.audio_summary|addslashes}}">Download File</a>
                                 {% endif %}
                                 <div id="controls">
-  	                                <button id="recordButton">Record</button>
-  	                                <button id="pauseButton" disabled>Pause</button>
-  	                                <button id="stopButton" disabled>Stop</button>
+  	                                <button class="btn" id="recordButton">Record</button>
+  	                                <button class="btn" id="pauseButton" disabled>Pause</button>
+  	                                <button class="btn" id="stopButton" disabled>Stop</button>
                                 </div>
                                 <div>
                                     <p id="rstatus"></p>
