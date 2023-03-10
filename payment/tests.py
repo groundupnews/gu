@@ -231,9 +231,6 @@ class InvoiceTest(TestCase):
             invoice__author__last_name="Bloggs")
         #commissions[4] is a known bonus commission and so here we confirm that it is reading the non-default value of 530
         self.assertEqual(commissions[0].estimate_bonus(), 530)
-        #remove this loop, this is printing what the estimates are for each commission
-        for c in commissions:
-                print(c.estimate_bonus())
         num_bonuses = len([True for c in commissions if c.estimate_bonus() > 0])
         self.assertEqual(num_bonuses, 3)
 
