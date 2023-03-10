@@ -473,9 +473,11 @@ class Commission(models.Model):
                                    filter(published__gte=month_start).\
                                    filter(published__lt=publish_time).\
                                    filter(author_01=self.invoice.author).count() + 1
-            print("published: "+published_this_month)
+            print("published: ")
+            print(published_this_month)
             if published_this_month>=BONUSES['articles']:
-                    print("bonus amount:"+BONUSES['bonus'])
+                    print("bonus amount:")
+                    print(BONUSES['bonus'])
                     return BONUSES['bonus']
             else:
                     return 0.00
