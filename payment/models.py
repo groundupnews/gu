@@ -134,7 +134,7 @@ class RateCard(models.Model):
     complex_feature = models.FloatField(default=0.0)
     bonus = models.FloatField(default=0.0)
     bonus_article = models.PositiveSmallIntegerField(default=4)
-    bonus_bonus = models.FloatField(default=500.00)
+    bonus = models.FloatField(default=500.00)
     allowance = models.FloatField(default=0.0)
     level_intern = models.FloatField(default=0.5)
     level_standard = models.FloatField(default=1.0)
@@ -170,7 +170,7 @@ class RateCard(models.Model):
             RATES['complex_feature'] = ratecard.complex_feature
 
             BONUSES['articles'] = ratecard.bonus_article 
-            BONUSES['bonus'] = ratecard.bonus_bonus
+            BONUSES['bonus'] = ratecard.bonus
             LEVELS['intern'] =  ratecard.level_intern
             LEVELS['standard'] = ratecard.level_standard
             LEVELS['senior'] = ratecard.level_senior
