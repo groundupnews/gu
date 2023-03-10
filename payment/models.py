@@ -51,13 +51,10 @@ RATES = {
     'complex_feature': 2376.0
 }
 
-BONUSES = [  0,   0,   0,   0,   500, 500, 500, 500, 500, 500,
-             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-             500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-             500, 500, 500, 500, 500, 500, 500, 500, 500, 500 ]
+BONUSES = {
+    'articles': 4,
+    'bonus': 500
+}
 
 LEVELS = {
     'intern': 0.5,
@@ -137,6 +134,7 @@ class RateCard(models.Model):
     complex_feature = models.FloatField(default=0.0)
     bonus = models.FloatField(default=0.0)
     bonus_article = models.PositiveSmallIntegerField(default=4)
+    bonus_bonus = models.FloatField(default=500.00)
     allowance = models.FloatField(default=0.0)
     level_intern = models.FloatField(default=0.5)
     level_standard = models.FloatField(default=1.0)
@@ -150,6 +148,7 @@ class RateCard(models.Model):
     @staticmethod
     def get_current_record():
         try:
+            #Is the ratecard being read in at this point?
             return RateCard.objects.filter(date_from__lte=timezone.now()).\
                 latest('date_from')
         except:
@@ -170,13 +169,14 @@ class RateCard(models.Model):
             RATES['simple_feature'] = ratecard.simple_feature
             RATES['complex_feature'] = ratecard.complex_feature
 
-            BONUSES = ratecard.bonus_article * [0] + 50 * [ratecard.bonus]
+            BONUSES['articles'] = ratecard.bonus_article 
+            BONUSES['bonus'] = ratecard.bonus_bonus
             LEVELS['intern'] =  ratecard.level_intern
             LEVELS['standard'] = ratecard.level_standard
             LEVELS['senior'] = ratecard.level_senior
             LEVELS['experienced'] = ratecard.level_experienced
             LEVELS['exceptional'] = ratecard.level_exceptional
-
+            
     class Meta:
         ordering = ["-date_from", ]
 
@@ -413,6 +413,9 @@ class CommissionQuerySet(models.QuerySet):
 
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
+    
+    RateCard.populate_rates()
+    
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, blank=True, null=True,
                                 on_delete=models.CASCADE)
@@ -458,6 +461,8 @@ class Commission(models.Model):
         super(Commission, self).save(*args, **kwargs)
 
     def estimate_bonus(self):
+        RateCard.populate_rates()
+        
         if self.article and self.article.is_published() \
            and self.article.author_01 == self.invoice.author \
            and self.invoice.author.freelancer == "f":
@@ -468,7 +473,12 @@ class Commission(models.Model):
                                    filter(published__gte=month_start).\
                                    filter(published__lt=publish_time).\
                                    filter(author_01=self.invoice.author).count() + 1
-            return BONUSES[published_this_month]
+            print("published: "+published_this_month)
+            if published_this_month>=BONUSES['articles']:
+                    print("bonus amount:"+BONUSES['bonus'])
+                    return BONUSES['bonus']
+            else:
+                    return 0.00
         else:
             return 0.00
 
@@ -536,6 +546,8 @@ class Commission(models.Model):
         return estimate
 
     def estimate_payment_writer(self, estimate):
+        RateCard.populate_rates()
+        
         try:
             experience = LEVELS[self.invoice.author.level]
         except:

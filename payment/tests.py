@@ -149,6 +149,8 @@ class InvoiceTest(TestCase):
         rate_card = RateCard()
         rate_card.allowance = 500.00
         rate_card.date_from = timezone.datetime(2020,1,1)
+        rate_card.bonus_bonus = 530.00
+        rate_card.bonus_articles = 4
         rate_card.save()
 
     def test_commissions(self):
@@ -227,6 +229,11 @@ class InvoiceTest(TestCase):
 
         commissions = Commission.objects.filter(
             invoice__author__last_name="Bloggs")
+        #commissions[4] is a known bonus commission and so here we confirm that it is reading the non-default value of 530
+        self.assertEqual(commissions[0].estimate_bonus(), 530)
+        #remove this loop, this is printing what the estimates are for each commission
+        for c in commissions:
+                print(c.estimate_bonus())
         num_bonuses = len([True for c in commissions if c.estimate_bonus() > 0])
         self.assertEqual(num_bonuses, 3)
 
