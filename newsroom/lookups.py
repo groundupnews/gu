@@ -25,8 +25,13 @@ class AuthorLookup(LookupChannel):
     help_text = "Name of author"
 
     def get_query(self, q, request):
-        query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
-                Q(first_names__icontains=q)
+        if ' ' in q:
+            arr=q.split()
+            query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
+                    
+        else:
+            query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
+                    Q(first_names__icontains=q)
         return self.model.objects.filter(query).filter(email__isnull=False).\
             order_by("last_name")
 
@@ -48,8 +53,13 @@ class AuthorOnlyLookup(LookupChannel):
         return True
 
     def get_query(self, q, request):
-        query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
-                Q(first_names__icontains=q)
+        if ' ' in q:
+            arr=q.split()
+            query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
+                    
+        else:
+            query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
+                    Q(first_names__icontains=q)
         return self.model.objects.filter(query).\
             exclude(freelancer='t').\
             filter(email__isnull=False).\
