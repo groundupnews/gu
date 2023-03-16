@@ -27,8 +27,11 @@ class AuthorLookup(LookupChannel):
     def get_query(self, q, request):
         if ' ' in q:
             arr=q.split()
-            query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
-                    
+            if len(arr)>1:
+                query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
+            else:
+                print(arr[0])
+                query = Q(first_names__icontains=arr[0]) | Q(last_name__icontains=q) | Q(pk__icontains=q)        
         else:
             query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
                     Q(first_names__icontains=q)
