@@ -56,8 +56,8 @@ class AuthorOnlyLookup(LookupChannel):
         return True
 
     def get_query(self, q, request):
-        if ' ' in q:
-            arr=q.split()
+        arr=q.split()
+        if len(arr)>1:
             query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
                     
         else:
