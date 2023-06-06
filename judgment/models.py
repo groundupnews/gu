@@ -93,10 +93,10 @@ class Court(models.Model):
 
 
 class Event(models.Model):
-    case_number = models.CharField(
+    case_id = models.CharField(
             max_length=20,
             validators=[validate_case],
-            help_text="Enter a valid South African court case number.")
+            help_text="Enter a valid South African court case id.")
     case_name = models.CharField(
             max_length=100, blank=True,
             help_text="E.g. Jane Doe and Others v Joe Bloggs and Other")
@@ -143,7 +143,7 @@ class Event(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
-        return self.case_number + '-' + str(self.pk) + \
+        return self.case_id + '-' + str(self.pk) + \
                 ' (' + self.case_name + ')'
 
     def get_absolute_url(self):
@@ -151,20 +151,20 @@ class Event(models.Model):
 
 
     @staticmethod
-    def get_consolidated_cases(case_numbers=None, reserved=None,
+    def get_consolidated_cases(case_ids=None, reserved=None,
                                months=None):
         query = Q(process_status='P')
 
-        if case_numbers:
-            query = query & Q(case_number__in=case_numbers)
+        if case_ids:
+            query = query & Q(case_id__in=case_ids)
         cases = Event.objects.filter(query).order_by(
-                'case_number', 'event_date')
+                'case_id', 'event_date')
         consolidated = []
         current = None
         for c in cases:
-            if c.case_number != current:
+            if c.case_id != current:
                 consolidated.append({
-                    'case_number': c.case_number,
+                    'case_id': c.case_id,
                     'case_name': "",
                     'court': "",
                     'court_pk': "",
@@ -175,7 +175,7 @@ class Event(models.Model):
                     'date_current': "",
                     'notes': ""
                     })
-                current = c.case_number
+                current = c.case_id
             record = consolidated[-1]
             if c.accept_case_name:
                 record['case_name'] = c.case_name
@@ -210,5 +210,5 @@ class Event(models.Model):
         return consolidated
 
     class Meta:
-        ordering = ['case_number', '-modified',]
+        ordering = ['case_id', '-modified',]
 

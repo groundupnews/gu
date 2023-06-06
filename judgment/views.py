@@ -46,20 +46,20 @@ def get_case(request):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
                 post_data = json.loads(request.body.decode("utf-8"))
-                case_number = post_data['case_number']
-                cases = models.Event.get_consolidated_cases([case_number,])
+                case_id = post_data['case_id']
+                cases = models.Event.get_consolidated_cases([case_id,])
                 if cases:
                     data = cases[0]
                 else:
-                    data = {'case_number': ''}
+                    data = {'case_id': ''}
             except Exception as e:
-                logger.error("Can't fetch case_number %s: %s" %
-                        (case_number, str(e)))
+                logger.error("Can't fetch case_id %s: %s" %
+                        (case_id, str(e)))
                 raise Http404
             return JsonResponse(data)
         else:
             logger.error("get_case must be called as JSON")
             raise PermissionDenied()
     except Exception as e:
-        logger.error("Something went wrong: %s" % (case_number, str(e)))
+        logger.error("Something went wrong: %s" % (case_id, str(e)))
         raise Http404

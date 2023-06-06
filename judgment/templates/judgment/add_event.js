@@ -30,7 +30,7 @@ function init()
 {
     console.log("A");
     hideFields();
-    document.getElementById("id_case_number").
+    document.getElementById("id_case_id").
         addEventListener("blur", function(e) {
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             fetch("{% url 'judgment:get_case' %}", {
@@ -40,7 +40,7 @@ function init()
                     'X-Requested-With': 'XMLHttpRequest',},
                 mode: 'same-origin',
                 body: JSON.stringify({
-                    "case_number": e.target.value,
+                    "case_id": e.target.value,
                 })
             }).then(response => {
                 if (response.status === 200) {
@@ -49,7 +49,7 @@ function init()
                     throw 'Error getting case number: ' +  response.status;
                 }
             }).then(data => {
-                if (data.case_number != '') {
+                if (data.case_id != '') {
                     for (let field of FIELDS) {
                         if (field.substr(3) in data) {
                             document.getElementById(field).value =
