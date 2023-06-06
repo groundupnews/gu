@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+List of cases {{block.super}}
+{% endblock %}
+
+{% block css-override %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.default.min.css"
+    integrity="sha512-wghhOJkjQX0Lh3NSWvNKeZ0ZpNn+SPVXX1Qyc9OCaogADktxrBiBdKGDoqVUOyhStvMBmJQ8ZdMHiR3wuEq8+w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+{% include "judgment/judgment.css" %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-area">
+    <div>
+    {% include "judgment/menu.html" %}
+    </div>
+    <h1>List of cases</h1>
+    <table id="case-list" class="table table-responsive">
+        <thead>
+            <th>
+                Court
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Judge(s)
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Reserved
+            </th>
+            <th>
+                Resolved
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in object_list %}
+            <tr>
+                <td>{{obj.case_number}}</td>
+                <td>{{obj.court}}</td>
+                <td>{{obj.judges}}</td>
+                <td>{{obj.status_display}}</td>
+                <td>{{obj.date_reserved|date:"Y-m-d"}}</td>
+                <td>{{obj.date_current|date:"Y-m-d"}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+
+{% block javascript-includes %}
+{{block.super}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"
+    integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+$(function() {
+  $("#case-list").tablesorter();
+});
+</script>
+{% endblock %}
