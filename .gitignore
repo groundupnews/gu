@@ -61,6 +61,8 @@ share/
 db_backup*.sql
 groundup/local_settings_flymake.py
 static/CACHE
+backup-local-20230116.sql
+*.swp
 
 # Virtual Environment
 venv/

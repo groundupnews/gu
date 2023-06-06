@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Thank you for adding an event {{block.super}}
+{% endblock %}
+
+{% block css-override %}
+<style>
+{% include "judgment/judgment.css" %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-area">
+    <div id="content-area">
+        <div>
+            {% include "judgment/menu.html" %}
+        </div>
+        <h1>Thank you!</h1>
+        <div id="center-block">
+            <p>Your update on a reserved judgment has been added</p>
+            <p>Thank you for providing us this information.</p>
+
+            <p>We will check what you have provided and then update our system. This
+            can take up to three business days.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

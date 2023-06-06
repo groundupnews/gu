@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reserved judgments {{block.super}}
+{% endblock %}
+
+{% block css-override %}
+<style>
+{% include "judgment/judgment.css" %}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{% endblock %}
+
+{% block content %}
+<div id="content-area">
+    <div>
+        {% include "judgment/menu.html" %}
+    </div>
+    <h1>
+        Reserved Judgments
+    </h1>
+    <div id="center-block">
+        <p>
+        Please use this form to tell us that
+        </p>
+        <ul>
+            <li>a judgment has been reserved,</li>
+            <li>a reserved judgment has been handed down (or a case has been
+                resolved for some other reason), or</li>
+            <li>a correction must be made.</li>
+        </ul>
+
+        <p>We currently don't have capacity to handle magistrate courts. The
+        sole purpose of this is to record reserved judgments. This is not a
+        complaint form about any other court problems.<p>
+
+        <form method="POST" action="{% url 'judgment:event_add' %}">{% csrf_token %}
+            {{form.as_p}}
+            <input id="event-add-submit" class="btn btn-primary"
+                   type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript-includes %}
+
+{{block.super}}
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr('[data-toggle="datepicker"]', {
+            allowInput: true
+        });
+</script>
+<script>
+    {% include "judgment/add_event.js" %}
+</script>
+{% endblock %}

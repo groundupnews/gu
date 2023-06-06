@@ -1,0 +1,27 @@
+<ul id="judgment-menu">
+    <li>
+        <a href="{% url 'judgment:list' %}">
+            All
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:list' %}?p=reserved">
+            Reserved
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:list' %}?p=3m">
+            Late >3m
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:list' %}?p=6m">
+            Late >6m
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:event_add' %}">
+            Update
+        </a>
+    </li>
+</ul>
