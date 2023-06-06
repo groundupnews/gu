@@ -5,7 +5,9 @@ from django.utils.timezone import make_aware
 from django.urls import reverse
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 
+import re
 
 EVENT_CHOICES = (
         ("R", "Judgment reserved", ),
@@ -70,6 +72,14 @@ COURTS = [
         ]
 
 
+def validate_case(value):
+    pattern = '^\s*\w*\s*\d+/\d+\s*$'
+    if not re.match(pattern, value):
+        raise ValidationError("%(value)s is not a valid case number.",
+                              params={"value": value},
+        )
+
+
 class Court(models.Model):
     name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -85,6 +95,7 @@ class Court(models.Model):
 class Event(models.Model):
     case_number = models.CharField(
             max_length=20,
+            validators=[validate_case],
             help_text="Enter a valid South African court case number.")
     case_name = models.CharField(
             max_length=100, blank=True,
