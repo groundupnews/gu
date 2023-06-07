@@ -46,6 +46,10 @@ input {
     padding-right: 12px;
 }
 
+#case-stats {
+    text-align: center;
+}
+
 .admin-only a {
     color: red;
 }

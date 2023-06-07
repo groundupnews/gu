@@ -20,6 +20,9 @@ List of cases {{block.super}}
         {% include "judgment/menu.html" %}
     </div>
     <h1>List of cases</h1>
+    <p id="case-stats">
+    {{object_list|length}} cases
+    </p>
     <table id="case-list" class="table table-responsive">
         <thead>
             <th>
@@ -57,9 +60,9 @@ List of cases {{block.super}}
                     {{obj.case_id}}
                     {% endif %}
                 </td>
-                <td>{{obj.case_name}}</td>
+                <td><span max-width="150px;">{{obj.case_name}}</span></td>
                 <td>{{obj.court}}</td>
-                <td>{{obj.judges}}</td>
+                <td><span max-width="150px;">{{obj.judges}}</span></td>
                 <td>{{obj.status_display}}</td>
                 <td>{{obj.date_reserved|date:"Y-m-d"}}</td>
                 <td>
