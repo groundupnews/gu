@@ -7,8 +7,8 @@ List of cases {{block.super}}
 
 {% block css-override %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.default.min.css"
-    integrity="sha512-wghhOJkjQX0Lh3NSWvNKeZ0ZpNn+SPVXX1Qyc9OCaogADktxrBiBdKGDoqVUOyhStvMBmJQ8ZdMHiR3wuEq8+w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+                       integrity="sha512-wghhOJkjQX0Lh3NSWvNKeZ0ZpNn+SPVXX1Qyc9OCaogADktxrBiBdKGDoqVUOyhStvMBmJQ8ZdMHiR3wuEq8+w=="
+                       crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
 {% include "judgment/judgment.css" %}
 </style>
@@ -17,7 +17,7 @@ List of cases {{block.super}}
 {% block content %}
 <div id="content-area">
     <div>
-    {% include "judgment/menu.html" %}
+        {% include "judgment/menu.html" %}
     </div>
     <h1>List of cases</h1>
     <table id="case-list" class="table table-responsive">
@@ -28,7 +28,7 @@ List of cases {{block.super}}
             <th>
                 Name
             </th>
-             <th>
+            <th>
                 Court
             </th>
             <th>
@@ -54,7 +54,7 @@ List of cases {{block.super}}
                         {{obj.case_id}}
                     </a>
                     {% else %}
-                        {{obj.case_id}}
+                    {{obj.case_id}}
                     {% endif %}
                 </td>
                 <td>{{obj.case_name}}</td>
@@ -62,7 +62,13 @@ List of cases {{block.super}}
                 <td>{{obj.judges}}</td>
                 <td>{{obj.status_display}}</td>
                 <td>{{obj.date_reserved|date:"Y-m-d"}}</td>
-                <td>{{obj.date_current|date:"Y-m-d"}}</td>
+                <td>
+                    {% if obj.status == "R" %}
+                    Not yet
+                    {% else %}
+                    {{obj.date_current|date:"Y-m-d"}}</td>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -74,11 +80,11 @@ List of cases {{block.super}}
 {% block javascript-includes %}
 {{block.super}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"
-    integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-$(function() {
-  $("#case-list").tablesorter();
-});
+    $(function() {
+            $("#case-list").tablesorter();
+        });
 </script>
 {% endblock %}

@@ -45,3 +45,7 @@ input {
     display: inline-block;
     padding-right: 12px;
 }
+
+.admin-only a {
+    color: red;
+}
