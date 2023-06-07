@@ -23,10 +23,13 @@ List of cases {{block.super}}
     <table id="case-list" class="table table-responsive">
         <thead>
             <th>
-                Court
+                Case id
             </th>
             <th>
                 Name
+            </th>
+             <th>
+                Court
             </th>
             <th>
                 Judge(s)
@@ -45,7 +48,16 @@ List of cases {{block.super}}
         <tbody>
             {% for obj in object_list %}
             <tr>
-                <td>{{obj.case_id}}</td>
+                <td>
+                    {% if request.user.is_staff %}
+                    <a href="{% url 'admin:judgment_event_changelist' %}?q={{obj.case_id}}">
+                        {{obj.case_id}}
+                    </a>
+                    {% else %}
+                        {{obj.case_id}}
+                    {% endif %}
+                </td>
+                <td>{{obj.case_name}}</td>
                 <td>{{obj.court}}</td>
                 <td>{{obj.judges}}</td>
                 <td>{{obj.status_display}}</td>
