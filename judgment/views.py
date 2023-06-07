@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 from . import forms, models
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView, DetailView, TemplateView
@@ -23,17 +24,22 @@ class EventListView(ListView):
     template_name = "judgment/event_list.html"
     def get(self, request, *args, **kwargs):
         param = None
+        desc = ""
         if 'p' in self.request.GET:
             param = self.request.GET['p']
         if param == 'reserved':
             self.object_list = models.Event.get_consolidated_cases(reserved=True)
+            desc = "reserved"
         elif param == '3m':
             self.object_list = models.Event.get_consolidated_cases(reserved=True, months=3)
+            desc = "reserved at least three months ago"
         elif param == '6m':
             self.object_list = models.Event.get_consolidated_cases(reserved=True, months=6)
+            desc = "reserved at least six months ago"
         else:
             self.object_list = models.Event.get_consolidated_cases()
         context = self.get_context_data(object_list=self.object_list)
+        context["desc"] = desc
         return self.render_to_response(context)
 
 
@@ -46,8 +52,9 @@ def get_case(request):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
                 post_data = json.loads(request.body.decode("utf-8"))
-                case_id = post_data['case_id']
+                case_id = post_data['case_id'].replace(" ", "")
                 cases = models.Event.get_consolidated_cases([case_id,])
+                print("case_id", case_id)
                 if cases:
                     data = cases[0]
                 else:

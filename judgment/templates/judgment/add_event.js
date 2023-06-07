@@ -50,6 +50,7 @@ function init()
                 }
             }).then(data => {
                 if (data.case_id != '') {
+                    document.getElementById("id_case_id").value = data.case_id
                     for (let field of FIELDS) {
                         if (field.substr(3) in data) {
                             document.getElementById(field).value =
@@ -60,7 +61,11 @@ function init()
                         data['court_pk'];
                     document.getElementById('id_event_date').value = "";
                 }
-                showFields();
+                if (document.getElementById('id_case_id').value == "") {
+                    hideFields();
+                } else {
+                    showFields();
+                }
             }).catch((error) => {
                 console.error('Error:', error);
             });

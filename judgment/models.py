@@ -147,8 +147,11 @@ class Event(models.Model):
                 ' (' + self.case_name + ')'
 
     def get_absolute_url(self):
-        return reverse('judgment:case.detail', args=[self.pk, ])
+        return reverse('judgment:list')
 
+    def save(self, *args, **kwargs):
+        self.case_id.replace(" ", "")
+        super().save(*args, **kwargs)
 
     @staticmethod
     def get_consolidated_cases(case_ids=None, reserved=None,
@@ -208,6 +211,7 @@ class Event(models.Model):
             consolidated = [c for c in consolidated if c['date_current'] and
                      cutoff > c['date_current']]
         return consolidated
+
 
     class Meta:
         ordering = ['case_id', '-modified',]

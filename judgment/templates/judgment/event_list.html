@@ -21,7 +21,12 @@ List of cases {{block.super}}
     </div>
     <h1>List of cases</h1>
     <p id="case-stats">
-    {{object_list|length}} cases
+    {{object_list|length}}
+    {% if desc %}
+       judgment{{object_list|length|pluralize}} {{desc}}
+    {% else %}
+       cases
+    {% endif %}
     </p>
     <table id="case-list" class="table table-responsive">
         <thead>
@@ -70,7 +75,7 @@ List of cases {{block.super}}
                     Not yet
                     {% else %}
                     {{obj.date_current|date:"Y-m-d"}}</td>
-                    {% endif %}
+                {% endif %}
                 </td>
             </tr>
             {% endfor %}
