@@ -54,7 +54,6 @@ def get_case(request):
                 post_data = json.loads(request.body.decode("utf-8"))
                 case_id = post_data['case_id'].replace(" ", "")
                 cases = models.Event.get_consolidated_cases([case_id,])
-                print("case_id", case_id)
                 if cases:
                     data = cases[0]
                 else:
