@@ -98,7 +98,7 @@ class Event(models.Model):
             validators=[validate_case],
             help_text="Enter a valid South African court case id.")
     case_name = models.CharField(
-            max_length=100, blank=True,
+            max_length=200, blank=True,
             help_text="E.g. Jane Doe and Others v Joe Bloggs and Other")
     accept_case_name = models.BooleanField(default=False)
     court = models.ForeignKey(Court, on_delete=models.CASCADE,
