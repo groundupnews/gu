@@ -16,9 +16,6 @@ List of cases {{block.super}}
 
 {% block content %}
 <div id="content-area">
-    <div>
-        {% include "judgment/menu.html" %}
-    </div>
     <h1>List of cases</h1>
 
     <noscript>
@@ -39,6 +36,25 @@ List of cases {{block.super}}
         <option value="three">Judgments reserved more than 3 months ago</option>
         <option value="six">Judgments reserved more than 6 months ago</option>
     </select>
+
+    <ul id="judgment-menu">
+        <li>
+            <a href="{% url 'judgment:event_add' %}">Add or update a reserved judgment</a>
+        </li>
+        {% if request.user.is_staff %}
+        <li class="admin-only">
+            <a href="{% url 'admin:judgment_court_changelist' %}">
+                Admin:Courts
+            </a>
+        </li>
+        <li class="admin-only">
+            <a href="{% url 'admin:judgment_event_changelist' %}">
+                Admin:Events
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
 
     <table id="case-list" class="table table-responsive">
         <thead>

@@ -13,13 +13,36 @@ Reserved judgments {{block.super}}
 
 {% block content %}
 <div id="content-area">
-    <div>
-        {% include "judgment/menu.html" %}
+
+    <div style="text-align: center; margin: auto; padding: 12px;">
+        <a href="{% url 'judgment:list' %}"
+           style="text-align: center;">
+            List of cases
+        </a>
+        {% if request.user.is_staff %}
+        <ul id="judgment-menu">
+            <li class="admin-only">
+                <a href="{% url 'admin:judgment_court_changelist' %}">
+                    Admin:Courts
+                </a>
+            </li>
+            <li class="admin-only">
+                <a href="{% url 'admin:judgment_event_changelist' %}">
+                    Admin:Events
+                </a>
+            </li>
+        </ul>
+        {% endif %}
+
     </div>
+
+
     <h1>
         Reserved Judgments
     </h1>
+
     <div id="center-block">
+
         <p>
         Please use this form to tell us that
         </p>
@@ -37,7 +60,7 @@ Reserved judgments {{block.super}}
         <form method="POST" action="{% url 'judgment:event_add' %}">{% csrf_token %}
             {{form.as_p}}
             <input id="event-add-submit" class="btn btn-primary"
-                   type="submit" value="Submit" />
+                                         type="submit" value="Submit" />
         </form>
     </div>
 </div>

@@ -39,6 +39,7 @@ input {
 
 #judgment-menu {
     list-style: none;
+    display: inline;
 }
 
 #judgment-menu li{
@@ -55,10 +56,12 @@ input {
 }
 
 .late {
-    color: red;
+    font-weight: bold;
 }
 
 .very-late {
-    font-style: bold;
+    font-weight: bold;
+    font-style: italic;
 }
+
 
