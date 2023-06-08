@@ -53,3 +53,12 @@ input {
 .admin-only a {
     color: red;
 }
+
+.late {
+    color: red;
+}
+
+.very-late {
+    font-style: bold;
+}
+

@@ -157,7 +157,7 @@ class Event(models.Model):
     def get_consolidated_cases(case_ids=None, reserved=None,
                                months=None):
         query = Q(process_status='P')
-
+        now = datetime.datetime.now()
         if case_ids:
             query = query & Q(case_id__in=case_ids)
         cases = Event.objects.filter(query).order_by(
@@ -176,7 +176,9 @@ class Event(models.Model):
                     'status_display': "",
                     'date_reserved': "",
                     'date_current': "",
-                    'notes': ""
+                    'notes': "",
+                    '3m': False,
+                    '6m': False,
                     })
                 current = c.case_id
             record = consolidated[-1]
@@ -197,6 +199,15 @@ class Event(models.Model):
                 if c.event_type == 'R':
                     record['date_reserved'] = datetime.datetime(
                         c.event_date.year, c.event_date.month, c.event_date.day)
+                    if now - relativedelta(months=3) > \
+                            record['date_current']:
+                        record['3m'] = True
+                    if now - relativedelta(months=6) > \
+                            record['date_current']:
+                        record['6m'] = True
+                else:
+                    record['3m'] = False
+                    record['6m'] = False
             if c.accept_notes:
                 record['notes'] = c.notes
         if reserved is True:
@@ -207,7 +218,7 @@ class Event(models.Model):
                     if c['status'] != 'R']
         if months:
             delta = relativedelta(months=months)
-            cutoff = datetime.datetime.now() - delta
+            cutoff = now - delta
             consolidated = [c for c in consolidated if c['date_current'] and
                      cutoff > c['date_current']]
         return consolidated

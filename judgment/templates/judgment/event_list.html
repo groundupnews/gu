@@ -20,14 +20,26 @@ List of cases {{block.super}}
         {% include "judgment/menu.html" %}
     </div>
     <h1>List of cases</h1>
-    <p id="case-stats">
-    {{object_list|length}}
-    {% if desc %}
-       judgment{{object_list|length|pluralize}} {{desc}}
-    {% else %}
-       cases
-    {% endif %}
-    </p>
+
+    <noscript>
+        <p id="case-stats">
+        {{object_list|length}}
+        {% if desc %}
+        judgment{{object_list|length|pluralize}} {{desc}}
+        {% else %}
+        cases
+        {% endif %}
+        </p>
+    </noscript>
+
+    <select name="filter-cases" id="filter-cases">
+        <option value="all">All cases</option>
+        <option value="handed">Judgments handed down</option>
+        <option value="reserved">Reserved judgments</option>
+        <option value="three">Judgments reserved more than 3 months ago</option>
+        <option value="six">Judgments reserved more than 6 months ago</option>
+    </select>
+
     <table id="case-list" class="table table-responsive">
         <thead>
             <th>
@@ -54,31 +66,33 @@ List of cases {{block.super}}
             </tr>
         </thead>
         <tbody>
-            {% for obj in object_list %}
-            <tr>
-                <td>
-                    {% if request.user.is_staff %}
-                    <a href="{% url 'admin:judgment_event_changelist' %}?q={{obj.case_id}}">
+            <noscript>
+                {% for obj in object_list %}
+                <tr>
+                    <td>
+                        {% if request.user.is_staff %}
+                        <a href="{% url 'admin:judgment_event_changelist' %}?q={{obj.case_id}}">
+                            {{obj.case_id}}
+                        </a>
+                        {% else %}
                         {{obj.case_id}}
-                    </a>
-                    {% else %}
-                    {{obj.case_id}}
+                        {% endif %}
+                    </td>
+                    <td><span max-width="150px;">{{obj.case_name}}</span></td>
+                    <td>{{obj.court}}</td>
+                    <td><span max-width="150px;">{{obj.judges}}</span></td>
+                    <td>{{obj.status_display}}</td>
+                    <td>{{obj.date_reserved|date:"Y-m-d"}}</td>
+                    <td>
+                        {% if obj.status == "R" %}
+                        Not yet
+                        {% else %}
+                        {{obj.date_current|date:"Y-m-d"}}</td>
                     {% endif %}
-                </td>
-                <td><span max-width="150px;">{{obj.case_name}}</span></td>
-                <td>{{obj.court}}</td>
-                <td><span max-width="150px;">{{obj.judges}}</span></td>
-                <td>{{obj.status_display}}</td>
-                <td>{{obj.date_reserved|date:"Y-m-d"}}</td>
-                <td>
-                    {% if obj.status == "R" %}
-                    Not yet
-                    {% else %}
-                    {{obj.date_current|date:"Y-m-d"}}</td>
-                {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </noscript>
         </tbody>
     </table>
 </div>
@@ -91,8 +105,6 @@ List of cases {{block.super}}
         integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $(function() {
-            $("#case-list").tablesorter();
-        });
+    {% include "judgment/event_list.js" %}
 </script>
 {% endblock %}
