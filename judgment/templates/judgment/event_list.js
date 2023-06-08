@@ -38,7 +38,7 @@ function init() {
             td = document.createElement("td");
             {% if request.user.is_staff %}
             let a1 = document.createElement("a");
-            a1.href = "{% url 'admin:judgment_event_changelist' %}?q={{obj.case_id}}";
+            a1.href = "{% url 'admin:judgment_event_changelist' %}?q=" + entry.case_id;
             a1.textContent = entry.case_id;
             td.append(a1);
             {% else %}
