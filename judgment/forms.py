@@ -7,8 +7,8 @@ class EventAddForm(ModelForm):
 
     class Meta:
         model = models.Event
-        fields = ('case_id', 'email_address', 'event_type', 'court',
-                  'event_date', 'case_name', 'judges',
+        fields = ('case_id', 'email_address', 'event_type',
+                  'event_date', 'court', 'case_name', 'judges',
                   'document_url', 'document', 'notes')
         widgets = {
           'case_id': forms.TextInput(attrs={'autofocus': True}),
