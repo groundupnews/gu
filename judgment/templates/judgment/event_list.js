@@ -25,7 +25,6 @@ function init() {
         for (const entry of entries) {
             let tr = document.createElement("tr");
             tbody.append(tr);
-            console.log(entry.three_months, entry.six_months);
             if (entry.status != "R") {
                 tr.classList.add("resolved");
             }
@@ -76,10 +75,7 @@ function init() {
     });
     function filter_cases(criterion) {
         let cases = [];
-        console.log(criterion);
         for (let entry of cases_array) {
-            console.log(entry, entry.status, entry.three_months,
-                entry.six_months);
             if (criterion == "all") {
                 cases.push(entry);
             } else if (criterion == "reserved") {
@@ -107,6 +103,9 @@ function init() {
         const criterion = document.getElementById("filter-cases").value;
         let cases = filter_cases(criterion);
         render_table(cases);
+        let desc = cases.length + " case";
+        if (cases.length != 1) desc += "s";
+        document.getElementById("case-count").textContent = desc;
     }
 
     document.getElementById("filter-cases").
