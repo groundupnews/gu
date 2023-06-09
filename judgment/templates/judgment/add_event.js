@@ -28,8 +28,6 @@ function showFields()
 
 function init()
 {
-    console.log("A");
-    hideFields();
     document.getElementById("id_case_id").
         addEventListener("blur", function(e) {
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -61,11 +59,7 @@ function init()
                         data['court_pk'];
                     document.getElementById('id_event_date').value = "";
                 }
-                if (document.getElementById('id_case_id').value == "") {
-                    hideFields();
-                } else {
-                    showFields();
-                }
+
             }).catch((error) => {
                 console.error('Error:', error);
             });

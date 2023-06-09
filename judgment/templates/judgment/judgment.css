@@ -33,6 +33,10 @@ input {
     color: red;
 }
 
+#case-list {
+    margin-top: 16px;
+}
+
 #case-list th {
     cursor: pointer;
 }
@@ -55,13 +59,32 @@ input {
     color: red;
 }
 
-.late {
-    font-weight: bold;
+#filter-cases {
+    max-width: 100%;
 }
 
-.very-late {
-    font-weight: bold;
-    font-style: italic;
+#case-count {
+    margin-left: 12px;
 }
 
-
+@media only screen and (max-width: 400px) {
+    #filter-cases {
+        font-size: 70%;
+    }
+    #case-count {
+        font-size: 70%;
+        display: block;
+        margin-left: 0;
+        margin-top: 6px;
+        padding-left: 0;
+        text-align: left;
+    }
+    #judgment-menu {
+        font-size: 70%;
+        display: block;
+        margin-left: 0;
+        margin-top: 6px;
+        padding-left: 0;
+        text-align: left;
+    }
+}

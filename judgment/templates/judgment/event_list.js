@@ -18,6 +18,12 @@ function init() {
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
     ];
+
+    function sort_cases(cases, column) {
+        cases.sort(function(a, b){return a[column] < b[column]});
+        return cases;
+    }
+
     function render_table(entries)
     {
         let tbody = document.querySelector("#case-list tbody");
@@ -46,7 +52,7 @@ function init() {
             {% endif %}
             tr.append(td);
             td = document.createElement("td");
-            td.textContent = entry.case_name;
+            td.innerHTML = entry.case_name;
             tr.append(td);
             td = document.createElement("td");
             td.textContent = entry.court;
@@ -55,7 +61,7 @@ function init() {
             td.textContent = entry.judges;
             tr.append(td);
             td = document.createElement("td");
-            td.textContent = entry.status_display;
+            td.innerHTML = entry.status_display;
             tr.append(td);
             td = document.createElement("td");
             td.textContent = entry.date_reserved;
@@ -82,16 +88,26 @@ function init() {
                 if (entry.status == "R") {
                     cases.push(entry);
                 }
+            } else if (criterion == "reserved_3") {
+                if (entry.status == "R" && (entry.three_months ||
+                    entry.six_months)) {
+                    cases.push(entry);
+                }
+            } else if (criterion == "reserved_6") {
+                if (entry.status == "R" && entry.six_months) {
+                    cases.push(entry);
+                }
             } else if (criterion == "handed") {
                 if (entry.status == "H") {
                     cases.push(entry);
                 }
-            } else if (criterion == "three") {
-                if (entry.three_months) {
+            } else if (criterion == "handed_3") {
+                if (entry.status == "H" && (entry.three_months ||
+                    entry.six_months)) {
                     cases.push(entry);
                 }
-            } else if (criterion == "six") {
-                if (entry.six_months) {
+            } else if (criterion == "handed_6") {
+                if (entry.status == "H" && entry.six_months) {
                     cases.push(entry);
                 }
             }
@@ -106,11 +122,14 @@ function init() {
         let desc = cases.length + " case";
         if (cases.length != 1) desc += "s";
         document.getElementById("case-count").textContent = desc;
+        $("#case-list").trigger("update");
     }
 
     document.getElementById("filter-cases").
         addEventListener("change", set_table);
     set_table();
+
+
 }
 
 init();

@@ -191,23 +191,33 @@ class Event(models.Model):
                 record['judges'] = c.judges
             if c.accept_event_type:
                 record['status'] = c.event_type
-                record['status_display'] = c.get_event_type_display()
             if c.accept_event_date:
-                record['date_current'] = datetime.datetime(
-                        c.event_date.year, c.event_date.month, c.event_date.day)
-                record['event_date'] = record['date_current']
+                record['date_current'] = datetime.datetime.combine(
+                        c.event_date, datetime.datetime.min.time())
                 if c.event_type == 'R':
-                    record['date_reserved'] = datetime.datetime(
-                        c.event_date.year, c.event_date.month, c.event_date.day)
-                    if now - relativedelta(months=3) > \
-                            record['date_current']:
-                        record['3m'] = True
+                    record['date_reserved'] = record['date_current']
+                    record['status_display'] = "Reserved"
                     if now - relativedelta(months=6) > \
                             record['date_current']:
                         record['6m'] = True
+                        record['status_display'] = "Reserved > 6m"
+                    elif now - relativedelta(months=3) > \
+                            record['date_current']:
+                        record['3m'] = True
+                        record['status_display'] = "Reserved > 3m"
                 else:
                     record['3m'] = False
                     record['6m'] = False
+                    record['status_display'] = c.get_event_type_display()
+                    if record['date_reserved']:
+                        if record['date_current'] - relativedelta(months=6) > \
+                                record['date_reserved']:
+                            record['6m'] = True
+                            record['status_display'] += " > 6m"
+                        elif record['date_current'] - relativedelta(months=3) > \
+                                record['date_reserved']:
+                            record['3m'] = True
+                            record['status_display'] += ' > 3m'
             if c.accept_notes:
                 record['notes'] = c.notes
         if reserved is True:
