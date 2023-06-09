@@ -108,7 +108,9 @@ class Event(models.Model):
     judges = models.TextField(blank=True,
             max_length=1000,
             verbose_name="Judge(s)",
-            help_text="Enter first and surnames of judges, one per line. "
+            help_text="Enter one judge per line. "
+            "Surname followed by AJ, J or JP "
+            "(no comma between surname and title). "
             "Please enter at least one judge.")
     accept_judges = models.BooleanField(default=False)
     event_type = models.CharField(
@@ -176,6 +178,7 @@ class Event(models.Model):
                     'status_display': "",
                     'date_reserved': "",
                     'date_current': "",
+                    'url': "",
                     'notes': "",
                     '3m': False,
                     '6m': False,
@@ -189,6 +192,8 @@ class Event(models.Model):
                 record['court_pk'] = str(c.court.pk)
             if c.accept_judges:
                 record['judges'] = c.judges
+            if c.accept_document_url:
+                record['document_url'] = c.document_url
             if c.accept_event_type:
                 record['status'] = c.event_type
             if c.accept_event_date:

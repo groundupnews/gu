@@ -9,6 +9,7 @@ function init() {
                 case_name: "{{obj.case_name}}",
                 court: "{{obj.court}}",
                 judges: "{{obj.judges}}",
+                document_url: "{{obj.document_url|safe}}",
                 status: "{{obj.status}}",
                 status_display: "{{obj.status_display}}",
                 date_reserved: "{{obj.date_reserved|date:'Y-m-d'}}",
@@ -52,7 +53,14 @@ function init() {
             {% endif %}
             tr.append(td);
             td = document.createElement("td");
-            td.innerHTML = entry.case_name;
+            if (entry.document_url) {
+                let a2 = document.createElement("a");
+                a2.innerHTML = entry.case_name;
+                a2.href = entry.document_url;
+                td.append(a2);
+            } else {
+                td.innerHTML = entry.case_name;
+            }
             tr.append(td);
             td = document.createElement("td");
             td.textContent = entry.court;
