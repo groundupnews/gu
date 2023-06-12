@@ -6,9 +6,9 @@ function init() {
         {% for obj in object_list %}
         {
             case_id: "{{obj.case_id}}",
-                case_name: "{{obj.case_name}}",
+                case_name: `{{obj.case_name}}`,
                 court: "{{obj.court}}",
-                judges: "{{obj.judges}}",
+                judges: `{{obj.judges}}`,
                 document_url: "{{obj.document_url|safe}}",
                 status: "{{obj.status}}",
                 status_display: "{{obj.status_display}}",
@@ -136,8 +136,6 @@ function init() {
     document.getElementById("filter-cases").
         addEventListener("change", set_table);
     set_table();
-
-
 }
 
 init();

@@ -3,7 +3,12 @@
 const FIELDS = [
     "id_court", "id_event_date", "id_case_name", "id_judges",
     "id_document_url", "id_document", "id_notes",
-]
+];
+
+const MODI_FIELDS = [
+    "id_case_name", "id_judges",
+    "id_document_url", "id_document", "id_notes",
+];
 
 function hideFields()
 {
@@ -44,22 +49,21 @@ function init()
                 if (response.status === 200) {
                     return response.json();
                 } else {
-                    throw 'Error getting case number: ' +  response.status;
+                    throw 'Error getting case number: ' + response.status;
                 }
             }).then(data => {
                 if (data.case_id != '') {
                     document.getElementById("id_case_id").value = data.case_id
-                    for (let field of FIELDS) {
+                    for (let field of MODI_FIELDS) {
                         if (field.substr(3) in data) {
-                            document.getElementById(field).value =
-                                data[field.substr(3)];
+                            let f = document.getElementById(field);
+                            if (!f.value)
+                                f.value = data[field.substr(3)];
                         }
                     }
                     document.getElementById('id_court').value =
                         data['court_pk'];
-                    document.getElementById('id_event_date').value = "";
                 }
-
             }).catch((error) => {
                 console.error('Error:', error);
             });
