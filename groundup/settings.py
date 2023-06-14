@@ -84,6 +84,7 @@ INSTALLED_APPS = (
     'sudoku',
     'analyzer',
     'pgsearch',
+    'donationPage',
 )
 
 MIDDLEWARE = (

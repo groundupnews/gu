@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load static %}
+{{ form.media }}
+{% load fb_versions %}
+
+
+{% block content %}
+<div style="margin: auto;
+  width: 50%;
+  padding: 10px;">
+<h2>Donor Dashboard</h2>
+<div style="margin-left:15px;">
+<!-- style="display:none;" ~style code to hide the form-->
+<div style="margin-bottom:10px;">
+        
+         <form action="{{ link }}" id="donor_form" method="post">{% csrf_token %}
+            <table>
+                {{form.as_table}}
+            </table>
+            <input id="saveedits" type="submit" value="Update">
+        </form>
+</div>
+
+<br/>
+<h4>Your Donations: </h4>
+      <ul>
+      {% for donation in donations %}
+      <li><p>{{donation.datetime_of_donation}} : {{ donation.donor.display_name }} - {{donation.currency_type}} {{donation.amount }}</p></li>
+      {% endfor %}
+      </ul>
+<button>Request Tax Certificate</button>
+</div>
+</div>
+
+	                
+{% endblock %}
+<!-- Edit this to actually generate the URL, or maybe put the function into the views file where the api call is going to give us new donor information. -->
+{% block javascript-includes %}
+
+    {{block.super}}
+
+    <script>
+     {% include "handle_donorurl.js" %}
+
+     document.getElementById('id_title').
+              addEventListener(
+         'input', function(e) {
+             document.getElementById('id_slug').value =
+                 makeSlug(e.target.value);
+             document.getElementById('word-count').textContent =
+                 e.target.value.trim().length + "/" +
+                 e.target.value.split(" ").filter(function(x) {
+                     return x.length > 0;
+                 }).length;
+     });
+    </script>
+
+{% endblock %}

@@ -25,18 +25,25 @@ class AuthorLookup(LookupChannel):
     help_text = "Name of author"
 
     def get_query(self, q, request):
-        #split the input on whitespace, this doubles to strip the input of problematic whitespace
-        #doesn't support multi word names since whitespace is removed the database won't match (RSM SA Consulting (Pty) Ltd won't autocomplete beyond a single word match)
-        arr=q.split()
-        #check if the input has more than one word as search terms
-        if len(arr)>1:
-            query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
-        else:
-            #we must use array[0] since q may contain the whitespace that breaks the search. 
-            query = Q(first_names__icontains=arr[0]) | Q(last_name__icontains=arr[0]) | Q(pk__icontains=arr[0])        
+        try:
+            #if an empty query is passed
+            if not q:
+                return None
+            #split the input on whitespace, this doubles to strip the input of problematic whitespace
+            #doesn't support multi word names since whitespace is removed the database won't match (RSM SA Consulting (Pty) Ltd won't autocomplete beyond a single word match)
+            arr=q.split()
+            #check if the input has more than one word as search terms
+            if len(arr)>1:
+                query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
+            else:
+                #we must use array[0] since q may contain the whitespace that breaks the search. 
+                query = Q(first_names__icontains=arr[0]) | Q(last_name__icontains=arr[0]) | Q(pk__icontains=arr[0])        
                     
-        return self.model.objects.filter(query).filter(email__isnull=False).\
-            order_by("last_name")
+            return self.model.objects.filter(query).filter(email__isnull=False).\
+                order_by("last_name")
+        except:
+            #on error for the above there is no valid entry so we can return None
+            return None
 
     def format_item_display(self, item):
         return str(item)
@@ -56,18 +63,26 @@ class AuthorOnlyLookup(LookupChannel):
         return True
 
     def get_query(self, q, request):
-        arr=q.split()
-        if len(arr)>1:
-            query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
+        try:
+            #if an empty query is passed
+            if not q:
+                return None
+            #check if there is a whitespace
+            arr=q.split()
+            if len(arr)>1:
+                query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
                     
-        else:
-            query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
-                    Q(first_names__icontains=q)
-        return self.model.objects.filter(query).\
-            exclude(freelancer='t').\
-            filter(email__isnull=False).\
-            order_by("last_name")
-
+            else:
+                query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
+                       Q(first_names__icontains=q)
+            #query the db
+            return self.model.objects.filter(query).\
+                exclude(freelancer='t').\
+                filter(email__isnull=False).\
+                order_by("last_name")
+        except:
+            #on error for the above there is no valid entry so we can return None
+            return None
     def format_item_display(self, item):
         return str(item)
 
