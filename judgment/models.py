@@ -23,55 +23,6 @@ PROCESS_CHOICES = (
         ("P", "Processed", )
         )
 
-COURTS = [
-        "Competition Appeal Court",
-        "Competition Tribunal",
-        "Companies Tribunal",
-        "Consumer Affairs Court",
-        "Consumer Goods and Services Ombud",
-        "Constitutional Court",
-        "Court of the Commissioner of Patents",
-        "Commercial Crime Court",
-        "Eastern Cape High Court, Bhisho",
-        "Eastern Cape High Court, Grahamstown",
-        "Eastern Cape High Court, Gqeberha",
-        "Eastern Cape High Court, Makhanda",
-        "Eastern Cape High Court, Mthatha",
-        "Eastern Cape High Court, East London local Court",
-        "Eastern Cape High Court, Port Elizabeth",
-        "Electoral Court",
-        "Equality Court",
-        "Financial Service Tribunal",
-        "Free State High Court, Bloemfontein",
-        "Kwazulu-Natal High Court, Durban",
-        "Kwazulu-Natal High Court, Pietermaritzburg",
-        "Industrial Court",
-        "Labour Appeal Court",
-        "Labour Court Cape Town",
-        "Labour Court Johannesburg",
-        "Labour Court Port Elizabeth",
-        "Labour Court Polokwane",
-        "Labour Court Durban",
-        "Land Claims Court",
-        "Law Reform Commission",
-        "Limpopo High Court",
-        "Limpopo High Court, Polokwane",
-        "Limpopo High Court, Thohoyandou",
-        "Mbombela High Court, Mpumalanga",
-        "Middelburg High Court, Mpumalanga",
-        "National Consumer Tribunal",
-        "Northern Cape High Court, Kimberley",
-        "North Gauteng High Court, Pretoria",
-        "North West High Court, Mafikeng",
-        "South Gauteng High Court, Johannesburg",
-        "Special Tribunal",
-        "Supreme Court of Appeal",
-        "Tax Court",
-        "Water Tribunal",
-        "Western Cape High Court, Cape Town",
-        ]
-
-
 def validate_case(value):
     pattern = '^\s*\w*\s*\d+/\d+\s*$'
     if not re.match(pattern, value):
@@ -152,7 +103,13 @@ class Event(models.Model):
         return reverse('judgment:list')
 
     def save(self, *args, **kwargs):
-        self.case_id.replace(" ", "")
+        self.case_id = case_id = self.case_id.replace(" ", "")
+        self.case_id = self.case_id.replace("`", "'")
+        self.case_name = self.case_name.replace("`", "'")
+        self.event_type = self.event_type.replace("`", "'")
+        self.judges = self.judges.replace("`", "'")
+        self.document_url = self.document_url.replace("`", "'")
+        self.notes = self.notes.replace("`", "'")
         super().save(*args, **kwargs)
 
     @staticmethod
