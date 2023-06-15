@@ -47,39 +47,10 @@
         <a href="?page={{ page_obj.next_page_number }}">Next</a>
     {% endif %}
 </div>
-
-<!--
-<h1>Donation List</h1>
-    <ul>
-        {% for donation in object_list %}
-            <li>{{ donation }}</li>
-        {% empty %}
-            <li>No donations found.</li>
-        {% endfor %}
-    </ul>
-
-    <div class="pagination">
-        {% if is_paginated %}
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-
-            <span class="current-page">{{ page_obj.number }}</span>
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-            {% endif %}
-        {% endif %}
-    </div>
--->
 {% endblock %}
 
 {% block javascript-includes %}
 
     {{block.super}}
-
-    <script>
-     <!-- could have url generator script here -->
-    </script>
 
 {% endblock %}
