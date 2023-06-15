@@ -26,6 +26,7 @@
 	                {% if latest_donations %}
                     <ul>
                     {% for donation in latest_donations %}
+                        <!-- font size is relatively styled to match the scale of the other text on the page -->
                         <li><p style="font-size: 1.5em;">{{donation.datetime_of_donation}} : {{ donation.donor.display_name }} - {{donation.currency_type}} {{donation.amount }}</p></li>
                     {% endfor %}
                     </ul>
@@ -38,40 +39,10 @@
             </div>
         </div>
     </div>
-
-
-<!--
-<h1>Donation List</h1>
-    <ul>
-        {% for donation in object_list %}
-            <li>{{ donation }}</li>
-        {% empty %}
-            <li>No donations found.</li>
-        {% endfor %}
-    </ul>
-
-    <div class="pagination">
-        {% if is_paginated %}
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-
-            <span class="current-page">{{ page_obj.number }}</span>
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-            {% endif %}
-        {% endif %}
-    </div>
--->
 {% endblock %}
 
 {% block javascript-includes %}
 
     {{block.super}}
-
-    <script>
-     <!-- could have url generator script here -->
-    </script>
 
 {% endblock %}

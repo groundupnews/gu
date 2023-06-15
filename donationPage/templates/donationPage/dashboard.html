@@ -29,7 +29,7 @@
       <li><p>{{donation.datetime_of_donation}} : {{ donation.donor.display_name }} - {{donation.currency_type}} {{donation.amount }}</p></li>
       {% endfor %}
       </ul>
-<button>Request Tax Certificate</button>
+<button style="display:none;">Request Tax Certificate</button>
 </div>
 </div>
 
@@ -39,21 +39,5 @@
 {% block javascript-includes %}
 
     {{block.super}}
-
-    <script>
-     {% include "handle_donorurl.js" %}
-
-     document.getElementById('id_title').
-              addEventListener(
-         'input', function(e) {
-             document.getElementById('id_slug').value =
-                 makeSlug(e.target.value);
-             document.getElementById('word-count').textContent =
-                 e.target.value.trim().length + "/" +
-                 e.target.value.split(" ").filter(function(x) {
-                     return x.length > 0;
-                 }).length;
-     });
-    </script>
 
 {% endblock %}
