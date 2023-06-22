@@ -230,6 +230,15 @@ COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSCompressorFilter'
 ]
 
+SS_URL=''
+SS_API_KEY=''
+
+PP_URL=''
+PP_API_KEY=''
+
+GG_URL=''
+GG_API_KEY=''
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 AUDIO_URL = '/media/uploads/sound/summaries/'

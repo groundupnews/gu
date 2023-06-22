@@ -3,17 +3,17 @@ import json
 import random
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
-from .models import Donor, Currency, Donation
+from donationPage.models import Donor, Currency, Donation
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 ##Api call, to be tested.
 
 def fetch_snapscan_transactions():
-    url = "https://pos.snapscan.io/merchant/api/v1/payments"
     #replace this hardcode with a settings reference.
+    #url = "https://pos.snapscan.io/merchant/api/v1/payments"
     #response = requests.get(url, auth=HTTPBasicAuth('076db3e2-3015-4a0d-96c7-fe9c2bf3eb80',''))
-    response = requests.get(url, auth=HTTPBasicAuth(settings.SS_API_KEY,''))
+    response = requests.get(settings.SS_URL, auth=HTTPBasicAuth(settings.SS_API_KEY,''))
     #the transactions object is an array of dictionaries containing all the transactions for our snapscan account. 
     #to access the elements of a transaction the reference is transactions[i]["Key Value"]
     if response.status_code == 200:
@@ -43,7 +43,6 @@ def pullSnapScan():
     transactions = fetch_snapscan_transactions()
     count=0
     for donation in transactions:
-        count++
         #userReference is name, surname, email. We split these out into name and email some extra math is just to remove unnecessary characters from the start and end of each value
         donor_detail = donation["userReference"].split(",")
         donor_email = donor_detail[-1][1:]
@@ -57,19 +56,24 @@ def pullSnapScan():
         notified = False
         section18a = False
         
+        
         #Fetch donor if exists
-        Cdonor=Donor.objects.get(email=donor_email)
+        try:
+            Cdonor=Donor.objects.get(email=donor_email)
+        except:
         #create new donor entry if not, and set Cdonor value to newDonor data
-        if not Cdonor:
             url=make_donorUrl(datetime_of_donation)
             newDonor = Donor(email=donor_email, name=donor_name, display_name=donor_name, donor_url=url)
             newDonor.save()
             
             Cdonor=newDonor
-
+        try:
+            Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
+        except:
         # Create a new Donation object and save it to the database
-        new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation, currency_type=currency_type, notified=notified, section18a=section18a)
-        new_donation.save()
+            new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation, currency_type=currency_type, notified=notified, section18a_issued=section18a)
+            new_donation.save()
+            count=count+1
     return count
 
 def pullPayPal():

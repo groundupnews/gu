@@ -26,6 +26,7 @@ def donorDash(request, donor_url):
     Cdonor=Donor.objects.get(donor_url=donor_url)
     donations = Donation.objects.all().filter(donor=Cdonor)     
     form = DonorForm(instance=Cdonor)
+    #this link must be reworked to submit the update form and change the donor details
     link=donor_url+"?update"
     context = {'donations':donations, 'link':link, 'form':form,}
     template = loader.get_template('donationPage/dashboard.html')
