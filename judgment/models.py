@@ -153,7 +153,7 @@ class Event(models.Model):
                 record['document_url'] = c.document_url
             if c.accept_event_type:
                 record['status'] = c.event_type
-            if c.accept_event_date:
+            if c.accept_event_date and c.event_date:
                 record['date_current'] = datetime.datetime.combine(
                         c.event_date, datetime.datetime.min.time())
                 if c.event_type == 'R':
