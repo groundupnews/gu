@@ -146,8 +146,8 @@ function setupFormSubmit()
                 replace(/<\/?[^>]+(>|$)/g, "").trim();
 
             // Move back tweets
-            const tweets = document.getElementById('tweet_formset');
-            form.appendChild(tweets);
+            // const tweets = document.getElementById('tweet_formset');
+            // form.appendChild(tweets);
 
             // Move back republishers
             const republishers = document.getElementById('republisher_formset');
@@ -363,15 +363,15 @@ function setupInputFields()
         });
 }
 
-function setupTweets()
-{
-    const view_tweets = document.getElementById('view_tweets')
-    const tweets = document.getElementById('tweet_formset');
-    view_tweets.appendChild(tweets);
-    view_tweets.addEventListener('input', function() {
-        showSave();
-    });
-}
+// function setupTweets()
+// {
+//    const view_tweets = document.getElementById('view_tweets')
+//    const tweets = document.getElementById('tweet_formset');
+//    view_tweets.appendChild(tweets);
+//    view_tweets.addEventListener('input', function() {
+//        showSave();
+//    });
+// }
 
 function setupCorrections()
 {
@@ -528,7 +528,7 @@ jQuery(document).ready(function ($) {
     }
     setupNonCkeEditables();
     setupInputFields();
-    setupTweets();
+    // setupTweets();
     setupRepublishers();
     setupCorrections();
     setEditables();
