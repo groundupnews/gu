@@ -3,8 +3,6 @@
 {% load static %}
 {{ form.media }}
 {% load fb_versions %}
-
-
 {% block content %}
 <div style="margin: auto;
   width: 50%;
@@ -14,11 +12,19 @@
 <!-- style="display:none;" ~style code to hide the form-->
 <div style="margin-bottom:10px;">
         
-         <form action="{{ link }}" id="donor_form" method="post">{% csrf_token %}
-            <table>
+         <form method="post">{% csrf_token %}
+            <table style="display:none">
                 {{form.as_table}}
             </table>
-            <input id="saveedits" type="submit" value="Update">
+            <div>
+            {% for field in form %}
+                <div id="view_{{ field.name }}" class="field-container">
+                    <label for="{{ field.id_for_label }}" style="margin-right:10px" class="field-label">{{ field.label_tag }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            </div>
+            <button class="btn" style="display:inline;padding:5px;margin-top:10px;" type="submit">Update Details</button>
         </form>
 </div>
 

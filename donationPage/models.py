@@ -10,6 +10,8 @@ class Donor(models.Model):
     donor_url=models.CharField(max_length=50, blank=True) #last 14 digits are a datetime for donor creation, remaining 36 digits are randomly generated
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse('donationPage:dashboard', args=[self.donor_url, ])
 
 class Currency(models.Model):
     currency_abr=models.CharField(max_length=5)
@@ -22,10 +24,12 @@ class Donation(models.Model):
     donor=models.ForeignKey(Donor, on_delete=models.CASCADE)
     datetime_of_donation=models.DateTimeField(blank=True, null=True)
     currency_type=models.ForeignKey(Currency, on_delete=models.CASCADE)
-    amount=models.PositiveIntegerField(default=0)
+    amount=models.FloatField(default=0)
     notified=models.BooleanField(default=False)
     section18a_issued=models.BooleanField(default=False)
     #platform=models.CharField(max_length=200)
     #certificate_issued=models.CharField(max_length=200)
     def __str__(self):
         return str(self.datetime_of_donation) + "\t" + str(self.donor)
+    def get_absolute_url(self):
+        return reverse('donationPage:page', args=[])
