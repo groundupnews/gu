@@ -39,21 +39,6 @@ class TwitterTest(TestCase):
         t.tag_accounts.add(h)
         t.save()
 
-<<<<<<< HEAD
-def dummy():
-#    def test_tweet(self):
-        num_published = Article.objects.published().count()
-        self.assertEquals(num_published, 1)
-        num_tweets = Tweet.objects.all().count()
-        self.assertEqual(num_tweets, 1)
-        from .management.commands import sendtweets
-        result = sendtweets.process(1, 1)
-        self.assertEqual(result["successes"], 1)
-        self.assertEqual(result["failures"], 0)
-        t = Tweet.objects.all()[0]
-        self.assertEqual(t.characters_left, 152)
-        self.assertEqual(t.status, "sent")
-=======
 #     def test_tweet(self):
 #         num_published = Article.objects.published().count()
 #         self.assertEquals(num_published, 1)
@@ -66,9 +51,8 @@ def dummy():
 #         t = Tweet.objects.all()[0]
 #         self.assertEqual(t.characters_left, 152)
 #         self.assertEqual(t.status, "sent")
->>>>>>> master
 
-#    def test_handle(self):
+    def test_handle(self):
         handle = TwitterHandle.objects.all()[0]
         client = Client()
         response = client.get(reverse('socialmedia:twitterhandle.add'))
