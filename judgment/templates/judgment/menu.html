@@ -1,0 +1,42 @@
+<p style="text-align:center;">
+This is an experimental part of the website.
+</p>
+<ul id="judgment-menu">
+    <li>
+        <a href="{% url 'judgment:list' %}">
+            All
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:list' %}?p=reserved">
+            Reserved
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:list' %}?p=3m">
+            Late >3m
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:list' %}?p=6m">
+            Late >6m
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'judgment:event_add' %}">
+            Update
+        </a>
+    </li>
+    {% if request.user.is_staff %}
+    <li class="admin-only">
+        <a href="{% url 'admin:judgment_court_changelist' %}">
+            Courts
+        </a>
+    </li>
+    <li class="admin-only">
+        <a href="{% url 'admin:judgment_event_changelist' %}">
+            Events
+        </a>
+    </li>
+    {% endif %}
+</ul>

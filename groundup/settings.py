@@ -83,6 +83,7 @@ INSTALLED_APPS = (
     'target',
     'sudoku',
     'analyzer',
+    'judgment',
     'pgsearch',
     'donationPage',
 )
