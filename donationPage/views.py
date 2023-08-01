@@ -26,7 +26,8 @@ def page(request):
 
 #dashboard page to be displayed when a donor url is accessed
 def donorDash(request, donor_url):
-    Cdonor=Donor.objects.get(donor_url=donor_url)
+    url="https://www.groundup.org.za/donation/"+donor_url
+    Cdonor=Donor.objects.get(donor_url=url)
     donations = Donation.objects.all().filter(donor=Cdonor)     
     form = DonorForm(instance=Cdonor)
     for donation in donations:

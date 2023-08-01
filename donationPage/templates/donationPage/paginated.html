@@ -29,7 +29,7 @@
 	                {% if page_obj  %}
                     <ul>
                     {% for donation in page_obj %}
-                        <li><p style="font-size: 1.5em;">{{donation.datetime_of_donation}} : {{ donation.donor.display_name }} - {{donation.currency_type}} {{donation.amount}} : {{donation.donor.email}}</p></li>
+                        <li><p style="font-size: 1.5em;"><a href="{{donation_link}}">{{donation.datetime_of_donation}}</a> : {{ donation.donor.display_name }} - {{donation.currency_type}} {{donation.amount}} : <a href="{{donation.donor.donor_url}}">{{donation.donor.email}}</a></p></li>
                     {% endfor %}
                     </ul>
                 {% else %}

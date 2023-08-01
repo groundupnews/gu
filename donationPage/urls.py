@@ -7,5 +7,5 @@ from . import  settings
 
 urlpatterns = [
     path('donations/', views.page, name='donation.page'),
-    path('<donor_url>', views.donorDash, name='donation.dashboard'),
+    path('<donor_url>/', views.donorDash, name='donation.dashboard'),
 ]
