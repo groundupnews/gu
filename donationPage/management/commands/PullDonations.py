@@ -3,6 +3,7 @@ import json
 import random
 import pytz
 import re
+from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from datetime import datetime, timezone, timedelta
@@ -11,11 +12,8 @@ from donationPage.models import Donor, Currency, Donation
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-##Api call, to be tested.
 
 def fetch_snapscan_transactions():
-    #replace this hardcode with a settings reference.
-
     response = requests.get(settings.SS_URL, auth=HTTPBasicAuth(settings.SS_API_KEY,''))
     #the transactions object is an array of dictionaries containing all the transactions for our snapscan account. 
     #to access the elements of a transaction the reference is transactions[i]["Key Value"]
@@ -60,7 +58,6 @@ def fetch_paypal_transactions():
         if not access_token:
             print("PayPal access token not found in response.")
             
-        
         headers = {
             'Authorization': f'Bearer {access_token}',
         }
