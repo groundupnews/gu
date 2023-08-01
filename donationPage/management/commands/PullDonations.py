@@ -145,7 +145,7 @@ def pullSnapScan():
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
                 plain_message = strip_tags(message)
                 
-                #send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
             
         try:
             Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
@@ -220,7 +220,7 @@ def pullPayPal():
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
                 plain_message = strip_tags(message)
                 
-                #send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
             
         #duplicate donation protection
         try:
@@ -274,7 +274,7 @@ def pullGivenGain():
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
                 plain_message = strip_tags(message)
                 
-                #send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
             
         try:
             Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
