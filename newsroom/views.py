@@ -371,7 +371,7 @@ def get_context(article):
             'agony': QandA.objects.published().order_by("-published"),
             'content_type': 'article',
             'form': None,
-            'tweetFormSet': None,
+            # 'tweetFormSet': None,
             'republisherFormSet': None,
             'correctionFormSet': None,
             'from_form': 0,
@@ -398,9 +398,9 @@ def article_post(request, slug):
     version = article.version
     form = ArticleForm(request.POST, instance=article)
 
-    TweetFormSet = inlineformset_factory(models.Article, Tweet, form=TweetForm)
-    tweetFormSet = TweetFormSet(request.POST, instance=article,
-                                prefix="tweets")
+    # TweetFormSet = inlineformset_factory(models.Article, Tweet, form=TweetForm)
+    # tweetFormSet = TweetFormSet(request.POST, instance=article,
+    #                            prefix="tweets")
 
     RepublisherFormSet = inlineformset_factory(models.Article, RepublisherArticle,
                                                form=RepublisherArticleForm)
@@ -414,7 +414,7 @@ def article_post(request, slug):
                                           instance=article,
                                           prefix="corrections")
 
-    if form.is_valid() and tweetFormSet.is_valid() and \
+    if form.is_valid() and \
        republisherFormSet.is_valid() and correctionFormSet.is_valid():
         # Check we edited the latest version
         if version > form.cleaned_data["version"]:
@@ -423,7 +423,7 @@ def article_post(request, slug):
             return render(request, article.template,
                           { ** get_context(article),
                             ** {'form': form,
-                                'tweetFormSet': tweetFormSet,
+                                # 'tweetFormSet': tweetFormSet,
                                 'republisherFormSet': republisherFormSet,
                                 'correctionFormSet': correctionFormSet,
                                 'from_form': 1,
@@ -433,7 +433,7 @@ def article_post(request, slug):
         article = form.save()
         article.user = request.user
         article.save(force_update=True)
-        tweetFormSet.save()
+        # tweetFormSet.save()
         republisherFormSet.save()
         correctionFormSet.save()
         # Check if user clicked "Publish" button
@@ -472,9 +472,9 @@ def article_post(request, slug):
     else:
         messages.add_message(request, messages.ERROR,
                              "Please fix the error(s). Changes not yet saved.")
-        if tweetFormSet.is_valid() == False:
-            messages.add_message(request, messages.ERROR,
-                            "There is an error with the tweets.")
+        # if tweetFormSet.is_valid() == False:
+        #    messages.add_message(request, messages.ERROR,
+        #                    "There is an error with the tweets.")
         if republisherFormSet.is_valid() == False:
             messages.add_message(request, messages.ERROR,
                             "There is an error with the republishers.")
@@ -486,7 +486,7 @@ def article_post(request, slug):
                         ** {
                             'can_edit': True,
                             'form': form,
-                            'tweetFormSet': tweetFormSet,
+                             # 'tweetFormSet': tweetFormSet,
                             'republisherFormSet': republisherFormSet,
                             'correctionFormSet': correctionFormSet,
                             'from_form': 1
@@ -533,10 +533,10 @@ def article_detail(request, slug):
         if request.user.has_perm('newsroom.change_article'):
             form = ArticleForm(instance=article)
 
-            TweetFormSet = inlineformset_factory(models.Article, Tweet,
-                                                 form=TweetForm, extra=1,
-                                                 can_delete_extra=False)
-            tweetFormSet = TweetFormSet(instance=article, prefix="tweets")
+            # TweetFormSet = inlineformset_factory(models.Article, Tweet,
+            #                                     form=TweetForm, extra=1,
+            #                                     can_delete_extra=False)
+            #tweetFormSet = TweetFormSet(instance=article, prefix="tweets")
 
             RepublisherFormSet = inlineformset_factory(models.Article,
                                                        RepublisherArticle,
@@ -553,7 +553,7 @@ def article_detail(request, slug):
                                                   prefix="corrections")
         else:
             form = None
-            tweetFormSet = None
+            # tweetFormSet = None
             republisherFormSet = None
             correctionFormSet = None
         if article.is_published() or request.user.is_staff:
@@ -595,7 +595,7 @@ def article_detail(request, slug):
                             ** {
                                 'can_edit': can_edit,
                                 'form': form,
-                                'tweetFormSet': tweetFormSet,
+                                # 'tweetFormSet': tweetFormSet,
                                 'republisherFormSet': republisherFormSet,
                                 'correctionFormSet': correctionFormSet
                             }

@@ -9,11 +9,13 @@
             {% if form.errors %}
                 {{form.errors}}
             {% endif %}
+            {% comment %}
             {% for err in tweetFormSet.errors %}
                 {% if err %}
                     {{err}}
                 {% endif %}
             {% endfor %}
+            {% endcomment %}
             {% for err in republisherFormSet.errors %}
                 {% for key, val in err.items %}
                     {% if key %}
@@ -146,6 +148,7 @@
                     </div>
                 </div>
 
+                {% comment %}
                 <span>
                     {% with article.tweet_set.count as item_count %}
                         <button class="btn
@@ -179,7 +182,7 @@
                         </div>
                     </div>
                 </div>
-
+                {% endcomment %}
 
                 <span>
                     {% with article.republisherarticle_set.count as item_count %}
@@ -238,7 +241,7 @@
                                 <div id="view_audio_publish" class="edit-only">
                                 Publish Audio:
                                 </div>
-                              
+
                                 <span data-display="inline">
                                         <button class="btn" id="select-audio"
                                                 style="display:inline;">
@@ -247,7 +250,7 @@
                                 </span>
                                 <span id="view_audio_summary"
                                       class="edit-only" style="display:inline;">
-                                    
+
                                 </span>
                                 {% if article.audio_summary %}
                                 <a id="current_recording" href="{{MEDIA_URL}}{{article.audio_summary|addslashes}}">Download File</a>
@@ -265,7 +268,7 @@
   	                            <ol style="list-style-type: none" id="recordingsList"></ol>
   	                            <script src="{% static 'newsroom/recorder/recorder.js' %}"></script>
   	                            <script src="{% static 'newsroom/recorder/app.js' %}"></script>
-                                
+
                         </div>
                     {% endif %}
                     </div>
@@ -494,6 +497,7 @@
             <table>
                 {{form.as_table}}
             </table>
+            {% comment %}
             <div id="tweet_formset">
                 {{ tweetFormSet.management_form }}
                 {% for form in tweetFormSet %}
@@ -502,7 +506,7 @@
                     </div>
                 {% endfor %}
             </div>
-
+            {% endcomment %}
             <div id="correction_formset">
                 {{ correctionFormSet.management_form }}
                 {% for form in correctionFormSet %}

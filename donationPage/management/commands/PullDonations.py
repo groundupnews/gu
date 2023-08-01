@@ -144,8 +144,9 @@ def pullSnapScan():
                 email_url = "https://www.groundup.org.za/"+url
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
                 plain_message = strip_tags(message)
-                print(plain_message)
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                
+                #send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+            
         try:
             Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
         except:
@@ -218,8 +219,9 @@ def pullPayPal():
                 email_url = "https://www.groundup.org.za/"+url
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
                 plain_message = strip_tags(message)
-                print(plain_message)
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                
+                #send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+            
         #duplicate donation protection
         try:
             Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime)
@@ -263,7 +265,7 @@ def pullGivenGain():
             url=make_donorUrl(datetime_of_donation)
             newDonor = Donor(email=donor_email, name=donor_name, display_name='Anonymous', donor_url=url)
             newDonor.save()
-            print(plain_message)
+            
             Cdonor=newDonor
             if is_valid_email(donor_email):
                 # Send the email with the unique link
@@ -272,7 +274,8 @@ def pullGivenGain():
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
                 plain_message = strip_tags(message)
                 
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                #send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+            
         try:
             Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
         except:

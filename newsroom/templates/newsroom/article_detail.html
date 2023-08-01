@@ -86,6 +86,7 @@
                         &#10060;
                     {% endif %} Topics<br />
                 {% endwith %}
+                {% comment %}
                 {% with article.tweet_set.count as item_count %}
                     {% if item_count %}
                         &#10003;
@@ -93,6 +94,7 @@
                         &#10060;
                     {% endif %} Tweets<br />
                 {% endwith %}
+                {% endcomment %}
                 {% with article.republisherarticle_set.count as item_count %}
                     {% if item_count %}
                         &#10003;

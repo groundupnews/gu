@@ -73,8 +73,8 @@ class AuthorOnlyLookup(LookupChannel):
                 query = Q(first_names__icontains=arr[0]) & Q(last_name__icontains=arr[1]) | Q(pk__icontains=q)
                     
             else:
-                query = Q(last_name__icontains=q) | Q(pk__icontains=q) | \
-                       Q(first_names__icontains=q)
+                query = Q(last_name__icontains=arr[0]) | Q(pk__icontains=arr[0]) | \
+                       Q(first_names__icontains=arr[0])
             #query the db
             return self.model.objects.filter(query).\
                 exclude(freelancer='t').\
