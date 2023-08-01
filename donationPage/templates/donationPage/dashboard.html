@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+{{ form.media }}
+{% load fb_versions %}
+{% block content %}
+<div style="margin: auto;
+  width: 50%;
+  padding: 10px;">
+<h2>Donor Dashboard</h2>
+<div style="margin-left:15px;">
+<!-- style="display:none;" ~style code to hide the form-->
+<div style="margin-bottom:10px;">
+        
+         <form method="post">{% csrf_token %}
+            <table style="display:none">
+                {{form.as_table}}
+            </table>
+            <div>
+            {% for field in form %}
+                <div id="view_{{ field.name }}" class="field-container">
+                    <label for="{{ field.id_for_label }}" style="margin-right:10px" class="field-label">{{ field.label_tag }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            </div>
+            <button class="btn" style="display:inline;padding:5px;margin-top:10px;" type="submit">Update Details</button>
+        </form>
+</div>
+
+<br/>
+<h4>Your Donations: </h4>
+      <ul>
+      {% for donation in donations %}
+      <li><p>{{donation.datetime_of_donation}} : {{ donation.donor.display_name }} - {{donation.currency_type}} {{donation.amount }}</p></li>
+      {% endfor %}
+      </ul>
+<button style="display:none;">Request Tax Certificate</button>
+</div>
+</div>
+
+	                
+{% endblock %}
+
+{% block javascript-includes %}
+
+    {{block.super}}
+
+{% endblock %}

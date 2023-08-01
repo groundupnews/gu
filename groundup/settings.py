@@ -85,6 +85,7 @@ INSTALLED_APPS = (
     'analyzer',
     'judgment',
     'pgsearch',
+    'donationPage',
 )
 
 MIDDLEWARE = (
@@ -229,6 +230,16 @@ COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
     'compressor.filters.cssmin.CSSCompressorFilter'
 ]
+
+SS_URL = ''
+SS_API_KEY = ''
+
+PP_URL = ''
+PP_API_KEY = ''
+
+GG_URL = ''
+PP_ID = ''
+PP_SECRET = ''
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
