@@ -71,7 +71,7 @@ urlpatterns = [
     path('', include('analyzer.urls')),
     path('', include('security.urls')),
     path('', include('allauth_2fa.urls')),
-    path('', include('donationPage.urls')),
+    path('donation/', include('donationPage.urls')),
     path('accounts/', include('allauth.urls')),
 
     url(r'^sitemap\.xml$', sitemap,
