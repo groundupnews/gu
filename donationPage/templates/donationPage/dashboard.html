@@ -19,12 +19,12 @@
             <div>
             {% for field in form %}
                 <div id="view_{{ field.name }}" class="field-container">
-                    <label for="{{ field.id_for_label }}" style="margin-right:10px" class="field-label">{{ field.label_tag }}</label>
-                    {{ field }}
+                    <label for="{{ field.id_for_label }}" style="margin-right:10px, margin-top:5px" class="field-label">{{ field.label_tag }}</label>
                 </div>
+                {{ field }}
             {% endfor %}
             </div>
-            <button class="btn" style="display:inline;padding:5px;margin-top:10px;" type="submit">Update Details</button>
+            <button class="btn btn-primary" style="display:inline;padding:5px;margin-top:10px;" type="submit">Update Details</button>
         </form>
 </div>
 

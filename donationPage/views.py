@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.views.generic import ListView
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 from .models import Donor, Currency, Donation
 from .forms import DonationForm, CurrencyForm, DonorForm
@@ -46,7 +47,9 @@ def donorDash(request, donor_url):
             
             # Save the updated user profile to the database
             user_profile.save()
-            return redirect('dashboard', donor_url=donor_url)  # Redirect to the dashboard page or any other page
+            messages.add_message(request, messages.INFO,
+                                 "Details updated.")
+            return redirect('donation.dashboard', donor_url=donor_url)  # Redirect to the dashboard page or any other page
    
     return HttpResponse(template.render(context, request))
 

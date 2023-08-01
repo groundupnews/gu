@@ -12,6 +12,36 @@ from donationPage.models import Donor, Currency, Donation
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
+def handle_transaction(donor_email, donor_name, transaction_datetime, amount, currency_type, notified, count):
+        count=count
+        try:
+            Cdonor=Donor.objects.get(email=donor_email)
+        except:
+        #create new donor entry if not, and set Cdonor value to newDonor data
+            url=make_donorUrl(transaction_datetime)
+            newDonor = Donor(email=donor_email, name=donor_name, display_name='Anonymous', donor_url=url)
+            newDonor.save()
+            Cdonor=newDonor
+            
+        #duplicate donation protection
+        try:
+            Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime)
+        except:
+        # Create a new Donation object and save it to the database
+            count=count+1
+            if is_valid_email(donor_email):
+                # Send the email with the unique link
+                subject = 'Thank you for your donation to GroundUp'
+                email_url = "https://www.groundup.org.za/donation/"+Cdonor.donor_url
+                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name})
+                plain_message = strip_tags(message)
+                
+                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                notified=True
+
+            new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime, currency_type=currency_type, notified=notified, section18a_issued=False)
+            new_donation.save()
+        return count
 
 def fetch_snapscan_transactions():
     response = requests.get(settings.SS_URL, auth=HTTPBasicAuth(settings.SS_API_KEY,''))
@@ -125,32 +155,8 @@ def pullSnapScan():
         section18a = False
         
         
-        #Fetch donor if exists
-        try:
-            Cdonor=Donor.objects.get(email=donor_email)
-        except:
-        #create new donor entry if not, and set Cdonor value to newDonor data
-            url=make_donorUrl(datetime_of_donation)
-            newDonor = Donor(email=donor_email, name=donor_name, display_name='Anonymous', donor_url=url)
-            newDonor.save()
+        count=handle_transaction(donor_email, donor_name, datetime_of_donation, amount, currency_type, notified, count)
             
-            Cdonor=newDonor
-            if is_valid_email(donor_email):
-                # Send the email with the unique link
-                subject = 'Thank you for your donation to GroundUp'
-                email_url = "https://www.groundup.org.za/"+url
-                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
-                plain_message = strip_tags(message)
-                
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
-            
-        try:
-            Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
-        except:
-        # Create a new Donation object and save it to the database
-            new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation, currency_type=currency_type, notified=notified, section18a_issued=section18a)
-            new_donation.save()
-            count=count+1
     return count
 
 def pullPayPal():
@@ -201,32 +207,7 @@ def pullPayPal():
         notified = False
         section18a = False
         
-       #Fetch donor if exists
-        try:
-            Cdonor=Donor.objects.get(email=donor_email)
-        except:
-        #create new donor entry if not, and set Cdonor value to newDonor data
-            url=make_donorUrl(transaction_datetime)
-            newDonor = Donor(email=donor_email, name=donor_name, display_name='Anonymous', donor_url=url)
-            newDonor.save()
-            Cdonor=newDonor
-            if is_valid_email(donor_email):
-                # Send the email with the unique link
-                subject = 'Thank you for your donation to GroundUp'
-                email_url = "https://www.groundup.org.za/"+url
-                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
-                plain_message = strip_tags(message)
-                
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
-            
-        #duplicate donation protection
-        try:
-            Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime)
-        except:
-        # Create a new Donation object and save it to the database
-            new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime, currency_type=currency_type, notified=notified, section18a_issued=section18a)
-            new_donation.save()
-            count=count+1
+        count=handle_transaction(donor_email, donor_name, transaction_datetime, amount, currency_type, notified, count)
     return count
 
 def pullGivenGain():
@@ -253,33 +234,7 @@ def pullGivenGain():
         notified = False
         section18a = False
         
-        
-        #Fetch donor if exists
-        try:
-            Cdonor=Donor.objects.get(email=donor_email)
-        except:
-        #create new donor entry if not, and set Cdonor value to newDonor data
-            url=make_donorUrl(datetime_of_donation)
-            newDonor = Donor(email=donor_email, name=donor_name, display_name='Anonymous', donor_url=url)
-            newDonor.save()
-            
-            Cdonor=newDonor
-            if is_valid_email(donor_email):
-                # Send the email with the unique link
-                subject = 'Thank you for your donation to GroundUp'
-                email_url = "https://www.groundup.org.za/"+url
-                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url})
-                plain_message = strip_tags(message)
-                
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
-            
-        try:
-            Cdonation=Donation.objects.get(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation)
-        except:
-        # Create a new Donation object and save it to the database
-            new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=datetime_of_donation, currency_type=currency_type, notified=notified, section18a_issued=section18a)
-            new_donation.save()
-            count=count+1
+        count=handle_transaction(donor_email, donor_name, datetime_of_donation, amount, currency_type, notified, count)
     return count
 
 

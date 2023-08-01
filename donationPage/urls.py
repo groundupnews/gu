@@ -6,6 +6,6 @@ from django.views.decorators.cache import cache_page
 from . import  settings
 
 urlpatterns = [
-    path('donations/', views.page, name='page'),
-    path('<donor_url>', views.donorDash, name='dashboard'),
+    path('donations/', views.page, name='donation.page'),
+    path('<donor_url>', views.donorDash, name='donation.dashboard'),
 ]
