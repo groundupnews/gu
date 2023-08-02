@@ -26,7 +26,7 @@ def page(request):
 
 #dashboard page to be displayed when a donor url is accessed
 def donorDash(request, donor_url):
-    url="https://www.groundup.org.za/donation/"+donor_url
+    url=donor_url
     Cdonor=Donor.objects.get(donor_url=url)
     donations = Donation.objects.all().filter(donor=Cdonor)     
     form = DonorForm(instance=Cdonor)
@@ -48,10 +48,8 @@ def donorDash(request, donor_url):
             
             # Save the updated user profile to the database
             user_profile.save()
-            messages.add_message(request, messages.INFO,
-                                 "Details updated.")
-            return redirect('donation.dashboard', donor_url=donor_url)  # Redirect to the dashboard page or any other page
-   
+            messages.add_message(request, messages.INFO,"Details updated.")
+            return redirect('donation.dashboard', donor_url=donor_url)  
     return HttpResponse(template.render(context, request))
 
 

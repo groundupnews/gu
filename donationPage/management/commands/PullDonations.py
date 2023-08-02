@@ -18,7 +18,7 @@ def handle_transaction(donor_email, donor_name, transaction_datetime, amount, cu
             Cdonor=Donor.objects.get(email=donor_email)
         except:
         #create new donor entry if not, and set Cdonor value to newDonor data
-            url="https://www.groundup.org.za/donation/"+make_donorUrl(transaction_datetime)
+            url=make_donorUrl(transaction_datetime).replace("UTC","")
             newDonor = Donor(email=donor_email, name=donor_name, display_name='Anonymous', donor_url=url)
             newDonor.save()
             Cdonor=newDonor
@@ -32,7 +32,7 @@ def handle_transaction(donor_email, donor_name, transaction_datetime, amount, cu
             if is_valid_email(donor_email):
                 # Send the email with the unique link
                 subject = 'Thank you for your donation to GroundUp'
-                email_url = Cdonor.donor_url
+                email_url = "https://www.groundup.org.za/donation/"+Cdonor.donor_url
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name})
                 plain_message = strip_tags(message)
                 
