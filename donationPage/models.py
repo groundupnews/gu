@@ -7,14 +7,14 @@ class Donor(models.Model):
     name=models.CharField(max_length=200)
     display_name=models.CharField(max_length=200, blank=True)
     email=models.CharField(max_length=200)
-    donor_url=models.CharField(max_length=50, blank=True) #last 14 digits are a datetime for donor creation, remaining 36 digits are randomly generated
+    donor_url=models.CharField(max_length=50, blank=True, unique=True) #last 14 digits are a datetime for donor creation, remaining 36 digits are randomly generated
     def __str__(self):
         return self.name
     def get_absolute_url(self):
         return reverse('donationPage:dashboard', args=[self.donor_url, ])
 
 class Currency(models.Model):
-    currency_abr=models.CharField(max_length=5)
+    currency_abr=models.CharField(max_length=5, unique=True)
     def __str__(self):
         return self.currency_abr
 
