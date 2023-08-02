@@ -137,7 +137,6 @@ def pullSnapScan():
         donor_name = donation["userReference"][:-len(donor_email)-2]
         #totalAmount excludes fees but this is what the donor paid.
         amount = donation["totalAmount"]/100
-        print(amount)
         #for snapscan these will be static but they may be useful for the other apis
         currency_type = Currency.objects.get(currency_abr="ZAR")
 
