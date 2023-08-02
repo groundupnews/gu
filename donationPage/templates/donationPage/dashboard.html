@@ -3,6 +3,9 @@
 {% load static %}
 {{ form.media }}
 {% load fb_versions %}
+{% block title %}
+    Update Donor Details{{block.super}}
+{% endblock %}
 {% block content %}
 <div style="margin: auto;
   width: 50%;

@@ -38,7 +38,8 @@ def handle_transaction(donor_email, donor_name, transaction_datetime, amount, cu
                 # Send the email with the unique link
                 subject = 'Thank you for your donation to GroundUp'
                 email_url = site+"/donation/"+Cdonor.donor_url
-                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name})
+                donation_url = site+"/donation/donations"
+                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name, 'donation_link': donation_url})
                 plain_message = strip_tags(message)
                 
                 send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
@@ -56,7 +57,7 @@ def fetch_snapscan_transactions():
         transactions = json.loads(response.text)
         return transactions
     else:
-        print("Snapscan fetch fail: ", response.status_code)
+        print("Snapscan fetch fail: ", response.status_code, response.text)
         return []
 
 def fetch_givengain_transactions():
@@ -69,7 +70,7 @@ def fetch_givengain_transactions():
         transactions = json.loads(response.text)
         return transactions
     else:
-        print("GivenGain fetch fail: ", response.status_code)
+        print("GivenGain fetch fail: ", response.status_code, response.text)
         return []
 
 def fetch_paypal_transactions():
@@ -141,6 +142,7 @@ def pullSnapScan():
         donor_email = donor_detail[-1][1:]
         donor_name = donation["userReference"][:-len(donor_email)-2]
         #totalAmount excludes fees but this is what the donor paid.
+        #snapscan provides the amount in an odd format, resulting in decimal being placed incorrectly. 
         amount = donation["totalAmount"]/100
         #for snapscan these will be static but they may be useful for the other apis
         currency_type = Currency.objects.get(currency_abr="ZAR")
