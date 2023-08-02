@@ -42,7 +42,7 @@ def handle_transaction(donor_email, donor_name, transaction_datetime, amount, cu
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name, 'donation_link': donation_url})
                 plain_message = strip_tags(message)
                 
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [donor_email], html_message=message)
+                send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [donor_email], html_message=message)
                 notified=True
 
             new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime, currency_type=currency_type, notified=notified, section18a_issued=False)
