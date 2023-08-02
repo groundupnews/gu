@@ -11,6 +11,8 @@ from requests.auth import HTTPBasicAuth
 from donationPage.models import Donor, Currency, Donation
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
+from django.contrib.sites.models import Site
+
 
 def handle_transaction(donor_email, donor_name, transaction_datetime, amount, currency_type, notified, count):
         count=count
@@ -29,10 +31,13 @@ def handle_transaction(donor_email, donor_name, transaction_datetime, amount, cu
         except:
         # Create a new Donation object and save it to the database
             count=count+1
+            site = Site.objects.get(pk=settings.SITE_ID).domain
+            if not site.startswith('http'):
+                site= 'https://' + site
             if is_valid_email(donor_email):
                 # Send the email with the unique link
                 subject = 'Thank you for your donation to GroundUp'
-                email_url = "https://www.groundup.org.za/donation/"+Cdonor.donor_url
+                email_url = site+"/donation/"+Cdonor.donor_url
                 message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name})
                 plain_message = strip_tags(message)
                 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 #donor as a class let's us track the number of donations a given donor has made and highlight top donors as needed.
@@ -11,7 +12,7 @@ class Donor(models.Model):
     def __str__(self):
         return self.name
     def get_absolute_url(self):
-        return reverse('donationPage:dashboard', args=[self.donor_url, ])
+        return reverse('donation.dashboard', args=[self.donor_url, ])
 
 class Currency(models.Model):
     currency_abr=models.CharField(max_length=5, unique=True)
@@ -32,4 +33,4 @@ class Donation(models.Model):
     def __str__(self):
         return str(self.datetime_of_donation) + "\t" + str(self.donor)
     def get_absolute_url(self):
-        return reverse('donationPage:page', args=[])
+        return reverse('donation.page', args=[])
