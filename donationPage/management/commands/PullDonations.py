@@ -34,17 +34,19 @@ def handle_transaction(donor_email, donor_name, transaction_datetime, amount, cu
             site = Site.objects.get(pk=settings.SITE_ID).domain
             if not site.startswith('http'):
                 site= 'https://' + site
-            if is_valid_email(donor_email):
-                # Send the email with the unique link
-                subject = 'Thank you for your donation to GroundUp'
-                email_url = site+"/donation/"+Cdonor.donor_url
-                donation_url = site+"/donation/donations"
-                message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name, 'donation_link': donation_url})
-                plain_message = strip_tags(message)
+            try:
+                if is_valid_email(donor_email):
+                    # Send the email with the unique link
+                    subject = 'Thank you for your donation to GroundUp'
+                    email_url = site+"/donation/"+Cdonor.donor_url
+                    donation_url = site+"/donation/donations"
+                    message = render_to_string('donationPage/email_template.html', {'unique_link': email_url, 'donor_name': donor_name, 'donation_link': donation_url})
+                    plain_message = strip_tags(message)
                 
-                send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [donor_email], html_message=message)
-                notified=True
-
+                    send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [donor_email], html_message=message)
+                    notified=True
+            except:
+                print("Email notification to: "+donor_email+" failed.")
             new_donation = Donation(donor=Cdonor, amount=amount, datetime_of_donation=transaction_datetime, currency_type=currency_type, notified=notified, section18a_issued=False)
             new_donation.save()
         return count
