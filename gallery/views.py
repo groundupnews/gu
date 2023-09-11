@@ -70,7 +70,7 @@ def photo_list(request, keyword=None):
     template= "gallery/photo_list.html"
     page_template='gallery/photo_list_page.html'
 
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         template = page_template
 
     return render(request, template,
@@ -105,7 +105,7 @@ def photo_detail(request, pk):
     template= "gallery/photo_detail.html"
     page_template='gallery/photo_list_page.html'
 
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         template = page_template
 
     return render(request, template,
