@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.urls import re_path
 from .views import LoginAfterPasswordChangeView
 
 app_name = 'security'
 
 urlpatterns = [
-    url(r'^accounts/password/change/$', LoginAfterPasswordChangeView.as_view(),
+    re_path(r'^accounts/password/change/$', LoginAfterPasswordChangeView.as_view(),
         name='account_change_password'),
 ]

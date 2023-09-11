@@ -13,8 +13,7 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import url
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -56,7 +55,7 @@ app_name = 'groundup'
 urlpatterns = [
     path('admin/filebrowser/', site.urls),
     path('grappelli/', include('grappelli.urls')),
-    url(r'^ajax_select/', include(ajax_select_urls)),
+    re_path(r'^ajax_select/', include(ajax_select_urls)),
     path('admin/login/', RedirectView.as_view(url='/accounts/login/')),
     path('admin/', admin.site.urls),
     path('imagegallery/', include('gallery.urls')),
@@ -74,7 +73,7 @@ urlpatterns = [
     path('donation/', include('donationPage.urls')),
     path('accounts/', include('allauth.urls')),
 
-    url(r'^sitemap\.xml$', sitemap,
+    re_path(r'^sitemap\.xml$', sitemap,
          {'sitemaps':
          {'articles': GenericSitemap(article_dict,
                                       priority=0.5),
@@ -86,14 +85,14 @@ urlpatterns = [
           'flatpages': FlatPageSitemap}},
         name='django.contrib.sitemaps.views.sitemap'),
     path('cache/', include('clearcache.urls', namespace="cache")),
-    url(r'^robots\.txt',
+    re_path(r'^robots\.txt',
          TemplateView.as_view(template_name='robots.txt',
                               content_type='text/plain'),
          name='robots.txt'),
-    url(r'^404testing',
+    re_path(r'^404testing',
         TemplateView.as_view(template_name='404.html'),
         name='test404'),
-    url(r'^500testing',
+    re_path(r'^500testing',
         TemplateView.as_view(template_name='500.html'),
         name='test500'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
@@ -109,5 +108,5 @@ if settings.DEBUG:
     ]
 
 urlpatterns += [
-    url(r'^(?P<url>.*/)$', views.flatpage),
+    re_path(r'^(?P<url>.*/)$', views.flatpage),
 ]

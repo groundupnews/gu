@@ -102,6 +102,7 @@ MIDDLEWARE = (
     # flow is reset if another page is loaded between login and successfully
     # entering two-factor credentials.
     'allauth_2fa.middleware.AllauthTwoFactorMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 
     # SessionAuthenticationMiddleware is deprecated
     # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
