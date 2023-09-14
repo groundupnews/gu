@@ -1,7 +1,7 @@
 beautifulsoup4==4.12.2
 django-filebrowser==4.0.3
 django-grappelli==3.0.6
-Django==4.0
+Django==4.1.11
 
 
 facebook-sdk
