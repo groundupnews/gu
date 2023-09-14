@@ -148,7 +148,9 @@ class InvoiceTest(TestCase):
 
         rate_card = RateCard()
         rate_card.allowance = 500.00
-        rate_card.date_from = timezone.datetime(2020,1,1)
+        rate_card.date_from = timezone.make_aware(
+            timezone.datetime(2020, 1, 1), timezone.get_current_timezone()
+        )
         rate_card.bonus= 530.00
         rate_card.bonus_articles = 4
         rate_card.save()
