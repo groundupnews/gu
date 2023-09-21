@@ -308,7 +308,7 @@ def check_concurrent_edit(request):
     check if another user has updated the article.
     '''
     if request.method == "POST" and \
-       request.request.headers.get('x-requested-with') == 'XMLHttpRequest' and \
+       request.headers.get('x-requested-with') == 'XMLHttpRequest' and \
        request.user.has_perm("newsroom.change_article"):
         pk = int(request.POST["pk"])
         version = int(request.POST["version"])
