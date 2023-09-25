@@ -16,7 +16,6 @@ Pillow
 # a bug in psycop is fixed. See https://stackoverflow.com/questions/38807296/django-1-9-2-assertionerror-database-connection-isnt-set-to-utc#39649018
 psycopg2-binary>=2.8,<2.9
 
-python-memcached
 pycrypto
 pytz
 requests
@@ -39,3 +38,4 @@ django-compressor
 django-allauth-2fa
 clfparser
 pdfkit
+pymemcache==4.0.0
