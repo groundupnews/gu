@@ -58,7 +58,7 @@ def saveTargetImage(letters, pk):
 
     x = x_start
     y = y_start
-    w, h = draw.textsize(letters[1])
+    _, _, w, h = draw.textbbox((0,0), letters[1])
     xy = (x + w, y,)
 
     draw.text(xy, letters[1], font=font)
