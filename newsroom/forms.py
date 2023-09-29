@@ -160,10 +160,6 @@ class AdvancedSearchForm(forms.Form):
     first_author = forms.BooleanField(label="First author only", required=False)
     category = forms.ModelChoiceField(queryset=models.Category.objects.all(), required=False)
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
-    date_from = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
-                                    required=False,
-                                    input_formats=['%Y-%m-%d'])
-    date_to = forms.DateTimeField(widget=forms.DateInput(attrs={'data-toggle': 'datepicker'}),
-                                  required=False,
-                                  input_formats=['%Y-%m-%d'])
+    date_from = forms.DateTimeField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    date_to = forms.DateTimeField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     results_per_page = forms.ChoiceField(choices=RESULTS_PER_PAGE, required=False)

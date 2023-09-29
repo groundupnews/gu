@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <h4>
     Advanced Search
     <button id="adv-filter-arrow" role="button" class="adv-closed">
@@ -21,13 +20,7 @@
 
 </form>
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 <script>
- flatpickr('[data-toggle="datepicker"]', {
-     allowInput: true
- });
-
  document.getElementById("adv-filter-arrow").addEventListener("click", function(e) {
      if (e.target.classList.contains("adv-closed")) {
          document.getElementById("adv-filter-form").style.display = "block";

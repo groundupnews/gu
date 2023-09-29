@@ -8,7 +8,6 @@ Reserved judgments {{block.super}}
 <style>
 {% include "judgment/judgment.css" %}
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -70,12 +69,6 @@ Reserved judgments {{block.super}}
 
 {{block.super}}
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-    flatpickr('[data-toggle="datepicker"]', {
-            allowInput: true
-        });
-</script>
 <script>
     {% include "judgment/add_event.js" %}
 </script>

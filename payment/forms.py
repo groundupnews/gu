@@ -13,7 +13,7 @@ COMMISSION_YEAR_CHOICES = range(2012,2050)
 
 class BaseInvoiceForm(ModelForm):
     dob = forms.DateField(widget=
-                          forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
+                          forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES, attrs={"type": "date"}),
                           label="Date of birth",
                           required=False)
     address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
@@ -45,7 +45,7 @@ class InvoiceForm(BaseInvoiceForm):
                                      "SA ID, passport or some form "
                                      "of official identification")
     dob = forms.DateField(widget=
-                          forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
+                          forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES, attrs={'type': 'date'}),
                           label="Date of birth",
                           required=True)
     address = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}),
@@ -126,12 +126,12 @@ class CommissionAnalysisForm(ModelForm):
     date_from = forms.DateField(widget=forms.SelectDateWidget
                                 (empty_label=("Year", "Month", "Day"),
                                  years=COMMISSION_YEAR_CHOICES,
-                                 attrs={'class': 'date-field'}),
+                                 attrs={'class': 'date_field', 'type': 'date'}),
                                 required=False)
     date_to = forms.DateField(widget=forms.SelectDateWidget
                                 (empty_label=("Year", "Month", "Day"),
                                  years=COMMISSION_YEAR_CHOICES,
-                                 attrs={'class': 'date-field'}),
+                                 attrs={'class': 'date_field', 'type': 'date'}),
                                 required=False)
     authors = AutoCompleteSelectMultipleField('authors', required=False,
                                              help_text="Enter text to search. "

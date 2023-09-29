@@ -14,5 +14,5 @@ class EventAddForm(ModelForm):
           'case_id': forms.TextInput(attrs={'autofocus': True}),
           'judges': forms.Textarea(attrs={'rows':3, 'cols':40}),
           'notes': forms.Textarea(attrs={'rows':3, 'cols':40}),
-          'event_date': forms.DateInput(attrs={'data-toggle': 'datepicker'})
+          'event_date': forms.DateInput(attrs={'type': 'date'})
         }
