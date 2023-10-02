@@ -2,6 +2,7 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings as django_settings
+from django.core.paginator import Paginator
 from django.utils import timezone
 from . import settings
 from . import models
@@ -67,20 +68,19 @@ def photo_list(request, keyword=None):
     photos = models.Photograph.objects.filter(query).\
              ordered_by_date_taken().distinct()
 
-    template= "gallery/photo_list.html"
-    page_template='gallery/photo_list_page.html'
+    items_per_page = 16
+    paginator = Paginator(photos, items_per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        template = page_template
-
-    return render(request, template,
-                  {'photos': photos,
-                   'page_template': page_template,
-                   'keyword': keyword,
-                   'search_string': search_string,
-                   'photographer': photographer,
-                   'featured': featured,
-                   'list_all': list_all})
+    return render(request, "gallery/photo_list.html", {
+        'page_obj': page_obj,
+        'keyword': keyword,
+        'search_string': search_string,
+        'photographer': photographer,
+        'featured': featured,
+        'list_all': list_all
+    })
 
 
 def photo_detail(request, pk):
@@ -102,19 +102,19 @@ def photo_detail(request, pk):
     related_photos = (related_by_keyword | related_by_album).\
                      exclude(pk=photo.pk).distinct()
 
-    template= "gallery/photo_detail.html"
-    page_template='gallery/photo_list_page.html'
+    items_per_page = 16
+    paginator = Paginator(related_photos, items_per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        template = page_template
-
-    return render(request, template,
-                  {'blocks': blocks,
-                   'page_template': page_template,
-                   'photo':photo,
-                   'default_copyright': settings.DEFAULT_COPYRIGHT,
-                   'versions': versions,
-                   'photos' : related_photos})
+    return render(request, "gallery/photo_detail.html", {
+        'blocks': blocks,
+        'page_obj': page_obj,
+        'photo':photo,
+        'default_copyright': settings.DEFAULT_COPYRIGHT,
+        'versions': versions,
+        'photos_count' : related_photos.count()
+    })
 
 
 def gallery_front(request):

@@ -36,7 +36,11 @@
 {% block gallery_below_line %}
 
     <div class="row" id="gallery-photo-list">
-        {% include page_template %}
+        {% for photo in page_obj %}
+            <div class="col-xs-6 col-md-3">
+                {% include "gallery/thumbnail.html" %}
+            </div>
+        {% endfor %}
     </div>
 
 {% endblock %}

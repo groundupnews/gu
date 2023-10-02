@@ -1,9 +1,0 @@
-{% load el_pagination_tags %}
-
-{% lazy_paginate 16 photos %}
-{% for photo in photos %}
-    <div class="col-xs-6 col-md-3">
-        {% include "gallery/thumbnail.html" %}
-    </div>
-{% endfor %}
-{% show_more %}
