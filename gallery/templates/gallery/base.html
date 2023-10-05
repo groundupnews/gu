@@ -62,16 +62,14 @@
                 {% block gallery_below_line %}
                 {% endblock %}
             </div>
-
         </div>
 
+        {% if page_obj %}
+            <div class="row">
+                <div class="col-xs-12">
+                    {% include 'paginator.html' %}
+                </div>
+            </div>
+        {% endif %}
     </div>
-{% endblock %}
-
-
-{% block javascript-includes %}
-    {{block.super}}
-    <script src="{% static 'el-pagination/js/el-pagination.js' %}"></script>
-    <script>$.endlessPaginate({paginateOnScroll: true});</script>
-
 {% endblock %}

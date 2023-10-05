@@ -134,12 +134,14 @@
     {% include "advert.html" %}
     </div>
 
-    {% if photos %}
+    {% if photos_count > 0 %}
         <h2><a href="{% url 'gallery:photo.list' %}">Related photos</a></h2>
         <div id="gallery-related-photos" class="row">
-            {% include page_template %}
+            {% for photo in page_obj %}
+                <div class="col-xs-6 col-md-3">
+                    {% include "gallery/thumbnail.html" %}
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
-
-
 {% endblock %}
