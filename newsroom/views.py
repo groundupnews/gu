@@ -700,11 +700,11 @@ def generate_article_list(request):
             date_to = form.cleaned_data["date_to"]
             if date_to:
                 articles = models.Article.objects.published(). \
-                    filter(published__gte=date_from). \
-                    filter(published__lte=date_to)
+                    filter(published__date__gte=date_from). \
+                    filter(published__date__lte=date_to)
             else:
                 articles = models.Article.objects.published(). \
-                    filter(published__gte=date_from)
+                    filter(published__date__gte=date_from)
             site_url = 'http://' + Site.objects.get_current().domain
             for article in articles:
                 output.append("<h3><a href='" + site_url +

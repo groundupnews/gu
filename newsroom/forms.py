@@ -27,8 +27,8 @@ class AuthorForm(forms.ModelForm):
 
 
 class ArticleListForm(forms.Form):
-    date_from = forms.DateTimeField()
-    date_to = forms.DateTimeField(required=False)
+    date_from = forms.DateField()
+    date_to = forms.DateField(required=False)
 
 
 article_ajaxes = ['author_01',  'author_02', 'author_03',
@@ -69,7 +69,7 @@ class ArticleForm(forms.ModelForm):
                                              help_text=None, label="Topics")
     summary_image = forms.CharField(required=False)
     summary_image_size = forms.ChoiceField(choices=IMAGE_SIZE_CHOICES)
-    
+
     audio_summary=forms.CharField(required=False)
     audio_publish=forms.BooleanField(required=False)
     btn_unsticky = forms.CharField(required=False, label='Unsticky',

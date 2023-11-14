@@ -6,75 +6,60 @@
 
 {% block content %}
 
-    <div class="container">
-	<div class="row">
-	    <div class="col-sm-8 col-md-offset-2">
-    <h1>Generate a list of articles</h1>
-    <form role="form" action="{% url 'newsroom:generate_article_list' %}" method="post">
-	{% csrf_token %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-md-offset-2">
+      <h1>Generate a list of articles</h1>
+      <form role="form" action="{% url 'newsroom:generate_article_list' %}" method="post">
+        {% csrf_token %}
 
-	{{ form.non_field_errors }}
-
-
+        {{ form.non_field_errors }}
         <div class="form-group">
-
-	    <label for="id_date_from">Date from (required):</label>
-	    {% for error in form.date_from.errors %}
-		<p class="alert alert-danger">{{ error }}</p>
-	    {% endfor %}
-            <div class='input-group date' id='datetimepicker1'>
-		<input id="id_date_from" name="date_from"
-		       type='date' class="form-control" placeholder="Select a date" />
-		<span class="input-group-addon">
-		    <span class="glyphicon glyphicon-calendar"></span>
-		</span>
-	    </div>
+          <label for="id_date_from">Date from (required):</label>
+          {% for error in form.date_from.errors %}
+            <p class="text-danger">{{ error }}</p>
+          {% endfor %}
+          <input id="id_date_from" name="date_from" type='date' class="form-control" placeholder="Select a date" value="{{form.date_from.value}}"/>
         </div>
 
+        <div class="form-group">
+          <label for="id_date_to">Date to:</label>
+          {% for error in form.date_to.errors %}
+            <p class="text-danger">{{ error }}</p>
+          {% endfor %}
+          <input id="id_date_to" name="date_to" type='date' class="form-control" placeholder="Select a date" value="{{form.date_to.value}}" />
+        </div>
 
         <div class="form-group">
-	    <label for="id_date_to">Date to:</label>
-	    {% for error in form.date_to.errors %}
-		<p class="alert alert-danger">{{ error }}</p>
-	    {% endfor %}
-            <div class='input-group date'>
-		<input id="id_date_to" name="date_to"
-		       type='date' class="form-control" placeholder="Select a date" />
-		<span class="input-group-addon">
-		    <span class="glyphicon glyphicon-calendar"></span>
-		</span>
+          <input type="submit" value="Generate" class="btn btn-default">
+        </div>
+      </form>
+
+      {% if output %}
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6" style="text-align: center; margin:10px; padding:10px;">
+            <p class="alert alert-info">{{len_articles}} articles.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <textarea class="form-control" rows="25" style="margin-top:15px;">
+                {% for line in output %}
+                  {{line}}
+                {% endfor %}
+              </textarea>
             </div>
+          </div>
+          <div class="col-md-6" style="border: 2px solid; margin-top: 15px;">
+            {% for line in output %}
+                {{line|safe}}
+            {% endfor %}
+          </div>
         </div>
-
-	<div class="form-group">
-	    <input type="submit" value="Generate" class="btn btn-default">
-	</div>
-
-
-    </form>
-
-    {% if output %}
-	<div class="row">
-	    <div class="col-md-3"></div>
-	    <div class="col-md-6" style="text-align: center; margin:10px; padding:10px;">
-		<p class="alert alert-info">{{len_articles}} articles.</p>
-	    </div>
-	</div>
-	<div class="row">
-	    <div class="col-md-6">
-		<div class="form-group">
-		    <textarea class="form-control" rows="25" style="margin-top:15px;">{% for	  line in output %}{{line}}
-{% endfor %}</textarea>
-		</div>
-	    </div>
-	    <div class="col-md-6" style="border: 2px solid; margin-top: 15px;">
-		{% for line in output %}
-		    {{line|safe}}
-		{% endfor %}
-	    </div>
-	</div>
-    {% endif %}
-	    </div>
-	</div>
+      {% endif %}
     </div>
+  </div>
+</div>
 {% endblock %}
