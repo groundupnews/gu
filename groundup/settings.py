@@ -431,6 +431,9 @@ PIWIK_ENTRIES = 40
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+# Setting session expiry of year
+SESSION_COOKIE_AGE = 365*24*60*60
+
 from .local_settings import *
 
 if DEBUG is True:
