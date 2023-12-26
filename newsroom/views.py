@@ -5,6 +5,7 @@ import json
 from blocks.models import Group
 from bs4 import BeautifulSoup
 from django.contrib import messages
+from django.contrib.sessions.models import Session
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -752,6 +753,16 @@ def account_profile(request):
         'allowance': allowance,
         'allowance_processed': allowance_processed
     })
+
+def logout_from_all_sessions(request):
+    for session in Session.objects.filter(
+        expire_date__gte=timezone.now()
+    ):
+        auth_user_id = session.get_decoded().get("_auth_user_id", None)
+        if auth_user_id == str(request.user.id):
+            session.delete()
+    return redirect("newsroom:home")
+
 
 def advanced_search(request):
     page = None

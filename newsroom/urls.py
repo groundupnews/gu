@@ -62,6 +62,9 @@ urlpatterns = [
     re_path(r'^user/$', views.account_profile,
         name="user.profile"),
 
+    re_path(r'^account/logout-from-all-devices/$', views.logout_from_all_sessions,
+        name="account_logout_from_all_devices"),
+
     ##############################
     # Author create and update
 
