@@ -34,10 +34,17 @@ class InvoiceStaffForm(BaseInvoiceForm):
                   'bank_name', 'bank_account_number',
                   'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                   'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-                  'level', 'query', 'additional_emails',
+                  'level', 'transport_claim', 'query', 'additional_emails',
                   'requisition', 'requisition_number', 'payment_method',
                   'description', 'fund', 'vouchers_attached',
                   'prepared_by', 'approved_by', 'authorised_by', 'merge',]
+
+        widgets = {
+            'transport_claim': forms.Textarea(attrs={'rows': 5}),
+            'query': forms.Textarea(attrs={'rows': 5}),
+
+        }
+
 
 class InvoiceForm(BaseInvoiceForm):
     identification = forms.CharField(max_length=20, required=True,
@@ -62,8 +69,13 @@ class InvoiceForm(BaseInvoiceForm):
                    'bank_name', 'bank_account_number',
                    'bank_account_type', 'bank_branch_name', 'bank_branch_code',
                    'swift_code', 'iban', 'tax_no', 'tax_percent', 'vat',
-                   'query',
+                   'transport_claim', 'query',
         ]
+        widgets = {
+            'transport_claim': forms.Textarea(attrs={'rows': 5}),
+            'query': forms.Textarea(attrs={'rows': 5}),
+
+        }
 
 
     def clean(self):
