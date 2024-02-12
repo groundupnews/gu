@@ -42,9 +42,7 @@ class InvoiceStaffForm(BaseInvoiceForm):
         widgets = {
             'transport_claim': forms.Textarea(attrs={'rows': 5}),
             'query': forms.Textarea(attrs={'rows': 5}),
-
         }
-
 
 class InvoiceForm(BaseInvoiceForm):
     identification = forms.CharField(max_length=20, required=True,
@@ -74,7 +72,6 @@ class InvoiceForm(BaseInvoiceForm):
         widgets = {
             'transport_claim': forms.Textarea(attrs={'rows': 5}),
             'query': forms.Textarea(attrs={'rows': 5}),
-
         }
 
 
