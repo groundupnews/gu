@@ -169,14 +169,14 @@ class RateCard(models.Model):
             RATES['simple_feature'] = ratecard.simple_feature
             RATES['complex_feature'] = ratecard.complex_feature
 
-            BONUSES['articles'] = ratecard.bonus_article 
+            BONUSES['articles'] = ratecard.bonus_article
             BONUSES['bonus'] = ratecard.bonus
             LEVELS['intern'] =  ratecard.level_intern
             LEVELS['standard'] = ratecard.level_standard
             LEVELS['senior'] = ratecard.level_senior
             LEVELS['experienced'] = ratecard.level_experienced
             LEVELS['exceptional'] = ratecard.level_exceptional
-            
+
     class Meta:
         ordering = ["-date_from", ]
 
@@ -249,6 +249,10 @@ class Invoice(models.Model):
     status = models.CharField(max_length=2, choices=INVOICE_STATUS_CHOICES,
                               default="-")
     notes = models.TextField(blank=True)
+    transport_claim = models.TextField(blank=True, max_length=3000,
+                             help_text="Explain any transport claims  "
+                             "you would like to make. Email odometer photos or "
+                             "receipts to invoices@groundup.org.za.")
     query = models.TextField(blank=True, max_length=3000,
                              help_text="Explain your query "
                              "here if you have one")
@@ -413,9 +417,9 @@ class CommissionQuerySet(models.QuerySet):
 
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
-    
+
     RateCard.populate_rates()
-    
+
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, blank=True, null=True,
                                 on_delete=models.CASCADE)
@@ -462,7 +466,7 @@ class Commission(models.Model):
 
     def estimate_bonus(self):
         RateCard.populate_rates()
-        
+
         if self.article and self.article.is_published() \
            and self.article.author_01 == self.invoice.author \
            and self.invoice.author.freelancer == "f":
@@ -545,7 +549,7 @@ class Commission(models.Model):
 
     def estimate_payment_writer(self, estimate):
         RateCard.populate_rates()
-        
+
         try:
             experience = LEVELS[self.invoice.author.level]
         except:
