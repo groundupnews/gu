@@ -31,7 +31,7 @@ from newsroom.models import Author
 
 from gallery.models import Photograph
 
-from filebrowser.sites import site
+from groundup.filebrowser import site
 
 from ajax_select import urls as ajax_select_urls
 
