@@ -30,7 +30,7 @@ class QandA(models.Model):
     notes = models.TextField(blank=True)
     notify_sender = models.BooleanField(default=False)
     sender_notified = models.BooleanField(default=False)
-    status = models.CharField(max_length=2, default="O",
+    status = models.CharField(max_length=2, default="U",
                               choices=PROCESS_CHOICES)
     published = models.DateTimeField(blank=True, null=True)
     recommended = models.BooleanField(default=True)
