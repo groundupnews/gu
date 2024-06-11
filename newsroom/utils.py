@@ -340,7 +340,7 @@ def insertPixel(html, pk, slug):
         paras = soup.find_all('p')
         if len(paras) > 2:
             url = 'https://republish.groundup.org.za/counter/hit/' + \
-                str(pk) +  '/' + slug
+                str(pk) +  '/' + slug + '/'
             img = soup.new_tag('img',
                                src=url,
                                id="gu_counter",
