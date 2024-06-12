@@ -3,7 +3,10 @@ from django.urls import reverse
 from target import target
 from django.utils import timezone
 
-DEFAULT_RULES = """Make words of at least four letters using the grid letters at most once.
+DEFAULT_RULES = """
+PLEASE NOTE: THE RULES CHANGED IN JUNE 2024.
+
+Make words of at least four letters using the grid letters at most once.
 The centre letter must be in every word.
 There's one nine-letter word.
 
