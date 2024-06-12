@@ -3,16 +3,17 @@ from django.urls import reverse
 from target import target
 from django.utils import timezone
 
-DEFAULT_RULES = """Make words of at least four letters
-using the grid letters at most once.
+DEFAULT_RULES = """Make words of at least four letters using the grid letters at most once.
 The centre letter must be in every word.
 There's one nine-letter word.
-There are no plurals ending in s,
-no third-person singular words ending in s
-(e.g. cooks in 'He cooks bread'), and
-no proper nouns,
-except possibly for the nine-letter word.
+
+Except possibly for the nine-letter word:
+- There are no plurals ending in s.
+- There are no third-person singular words ending in s (e.g. cooks in 'He cooks bread').
+- There are no proper nouns.
+
 The nine-letter word often has a South African flavour.
+
 Words are drawn from our dictionary which has about 100,000 words.
 You can either type the letters or click on them.
 To delete a letter use the backspace key or click it again."""
