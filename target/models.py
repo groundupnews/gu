@@ -4,15 +4,15 @@ from target import target
 from django.utils import timezone
 
 DEFAULT_RULES = """
-PLEASE NOTE: THE RULES CHANGED IN JUNE 2024.
+PLEASE NOTE: THE RULES CHANGED ON 14 JUNE 2024.
 
 Make words of at least four letters using the grid letters at most once.
 The centre letter must be in every word.
 There's one nine-letter word.
 
 Except possibly for the nine-letter word:
-- There are no plurals ending in s.
-- There are no third-person singular words ending in s (e.g. cooks in 'He cooks bread').
+- There are no plurals ending in s. (But geese would be allowed.)
+- There are no third-person singular verbs ending in s (e.g. cooks in ‘He cooks bread’).
 - There are no proper nouns.
 
 The nine-letter word often has a South African flavour.
