@@ -12,7 +12,7 @@ There's one nine-letter word.
 
 Except possibly for the nine-letter word:
 - There are no plurals ending in s. (But geese would be allowed.)
-- There are no third-person singular verbs ending in s (e.g. cooks in ‘He cooks bread’).
+- There are no third-person singular verbs ending in s (e.g. cooks in ‘he cooks bobotie’).
 - There are no proper nouns.
 
 The nine-letter word often has a South African flavour.
