@@ -17,7 +17,7 @@ Except possibly for the nine-letter word:
 
 The nine-letter word often has a South African flavour.
 
-Words are drawn from our dictionary which has about 100,000 words.
+Words are drawn from our dictionary which has about 70,000 words.
 You can either type the letters or click on them.
 To delete a letter use the backspace key or click it again."""
 
