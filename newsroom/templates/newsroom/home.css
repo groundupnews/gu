@@ -263,6 +263,10 @@
     padding: 12px;
 }
 
+.random_qanda {
+   background-color: white;
+}
+
 .random_qanda h2, .random_letter h2, #toy h2 {
     font-weight: bold;
     max-width: 700px;
