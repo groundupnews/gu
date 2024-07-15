@@ -34,4 +34,5 @@ CKEDITOR.editorConfig = function( config ) {
     config.allowedContent = true;
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
     config.youtube_responsive = true;
+    config.versionCheck = false;
 };

@@ -24,5 +24,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.disableNativeSpellChecker = false;
     config.htmlEncodeOutput = false;
     config.entities = false;
+    config.versionCheck = false;
     // config.enterMode = CKEDITOR.ENTER_BR;
 };
