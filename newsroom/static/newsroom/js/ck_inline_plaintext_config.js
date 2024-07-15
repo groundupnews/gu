@@ -25,4 +25,5 @@ CKEDITOR.editorConfig = function( config ) {
     config.htmlEncodeOutput = false;
     config.entities = false;
     config.enterMode = CKEDITOR.ENTER_BR;
+    config.versionCheck = false;
 };

@@ -2,6 +2,16 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
+PROCESS_CHOICES = (
+    ("O", "Old"),
+    ("U", "Unprocessed"),
+    ("Q", "Query"),
+    ("I", "Ignore"),
+    ("R", "Notify reader only"),
+    ("P", "Publish only"),
+    ("B", "Publish and notify reader"),
+)
+
 
 class QandAQuerySet(models.QuerySet):
 
@@ -20,6 +30,8 @@ class QandA(models.Model):
     notes = models.TextField(blank=True)
     notify_sender = models.BooleanField(default=False)
     sender_notified = models.BooleanField(default=False)
+    status = models.CharField(max_length=2, default="U",
+                              choices=PROCESS_CHOICES)
     published = models.DateTimeField(blank=True, null=True)
     recommended = models.BooleanField(default=True)
     salutation = models.CharField(max_length=200, blank=True,
@@ -40,6 +52,21 @@ class QandA(models.Model):
     def is_published(self):
         return (self.published is not None) and \
             (self.published <= timezone.now())
+
+    def save(self, *args, **kwargs):
+        if self.status == 'R': # Notify reader
+            self.notify_sender = True
+            self.published = None
+        elif self.status == 'P': # Publish only
+            self.published = timezone.now()
+            self.notify_sender  = False
+        elif self.status == 'B':
+            self.notify_sender = True
+            self.published = timezone.now()
+        elif self.status == 'I':
+            self.notify_sender  = False
+            self.published = None
+        super(QandA, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-published',]
