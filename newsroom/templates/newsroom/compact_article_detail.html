@@ -1,0 +1,50 @@
+{% load static %}
+{% load fb_versions %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GroundUp - {{article.title|striptags|safe}}</title>
+  </head>
+
+  <body>
+    <h1><a href="{% url 'newsroom:compact_list' %}">GroundUp News</a></h1>
+    <nav>
+      <a href="/about/">About</a>
+      <a href="/donate/">Donate</a>
+    </nav>
+    <article>
+      <h1 id="headline">{{article.title|safe}}</h1>
+      {% if article.subtitle %}
+      <p id="subtitle">{{article.subtitle|safe}}</p>
+      {% endif %}
+      <p>{{article.cached_byline|safe}}</p>
+      <p>{{article.published|date:"j F Y"}} |
+        <a href="{%  url 'newsroom:category.detail' article.category.slug %}"
+        >{{article.category|title}}</a></p>
+      {{article.body|safe}}
+
+      <div id="topics">
+        {% with topics_all=article.topics.all %}
+        {% if topics_all|length  %}
+        Topics:
+        {% for topic in topics_all %}
+        <a href="{% url 'newsroom:topic.detail' topic.slug %}">
+          {{ topic.name|capfirst }}</a>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+    </article>
+
+    <div id="copyright">
+      {{article.copyright|safe}}
+    </div>
+    <link rel="stylesheet" href="{% static 'newsroom/css/compact_article.css' %}?v=20240728" />
+    {% include "piwik.html" %}
+  </body>
+
+</html>
+

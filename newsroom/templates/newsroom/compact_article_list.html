@@ -1,0 +1,26 @@
+{% load static %}
+{% load fb_versions %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GroundUp - {{article.title|striptags|safe}}</title>
+  </head>
+
+  <body>
+    <h1>GroundUp News</h1>
+    <nav>
+      <a href="{% url 'newsroom:home' %}">Main site</a>
+      <a href="/about/">About</a>
+      <a href="/donate/">Donate</a>
+    </nav>
+    {% for article in article_list %}
+    <h2><a href="{% url 'newsroom:compact_detail' article.slug %}">{{article.title}}</a></h2>
+    {% endfor %}
+    {% include "piwik.html" %}
+  </body>
+
+</html>
+

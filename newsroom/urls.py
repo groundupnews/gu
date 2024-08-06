@@ -264,7 +264,6 @@ urlpatterns = [
                                  key_prefix='article'))
         (views.article_print), name='article.print'),
 
-
     re_path(r'^copy_article/(?P<slug>[-\w]+)/$',
         views.copy_article, name='article.copy'),
 
@@ -284,6 +283,15 @@ urlpatterns = [
     re_path(r'^features/(?P<path>.*)$',
         views.RedirectHandConstructedFeatures.as_view(),
         name='features.redirect'),
+
+    ### XXX
+    path('compact/',
+         cache_page(60 * 15)(views.CompactArticleList.as_view()),
+         name='compact_list'),
+
+    path('compact/article/<slug:slug>/',
+         cache_page(60 * 15)(views.CompactArticleDetail.as_view()),
+         name='compact_detail'),
 
     ####################################
     # Redirect /content/ to /article

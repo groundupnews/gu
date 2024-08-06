@@ -1,0 +1,33 @@
+body {
+    font-family: "sans-serif";
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+}
+img {
+    max-width: 100%;
+}
+#headline {
+    font-size: xx-large;
+}
+#subtitle {
+    font-size: x-large;
+}
+p.caption {
+    font-style: italic;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 8px;
+}
+#topics {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-top: 1px solid lightgray;
+}
+#copyright {
+    border-top: 1px solid gray;
+    padding-top: 12px;
+    font-size: small;
+}
+

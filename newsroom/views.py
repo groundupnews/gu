@@ -181,6 +181,28 @@ class CategoryDetail(ArticleList):
         return context
 
 
+class CompactArticleList(generic.ListView):
+    template_name = "newsroom/compact_article_list.html"
+    model = models.Article
+    context_object_name = 'article_list'
+    paginate_by = settings.ARTICLES_PER_PAGE
+
+    def get_queryset(self):
+        return models.Article.objects.list_view()
+
+
+class CompactArticleDetail(generic.DetailView):
+    template_name = "newsroom/compact_article_detail.html"
+    model = models.Article
+
+    def get_object(self):
+        article = super().get_object()
+        if article.is_published():
+            return article
+        else:
+            raise Http404
+
+
 class RegionList(generic.ListView):
     model = models.Region
 
