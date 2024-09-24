@@ -1,46 +1,30 @@
 <div id="paginator">
 
-    <ul class="pagination">
-	{% if page_obj.has_previous %}
-	    <li>
-		{% if request.META.QUERY_STRING %}
-		    <a href="?{{request.META.QUERY_STRING}}&page=1">first</a>
-		{% else %}
-		    <a href="?page=1">first</a>
-		{% endif %}
-	    </li>
-	    <li>
-		{% if request.META.QUERY_STRING %}
-		    <a href="?{{request.META.QUERY_STRING}}&page={{ page_obj.previous_page_number }}">previous</a>
-		{% else %}
-		    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-		{% endif %}
-	    </li>
-	{% endif %}
-
-	<li class="active">
-	    <a href="#">
-		{{page_obj.number}} of
-		{{page_obj.paginator.num_pages}}
-	    </a>
-	</li>
-
-	{% if page_obj.has_next %}
-	    <li>
-		{% if request.META.QUERY_STRING %}
-		    <a href="?{{request.META.QUERY_STRING}}&page={{ page_obj.next_page_number }}">next</a>
-		{% else %}
-		    <a href="?page={{ page_obj.next_page_number }}">next</a>
-		{% endif %}
-	    </li>
-	    <li>
-		{% if request.META.QUERY_STRING %}
-		    <a href="?{{request.META.QUERY_STRING}}&page={{page_obj.paginator.num_pages}}">last</a>
-		    {% else %}
-			<a href="?page=last">last</a>
-		    {% endif %}
+	<ul class="pagination">
+		{% if page_obj.has_previous %}
+		<li>
+			<a href="?page=1">first</a>
 		</li>
-	    {% endif %}
+		<li>
+			<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+		</li>
+		{% endif %}
+
+		<li class="active">
+			<a href="#">
+				{{page_obj.number}} of
+				{{page_obj.paginator.num_pages}}
+			</a>
+		</li>
+
+		{% if page_obj.has_next %}
+		<li>
+			<a href="?page={{ page_obj.next_page_number }}">next</a>
+		</li>
+		<li>
+			<a href="?page=last">last</a>
+		</li>
+		{% endif %}
 	</ul>
 
 </div>
