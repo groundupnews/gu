@@ -127,8 +127,7 @@ def gallery_front(request):
                          order_by('-modified')[:settings.NUM_FEATURED]
     photos = models.Photograph.objects.filter(featured=False).\
                     order_by('?')[:settings.NUM_LATEST]
-    albums = models.Album.objects.all().order_by('?')\
-                    [:settings.NUM_ALBUMS]
+    albums = models.Album.objects.all()[:settings.NUM_ALBUMS]
     return render(request, "gallery/index.html",
                   {'blocks' : blocks,
                    'featured_photos': featured_photos,
