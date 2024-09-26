@@ -113,7 +113,7 @@
         </div>
         <div class="row">
             {% block pagination %}
-	        {% include 'paginator.html' with page_obj=page query=query %}
+	        {% include 'paginator.html' with page_obj=page additional_parameters=additional_parameters %}
             {% endblock %}
         </div>
     </div>

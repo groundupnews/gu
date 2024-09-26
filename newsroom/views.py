@@ -866,6 +866,12 @@ def advanced_search(request):
             logger.error("Advanced Search failed to get num_pages")
             num_pages = 1
 
+    additional_parameters = ""
+    if query > "":
+        additional_parameters += '&adv_search=' + query
+    if search_type > "":
+        additional_parameters += '&search_type=' + search_type
+
     return render(request, 'search/search.html',
                   {'query': query,
                    'page': page,
@@ -873,6 +879,7 @@ def advanced_search(request):
                    'num_pages': num_pages,
                    'num_items': len(article_list),
                    'search_type': search_type,
+                   'additional_parameters': additional_parameters,
                    'adv_search_form': adv_search_form})
 
 
