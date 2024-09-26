@@ -866,10 +866,10 @@ def advanced_search(request):
             logger.error("Advanced Search failed to get num_pages")
             num_pages = 1
 
-    additional_parameters = ""
-    if query > "":
+    additional_parameters = "&is_simple=true"
+    if query and query > "":
         additional_parameters += '&adv_search=' + query
-    if search_type > "":
+    if search_type and search_type > "":
         additional_parameters += '&search_type=' + search_type
 
     return render(request, 'search/search.html',
