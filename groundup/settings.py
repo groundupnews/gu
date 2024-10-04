@@ -434,6 +434,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # Setting session expiry of year
 SESSION_COOKIE_AGE = 365*24*60*60
 
+PAYFAST_MERCHANT_ID = ''
+PAYFAST_MERCHANT_KEY = ''
+PAYFAST_PASS_PHRASE = ''
+PAYFAST_RETURN_URL = 'http://localhost:8000/donation/donations/payment-success/'
+PAYFAST_CANCEL_URL = 'http://localhost:8000/donation/donations/payment-cancel/'
+PAYFAST_NOTIFY_URL = 'http://localhost:8000/donation/donations/payment-notify/'
+PAYFAST_TEST_MODE = True
+
 from .local_settings import *
 
 # if DEBUG is True:
