@@ -4,12 +4,12 @@ django-grappelli==3.0.8
 Django==4.2.15
 
 
-facebook-sdk
+# facebook-sdk
 # google-api-python-client
 html2text
 httplib2
-oauth2client
-oauthlib
+# oauth2client
+# oauthlib
 Pillow
 
 # This change made on 4 Aug 2021 and should be temporary until
@@ -39,4 +39,4 @@ django-compressor
 django-allauth-2fa
 clfparser
 pdfkit
-pymemcache==4.0.0
+pymemcache
