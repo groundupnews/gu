@@ -437,10 +437,16 @@ SESSION_COOKIE_AGE = 365*24*60*60
 PAYFAST_MERCHANT_ID = ''
 PAYFAST_MERCHANT_KEY = ''
 PAYFAST_PASS_PHRASE = ''
-PAYFAST_RETURN_URL = 'http://localhost:8000/donation/donations/payment-success/'
-PAYFAST_CANCEL_URL = 'http://localhost:8000/donation/donations/payment-cancel/'
-PAYFAST_NOTIFY_URL = 'http://localhost:8000/donation/donations/payment-notify/'
+PAYFAST_RETURN_URL = '/payment-success/'
+PAYFAST_CANCEL_URL = '/payment-cancel/'
+PAYFAST_NOTIFY_URL = '/payment-notify/'
 PAYFAST_TEST_MODE = True
+
+if PAYFAST_TEST_MODE:
+    PAYFAST_URL = 'https://sandbox.payfast.co.za'
+else:
+    PAYFAST_URL = 'https://api.payfast.co.za'
+
 
 from .local_settings import *
 

@@ -44,6 +44,9 @@
             text-align: center;
             margin-top: 5px;
         }
+        .donor-dash-link {
+            padding-top: 20px;
+        }
     </style>
 {% endblock %}
 
@@ -87,12 +90,18 @@
                                 <div class="form-group">
                                     <label for="first_name">First Name</label>
                                     <input type="text" class="form-control" id="first_name" name="first_name" required>
+                                    {% for error in form.first_name.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="last_name">Last Name</label>
                                     <input type="text" class="form-control" id="last_name" name="last_name" required>
+                                    {% for error in form.last_name.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -101,32 +110,36 @@
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <input type="email" class="form-control" id="email" name="email" required>
+                            {% for error in form.email.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
                         </div>
                 
                         <!-- Inline radio buttons for subscription type -->
                         <div class="form-group">
                             <label>Subscription Type</label><br>
                             <label class="radio-inline">
-                                <input type="radio" name="subscription_type" value="monthly" checked> Monthly Subscription
+                                <input type="radio" name="payment_type" value="subscription" checked> Monthly Subscription
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="subscription_type" value="one_time"> One-Time Payment
+                                <input type="radio" name="payment_type" value="one_time"> One-Time Payment
                             </label>
                         </div>
                 
                         <!-- Float field with default value of 100 and minimum of 1 -->
                         <div class="form-group">
                             <label for="amount">Amount (in ZAR)</label>
-                            <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="100" min="1" required>
+                            <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="100" min="1">
+                            {% for error in form.amount.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
                         </div>
                 
                         <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary" id="submitButton">Pay using fastpay</button>
+                        <button type="submit" class="btn btn-primary" id="submitButton">Donate</button>
                     </form>
+                    <p class="donor-dash-link">Already a Donor? Access <a href="{% url 'donor_access' %}">Donor Dash</a></p>
                 </div>
-                <!-- <div class="custom-card-footer">
-                    <button class="btn btn-primary">Action</button>
-                </div> -->
             </div>
         </div>
 
@@ -217,7 +230,15 @@
                     url: $(this).attr("action"),  // Change this to your actual Django view URL
                     data: formData,
                     success: function(response) {
-                        $("body").append(response.html);
+
+                        if (response.errors){
+                            Object.entries(response.errors).map((error) => {
+                                console.log(error)
+                            });
+                        } else if(response.html){
+                            $("body").append(response.html);
+                        }
+                        
                     },
                     error: function(xhr, status, error) {
                         // Handle errors

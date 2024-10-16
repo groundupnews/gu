@@ -1,3 +1,4 @@
+from datetime import datetime
 import random
 import re
 import string
@@ -370,3 +371,23 @@ def get_first_caption(html):
         return p.text
     else:
         return ""
+
+
+def make_donorUrl(date=None):
+    min_val = 100000000000000000000000000000000000
+    max_val = 999999999999999999999999999999999999
+
+    # Format for desired output
+    output_format = "%Y%m%d%H%M%Z"
+    if date:
+        # Convert the datetime object to a string
+        date_string = date.strftime(output_format)
+    else:
+        date_string = datetime.now().strftime(output_format)
+    # Generate a random 36-digit number
+    url = str(random.randint(min_val, max_val))
+
+    # Concatenate the random number and date
+    url += date_string
+
+    return url

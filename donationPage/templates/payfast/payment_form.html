@@ -1,5 +1,5 @@
 
-<form action="https://sandbox.payfast.co.za/eng/process" method="POST" id="payfastForm">
+<form action="{{payfast_domain}}/eng/process" method="POST" id="payfastForm">
     <input type="hidden" name="merchant_id" value="{{ data.merchant_id }}">
     <input type="hidden" name="merchant_key" value="{{ data.merchant_key }}">
     <input type="hidden" name="return_url" value="{{ data.return_url }}">
