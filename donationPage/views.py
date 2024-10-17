@@ -150,23 +150,29 @@ def cancel_subscription(request, token):
                 cancel_url = f"https://api.payfast.co.za/subscriptions/{subscription.subscription_id}/cancel"
                 if settings.PAYFAST_TEST_MODE:
                     cancel_url += "?testing=true"
-                now = datetime.now()
+                now = timezone.now()
                 formatted_now = now.strftime('%Y-%m-%dT%H:%M:%S%z')
-                formatted_now = formatted_now[:-2] + ':' + formatted_now[-2:]
+                if not formatted_now.endswith('+00:00'):
+                    formatted_now = formatted_now[:-5]
+
                 headers = {
                     'merchant-id': settings.PAYFAST_MERCHANT_ID,
                     'timestamp': formatted_now,
                     'version': 'v1'
                 }
 
+                pf_data = [
+                    ("merchant-id", settings.PAYFAST_MERCHANT_ID),
+                    ("passphrase", settings.PAYFAST_PASS_PHRASE.strip()),
+                    ("timestamp", formatted_now),
+                    ("version", "v1")
+                ]
                 pfParamString = ''
-                for key, value in headers.items():
-                    pfParamString += key + "=" + urllib.parse.quote_plus(value) + "&"
+                for row in pf_data:
+                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1]) + "&"
                 pfParamString = pfParamString[:-1]
-                pfParamString += f'&passphrase={urllib.parse.quote_plus(settings.PAYFAST_PASS_PHRASE.strip())}'
                 signature = hashlib.md5(pfParamString.encode()).hexdigest()
                 headers["signature"] = signature
-
                 response = requests.put(cancel_url, headers=headers)
                 if response.status_code == 200:
                     subscription.status = "canceled"
@@ -304,7 +310,7 @@ def payfast_ipn(request):
             transaction_id = data.get('pf_payment_id')
             amount_gross = data.get('amount_gross')
             email_address = data.get('email_address')
-            donor = Donor.objects.get(email=email_address)
+            donor = Donor.objects.filter(email=email_address).first()
             currency, _ = Currency.objects.get_or_create(
                 currency_abr="ZAR"
             )

@@ -445,7 +445,7 @@ PAYFAST_TEST_MODE = True
 if PAYFAST_TEST_MODE:
     PAYFAST_URL = 'https://sandbox.payfast.co.za'
 else:
-    PAYFAST_URL = 'https://api.payfast.co.za'
+    PAYFAST_URL = 'https://www.payfast.co.za'
 
 
 from .local_settings import *
