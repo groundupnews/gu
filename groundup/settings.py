@@ -434,6 +434,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # Setting session expiry of year
 SESSION_COOKIE_AGE = 365*24*60*60
 
+PAYFAST_MERCHANT_ID = ''
+PAYFAST_MERCHANT_KEY = ''
+PAYFAST_PASS_PHRASE = ''
+PAYFAST_RETURN_URL = '/payment-success/'
+PAYFAST_CANCEL_URL = '/payment-cancel/'
+PAYFAST_NOTIFY_URL = '/payment-notify/'
+PAYFAST_TEST_MODE = True
+
+if PAYFAST_TEST_MODE:
+    PAYFAST_URL = 'https://sandbox.payfast.co.za'
+else:
+    PAYFAST_URL = 'https://www.payfast.co.za'
+
+
 from .local_settings import *
 
 # if DEBUG is True:

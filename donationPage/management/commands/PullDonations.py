@@ -12,6 +12,7 @@ from donationPage.models import Donor, Currency, Donation
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.sites.models import Site
+from donationPage.utils import make_donorUrl
 
 
 def handle_transaction(donor_email, donor_name, transaction_datetime, amount, currency_type, notified, count):
@@ -115,25 +116,6 @@ def fetch_paypal_transactions():
 def is_valid_email(email):
     email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return re.match(email_pattern, email)
-
-def make_donorUrl(date):
-    min_val = 100000000000000000000000000000000000
-    max_val = 999999999999999999999999999999999999
-
-    # Format for desired output
-    output_format = "%Y%m%d%H%M%Z"
-    if date:
-        # Convert the datetime object to a string
-        date_string = date.strftime(output_format)
-    else:
-        date_string = datetime.now().strftime(output_format)
-    # Generate a random 36-digit number
-    url = str(random.randint(min_val, max_val))
-
-    # Concatenate the random number and date
-    url += date_string
-
-    return url
 
 def pullSnapScan():
     transactions = fetch_snapscan_transactions()
