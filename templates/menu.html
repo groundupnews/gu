@@ -84,7 +84,7 @@
 	</li>
 
 	<li>
-	    <a href="/donate/">Donate</a>
+	    <a href="{% url 'make_payment' %}">Donate</a>
 	</li>
         {% if request.user.is_staff %}
             <li class="dropdown-btn">

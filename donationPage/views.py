@@ -63,7 +63,7 @@ def donorDash(request, donor_url):
             
             # Save the updated user profile to the database
             user_profile.save()
-            messages.add_message(request, messages.ERROR,"Details updated.")
+            messages.add_message(request, messages.INFO, "Details updated.")
             return redirect('donation.dashboard', donor_url=donor_url)  
     return HttpResponse(template.render(context, request))
 
@@ -125,7 +125,7 @@ def donor_dashboard_view(request, token):
                 messages.add_message(
                     request,
                     messages.INFO,
-                    "Update donor details"
+                    "Updated donor details"
                 )
         return render(request, 'payfast/donor_dashboard.html', {
             'donor': donor,
@@ -193,7 +193,7 @@ def cancel_subscription(request, token):
                 else:
                     messages.add_message(
                         request,
-                        messages.INFO,
+                        messages.ERROR,
                         "There was an error canceling your subscription. Please try again later!"
                     )
 
@@ -210,7 +210,7 @@ def payment_success(request):
 def payment_cancel(request):
     messages.add_message(
         request,
-        messages.INFO,
+        messages.ERROR,
         "Your donation transaction was cancelled. If this was a mistake, you can try again by using form below."
     )
     return redirect('make_payment')
