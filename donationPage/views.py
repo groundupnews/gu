@@ -1,6 +1,8 @@
+import json
 import urllib
 import hashlib
 import requests
+import logging
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
@@ -18,6 +20,9 @@ from .forms import DonorForm, PayfastPaymentForm
 from donationPage.utils import make_donorUrl
 
 signer = TimestampSigner()
+logger = logging.getLogger("django")
+
+
 #Base page to be displayed
 def page(request):
     latest_donations = Donation.objects.order_by('-datetime_of_donation')
@@ -174,6 +179,9 @@ def cancel_subscription(request, token):
                 signature = hashlib.md5(pfParamString.encode()).hexdigest()
                 headers["signature"] = signature
                 response = requests.put(cancel_url, headers=headers)
+                logger.warning(f"Subscription cancelation response : {response.json()}")
+                logger.warning(f"Data used : {json.dumps(headers)}")
+                logger.warning(f"string used for signature : {pfParamString}")
                 if response.status_code == 200:
                     subscription.status = "canceled"
                     subscription.save()
