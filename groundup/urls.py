@@ -57,6 +57,7 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
     re_path(r'^ajax_select/', include(ajax_select_urls)),
     path('admin/login/', RedirectView.as_view(url='/accounts/login/')),
+    path('donate/', RedirectView.as_view(url='/donation/payfast/', permanent=True)),
     path('admin/', admin.site.urls),
     path('imagegallery/', include('gallery.urls')),
     path('', include('newsroom.urls')),

@@ -1,6 +1,8 @@
+import json
 import urllib
 import hashlib
 import requests
+import logging
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
@@ -18,6 +20,9 @@ from .forms import DonorForm, PayfastPaymentForm
 from donationPage.utils import make_donorUrl
 
 signer = TimestampSigner()
+logger = logging.getLogger("django")
+
+
 #Base page to be displayed
 def page(request):
     latest_donations = Donation.objects.order_by('-datetime_of_donation')
@@ -58,7 +63,7 @@ def donorDash(request, donor_url):
             
             # Save the updated user profile to the database
             user_profile.save()
-            messages.add_message(request, messages.ERROR,"Details updated.")
+            messages.add_message(request, messages.INFO, "Details updated.")
             return redirect('donation.dashboard', donor_url=donor_url)  
     return HttpResponse(template.render(context, request))
 
@@ -120,7 +125,7 @@ def donor_dashboard_view(request, token):
                 messages.add_message(
                     request,
                     messages.INFO,
-                    "Update donor details"
+                    "Updated donor details"
                 )
         return render(request, 'payfast/donor_dashboard.html', {
             'donor': donor,
@@ -174,6 +179,9 @@ def cancel_subscription(request, token):
                 signature = hashlib.md5(pfParamString.encode()).hexdigest()
                 headers["signature"] = signature
                 response = requests.put(cancel_url, headers=headers)
+                logger.warning(f"Subscription cancelation response : {response.json()}")
+                logger.warning(f"Data used : {json.dumps(headers)}")
+                logger.warning(f"string used for signature : {pfParamString}")
                 if response.status_code == 200:
                     subscription.status = "canceled"
                     subscription.save()
@@ -185,7 +193,7 @@ def cancel_subscription(request, token):
                 else:
                     messages.add_message(
                         request,
-                        messages.INFO,
+                        messages.ERROR,
                         "There was an error canceling your subscription. Please try again later!"
                     )
 
@@ -202,7 +210,7 @@ def payment_success(request):
 def payment_cancel(request):
     messages.add_message(
         request,
-        messages.INFO,
+        messages.ERROR,
         "Your donation transaction was cancelled. If this was a mistake, you can try again by using form below."
     )
     return redirect('make_payment')
