@@ -54,15 +54,15 @@
 
 <div class="jumbotron full-width-jumbotron">
     <div style="margin: auto;
-        width: 60%;
+        width: 65%;
         padding: 10px;" class="text-center"
     >
         <h1>Donate to GroundUp</h1>
-        <h3>With your help, we can continue to hold those in power accountable and train the next generation of journalists.</h3>
+        <h3>With your help, we can hold those in power accountable and train the next generation of journalists.</h3>
     </div>
 </div>
 
-<div style="margin: auto; width: 60%; padding: 10px;">
+<div style="margin: auto; width: 65%; padding: 10px;">
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                
+
                         <!-- Email field (full width) -->
                         <div class="form-group">
                             <label for="email">Email Address</label>
@@ -100,7 +100,7 @@
                                 <span class="help-block">{{ error }}</span>
                             {% endfor %}
                         </div>
-                
+
                         <!-- Inline radio buttons for subscription type -->
                         <div class="form-group">
                             <label>Subscription Type</label><br>
@@ -111,7 +111,7 @@
                                 <input type="radio" name="payment_type" value="one_time"> One-Time Payment
                             </label>
                         </div>
-                
+
                         <!-- Float field with default value of 100 and minimum of 1 -->
                         <div class="form-group">
                             <label for="amount">Amount (in ZAR)</label>
@@ -120,7 +120,7 @@
                                 <span class="help-block">{{ error }}</span>
                             {% endfor %}
                         </div>
-                
+
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary" id="submitButton">Donate</button>
                     </form>
@@ -134,58 +134,58 @@
     <div class="row">
         <div class="col-md-12">
         <h2>Why donate to GroundUp?</h2>
-        
+
         <p>We are a non-profit news agency, which means we rely on your donations to do our work. We don’t run ads and our articles are always free to read. Plus, your donation is tax-deductible. With your support, we can continue to provide fair and accurate news from the ground up.</p>
-        
+
         <hr>
         <h2>Who funds us?</h2>
-        
-        <p>Much of our funding is from&nbsp;institutional donors - but we need more of our readers to&nbsp;support us. For context, an everyday article costs R5 000 or so to publish. That’s excluding rent, insurance, computers, cameras and all the other things you need to run a newsroom. Also, we sometimes get sued or taken to the press ombudsman. Even though we almost always win, we spend quite a bit on legal fees.</p>
-        
+
+                <p>Much of our funding is from <a href="/funders/">institutional donors</a> - but we need more of our readers to&nbsp;support us. For context, an everyday article costs R5 000 or so to publish. That’s excluding rent, insurance, computers, cameras and all the other things you need to run a newsroom. Also, we sometimes get sued or taken to the press ombudsman. Even though we almost always win, we spend quite a bit on legal fees.</p>
+
         <p>(By the way, we're independent, so while we appreciate all donations, donors don't have a say in what we publish).</p>
-        
+
         <hr>
         <h2 id="alternate-payment">Want to donate using a different payment method?</h2>
         &nbsp;
-        
+
         <div class="row flex-row">
         <div class="col-xs-12 col-sm-6 col-md-3">
         <div class="thumbnail">
         <h3>EFT</h3>
-        
+
         <p><strong>Bank:</strong> Nedbank<br>
         <strong>Account number:</strong> 1206484632<br>
         <strong>Branch code:</strong> 198765<br>
         <strong>Swift:</strong> NEDSZAJJ</p>
-        
+
         <p>Please use your email address as the reference.</p>
         </div>
         </div>
-        
+
         <div class="col-xs-12 col-sm-6 col-md-3">
         <div class="thumbnail">
         <h3>Paypal</h3>
-        
+
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
         <p><input name="cmd" type="hidden" value="_s-xclick"> <input name="hosted_button_id" type="hidden" value="4UETCB7SL6CNA"> <input alt="PayPal" border="0" name="submit" src="https://www.groundup.org.za/media/uploads/images/Graphics/paypal-donate-300x136.png" style="width:120px;" type="image"> <img alt="" border="0" height="1" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"></p>
         </form>
-        
+
         <p>If you have unused PayPal credits sitting in your account, consider donating them to GroundUp to support independent journalism.</p>
         </div>
         </div>
-        
+
         <div class="col-xs-12 col-sm-6 col-md-3">
         <div class="thumbnail">
         <h3>US donors</h3>
-        
+
         <p>You can make a tax-deductible donation from the United States via the South African Development Fund. Click <a href="http://www.sadevelopmentfund.org/donate">here</a> for various ways to donate. Please indicate that your donation is for "GroundUp".</p>
         </div>
         </div>
-        
+
         <div class="col-xs-12 col-sm-6 col-md-3">
         <div class="thumbnail">
         <h3>GroundUp details</h3>
-        
+
         <p><strong>Non-profit registration:</strong> 254-625-NPO<br>
         <strong>Public benefit organisation:</strong> 930071956<br>
         <strong>VAT registration:</strong> 4270293717</p>
@@ -203,14 +203,14 @@
         $(document).ready(function() {
             $('#subscriptionForm').on('submit', function(e) {
                 e.preventDefault(); // Prevent default form submission
-    
+
                 // Disable the button and show "Submitting..."
                 var submitButton = $('#submitButton');
                 submitButton.prop('disabled', true).text('Submitting...');
-    
+
                 // Collect form data
                 var formData = $(this).serialize();
-    
+
                 // Send form data using AJAX
                 $.ajax({
                     type: 'POST',
@@ -225,7 +225,7 @@
                         } else if(response.html){
                             $("body").append(response.html);
                         }
-                        
+
                     },
                     error: function(xhr, status, error) {
                         // Handle errors
