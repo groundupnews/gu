@@ -1,0 +1,25 @@
+
+<form action="{{data.payfast_domain}}/eng/process" method="POST" id="payfastForm">
+    <input type="hidden" name="merchant_id" value="{{ data.merchant_id }}">
+    <input type="hidden" name="merchant_key" value="{{ data.merchant_key }}">
+    <input type="hidden" name="return_url" value="{{ data.return_url }}">
+    <input type="hidden" name="cancel_url" value="{{ data.cancel_url }}">
+    <input type="hidden" name="notify_url" value="{{ data.notify_url }}">
+    <input type="hidden" name="amount" value="{{ data.amount }}">
+    <input type="hidden" name="item_name" value="{{ data.item_name }}">
+    <input type="hidden" name="name_first" value="{{ data.name_first }}">
+    <input type="hidden" name="name_last" value="{{ data.name_last }}">
+    <input type="hidden" name="email_address" value="{{ data.email_address }}">
+
+    {% if data.subscription_type %}
+        <input type="hidden" name="subscription_type" value="{{ data.subscription_type }}">
+        <input type="hidden" name="billing_date" value="{{ data.billing_date }}">
+        <input type="hidden" name="recurring_amount" value="{{ data.recurring_amount }}">
+        <input type="hidden" name="frequency" value="{{ data.frequency }}">
+        <input type="hidden" name="cycles" value="{{ data.cycles }}">
+    {% endif %}
+    <input type="hidden" name="signature" value="{{ data.signature }}">
+</form>
+<script>
+    document.getElementById('payfastForm').submit();
+</script>

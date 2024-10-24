@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Donor, Currency, Donation
+from .models import Donor, Currency, Donation, Subscription
 
 #repeat for other models.
 class DonationAdmin(admin.ModelAdmin):
@@ -12,4 +12,5 @@ class DonationAdmin(admin.ModelAdmin):
 
 admin.site.register(Donor)
 admin.site.register(Currency)
+admin.site.register(Subscription)
 admin.site.register(Donation, DonationAdmin)

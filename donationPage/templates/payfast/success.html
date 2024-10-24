@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load static %}
+{{ form.media }}
+{% load fb_versions %}
+{% block title %}
+    Payment success{{block.super}}
+{% endblock %}
+{% block content %}
+
+<div style="margin: auto; width: 60%; padding: 50px; min-height: 60vh;">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>Thank You for Your Support!</h1>
+        <h3>We are deeply grateful for your donation. With your help, we can continue to publish news that matters and report on critical human rights stories across South Africa. As a non-profit news agency, we rely on contributions like yours to keep our work going. We don't run ads, and our articles are always free to access for everyone.</h3>
+        <h3>Your generosity enables us to hold those in power accountable and to train the next generation of journalists. Together, we are making a difference.</h3>
+        <h3>Thank you for standing with us.</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}
