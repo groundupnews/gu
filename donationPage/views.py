@@ -174,7 +174,7 @@ def cancel_subscription(request, token):
                 ]
                 pfParamString = ''
                 for row in pf_data:
-                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1]) + "&"
+                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1].lower()) + "&"
                 pfParamString = pfParamString[:-1]
                 signature = hashlib.md5(pfParamString.encode()).hexdigest()
                 headers["signature"] = signature
