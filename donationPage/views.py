@@ -160,12 +160,6 @@ def cancel_subscription(request, token):
                 if not formatted_now.endswith('+00:00'):
                     formatted_now = formatted_now[:-5]
 
-                headers = {
-                    'merchant-id': settings.PAYFAST_MERCHANT_ID,
-                    'timestamp': formatted_now,
-                    'version': 'v1'
-                }
-
                 pf_data = [
                     ("merchant-id", settings.PAYFAST_MERCHANT_ID),
                     ("passphrase", settings.PAYFAST_PASS_PHRASE.strip()),
@@ -174,14 +168,17 @@ def cancel_subscription(request, token):
                 ]
                 pfParamString = ''
                 for row in pf_data:
-                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1].lower()) + "&"
+                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1]) + "&"
                 pfParamString = pfParamString[:-1]
                 signature = hashlib.md5(pfParamString.encode()).hexdigest()
-                headers["signature"] = signature
+
+                headers = {
+                    'merchant-id': settings.PAYFAST_MERCHANT_ID,
+                    'version': 'v1',
+                    'timestamp': formatted_now,
+                    'signature': signature
+                }
                 response = requests.put(cancel_url, headers=headers)
-                logger.warning(f"Subscription cancelation response : {response.json()}")
-                logger.warning(f"Data used : {json.dumps(headers)}")
-                logger.warning(f"string used for signature : {pfParamString}")
                 if response.status_code == 200:
                     subscription.status = "canceled"
                     subscription.save()
