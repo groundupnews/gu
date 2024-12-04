@@ -4,7 +4,7 @@ from . import forms, models
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView, DetailView, TemplateView
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.core.exceptions import PermissionDenied
 
 import json
@@ -48,6 +48,7 @@ class EventAddedView(TemplateView):
 
 
 def get_case(request):
+    case_id = None
     try:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
@@ -66,6 +67,8 @@ def get_case(request):
         else:
             logger.error("get_case must be called as JSON")
             raise PermissionDenied()
+    except PermissionDenied:
+        raise
     except Exception as e:
         logger.error("Something went wrong: %s" % (case_id, str(e)))
         raise Http404
