@@ -3,20 +3,10 @@ django-filebrowser==4.0.3
 django-grappelli==3.0.8
 Django==4.2.16
 
-
-# facebook-sdk
-# google-api-python-client
 html2text
 httplib2
-# oauth2client
-# oauthlib
 Pillow
-
-# This change made on 4 Aug 2021 and should be temporary until
-# a bug in psycop is fixed. See https://stackoverflow.com/questions/38807296/django-1-9-2-assertionerror-database-connection-isnt-set-to-utc#39649018
-# psycopg2-binary>=2.8,<2.9
-
-# pycrypto
+psycop2-binary
 pycryptodome
 pytz
 requests
