@@ -1,7 +1,7 @@
 beautifulsoup4==4.12.2
 django-filebrowser==4.0.3
 django-grappelli==3.0.8
-Django==4.2.17
+Django==4.2.18
 
 html2text
 httplib2
