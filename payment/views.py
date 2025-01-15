@@ -424,11 +424,11 @@ def commission_analysis(request, pk=None):
                 commissions = commissions.filter(invoice__author__in=authors)
             date_from = form.cleaned_data['date_from']
             if date_from:
-                commissions = commissions.filter(date_approved__gte=date_from)
+                commissions = commissions.filter(invoice__date_time_processed__gte=date_from)
             date_to = form.cleaned_data['date_to']
             if date_to:
-                commissions = commissions.filter(date_approved__lte=date_to)
-            commissions = commissions.order_by('date_approved')
+                commissions = commissions.filter(invoice__date_time_processed__lte=date_to)
+            commissions = commissions.order_by('invoice__date_time_processed')
             pmts = [pmt.calc_payment() for pmt in commissions]
             total_amount = sum([ p[3] for p in pmts])
             total_paye = sum([ p[1] for p in pmts])
