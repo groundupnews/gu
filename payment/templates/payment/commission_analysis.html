@@ -72,7 +72,7 @@
                     </th>
                     <th class="asc"
                         onclick="sortTable(this, 4, 'A')">
-                        Date approved
+                        Date paid
                     </th>
                     <th style="text-align:right"
                         onclick="sortTable(this, 5, 'N')">
@@ -128,7 +128,7 @@
                             {{commission.fund}}
                         </td>
                         <td>
-                            {{commission.date_approved|date:"Y-m-d"}}
+                            {{commission.invoice.date_time_processed|date:"Y-m-d"}}
                         </td>
                         <td style="text-align:right">
                             {{commission.commission_due|floatformat:"2"|intcomma}}
