@@ -249,11 +249,13 @@ def linkImages(soup):
                 img.parent["href"] = urlnew
                 img.parent["class"] = "bigger-image"
                 img.parent["target"] = "_blank"
+                img["style"] = "cursor: pointer;"
             else:
                 link = soup.new_tag("a")
                 link["href"] = urlnew
                 link["target"] = "_blank"
                 link["class"] = "bigger-image"
+                img["style"] = "cursor: pointer;"
                 img.wrap(link)
         return soup
     # This code is not important enough to be worth crashing the site on
