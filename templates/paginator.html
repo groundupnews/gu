@@ -3,10 +3,10 @@
 	<ul class="pagination">
 		{% if page_obj.has_previous %}
 		<li>
-			<a href="?page=1">first</a>
+			<a href="?page=1{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">first</a>
 		</li>
 		<li>
-			<a href="?page={{ page_obj.previous_page_number }}{{ additional_parameters }}">previous</a>
+			<a href="?page={{ page_obj.previous_page_number }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">previous</a>
 		</li>
 		{% endif %}
 
@@ -19,10 +19,10 @@
 
 		{% if page_obj.has_next %}
 		<li>
-			<a href="?page={{ page_obj.next_page_number }}{{ additional_parameters }}">next</a>
+			<a href="?page={{ page_obj.next_page_number }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">next</a>
 		</li>
 		<li>
-			<a href="?page=last{{ additional_parameters }}">last</a>
+			<a href="?page=last{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">last</a>
 		</li>
 		{% endif %}
 	</ul>

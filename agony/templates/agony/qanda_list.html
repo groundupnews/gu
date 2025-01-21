@@ -72,7 +72,9 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-                {% include "paginator.html" %}
+                {% with query_params=query_params %}
+                    {% include "paginator.html" %}
+                {% endwith %}
             </div>
         </div>
     </div>
