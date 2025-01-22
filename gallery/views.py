@@ -1,4 +1,3 @@
-
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings as django_settings
@@ -71,6 +70,10 @@ def photo_list(request, keyword=None):
     items_per_page = 16
     paginator = Paginator(photos, items_per_page)
     page_number = request.GET.get('page')
+    
+    if page_number == 'last':
+        page_number = paginator.num_pages
+        
     page_obj = paginator.get_page(page_number)
 
     return render(request, "gallery/photo_list.html", {
@@ -105,6 +108,10 @@ def photo_detail(request, pk):
     items_per_page = 16
     paginator = Paginator(related_photos, items_per_page)
     page_number = request.GET.get('page')
+    
+    if page_number == 'last':
+        page_number = paginator.num_pages
+        
     page_obj = paginator.get_page(page_number)
 
     return render(request, "gallery/photo_detail.html", {
