@@ -44,6 +44,7 @@
                     {% include 'search/_search_param_list.html' %}
                 {% endif %}
                 {% include "search/advanced_search.html" %}
+                {% include "search/searchform.html" with gallery=gallery|default:"" %}
             </div>
         </div>
         <div class="row">
