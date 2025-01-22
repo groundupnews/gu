@@ -792,19 +792,21 @@ def advanced_search(request):
     first_author = request.GET.get('first_author')
     first_author_only = True if first_author == "on" else False
 
+    if request.GET.get('search_type') == 'image':
+        inc_photos = True
+        inc_articles = False
+        gallery = True
+    else:
+        inc_photos = True \
+            if search_type == 'image' or search_type == 'both' else False
+        gallery = False
+
     if request.GET.get('search_type') == 'article':
         inc_articles = True
         inc_photos = False
     else:
         inc_articles = True \
             if search_type == 'article' or search_type == 'both' else False
-
-    if request.GET.get('search_type') == 'image':
-        inc_photos = True
-        inc_articles = False
-    else:
-        inc_photos = True \
-            if search_type == 'image' or search_type == 'both' else False
 
     adv_search_form = AdvancedSearchForm(request.GET or None)
 
@@ -879,6 +881,7 @@ def advanced_search(request):
                    'num_pages': num_pages,
                    'num_items': len(article_list),
                    'search_type': search_type,
+                   'gallery': gallery,
                    'additional_parameters': additional_parameters,
                    'adv_search_form': adv_search_form})
 
