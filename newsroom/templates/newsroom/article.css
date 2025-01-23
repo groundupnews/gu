@@ -575,6 +575,10 @@ article figure, article p.caption {
     opacity: 1;
 }
 
+#article-category-information .article__title {
+    color: #00B2F0;
+}
+
 {% if article.undistracted_layout %}
 @media (min-width: 769px) {
     .article p, .article blockquote {
