@@ -3,10 +3,10 @@
 	<ul class="pagination">
 		{% if page_obj.has_previous %}
 		<li>
-			<a href="?page=1{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">first</a>
+			<a href="?page=1{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}{% if request.GET.adv_search %}&adv_search={{ request.GET.adv_search }}{% endif %}{% if request.GET.search_type %}&search_type={{ request.GET.search_type }}{% endif %}{% if request.GET.is_simple %}&is_simple={{ request.GET.is_simple }}{% endif %}">first</a>
 		</li>
 		<li>
-			<a href="?page={{ page_obj.previous_page_number }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">previous</a>
+			<a href="?page={{ page_obj.previous_page_number }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}{% if request.GET.adv_search %}&adv_search={{ request.GET.adv_search }}{% endif %}{% if request.GET.search_type %}&search_type={{ request.GET.search_type }}{% endif %}{% if request.GET.is_simple %}&is_simple={{ request.GET.is_simple }}{% endif %}">previous</a>
 		</li>
 		{% endif %}
 
@@ -19,10 +19,10 @@
 
 		{% if page_obj.has_next %}
 		<li>
-			<a href="?page={{ page_obj.next_page_number }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">next</a>
+			<a href="?page={{ page_obj.next_page_number }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}{% if request.GET.adv_search %}&adv_search={{ request.GET.adv_search }}{% endif %}{% if request.GET.search_type %}&search_type={{ request.GET.search_type }}{% endif %}{% if request.GET.is_simple %}&is_simple={{ request.GET.is_simple }}{% endif %}">next</a>
 		</li>
 		<li>
-			<a href="?page=last{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}">last</a>
+			<a href="?page={{ page_obj.paginator.num_pages }}{% for key, value in query_params.items %}&{{ key }}={{ value }}{% endfor %}{% if request.GET.adv_search %}&adv_search={{ request.GET.adv_search }}{% endif %}{% if request.GET.search_type %}&search_type={{ request.GET.search_type }}{% endif %}{% if request.GET.is_simple %}&is_simple={{ request.GET.is_simple }}{% endif %}">last</a>
 		</li>
 		{% endif %}
 	</ul>
