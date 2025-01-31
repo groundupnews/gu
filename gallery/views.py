@@ -123,7 +123,6 @@ def photo_detail(request, pk):
         'photos_count' : related_photos.count()
     })
 
-
 def gallery_front(request):
     try:
         blocks = Group.objects.get(name="Gallery_Front").get_blocks()
@@ -131,7 +130,7 @@ def gallery_front(request):
         blocks = []
 
     featured_photos = models.Photograph.objects.filter(featured=True).\
-                         order_by('-modified')[:settings.NUM_FEATURED]
+                         order_by('-date_taken')[:settings.NUM_FEATURED]
     photos = models.Photograph.objects.filter(featured=False)[:settings.NUM_LATEST]
     albums = models.Album.objects.all()[:settings.NUM_ALBUMS]
     return render(request, "gallery/index.html",
