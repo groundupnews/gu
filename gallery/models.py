@@ -106,7 +106,7 @@ class Photograph(models.Model):
     #         duplicate.create_duplicate()
 
     class Meta:
-        ordering = ['-featured', '-modified', ]
+        ordering = ['-featured', '-date_taken', '-modified']
 
 
 """Hack class to make it easy to upload multiple photos into database,
