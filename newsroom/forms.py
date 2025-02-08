@@ -155,8 +155,16 @@ class AdvancedSearchForm(forms.Form):
                                     initial='both')
     author = AutoCompleteSelectField("authors_only", required=False,
                                      help_text=None, label="Author")
-    # forms.ModelChoiceField(queryset=models.Author.objects.all().order_by('first_names'),
-    #                                required=False)
+
+    def clean_author(self):
+        try:
+            author = self.cleaned_data.get('author')
+            if author and isinstance(author, models.Author):
+                return author
+        except (ValueError, TypeError, AttributeError):
+            pass
+        return None
+
     first_author = forms.BooleanField(label="First author only", required=False)
     category = forms.ModelChoiceField(queryset=models.Category.objects.all(), required=False)
     topics = forms.ModelChoiceField(queryset=models.Topic.objects.all(), required=False)
