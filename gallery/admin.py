@@ -43,10 +43,10 @@ class PhotoInline(admin.TabularInline):
     fields = ('photograph',)
     raw_id_fields = ('photograph',)
     autocomplete_lookup_fields = {
-        'fk': ['photograph', ]
+        'fk': ['photograph__id', ]
     }
     model = models.Photograph.albums.through
-    ordering = ['-photograph__modified', ]
+    ordering = ['-photograph__id', ]
     formfield_overrides = {
         CharField: {'widget': TextInput(attrs={'size': '500'})},
         TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 40})},
