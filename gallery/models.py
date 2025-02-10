@@ -84,7 +84,7 @@ class Photograph(models.Model):
     objects = PhotographQuerySet.as_manager()
 
     def __str__(self):
-        return ", ".join([str(self.image).rsplit('/', 1)[-1],
+        return ", ".join([str(self.pk), str(self.image).rsplit('/', 1)[-1],
                           str(self.photographer), ])
 
     def get_absolute_url(self):
