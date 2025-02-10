@@ -637,9 +637,6 @@ article figure, article p.caption {
     .article p.caption {
         margin-left: -1px;
         margin-right: -1px;
-        padding-left: 100px !important;
-        padding-right: 100px !important;
-        font-size: 2.2rem !important;
     }
     .article__title {
         font-size: 4.7rem;
