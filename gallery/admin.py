@@ -17,7 +17,7 @@ class PhotographAdmin(admin.ModelAdmin):
     fields = ('image', 'photographer', 'suggested_caption',
               'alt', 'date_taken',
               'featured', 'keywords', 'albums', 'copyright', 'credit', )
-    search_fields = ['suggested_caption', 'alt', 'keywords__name',
+    search_fields = ['pk', 'suggested_caption', 'alt', 'keywords__name',
                      'photographer__first_names', 'photographer__last_name',
                      'albums__name', ]
     ordering = ['-modified', ]
@@ -26,7 +26,7 @@ class PhotographAdmin(admin.ModelAdmin):
         'fk': ['photographer', ],
         'm2m': ['keywords', 'albums', ]
     }
-    list_display = ('pk', 'alt', 'thumbnail', 'photographer',
+    list_display = ('id', 'alt', 'thumbnail', 'photographer',
                     'date_taken', 'created',
                     'featured', 'modified', )
     list_editable = ('featured',)
