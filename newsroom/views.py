@@ -792,6 +792,18 @@ def advanced_search(request):
     first_author = request.GET.get('first_author')
     first_author_only = True if first_author == "on" else False
 
+    try:
+        author_param = request.GET.get('author')
+        if author_param and not str(author_param).isdigit():
+            author_param = None
+    except (ValueError, TypeError):
+        author_param = None
+        
+    if author_param is None and 'author' in request.GET:
+        get_params = request.GET.copy()
+        get_params.pop('author')
+        request.GET = get_params
+
     if request.GET.get('search_type') == 'image':
         inc_photos = True
         inc_articles = False
