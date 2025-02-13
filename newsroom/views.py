@@ -791,6 +791,7 @@ def advanced_search(request):
     search_type = request.GET.get('search_type')
     first_author = request.GET.get('first_author')
     first_author_only = True if first_author == "on" else False
+    author_text = request.GET.get('author_text')
 
     try:
         author_param = request.GET.get('author')
@@ -880,11 +881,21 @@ def advanced_search(request):
             logger.error("Advanced Search failed to get num_pages")
             num_pages = 1
 
-    additional_parameters = "&is_simple=true"
-    if query and query > "":
-        additional_parameters += '&adv_search=' + query
-    if search_type and search_type > "":
-        additional_parameters += '&search_type=' + search_type
+    additional_parameters = ""
+    if author_pk:
+        additional_parameters += '&author=' + str(author_pk)
+    if category_pk:
+        additional_parameters += '&category=' + str(category_pk)
+    if topic_pk:
+        additional_parameters += '&topics=' + str(topic_pk)
+    if cleaned_adv_form.get("date_from"):
+        additional_parameters += '&date_from=' + str(cleaned_adv_form.get("date_from").strftime("%Y-%m-%d"))
+    if cleaned_adv_form.get("date_to"):
+        additional_parameters += '&date_to=' + str(cleaned_adv_form.get("date_to").strftime("%Y-%m-%d"))
+    if cleaned_adv_form.get("results_per_page"):
+        additional_parameters += '&results_per_page=' + str(cleaned_adv_form.get("results_per_page"))
+    if author_text:
+        additional_parameters += '&author_text=' + str(author_text)
 
     return render(request, 'search/search.html',
                   {'query': query,
