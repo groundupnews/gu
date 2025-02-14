@@ -541,6 +541,7 @@ article figure, article p.caption {
 .bigger-image {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 
 .bigger-image:after {
