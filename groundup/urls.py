@@ -66,7 +66,7 @@ urlpatterns = [
     path('', include('agony.urls')),
     path('', include('socialmedia.urls')),
     path('', include('target.urls')),
-    path('', include('judgment.urls')),
+    # path('', include('judgment.urls')),
     path('', include('sudoku.urls')),
     path('', include('analyzer.urls')),
     path('', include('security.urls')),
