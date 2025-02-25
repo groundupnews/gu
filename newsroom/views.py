@@ -882,21 +882,24 @@ def advanced_search(request):
             num_pages = 1
 
     additional_parameters = ""
-    if author_pk:
-        additional_parameters += '&author=' + str(author_pk)
-    if category_pk:
-        additional_parameters += '&category=' + str(category_pk)
-    if topic_pk:
-        additional_parameters += '&topics=' + str(topic_pk)
-    if cleaned_adv_form.get("date_from"):
-        additional_parameters += '&date_from=' + str(cleaned_adv_form.get("date_from").strftime("%Y-%m-%d"))
-    if cleaned_adv_form.get("date_to"):
-        additional_parameters += '&date_to=' + str(cleaned_adv_form.get("date_to").strftime("%Y-%m-%d"))
-    if cleaned_adv_form.get("results_per_page"):
-        additional_parameters += '&results_per_page=' + str(cleaned_adv_form.get("results_per_page"))
-    if author_text:
-        additional_parameters += '&author_text=' + str(author_text)
-
+    try:
+        if author_pk:
+            additional_parameters += '&author=' + str(author_pk)
+        if category_pk:
+            additional_parameters += '&category=' + str(category_pk)
+        if topic_pk:
+            additional_parameters += '&topics=' + str(topic_pk)
+        if cleaned_adv_form.get("date_from"):
+            additional_parameters += '&date_from=' + str(cleaned_adv_form.get("date_from").strftime("%Y-%m-%d"))
+        if cleaned_adv_form.get("date_to"):
+            additional_parameters += '&date_to=' + str(cleaned_adv_form.get("date_to").strftime("%Y-%m-%d"))
+        if cleaned_adv_form.get("results_per_page"):
+            additional_parameters += '&results_per_page=' + str(cleaned_adv_form.get("results_per_page"))
+        if author_text:
+            additional_parameters += '&author_text=' + str(author_text)
+    except:
+        additional_parameters = ""
+        
     return render(request, 'search/search.html',
                   {'query': query,
                    'page': page,
