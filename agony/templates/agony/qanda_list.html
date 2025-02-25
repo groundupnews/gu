@@ -5,6 +5,10 @@
     Answers to your questions {{block.super}}
 {% endblock %}
 
+{% block additional_head %}
+    <link rel="alternate" type="application/rss+xml" title="GroundUp Q&A RSS Feed" href="{% url 'agony:rss' %}">
+    <link rel="alternate" type="application/atom+xml" title="GroundUp Q&A Atom Feed" href="{% url 'agony:atom' %}">
+{% endblock %}
 
 {% block css-override %}
     <style>
