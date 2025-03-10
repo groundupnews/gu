@@ -3,6 +3,7 @@ from django.test import Client
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth.models import Permission
+from django.utils import timezone
 
 from newsroom.models import Article, Category
 from .models import Tweet, TwitterHandle
@@ -79,3 +80,60 @@ class TwitterTest(TestCase):
         self.assertEqual(response.status_code, 200)
         response = staff.get(reverse('socialmedia:twitterhandle.detail', args=([handle.pk])))
         self.assertEqual(response.status_code, 200)
+
+class TweetTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create test article 
+        category = Category.objects.create(name="News", slug="news")
+        cls.article = Article.objects.create(
+            title="Test Article",
+            slug="test-article",
+            category=category
+        )
+        cls.article.publish_now()
+
+        # Create test tweet
+        cls.tweet = Tweet(
+            article=cls.article,
+            tweet_text="Test tweet text",
+            status='p'  # Pending
+        )
+        cls.tweet.save()
+
+    def test_tweet_str(self):
+        """Test Tweet string representation
+        
+        Expected output:
+        - Tweet string should match format "{article.title}: {wait_time}"
+        """
+        self.assertEqual(
+            str(self.tweet),
+            f"{self.article.title}: {self.tweet.wait_time}",
+            "Tweet string representation should match expected format"
+        )
+
+    def test_tweet_status(self):
+        """Test Tweet status changes
+        
+        Expected output:
+        - Initial status should be 'p' (pending)
+        - Status should update to 'd' (done) after change
+        """
+        self.assertEqual(self.tweet.status, 'p', "Initial status should be pending")
+        self.tweet.status = 'd'
+        self.tweet.save()
+        self.assertEqual(self.tweet.status, 'd', "Status should update to done")
+
+    def test_tweet_length(self):
+        """Test Tweet length validation
+        
+        Expected output:
+        - Should raise exception for tweets > 280 characters
+        """
+        long_tweet = Tweet(
+            article=self.article,
+            tweet_text="x" * 281
+        )
+        with self.assertRaises(Exception, msg="Should reject tweets > 280 chars"):
+            long_tweet.full_clean()
