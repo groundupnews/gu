@@ -52,3 +52,36 @@ class URLSWork(TestCase):
                       args=(album.photograph_set.all()[0].pk,))
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
+
+class PhotoTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.album = models.Album.objects.create(name="Test Album")
+        cls.photo = models.Photograph.objects.create(
+            suggested_caption="Test Photo",
+            alt="Test Alt Text"
+        )
+        cls.album.photograph_set.add(cls.photo)
+
+    def test_photo_str(self):
+        self.assertEqual(str(self.photo), f"{self.photo.pk}, , None")
+
+    def test_photo_in_album(self):
+        self.assertIn(self.photo, self.album.photograph_set.all())
+
+    def test_photo_detail_view(self):
+        user = User.objects.create_superuser('admin', 'admin@example.com', 'password')
+        c = Client()
+        c.login(username='admin', password='password')
+        response = c.get(reverse('gallery:photo.detail', 
+                                args=[self.photo.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.photo.suggested_caption)
+
+    def test_photo_list_view(self):
+        user = User.objects.create_superuser('admin', 'admin@example.com', 'password')
+        c = Client()
+        c.login(username='admin', password='password')
+        response = c.get(reverse('gallery:photo.list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.photo.suggested_caption)

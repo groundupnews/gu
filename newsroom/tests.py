@@ -418,3 +418,60 @@ class ArticleTest(TestCase):
         res = notifycorrections.process(1)
         self.assertEqual(res['failures'], 0)
         self.assertEqual(res['successes'], 0)
+
+class ArticleDetailTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = Topic.objects.create(name="Test Topic", slug="test-topic")
+        cls.category = Category.objects.create(name="Test Category", slug="test-category")
+        cls.author = Author.objects.create(
+            first_names="Test",
+            last_name="Author",
+            email="test@example.com"
+        )
+        cls.article = Article.objects.create(
+            title="Test Article",
+            slug="test-article",
+            category=cls.category
+        )
+        cls.article.author_01 = cls.author
+        cls.article.topics.add(cls.topic)
+        cls.article.save()
+
+    def test_article_absolute_url(self):
+        self.assertEqual(
+            self.article.get_absolute_url(),
+            f'/article/{self.article.slug}/'
+        )
+
+    def test_article_str(self):
+        self.assertEqual(str(self.article), f"{self.article.pk} {self.article.title}")
+
+    def test_unpublished_article_not_visible(self):
+        c = Client()
+        response = c.get(self.article.get_absolute_url())
+        self.assertEqual(response.status_code, 404)
+
+    def test_published_article_visible(self):
+        self.article.publish_now()
+        c = Client()
+        response = c.get(self.article.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.article.title)
+
+    def test_article_authors(self):
+        self.assertEqual(self.article.author_01, self.author)
+        self.assertEqual(self.article.author_02, None)
+
+    def test_article_topics(self):
+        self.assertIn(self.topic, self.article.topics.all())
+
+class CategoryTest(TestCase):
+    def test_category_creation(self):
+        category = Category.objects.create(
+            name="Test Category",
+            slug="test-category"
+        )
+        self.assertEqual(str(category), category.name)
+        self.assertEqual(category.get_absolute_url(), 
+                        f'/category/{category.slug}/')
