@@ -3,6 +3,7 @@ from django.utils.feedgenerator import Atom1Feed
 from django.urls import reverse
 from django.utils.html import strip_tags
 from agony.models import QandA
+from django.core.cache import cache
 
 class LatestQandARssFeed(Feed):
     title = "GroundUp Q&A"
@@ -10,7 +11,14 @@ class LatestQandARssFeed(Feed):
     description = "Latest questions and answers from GroundUp"
     
     def items(self):
-        return QandA.objects.published().order_by('-published')[:20]
+        cached_items = cache.get('latest_qanda_items')
+        if cached_items is not None:
+            return cached_items
+        items = QandA.objects.published()\
+            .only('summary_question', 'summary_answer', 'full_answer', 'published', 'pk')\
+            .order_by('-published')[:20]
+        cache.set('latest_qanda_items', items, 3600)  # cache for 1 hour
+        return items
         
     def item_title(self, item):
         return item.summary_question
