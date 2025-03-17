@@ -48,7 +48,7 @@
             <a id="drop1" href="#"
                role="button"
                class="dropdown-toggle btn btn-default btn-info"
-               data-toggle="dropdown">Download<b class="caret"></b></a>
+               data-toggle="dropdown">Download <b class="caret"></b></a>
 
             <ul class="dropdown-menu">
                 {% for version in versions %}
@@ -123,8 +123,39 @@
             {{default_copyright|safe}}
         {% endif %}
 
+        {% include "gallery/how_to_use.html" %}
+
+        {% version photo.image 'extra_large' as extra_large_image %}
+        {% version photo.image 'huge' as huge_image %}
+
+        <div class="row" style="margin-top:20px; border: 2px solid red; padding: 10px;">
+            <div class="col-xs-6 text-center">
+                <div><strong>Extra Large Photo</strong></div>
+                <button type="button" class="btn btn-lg btn-primary" onclick="copyLink('https://{{ request.get_host }}{{ extra_large_image.url }}', this)">📋 Copy link</button>
+            </div>
+            <div class="col-xs-6 text-center">
+                <div><strong>Huge Photo</strong></div>
+                <button type="button" class="btn btn-lg btn-primary" onclick="copyLink('https://{{ request.get_host }}{{ huge_image.url }}', this)">📋 Copy link</button>
+            </div>
+        </div>
+
+        <script>
+        function copyLink(link, btn) {
+            navigator.clipboard.writeText(link).then(function() {
+                var originalText = btn.innerHTML;
+                btn.innerHTML = '✓';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+                setTimeout(function(){
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-primary');
+                }, 2000);
+            });
+        }
+        </script>
+
     </div>
-    {% include "gallery/how_to_use.html" %}
 {% endblock %}
 
 
