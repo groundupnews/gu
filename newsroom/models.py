@@ -827,6 +827,10 @@ class Correction(models.Model):
                                               "that have have already been sent "
                                               "article")
     publishers_notified = models.BooleanField(default=False)
+    display_at_top = models.BooleanField(default=False,
+                                         help_text="If checked, this correction will be "
+                                         "displayed at the top of the article instead "
+                                         "of at the bottom.")
     user = models.ForeignKey(User, blank=True, null=True,
                              on_delete=models.CASCADE, editable=False)
     created = models.DateTimeField(auto_now_add=True, editable=False)
