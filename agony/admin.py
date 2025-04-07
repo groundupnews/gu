@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django import forms
+from django.utils.translation import gettext_lazy
 
 from agony.models import QandA
 
@@ -33,6 +34,18 @@ class QandAAdmin(admin.ModelAdmin):
                 ('created', 'modified',),)
         }),
     )
+
+    def unpublish_qandas(self, request, queryset):
+        rows_updated = queryset.update(status='N', published=None)
+        if rows_updated == 1:
+            message_bit = "1 Q&A was"
+        else:
+            message_bit = "%s Q&As were" % rows_updated
+        self.message_user(request, gettext_lazy("%s successfully marked as unpublished." % message_bit))
+
+    unpublish_qandas.short_description = "Unpublish selected Questions and Answers"
+
+    actions = [unpublish_qandas, ]
 
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}
