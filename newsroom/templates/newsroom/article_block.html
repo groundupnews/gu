@@ -387,6 +387,27 @@
         </span>
     </div>
 
+    {% with top_corrections=article.correction_set.all %}
+        {% if top_corrections %}
+            <div id="article__top_corrections">
+                <a id="article-top-corrections"></a>
+                {% for correction in top_corrections %}
+                    {% if correction.display_at_top %}
+                        <div class="article__correction article__correction--top">
+                            <a id="update-top-{{correction.pk}}"></a>
+                            <span class="article__correction__type">
+                                {{correction.get_update_type_display}} on
+                                {{correction.created|date:"Y-m-d H:i"}}</span>
+                            <span class="article__correction_text">
+                                {{correction.text|linebreaks|safe}}
+                            </span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     {% if article.cached_primary_image %}
         <figure id="article-primary-image" class="article__image__box">
             <div class="article__image__container">
@@ -435,15 +456,17 @@
             <div id="article__corrections">
                 <a id="article-corrections"></a>
                 {% for correction in corrections reversed %}
-                    <div class="article__correction">
-                        <a id="update-{{correction.pk}}"></a>
-                        <span class="article__correction__type">
-                            {{correction.get_update_type_display}} on
-                            {{correction.created|date:"Y-m-d H:i"}}</span>
-                        <span class="article__correction_text">
-                            {{correction.text|linebreaks|safe}}
-                        </span>
-                    </div>
+                    {% if not correction.display_at_top %}
+                        <div class="article__correction">
+                            <a id="update-{{correction.pk}}"></a>
+                            <span class="article__correction__type">
+                                {{correction.get_update_type_display}} on
+                                {{correction.created|date:"Y-m-d H:i"}}</span>
+                            <span class="article__correction_text">
+                                {{correction.text|linebreaks|safe}}
+                            </span>
+                        </div>
+                    {% endif %}
                 {% endfor  %}
             </div>
         {% endif %}

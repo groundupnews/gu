@@ -203,6 +203,26 @@ ul:nth-child(3) > li {
     margin-bottom: 12px;
 }
 
+/* Styles for top corrections */
+#article__top_corrections {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ebebe0;
+}
+
+.article__correction--top {
+    font-style: italic;
+    font-size: 1.3em;
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-left: 3px solid #00B1F0;
+}
+
+#article__corrections {
+    border-bottom: 1px solid #ebebe0;
+}
+
 .article__copyright {
     padding: 16px;
     border-top: 1px solid #eee;
@@ -528,9 +548,6 @@ article figure, article p.caption {
         width: 75%;
         align-self: center;
     }
-}
-#article__corrections {
-    border-bottom: 1px solid #ebebe0;
 }
 
 .embed-responsive-16by9 {
