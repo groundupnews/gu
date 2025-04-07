@@ -10,6 +10,7 @@ PROCESS_CHOICES = (
     ("R", "Notify reader only"),
     ("P", "Publish only"),
     ("B", "Publish and notify reader"),
+    ("N", "Unpublished"),
 )
 
 
@@ -64,6 +65,9 @@ class QandA(models.Model):
             self.notify_sender = True
             self.published = timezone.now()
         elif self.status == 'I':
+            self.notify_sender  = False
+            self.published = None
+        elif self.status == 'N': # Unpublished
             self.notify_sender  = False
             self.published = None
         super(QandA, self).save(*args, **kwargs)
