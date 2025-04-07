@@ -102,6 +102,11 @@
                         &#10060;
                     {% endif %} Republishers<br />
                 {% endwith %}
+                {% if article.region and article.region.name != "(None)" %}
+                    &#10003;
+                {% else %}
+                    &#10060;
+                {% endif %} Region<br />
             </div>
             <div id="article__statistics">
             </div>
