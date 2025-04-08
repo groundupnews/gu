@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.http import Http404
 from django.contrib import messages
 from django.db.models import Q
+from django.utils import timezone
 
 from newsroom.models import Topic
 from pgsearch.utils import searchQandA
@@ -12,11 +13,12 @@ class QandAList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qandas = QandA.objects.published()
+        qandas = QandA.objects.published().exclude(status='N')
 
         if 'qanda_search_str' in self.request.GET:
             try:
                 qandas = searchQandA(self.request.GET.get('qanda_search_str'))
+                qandas = qandas.filter(published__lte=timezone.now()).exclude(status='N')
             except:
                 pass
 
@@ -24,7 +26,7 @@ class QandAList(ListView):
             try:
                 topic = int(self.request.GET['topic'])
                 qandas = qandas & \
-                         QandA.objects.published().filter(topics__in=[topic,])
+                         QandA.objects.published().filter(topics__in=[topic,]).exclude(status='N')
             except:
                 pass
 
