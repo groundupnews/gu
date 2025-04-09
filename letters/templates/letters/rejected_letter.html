@@ -18,12 +18,18 @@ The title of your letter is:<br />
 {{letter.title}}
 </p>
 
+
 <p>
 After carefully considering your letter, we regret that we have decided not to
 publish it.
 </p>
 
 {{letter.note_to_writer|safe|linebreaks}}
+
+<p>
+<br />Text of letter:
+</p>
+{{letter.text|linebreaks}}
 
 <p>
 Regards<br/>
