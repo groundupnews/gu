@@ -1,0 +1,116 @@
+<style>/* General styling for the Subscription Section */
+    .subscribe-section {
+        background-color: rgb(0, 178, 240);
+        padding: 15px 20px 35px 20px;
+        color: white;
+        margin-bottom: 20px;
+        overflow: hidden; 
+        position: relative;
+        display: flex;
+        align-items: stretch;
+    }
+    
+    /* Input field styling */
+    .subscribe-section input {
+        color: #000;
+    }
+    
+    /* Button styling */
+    .btn.btn-black {
+        background-color: black;
+        color: white;
+    }
+    
+    /* Background image for the right column */
+    .subscribe-section .col-sm-5 {
+        background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 252.28 251.65"><defs><symbol id="shutter-piece" viewBox="0 0 120.84 73.02"><path d="M80.64,3.4c-1.43-2.36-3.59-4.63-8.67-2.63C42.91,12.25,13.42,32.25,0,73.02h120.84L80.64,3.4Z" style="fill:%23000;"/></symbol></defs><g id="Layer_1-2"><circle cx="126.14" cy="125.82" r="24" style="fill:%23fff;"/><use width="120.84" height="73.02" transform="translate(10.3 6.8)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(-34.85 166.63) rotate(-60)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(80.99 285.65) rotate(-120)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(241.98 244.84) rotate(-180)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(287.14 85.02) rotate(120)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(171.3 -34) rotate(60)" xlink:href="%23shutter-piece"/></g></svg>');
+        background-size: 60%;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 150px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    /* Content column styling */
+    .subscribe-section .col-sm-7 {
+        padding-right: 20px;
+    }
+    
+    /* Flexbox for form alignment */
+    #mc-embedded-subscribe-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    /* Input field styling */
+    .form-control {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    /* Button styling */
+    .btn {
+        white-space: nowrap;
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 767px) {
+        .subscribe-section {
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .subscribe-section .col-sm-7 {
+            padding-right: 0;
+            width: 100%;
+        }
+        
+        #mc-embedded-subscribe-form {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-control {
+            width: 100%;
+            min-width: auto;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+        
+        .inline-group {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .subscribe-section {
+            padding: 15px;
+        }
+    }
+</style>
+    
+<div class="subscribe-section" id="subscribe-section">
+    <div class="col-sm-7">
+        <h2>Don't miss out on the latest news</h2>
+        <p>We respect your privacy, and promise we won't spam you.</p>
+        <form action="https://groundup.us3.list-manage.com/subscribe/post?u=de6b759dc2cdfe70bfebce58c&amp;id=21dfeb9ddb&amp;f_id=00d4c2e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="">
+            <div class="inline-group">
+                <input type="email" name="EMAIL" placeholder="Your email address" class="required email form-control" id="mce-EMAIL" required="" value="">
+            </div>
+            <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                <input type="text" name="b_de6b759dc2cdfe70bfebce58c_21dfeb9ddb" tabindex="-1" value="">
+            </div>
+            <div class="inline-group">
+                <button type="submit" id="mc-embedded-subscribe" name="subscribe" class="btn btn-black">Subscribe Now</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-5 hidden-xs">
+        <!-- Background image section -->
+    </div>
+</div>
