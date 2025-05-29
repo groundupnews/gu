@@ -48,6 +48,18 @@
                         {% endif %}
                     </div>
                 {% endif %}
+                <p id="qand__disclaimer">
+                    Please note: GroundUp is just a news agency. 
+                    We are not lawyers or financial advisors, 
+                    and we have nothing to do with SASSA, Home Affairs, 
+                    or any other government bodies. 
+                    We do our best to make the answers accurate 
+                    using publicly available information, 
+                    but we cannot accept any legal liability 
+                    if there are errors. 
+                    If you notice any discrepancies, 
+                    please email <a href="mailto:info@groundup.org.za">info@groundup.org.za</a>.
+                </p>
                 <p class="qanda__date_published">Answered on {{object.published}}</p>
                 {% with topics_all=qanda.topics.all %}
                     {% if topics_all|length  %}
@@ -74,11 +86,6 @@
                     <ul id="qanda__searchlist">
                         {% include "search/searchform.html" %}
                     </ul>
-                </p>
-                <p id="qand__disclaimer">
-                    Please note. We are not lawyers or financial advisors. We do
-                    our best to make the answers accurate, but we cannot accept
-                    any legal liability if there are errors.
                 </p>
             </div>
         </div>
