@@ -28,6 +28,7 @@ from django.contrib.sitemaps.views import sitemap
 
 from newsroom.models import Article
 from newsroom.models import Author
+from newsroom.sitemap import ArticleSitemap
 
 from gallery.models import Photograph
 
@@ -74,28 +75,27 @@ urlpatterns = [
     path('donation/', include('donationPage.urls')),
     path('accounts/', include('allauth.urls')),
 
-    re_path(r'^sitemap\.xml$', sitemap,
+    path('sitemap.xml', sitemap,
          {'sitemaps':
-         {'articles': GenericSitemap(article_dict,
-                                      priority=0.5),
-          'authors': GenericSitemap(author_dict,
-                                    priority=0.5,
-                                    changefreq='weekly'),
-          'photos': GenericSitemap(photo_dict,
-                                   priority=0.5),
-          'flatpages': FlatPageSitemap}},
-        name='django.contrib.sitemaps.views.sitemap'),
+             {'articles': ArticleSitemap,
+              'authors': GenericSitemap(author_dict,
+                                        priority=0.5,
+                                        changefreq='weekly'),
+              'photos': GenericSitemap(photo_dict,
+                                       priority=0.5),
+              'flatpages': FlatPageSitemap}},
+         name='django.contrib.sitemaps.views.sitemap'),
     path('cache/', include('clearcache.urls', namespace="cache")),
     re_path(r'^robots\.txt',
-         TemplateView.as_view(template_name='robots.txt',
-                              content_type='text/plain'),
-         name='robots.txt'),
+            TemplateView.as_view(template_name='robots.txt',
+                                 content_type='text/plain'),
+            name='robots.txt'),
     re_path(r'^404testing',
-        TemplateView.as_view(template_name='404.html'),
-        name='test404'),
+            TemplateView.as_view(template_name='404.html'),
+            name='test404'),
     re_path(r'^500testing',
-        TemplateView.as_view(template_name='500.html'),
-        name='test500'),
+            TemplateView.as_view(template_name='500.html'),
+            name='test500'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
