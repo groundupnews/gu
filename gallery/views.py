@@ -138,3 +138,17 @@ def gallery_front(request):
                    'featured_photos': featured_photos,
                    'photos': photos,
                    'albums': albums})
+
+def photo_download(request, pk):
+    versions = {key: value for (key, value) in
+                django_settings.FILEBROWSER_VERSIONS.items()
+                if not key.startswith("admin")}
+
+    versions = sorted(versions.items(),key=lambda x: x[1]["width"])
+    photo = get_object_or_404(models.Photograph, pk=pk)
+    
+    return render(request, "gallery/photo_download.html", {
+        'photo': photo,
+        'default_copyright': settings.DEFAULT_COPYRIGHT,
+        'versions': versions,
+    })

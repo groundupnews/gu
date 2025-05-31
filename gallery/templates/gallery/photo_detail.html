@@ -51,20 +51,28 @@
                data-toggle="dropdown">Download <b class="caret"></b></a>
 
             <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'gallery:photo.download' photo.pk %}">
+                        <strong>📥 Download Page</strong>
+                        <br><small>Find all of our download options here</small>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Quick Downloads:</li>
                 {% for version in versions %}
                     {% version photo.image version.0 as image %}
                     <li>
-                        <a href="{{image.url}}" download>
+                        <a href="#" onclick="downloadAndRedirect('{{image.url}}', '{% url 'gallery:photo.download' photo.pk %}'); return false;">
                             {{version.1.verbose_name|capfirst}}
                             ({{image.width}}px X {{image.height}}px)
                         </a>
                     </li>
                 {% endfor %}
                 <li>
-                    <a href="{{photo.image.url}}" download>
+                    <a href="#" onclick="downloadAndRedirect('{{photo.image.url}}', '{% url 'gallery:photo.download' photo.pk %}'); return false;">
                         Original ({{photo.image.width}}px X {{photo.image.height}}px)
                     </a>
-                    <li>
+                </li>
             </ul>
 
         </div>
@@ -152,6 +160,22 @@
                     btn.classList.add('btn-primary');
                 }, 2000);
             });
+        }
+        
+        function downloadAndRedirect(imageUrl, downloadPageUrl) {
+            // temp a element (triggers the download)
+            var downloadLink = document.createElement('a');
+            downloadLink.href = imageUrl;
+            downloadLink.download = '';
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            
+            // redirect to the download page after a download (short delay)
+            setTimeout(function() {
+                window.location.href = downloadPageUrl;
+            }, 500);
         }
         </script>
 
