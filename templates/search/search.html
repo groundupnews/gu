@@ -82,22 +82,22 @@
                             </div>
                         </div>
                     {% else %}
-                        <h4 style="height:40px; overflow:hidden;">
+                    <div style="height:330px; overflow:hidden; margin-bottom: 18px;
+                    padding-bottom: 18px; ">
+                        <p class="summary-image">
                             <a href="{% url "gallery:photo.detail" article.pk %}">
-                                {{article.suggested_caption|truncatechars:"50"}}
+                                <img style="height:220px;"
+                                src="{% version article.image 'medium' %}"
+                                alt="{{ article.alt }}"
+                                />
                             </a>
-                        </h4>
-                        <div style="height:330px; overflow:hidden; margin-bottom: 18px;
-                                    padding-bottom: 18px; ">
-                            <p class="summary-image">
+                        </p>
+                    
+                            <h4 style="height:40px; overflow:hidden;">
                                 <a href="{% url "gallery:photo.detail" article.pk %}">
-                                    <img style="height:220px;"
-                                        src="{% version article.image 'medium' %}"
-                                        alt="{{ article.alt }}"
-                                    />
+                                    {{article.suggested_caption|truncatechars:"50"}}
                                 </a>
-                            </p>
-                            
+                            </h4>
                             
                             <p>
                                 {{article.date_taken|date:"j F Y"}} | IMAGE
