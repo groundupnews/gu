@@ -1,6 +1,6 @@
 Dear {{author}}
 
-You article has been published on GroundUp:
+Your article has been published on GroundUp:
 {{article.title}}
 
 You can find it here:
