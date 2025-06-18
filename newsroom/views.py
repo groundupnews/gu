@@ -787,7 +787,7 @@ def logout_from_all_sessions(request):
 
 def advanced_search(request):
     page = None
-    query = request.GET.get('adv_search')
+    query = request.GET.get('adv_search', '')
     search_type = request.GET.get('search_type')
     first_author = request.GET.get('first_author')
     first_author_only = True if first_author == "on" else False
