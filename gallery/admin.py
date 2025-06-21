@@ -16,7 +16,9 @@ class DuplicateInline(admin.TabularInline):
 class PhotographAdmin(admin.ModelAdmin):
     fields = ('image', 'photographer', 'suggested_caption',
               'alt', 'date_taken',
-              'featured', 'keywords', 'albums', 'copyright', 'credit', )
+              'featured', 'keywords', 'albums', 'copyright', 'credit',
+              ('featured_on_front_page_from', 'featured_on_front_page_to'),
+              ('include_short_title', 'include_suggested_caption'), )
     search_fields = ['pk', 'suggested_caption', 'alt', 'keywords__name',
                      'photographer__first_names', 'photographer__last_name',
                      'albums__name', ]

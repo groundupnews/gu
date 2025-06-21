@@ -77,6 +77,14 @@ class Photograph(models.Model):
     copyright = models.TextField(blank=True,
                                  help_text="Leave blank for default")
     credit = models.TextField(blank=True, help_text="Leave blank for default")
+    featured_on_front_page_from = models.DateTimeField(blank=True, null=True,
+                                                       help_text="Start date/time for featuring on front page")
+    featured_on_front_page_to = models.DateTimeField(blank=True, null=True,
+                                                     help_text="End date/time for featuring on front page")
+    include_short_title = models.BooleanField(default=False,
+                                             help_text="Include short title when featured on front page")
+    include_suggested_caption = models.BooleanField(default=False,
+                                                   help_text="Include suggested caption when featured on front page")
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     keywords = models.ManyToManyField(Keyword, blank=True)
