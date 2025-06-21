@@ -51,6 +51,21 @@ def get_blocks(group_name="Home"):
 
 def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
     context[context_key] = get_blocks(group_name)
+    
+    # Add featured front page photos if any blocks in the group contain _Featured_Photos
+    blocks = context[context_key]
+    if any(block.name == "_Featured_Photos" for block in blocks):
+        from django.utils import timezone
+        from gallery.models import Photograph
+        
+        now = timezone.now()
+        featured_photos = Photograph.objects.filter(
+            featured_on_front_page_from__lte=now,
+            featured_on_front_page_to__gte=now
+        ).order_by('-date_taken')
+        
+        context['featured_front_page_photos'] = featured_photos
+    
     return context
 
 
