@@ -114,6 +114,7 @@ For Quick Links on the home page edit the ProfiledLinks block in the admin front
         {% elif b.name == "_Wetell" %}
             {% wetell %}
         {% elif b.name == "_Featured_Photos" %}
+            {% if featured_front_page_photos and featured_front_page_photos|length > 0 %}
             <div id="featured-photos">
                 {% load fb_versions %}
                 {% now "Y-m-d H:i:s" as current_time %}
@@ -133,8 +134,6 @@ For Quick Links on the home page edit the ProfiledLinks block in the admin front
                             <p class="featured-photo-caption">{{photo.suggested_caption|safe}}</p>
                         {% endif %}
                     </div>
-                {% empty %}
-                    <p>No featured photos available at this time.</p>
                 {% endfor %}
                 </div>
                 <style>
@@ -194,6 +193,7 @@ For Quick Links on the home page edit the ProfiledLinks block in the admin front
                 }
                 </style>
             </div>
+            {% endif %}
         {% elif b.name == "_Toy" %}
 	    <div id="gu-toy">
 
