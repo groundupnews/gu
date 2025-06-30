@@ -285,10 +285,34 @@ admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
 admin.site.register(models.Correction, CorrectionAdmin)
 admin.site.register(models.WetellBulletin, WetellAdmin)
+admin.site.register(models.FlatPageImage)
+
+
+class FlatPageImageInline(admin.StackedInline):
+    model = models.FlatPageImage
+    can_delete = False
+
+
+class CustomFlatPageForm(forms.ModelForm):
+    template_name = forms.ChoiceField(
+        choices=[
+            ('', '---------'),
+            ('flatpages/default.html', 'Default template'),
+            ('flatpages/raw-html.html', 'Raw HTML'),
+            ('flatpages/header_image.html', 'Header Image'),
+        ],
+        required=False,
+        label=_('Template'),
+    )
+
+    class Meta:
+        model = FlatPage
+        fields = '__all__'
 
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
+    form = CustomFlatPageForm
     fieldsets = (
         (None, {'fields': ('url', 'title', 'content', 'sites')}),
         (_('Advanced options'), {
@@ -299,6 +323,7 @@ class FlatPageAdmin(FlatPageAdmin):
             ),
         }),
     )
+    inlines = (FlatPageImageInline, )
 
     class Media:
         css = {'all': ('/static/newsroom/css/admin_enhance.css', )}

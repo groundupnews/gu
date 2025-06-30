@@ -12,6 +12,7 @@ from allauth.account.signals import password_changed
 from django.conf import settings as django_settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.contrib.flatpages.models import FlatPage
 from django.core.mail import send_mail
 from django.db import models
 from django.dispatch import receiver
@@ -909,3 +910,13 @@ def set_password_reset(sender, **kwargs):
     if author.password_changed is False:
         author.password_changed = True
         author.save()
+
+
+class FlatPageImage(models.Model):
+    flatpage = models.OneToOneField(FlatPage, on_delete=models.CASCADE,
+                                    primary_key=True, related_name="image")
+    header_image = FileBrowseField("Header Image", max_length=200,
+                                   directory="images/", blank=True)
+
+    def __str__(self):
+        return f"Image for {self.flatpage.title}"
