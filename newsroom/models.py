@@ -918,5 +918,8 @@ class FlatPageImage(models.Model):
     header_image = FileBrowseField("Header Image", max_length=200,
                                    directory="images/", blank=True)
 
+    class Meta:
+        verbose_name = "Header Image"
+
     def __str__(self):
-        return f"Image for {self.flatpage.title}"
+        return f"for {self.flatpage.title}"
