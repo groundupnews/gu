@@ -252,8 +252,8 @@ class AuthorForm(forms.ModelForm):
 class AuthorAdmin(admin.ModelAdmin):
     form = AuthorForm
     list_display = ('last_name', 'first_names', 'created',
-                    'email', 'freelancer', 'level', )
-    list_editable = ('email', 'freelancer','level', )
+                    'email', 'freelancer', 'level', 'bonus_off')
+    list_editable = ('email', 'freelancer','level', 'bonus_off')
     search_fields = ['last_name', 'first_names', ]
     # inlines = [
     #    InvoiceInline,
