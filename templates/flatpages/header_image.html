@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{flatpage.title}}{{block.super}}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+	<div class="row">
+	    <article id="flatpage">
+		<div class="col-xs-12">
+		    {% if flatpage.image.header_image %}
+		    <div class="flatpage-header-image">
+			<img src="{{ flatpage.image.header_image.url }}" alt="{{ flatpage.title }}" class="img-responsive center-block">
+		    </div>
+		    {% endif %}
+		    <div class="topic-intro">
+			<h1 id="flatpage_title">{{ flatpage.title }}</h1>
+			{{ flatpage.content|safe }}
+		    </div>
+		</div>
+	    </article>
+	</div>
+    </div>
+{% endblock %}
