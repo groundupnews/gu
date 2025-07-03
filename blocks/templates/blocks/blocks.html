@@ -12,6 +12,7 @@ _Promote
 _Related
 _Recommend
 _Wetell
+_Featured_Photos
 
 For Quick Links on the home page edit the ProfiledLinks block in the admin front.
 {% endcomment %}
@@ -112,6 +113,87 @@ For Quick Links on the home page edit the ProfiledLinks block in the admin front
             </div>
         {% elif b.name == "_Wetell" %}
             {% wetell %}
+        {% elif b.name == "_Featured_Photos" %}
+            {% if featured_front_page_photos and featured_front_page_photos|length > 0 %}
+            <div id="featured-photos">
+                {% load fb_versions %}
+                {% now "Y-m-d H:i:s" as current_time %}
+                <h2>Featured Photos</h2>
+                <div class="featured-photos-flex">
+                {% for photo in featured_front_page_photos %}
+                    <div class="featured-photo-item">
+                        <a href="{% url 'gallery:photo.detail' photo.pk %}">
+                            <img src="{% version photo.image 'medium' %}" 
+                                 alt="{{photo.alt}}" 
+                                 class="featured-photo-image" />
+                        </a>
+                        {% if photo.include_short_title and photo.alt %}
+                            <h3 class="featured-photo-title"><a href="{% url 'gallery:photo.detail' photo.pk %}">{{photo.alt}}</a></h3>
+                        {% endif %}
+                        {% if photo.include_suggested_caption and photo.suggested_caption %}
+                            <p class="featured-photo-caption">{{photo.suggested_caption|safe}}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                </div>
+                <style>
+                .featured-photos-flex {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 1.5em;
+                    justify-content: flex-start;
+                }
+                .featured-photo-item {
+                    flex: 0 1 260px;
+                    max-width: 260px;
+                    min-width: 180px;
+                    margin-bottom: 2em;
+                    box-sizing: border-box;
+                }
+                .featured-photo-image {
+                    display: block;
+                    max-width: 100%;
+                    height: auto;
+                    margin-bottom: 0.7em;
+                    border-radius: 4px;
+                }
+                .featured-photo-title,
+                .featured-photo-caption {
+                    margin-top: 0.2em;
+                    margin-bottom: 0.2em;
+                }
+                @media (max-width: 900px) {
+                    .featured-photos-flex {
+                        gap: 1em;
+                    }
+                    .featured-photo-item {
+                        flex: 1 1 45%;
+                        max-width: 48%;
+                    }
+                }
+                @media (max-width: 600px) {
+                    #featured-photos {
+                        padding: 0 0.5em;
+                    }
+                    .featured-photos-flex {
+                        flex-direction: column;
+                        gap: 1em;
+                    }
+                    .featured-photo-item {
+                        max-width: 100%;
+                        min-width: 0;
+                        margin-bottom: 1.5em;
+                    }
+                    .featured-photo-title {
+                        font-size: 1.1em;
+                    }
+                    .featured-photo-caption {
+                        font-size: 1em;
+                    }
+                }
+                </style>
+            </div>
+            {% endif %}
         {% elif b.name == "_Toy" %}
 	    <div id="gu-toy">
 
