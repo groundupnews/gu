@@ -17,3 +17,4 @@
 1. ./manage.py loaddata dumpdata-latest.json # This can take a long time, like over half hour
 1. ./manage.py collectstatic
 1. Optional download some media files from production
+1. Run *./manage.py runserver* and do some testing on localhost:8000 in your browser.
