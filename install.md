@@ -13,7 +13,7 @@
 1. ./manage.py test
 1. ./manage.py migrate
 1. ./manage.py setsite localhost localhost:8000
-1. scp groundup@groundup.org.za:/home/groundup/backups/dumpdata-latest.json . # This file is over 1GB. Perhaps zip first.
+1. scp groundup@groundup.news:/home/groundup/backups/dumpdata-latest.json . # This file is over 1GB. Perhaps zip first.
 1. ./manage.py loaddata dumpdata-latest.json # This can take a long time, like over half hour
 1. ./manage.py collectstatic
 1. Optional download some media files from production
