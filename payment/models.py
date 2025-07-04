@@ -61,7 +61,8 @@ LEVELS = {
     'standard': 1,
     'senior': 1.35,
     'experienced': 1.7,
-    'exceptional': 2.2
+    'exceptional': 2.2,
+    'exceptional_plus': 2.65
 }
 
 logger = logging.getLogger("groundup")
@@ -141,6 +142,7 @@ class RateCard(models.Model):
     level_senior = models.FloatField(default=1.35)
     level_experienced = models.FloatField(default=1.7)
     level_exceptional = models.FloatField(default=2.2)
+    level_exceptional_plus = models.FloatField(default=2.65)
 
     def __str__(self):
         return str(self.date_from)
@@ -176,6 +178,7 @@ class RateCard(models.Model):
             LEVELS['senior'] = ratecard.level_senior
             LEVELS['experienced'] = ratecard.level_experienced
             LEVELS['exceptional'] = ratecard.level_exceptional
+            LEVELS['exceptional_plus'] = ratecard.level_exceptional_plus
 
     class Meta:
         ordering = ["-date_from", ]
@@ -230,7 +233,7 @@ class Invoice(models.Model):
                               verbose_name="VAT %",
                               help_text="If you are VAT registered "
                               "set this to 15 else leave at 0")
-    level = models.CharField(max_length=15, choices=LEVEL_CHOICES,
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES,
                              default='standard')
     ####
     # paid = models.BooleanField(default=False)

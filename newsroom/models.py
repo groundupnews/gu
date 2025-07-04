@@ -49,6 +49,7 @@ LEVEL_CHOICES = (
     ("senior", "Senior"),
     ("experienced", "Experienced"),
     ("exceptional", "Exceptional"),
+    ("exceptional_plus", "Exceptional Plus"),
 )
 
 # Used to prevent disaster on the template fields
@@ -89,7 +90,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=200)
     freelancer = models.CharField(max_length=1, default="n",
                                   choices=FREELANCER_CHOICES)
-    level = models.CharField(max_length=15, choices=LEVEL_CHOICES,
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES,
                              default='standard')
     email = models.EmailField(blank=True)
     allowance = models.BooleanField(default=False)
