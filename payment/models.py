@@ -472,7 +472,8 @@ class Commission(models.Model):
 
         if self.article and self.article.is_published() \
            and self.article.author_01 == self.invoice.author \
-           and self.invoice.author.freelancer == "f":
+           and self.invoice.author.freelancer == "f" \
+           and self.invoice.author.bonus_off is False:
             month_start = make_aware(timezone.datetime(self.article.published.year,
                                             self.article.published.month, 1))
             publish_time = self.article.published
