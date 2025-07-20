@@ -264,9 +264,9 @@ class AuthorAdmin(admin.ModelAdmin):
     }
 
 class CorrectionAdmin(admin.ModelAdmin):
-    list_display = ('article', 'update_type', 'created', 'modified',)
-    list_editable = ('update_type', )
-    list_filter = ['update_type', ]
+    list_display = ('article', 'update_type', 'use_html', 'created', 'modified',)
+    list_editable = ('update_type', 'use_html', )
+    list_filter = ['update_type', 'use_html', ]
     ordering = ['-modified', ]
     search_fields = ['text', 'article__title', ]
     raw_id_fields = ('article',)

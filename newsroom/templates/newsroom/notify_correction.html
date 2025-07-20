@@ -15,7 +15,11 @@
 </p>
 
 <p>
-    {{correction.text}}
+    {% if correction.use_html %}
+        {{correction.text|safe}}
+    {% else %}
+        {{correction.text|linebreaks|safe}}
+    {% endif %}
 </p>
 
 <p>
