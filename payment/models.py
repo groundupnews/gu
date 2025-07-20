@@ -56,8 +56,6 @@ BONUSES = {
     'bonus': 500
 }
 
-# LEVEL_CHOICES = defaults for the levels.
-LEVEL_DEFAULTS = dict(LEVEL_CHOICES)
 
 LEVELS = {
     'intern': 0.5,
@@ -67,6 +65,7 @@ LEVELS = {
     'exceptional': 2.2,
     'exceptional_plus': 2.65
 }
+
 
 logger = logging.getLogger("groundup")
 
@@ -140,12 +139,12 @@ class RateCard(models.Model):
     bonus_article = models.PositiveSmallIntegerField(default=4)
     bonus = models.FloatField(default=500.00)
     allowance = models.FloatField(default=0.0)
-    level_intern = models.FloatField(default=LEVEL_DEFAULTS.get('intern', 0.5))
-    level_standard = models.FloatField(default=LEVEL_DEFAULTS.get('standard', 1.0))
-    level_senior = models.FloatField(default=LEVEL_DEFAULTS.get('senior', 1.35))
-    level_experienced = models.FloatField(default=LEVEL_DEFAULTS.get('experienced', 1.7))
-    level_exceptional = models.FloatField(default=LEVEL_DEFAULTS.get('exceptional', 2.2))
-    level_exceptional_plus = models.FloatField(default=LEVEL_DEFAULTS.get('exceptional_plus', 2.65))
+    level_intern = models.FloatField(default=LEVELS['intern'])
+    level_standard = models.FloatField(default=LEVELS['standard'])
+    level_senior = models.FloatField(default=LEVELS['senior'])
+    level_experienced = models.FloatField(default=LEVELS['experienced'])
+    level_exceptional = models.FloatField(default=LEVELS['exceptional'])
+    level_exceptional_plus = models.FloatField(default=LEVELS['exceptional_plus'])
 
     def __str__(self):
         return str(self.date_from)
