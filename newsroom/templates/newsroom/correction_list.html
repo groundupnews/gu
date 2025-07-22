@@ -26,7 +26,11 @@
                                     </a>
                                 </div>
                                 <div class="correction_text">
-			            {{ correction.text|safe }}
+                                    {% if correction.use_html %}
+                                        {{ correction.text|safe }}
+                                    {% else %}
+                                        {{ correction.text|linebreaks|safe }}
+                                    {% endif %}
                                 </div>
 			    </li>
 		        {% endfor %}

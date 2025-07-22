@@ -825,6 +825,10 @@ class Correction(models.Model):
     update_type = models.CharField(max_length=1, default="C",
                                    choices=CORRECTION_CHOICES)
     text = models.TextField(blank=True)
+    use_html = models.BooleanField(default=False,
+                                   help_text="If checked, the text will be "
+                                   "rendered as HTML. Otherwise, line breaks "
+                                   "will be preserved as paragraphs.")
     notify_republishers = models.BooleanField(default=False,
                                               help_text="Only notifies those "
                                               "that have have already been sent "

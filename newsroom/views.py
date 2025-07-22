@@ -293,7 +293,7 @@ def get_correction_article(request):
 
 class CreateCorrection(PermissionRequiredMixin, CreateView):
     model = models.Correction
-    fields = ['update_type', 'text', 'notify_republishers', 'display_at_top', ]
+    fields = ['update_type', 'text', 'use_html', 'notify_republishers', 'display_at_top', ]
     permission_required = 'newsroom.add_correction'
 
     def get_context_data(self, **kwargs):
@@ -315,7 +315,7 @@ class CreateCorrection(PermissionRequiredMixin, CreateView):
 
 class UpdateCorrection(PermissionRequiredMixin, UpdateView):
     model = models.Correction
-    fields = ['update_type', 'text', 'notify_republishers', 'display_at_top', ]
+    fields = ['update_type', 'text', 'use_html', 'notify_republishers', 'display_at_top', ]
     permission_required = 'newsroom.change_correction'
 
     def get_context_data(self, **kwargs):
@@ -445,7 +445,7 @@ def article_post(request, slug):
                                             instance=article,
                                             prefix="republishers")
     CorrectionFormSet = inlineformset_factory(models.Article, models.Correction,
-                                         fields=('update_type', 'text',
+                                         fields=('update_type', 'text', 'use_html',
                                                  'notify_republishers', 'display_at_top', ))
     correctionFormSet = CorrectionFormSet(request.POST,
                                           instance=article,
@@ -585,7 +585,7 @@ def article_detail(request, slug):
 
             CorrectionFormSet = inlineformset_factory(
                 models.Article, models.Correction, extra=1, can_delete_extra=False,
-                fields=('update_type', 'text', 'notify_republishers', 'display_at_top',))
+                fields=('update_type', 'text', 'use_html', 'notify_republishers', 'display_at_top',))
             correctionFormSet = CorrectionFormSet(instance=article,
                                                   prefix="corrections")
         else:
