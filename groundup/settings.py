@@ -42,136 +42,133 @@ else:
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.postgres',
-    'grappelli.dashboard',
-    'grappelli',
-    'filebrowser',
-    'django.contrib.admin',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sitemaps',
-    'django.contrib.sites',
-    'django.contrib.humanize',
-    'django.contrib.flatpages',
-    'django.contrib.redirects',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.postgres",
+    "grappelli.dashboard",
+    "grappelli",
+    "filebrowser",
+    "django.contrib.admin",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
+    "django.contrib.sites",
+    "django.contrib.humanize",
+    "django.contrib.flatpages",
+    "django.contrib.redirects",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # Configure the django-otp package.
-    'django_otp',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_static',
+    "django_otp",
+    "django_otp.plugins.otp_totp",
+    "django_otp.plugins.otp_static",
+    "debug_toolbar",
     # Enable two-factor auth.
-    'allauth_2fa',
-    'haystack',
-    'compressor',
-    'ajax_select',
-    'el_pagination',
-    'newsroom',
-    'security',
-    'payment',
-    'socialmedia',
-    'republisher',
-    'clearcache',
-    'blocks',
-    'letters',
-    'gallery',
-    'agony',
-    'target',
-    'sudoku',
-    'analyzer',
+    "allauth_2fa",
+    "haystack",
+    "compressor",
+    "ajax_select",
+    "el_pagination",
+    "newsroom",
+    "security",
+    "payment",
+    "socialmedia",
+    "republisher",
+    "clearcache",
+    "blocks",
+    "letters",
+    "gallery",
+    "agony",
+    "target",
+    "sudoku",
+    "analyzer",
     # 'judgment',
-    'pgsearch',
-    'donationPage',
+    "pgsearch",
+    "donationPage",
 )
 
 MIDDLEWARE = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     # Configure the django-otp package. Note this must be after the
     # AuthenticationMiddleware.
-    'django_otp.middleware.OTPMiddleware',
-
+    "django_otp.middleware.OTPMiddleware",
     # Reset login flow middleware. If this middleware is included, the login
     # flow is reset if another page is loaded between login and successfully
     # entering two-factor credentials.
-    'allauth_2fa.middleware.AllauthTwoFactorMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-
+    "allauth_2fa.middleware.AllauthTwoFactorMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     # SessionAuthenticationMiddleware is deprecated
     # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
+    "django.contrib.redirects.middleware.RedirectFallbackMiddleware",
 )
 
-ROOT_URLCONF = 'groundup.urls'
+ROOT_URLCONF = "groundup.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'templates'),],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'debug': DEBUG,
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
-                'newsroom.context_processors.newsroom_template_variables',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "debug": DEBUG,
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.media",
+                "newsroom.context_processors.newsroom_template_variables",
             ],
         },
     },
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 
 # Set the allauth adapter to be the 2FA adapter.
-ACCOUNT_ADAPTER = 'allauth_2fa.adapter.OTPAdapter'
+ACCOUNT_ADAPTER = "allauth_2fa.adapter.OTPAdapter"
 
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
-#ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-#ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/user/"
 
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'security.utils.StaffMinimumLengthValidator',
-        'OPTIONS': {
-            'staff_min_length': 10,
-            'other_min_length': 8
-        }
+        "NAME": "security.utils.StaffMinimumLengthValidator",
+        "OPTIONS": {"staff_min_length": 10, "other_min_length": 8},
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 
-
-WSGI_APPLICATION = 'groundup.wsgi.application'
+WSGI_APPLICATION = "groundup.wsgi.application"
 
 
 # Database
@@ -182,9 +179,9 @@ try:
     DATABASES = local_settings.DATABASES
 except:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
 
@@ -192,9 +189,9 @@ except:
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Africa/Johannesburg'
+TIME_ZONE = "Africa/Johannesburg"
 
 USE_I18N = True
 
@@ -213,41 +210,41 @@ try:
     CACHES = local_settings.CACHES
 except:
     CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': '/var/tmp/django_cache',
-            'KEY_PREFIX': 'gu',
+        "default": {
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": "/var/tmp/django_cache",
+            "KEY_PREFIX": "gu",
         }
     }
 
 
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 )
 
 COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.CSSCompressorFilter'
+    "compressor.filters.css_default.CssAbsoluteFilter",
+    "compressor.filters.cssmin.CSSCompressorFilter",
 ]
 
-SS_URL = ''
-SS_API_KEY = ''
+SS_URL = ""
+SS_API_KEY = ""
 
-PP_URL = ''
-PP_API_KEY = ''
+PP_URL = ""
+PP_API_KEY = ""
 
-GG_URL = ''
-PP_ID = ''
-PP_SECRET = ''
+GG_URL = ""
+PP_ID = ""
+PP_SECRET = ""
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-AUDIO_URL = '/media/uploads/sound/summaries/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-AUDIO_DIR = 'uploads/sound/summaries/'
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+AUDIO_URL = "/media/uploads/sound/summaries/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+AUDIO_DIR = "uploads/sound/summaries/"
 
 FILEBROWSER_DIRECTORY = "uploads/"
 
@@ -255,20 +252,41 @@ FILEBROWSER_LIST_PER_PAGE = 150
 
 
 FILEBROWSER_EXTENSIONS = {
-    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff', '.webp', '.svg'],
-    'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv', '.docx', '.xls', '.xlsx', '.odt'],
-    'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
-    'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p', '.ogg', '.opus', '.m4a']
+    "Image": [".jpg", ".jpeg", ".gif", ".png", ".tif", ".tiff", ".webp", ".svg"],
+    "Document": [
+        ".pdf",
+        ".doc",
+        ".rtf",
+        ".txt",
+        ".xls",
+        ".csv",
+        ".docx",
+        ".xls",
+        ".xlsx",
+        ".odt",
+    ],
+    "Video": [".mov", ".wmv", ".mpeg", ".mpg", ".avi", ".rm"],
+    "Audio": [
+        ".mp3",
+        ".mp4",
+        ".wav",
+        ".aiff",
+        ".midi",
+        ".m4p",
+        ".ogg",
+        ".opus",
+        ".m4a",
+    ],
 }
 
 FILEBROWSER_SELECT_FORMATS = {
-    'file': ['Image', 'Document', 'Video', 'Audio'],
-    'image': ['Image'],
-    'document': ['Document'],
-    'media': ['Video', 'Audio'],
+    "file": ["Image", "Document", "Video", "Audio"],
+    "image": ["Image"],
+    "document": ["Document"],
+    "media": ["Video", "Audio"],
 }
 
-FILEBROWSER_VERSIONS_BASEDIR = '_versions'
+FILEBROWSER_VERSIONS_BASEDIR = "_versions"
 
 FILEBROWSER_MAX_UPLOAD_SIZE = 10485760
 
@@ -279,64 +297,79 @@ FILEBROWSER_CONVERT_FILENAME = True
 FILEBROWSER_OVERWRITE_EXISTING = False
 
 FILEBROWSER_VERSIONS = {
-    'admin_thumbnail': {'verbose_name': 'Admin Thumbnail',
-                        'width': 60, 'height': 60, 'opts': 'crop'},
-    'thumbnail': {'verbose_name': 'Thumbnail',
-                  'width': 60, 'height': 60, 'opts': 'crop'},
-    'small': {'verbose_name': 'Small',
-              'width': 140, 'height': 100, 'opts': 'crop'},
-    'medium': {'verbose_name': 'Medium',
-               'width': 300, 'height': '', 'opts': ''},
-    'big': {'verbose_name': 'Big',
-            'width': 460, 'height': '', 'opts': ''},
-    'large': {'verbose_name': 'Large',
-              'width': 680, 'height': '', 'opts': ''},
-    'extra_large': {'verbose_name': 'Extra large',
-                    'width': 750, 'height': '', 'opts': ''},
-    'huge': {'verbose_name': 'Huge',
-              'width': 882, 'height': '', 'opts': ''},
+    "admin_thumbnail": {
+        "verbose_name": "Admin Thumbnail",
+        "width": 60,
+        "height": 60,
+        "opts": "crop",
+    },
+    "thumbnail": {
+        "verbose_name": "Thumbnail",
+        "width": 60,
+        "height": 60,
+        "opts": "crop",
+    },
+    "small": {"verbose_name": "Small", "width": 140, "height": 100, "opts": "crop"},
+    "medium": {"verbose_name": "Medium", "width": 300, "height": "", "opts": ""},
+    "big": {"verbose_name": "Big", "width": 460, "height": "", "opts": ""},
+    "large": {"verbose_name": "Large", "width": 680, "height": "", "opts": ""},
+    "extra_large": {
+        "verbose_name": "Extra large",
+        "width": 750,
+        "height": "",
+        "opts": "",
+    },
+    "huge": {"verbose_name": "Huge", "width": 882, "height": "", "opts": ""},
 }
 
-FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 'small', 'medium', 'big',
-                              'large', 'extra_large', 'huge', ]
+FILEBROWSER_ADMIN_VERSIONS = [
+    "thumbnail",
+    "small",
+    "medium",
+    "big",
+    "large",
+    "extra_large",
+    "huge",
+]
 
 FILEBROWSER_SEARCH_TRAVERSE = True
 
-GRAPPELLI_INDEX_DASHBOARD = 'groundup.dashboard.CustomIndexDashboard'
+GRAPPELLI_INDEX_DASHBOARD = "groundup.dashboard.CustomIndexDashboard"
 
 GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 
-NEWSROOM_ARTICLE_COPYRIGHT = '<p>&copy; ' + str(datetime.date.today().year) + \
-                             ' GroundUp. ' \
-                             'This article is licensed under a ' \
-                             '<a rel="license"' \
-                             '   href="http://creativecommons.org/licenses/by-nd/4.0/">' \
-                             'Creative Commons Attribution-NoDerivatives 4.0 ' \
-                             'International License' \
-                             '</a>.</p>' \
-                             '<p>You may republish this article, ' \
-                             'so long as you credit the authors and ' \
-                             'GroundUp, and do not change the text. ' \
-                             'Please include a link back to the original ' \
-                             'article.' \
-                             '</p>' \
-                             '<p>We put an invisible pixel in the article so ' \
-                             'that we can count traffic to republishers. ' \
-                             'All analytics tools are solely on our servers. ' \
-                             'We do not give our logs to any third party. ' \
-                             'Logs are deleted after two weeks. We do not ' \
-                             'use any IP address identifying information ' \
-                             'except to count regional traffic. ' \
-                             'We are solely interested in counting hits, ' \
-                             '<b>not tracking</b> users. If you republish, ' \
-                             'please do not delete the invisible pixel.</p>'
+NEWSROOM_ARTICLE_COPYRIGHT = (
+    "<p>&copy; " + str(datetime.date.today().year) + " GroundUp. "
+    "This article is licensed under a "
+    '<a rel="license"'
+    '   href="http://creativecommons.org/licenses/by-nd/4.0/">'
+    "Creative Commons Attribution-NoDerivatives 4.0 "
+    "International License"
+    "</a>.</p>"
+    "<p>You may republish this article, "
+    "so long as you credit the authors and "
+    "GroundUp, and do not change the text. "
+    "Please include a link back to the original "
+    "article."
+    "</p>"
+    "<p>We put an invisible pixel in the article so "
+    "that we can count traffic to republishers. "
+    "All analytics tools are solely on our servers. "
+    "We do not give our logs to any third party. "
+    "Logs are deleted after two weeks. We do not "
+    "use any IP address identifying information "
+    "except to count regional traffic. "
+    "We are solely interested in counting hits, "
+    "<b>not tracking</b> users. If you republish, "
+    "please do not delete the invisible pixel.</p>"
+)
 
 
 NEWSROOM_SUPPORT_US_IMAGES = [
-    'newsroom/images/SupportGroundUpAdvert-20180411.jpg',
+    "newsroom/images/SupportGroundUpAdvert-20180411.jpg",
 ]
 
-NEWSROOM_LOGO = 'newsroom/images/Logo_white.png'
+NEWSROOM_LOGO = "newsroom/images/Logo_white.png"
 
 # Spam prevention
 NOCAPTCHA = True
@@ -344,46 +377,47 @@ NOCAPTCHA = True
 # System now uses Postgres full text search. This is Only being kept live because of the
 
 HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    "default": {
+        "ENGINE": "haystack.backends.simple_backend.SimpleEngine",
     },
 }
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
         },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "file": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": local_settings.ERROR_LOG_FILE,
+            "formatter": "verbose",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
         },
     },
-    'handlers': {
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': local_settings.ERROR_LOG_FILE,
-            'formatter': 'verbose'
+    "loggers": {
+        "django": {
+            "handlers": [
+                "file",
+                "mail_admins",
+            ],
+            "propagate": True,
+            "level": "WARNING",
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-        }
+        "groundup": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": True,
+        },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file', 'mail_admins', ],
-            'propagate': True,
-            'level': 'WARNING',
-        },
-        'groundup': {
-            'handlers': ['file'],
-            'level': 'WARNING',
-            'propagate': True,
-        },
-    }
 }
 
 # DEPRECATED BUT CODE MUST BE REMOVED FROM VIEW FIRST
@@ -406,51 +440,62 @@ AB_TEST_ADS = False
 PIWIK_SITE_URL = ""
 
 if AB_TEST_ADS:
-    ADVERT_CODE_ACME = open(os.path.join(
-        BASE_DIR, "newsroom/templates/newsroom/advert_acme.html"),
-                                "r").read()
-    ADVERT_CODE_GOOGLE = open(os.path.join(
-        BASE_DIR, "newsroom/templates/newsroom/advert_google_responsive.html"),
-                                "r").read()
-    ADVERT_CODE_AMAZON = open(os.path.join(
-        BASE_DIR, "newsroom/templates/newsroom/"
-        "advert_amazon_gift_responsive.html"), "r").read()
+    ADVERT_CODE_ACME = open(
+        os.path.join(BASE_DIR, "newsroom/templates/newsroom/advert_acme.html"), "r"
+    ).read()
+    ADVERT_CODE_GOOGLE = open(
+        os.path.join(
+            BASE_DIR, "newsroom/templates/newsroom/advert_google_responsive.html"
+        ),
+        "r",
+    ).read()
+    ADVERT_CODE_AMAZON = open(
+        os.path.join(
+            BASE_DIR, "newsroom/templates/newsroom/advert_amazon_gift_responsive.html"
+        ),
+        "r",
+    ).read()
 elif ACME_ADS:
-    NEWSROOM_ADVERT_CODE = open(os.path.join(
-        BASE_DIR, "newsroom/templates/newsroom/advert_acme_responsive.html"),
-                                "r").read()
+    NEWSROOM_ADVERT_CODE = open(
+        os.path.join(
+            BASE_DIR, "newsroom/templates/newsroom/advert_acme_responsive.html"
+        ),
+        "r",
+    ).read()
 elif GOOGLE_ADS:
-    NEWSROOM_ADVERT_CODE = open(os.path.join(
-        BASE_DIR, "newsroom/templates/newsroom/advert_google_responsive.html"),
-                                "r").read()
+    NEWSROOM_ADVERT_CODE = open(
+        os.path.join(
+            BASE_DIR, "newsroom/templates/newsroom/advert_google_responsive.html"
+        ),
+        "r",
+    ).read()
 else:
     NEWSROOM_ADVERT_CODE = ""
 
 PIWIK_SITEID = 1
 PIWIK_ENTRIES = 40
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Setting session expiry of year
-SESSION_COOKIE_AGE = 365*24*60*60
+SESSION_COOKIE_AGE = 365 * 24 * 60 * 60
 
-PAYFAST_MERCHANT_ID = ''
-PAYFAST_MERCHANT_KEY = ''
-PAYFAST_PASS_PHRASE = ''
-PAYFAST_RETURN_URL = '/payment-success/'
-PAYFAST_CANCEL_URL = '/payment-cancel/'
-PAYFAST_NOTIFY_URL = '/payment-notify/'
+PAYFAST_MERCHANT_ID = ""
+PAYFAST_MERCHANT_KEY = ""
+PAYFAST_PASS_PHRASE = ""
+PAYFAST_RETURN_URL = "/payment-success/"
+PAYFAST_CANCEL_URL = "/payment-cancel/"
+PAYFAST_NOTIFY_URL = "/payment-notify/"
 PAYFAST_TEST_MODE = True
 
 if PAYFAST_TEST_MODE:
-    PAYFAST_URL = 'https://sandbox.payfast.co.za'
+    PAYFAST_URL = "https://sandbox.payfast.co.za"
 else:
-    PAYFAST_URL = 'https://www.payfast.co.za'
+    PAYFAST_URL = "https://www.payfast.co.za"
 
 
 from .local_settings import *
 
 # if DEBUG is True:
-#     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
-#     MIDDLEWARE = MIDDLEWARE + \
-#             ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#     INSTALLED_APPS = INSTALLED_APPS + ("debug_toolbar",)
+#     MIDDLEWARE = MIDDLEWARE + ("debug_toolbar.middleware.DebugToolbarMiddleware",)
