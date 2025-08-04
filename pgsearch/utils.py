@@ -21,7 +21,8 @@ ignored_words = ["and", "or", "of", "but", "on", "is", "a", "if", "but", ]
 def parseSearchString(search_string):
     try:
         search_strings = shlex.split(search_string)
-        translator = str.maketrans({key: None for key in string.punctuation})
+        search_strings_hyphenless = string.punctuation.replace('-', '')
+        translator = str.maketrans({key: None for key in search_strings_hyphenless})
         search_strings = [s.translate(translator) for s in search_strings]
     except:
         search_strings = []
