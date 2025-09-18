@@ -7,6 +7,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
+                {% if request.user.is_authenticated and perms.newsroom.change_topic %}
+                    <div class="topic-edit-action" style="float:right; margin:10px 0;">
+                        <a href="{% url 'admin:newsroom_topic_change' topic.pk %}" class="btn btn-sm btn-primary">Edit topic</a>
+                    </div>
+                {% endif %}
                 {% if not topic.introduction %}
 		    <h1 style="text-align: center;">
 		        {{topic}}
