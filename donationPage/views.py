@@ -155,39 +155,40 @@ def cancel_subscription(request, token):
                 cancel_url = f"https://api.payfast.co.za/subscriptions/{subscription.subscription_id}/cancel"
                 if settings.PAYFAST_TEST_MODE:
                     cancel_url += "?testing=true"
-                now = timezone.now()
-                formatted_now = now.strftime('%Y-%m-%dT%H:%M:%S%z')
-                if not formatted_now.endswith('+00:00'):
-                    formatted_now = formatted_now[:-5]
+
+                now = timezone.localtime(timezone.now())
+                formatted_now = now.isoformat(timespec='seconds')
 
                 pf_data = [
-                    ("merchant-id", settings.PAYFAST_MERCHANT_ID),
-                    ("passphrase", settings.PAYFAST_PASS_PHRASE.strip()),
-                    ("timestamp", formatted_now),
+                    ("merchant-id", str(settings.PAYFAST_MERCHANT_ID).strip()),
+                    ("passphrase", str(settings.PAYFAST_PASS_PHRASE).strip()),
+                    ("timestamp", str(formatted_now).strip()),
                     ("version", "v1")
                 ]
                 pfParamString = ''
-                for row in pf_data:
-                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1].lower()) + "&"
+                for key, value in pf_data:
+                    pfParamString += f"{key}={urllib.parse.quote_plus(value)}&"
                 pfParamString = pfParamString[:-1]
-                signature = hashlib.md5(pfParamString.encode()).hexdigest()
+                signature = hashlib.md5(pfParamString.encode("utf-8")).hexdigest()
 
                 headers = {
-                    'merchant-id': settings.PAYFAST_MERCHANT_ID,
-                    'version': 'v1',
-                    'timestamp': formatted_now,
-                    'signature': signature
+                    "merchant-id": str(settings.PAYFAST_MERCHANT_ID).strip(),
+                    "version": "v1",
+                    "timestamp": str(formatted_now).strip(),
+                    "signature": signature
                 }
                 response = requests.put(cancel_url, headers=headers)
                 if response.status_code == 200:
                     subscription.status = "canceled"
                     subscription.save()
+                    logger.info(f"Successfully canceled subscription {subscription.subscription_id}")
                     messages.add_message(
                         request,
                         messages.INFO,
                         "Your subscription was canceled successfully"
                     )
                 else:
+                    logger.error(f"Failed to cancel subscription {subscription.subscription_id}. Status: {response.status_code} | Content: {response.content}")
                     messages.add_message(
                         request,
                         messages.ERROR,
@@ -196,7 +197,7 @@ def cancel_subscription(request, token):
 
         return redirect('donor_dashboard', token=token)
     except (BadSignature, SignatureExpired):
-        # Handle invalid or expired token
+        logger.error("Invalid or expired token in cancel_subscription")
         return HttpResponse("Invalid or expired link.", status=400)
 
 
