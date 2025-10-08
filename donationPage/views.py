@@ -305,7 +305,7 @@ def generate_signature(data, pass_phrase=None):
 def payfast_ipn(request):
     if request.method == 'POST':
         data = request.POST.dict()
-        # Extract the signature from the received data
+        logger.info(f"Received PayFast IPN: {data}")
         received_signature = data.get('signature', '')
         # Verify the signature
         if verify_payfast_signature(data, received_signature):
@@ -315,11 +315,31 @@ def payfast_ipn(request):
             transaction_id = data.get('pf_payment_id')
             amount_gross = data.get('amount_gross')
             email_address = data.get('email_address')
+
+            # Validate email address
+            if not email_address:
+                logger.error(f"PayFast IPN missing email_address: {data}")
+                return HttpResponse(status=400)
+            
+            if payment_status in ['CANCELLED']:
+                if subscription_id:
+                    subscription = Subscription.objects.filter(
+                        subscription_id=subscription_id
+                    ).first()
+                    
+                    if subscription:
+                        if payment_status == 'CANCELLED':
+                            subscription.status = 'canceled'
+                            logger.info(f"Subscription {subscription_id} canceled via IPN")
+                        subscription.save()
+                    else:
+                        logger.warning(f"Received {payment_status} IPN for unknown subscription: {subscription_id}")
+                
+                return HttpResponse(status=200)
             donor = Donor.objects.filter(email=email_address).first()
             currency, _ = Currency.objects.get_or_create(
                 currency_abr="ZAR"
             )
-            subscription_id = data.get('token', None)
             payment_type = "subscription" if subscription_id else "one_time"
             payment_success = "success" if payment_status == "COMPLETE" else "failed"
 
@@ -358,7 +378,11 @@ def payfast_ipn(request):
                 status=payment_success,
                 platform='payfast'
             )
+            logger.info(f"Successfully processed PayFast IPN for transaction {transaction_id}")
             return HttpResponse(status=200)
+        else:
+            logger.error(f"PayFast IPN signature verification failed: {data}")
+            return HttpResponse(status=400)
     return HttpResponse(status=400)
 
 
