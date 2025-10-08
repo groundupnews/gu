@@ -132,7 +132,8 @@ def donor_dashboard_view(request, token):
             'donations': donations_page_obj,
             'subscriptions': subscriptions,
             'donor_form': donor_form,
-            'token': token
+            'token': token,
+            'payfast_return_url': settings.PAYFAST_RETURN_URL
         })
     except (BadSignature, SignatureExpired):
         # Handle invalid or expired token
