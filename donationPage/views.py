@@ -132,7 +132,8 @@ def donor_dashboard_view(request, token):
             'donations': donations_page_obj,
             'subscriptions': subscriptions,
             'donor_form': donor_form,
-            'token': token
+            'token': token,
+            'payfast_return_url': settings.PAYFAST_RETURN_URL
         })
     except (BadSignature, SignatureExpired):
         # Handle invalid or expired token
@@ -155,39 +156,40 @@ def cancel_subscription(request, token):
                 cancel_url = f"https://api.payfast.co.za/subscriptions/{subscription.subscription_id}/cancel"
                 if settings.PAYFAST_TEST_MODE:
                     cancel_url += "?testing=true"
-                now = timezone.now()
-                formatted_now = now.strftime('%Y-%m-%dT%H:%M:%S%z')
-                if not formatted_now.endswith('+00:00'):
-                    formatted_now = formatted_now[:-5]
+
+                now = timezone.localtime(timezone.now())
+                formatted_now = now.isoformat(timespec='seconds')
 
                 pf_data = [
-                    ("merchant-id", settings.PAYFAST_MERCHANT_ID),
-                    ("passphrase", settings.PAYFAST_PASS_PHRASE.strip()),
-                    ("timestamp", formatted_now),
+                    ("merchant-id", str(settings.PAYFAST_MERCHANT_ID).strip()),
+                    ("passphrase", str(settings.PAYFAST_PASS_PHRASE).strip()),
+                    ("timestamp", str(formatted_now).strip()),
                     ("version", "v1")
                 ]
                 pfParamString = ''
-                for row in pf_data:
-                    pfParamString += row[0] + "=" + urllib.parse.quote_plus(row[1].lower()) + "&"
+                for key, value in pf_data:
+                    pfParamString += f"{key}={urllib.parse.quote_plus(value)}&"
                 pfParamString = pfParamString[:-1]
-                signature = hashlib.md5(pfParamString.encode()).hexdigest()
+                signature = hashlib.md5(pfParamString.encode("utf-8")).hexdigest()
 
                 headers = {
-                    'merchant-id': settings.PAYFAST_MERCHANT_ID,
-                    'version': 'v1',
-                    'timestamp': formatted_now,
-                    'signature': signature
+                    "merchant-id": str(settings.PAYFAST_MERCHANT_ID).strip(),
+                    "version": "v1",
+                    "timestamp": str(formatted_now).strip(),
+                    "signature": signature
                 }
                 response = requests.put(cancel_url, headers=headers)
                 if response.status_code == 200:
                     subscription.status = "canceled"
                     subscription.save()
+                    logger.info(f"Successfully canceled subscription {subscription.subscription_id}")
                     messages.add_message(
                         request,
                         messages.INFO,
                         "Your subscription was canceled successfully"
                     )
                 else:
+                    logger.error(f"Failed to cancel subscription {subscription.subscription_id}. Status: {response.status_code} | Content: {response.content}")
                     messages.add_message(
                         request,
                         messages.ERROR,
@@ -196,7 +198,7 @@ def cancel_subscription(request, token):
 
         return redirect('donor_dashboard', token=token)
     except (BadSignature, SignatureExpired):
-        # Handle invalid or expired token
+        logger.error("Invalid or expired token in cancel_subscription")
         return HttpResponse("Invalid or expired link.", status=400)
 
 
@@ -305,7 +307,7 @@ def generate_signature(data, pass_phrase=None):
 def payfast_ipn(request):
     if request.method == 'POST':
         data = request.POST.dict()
-        # Extract the signature from the received data
+        logger.info(f"Received PayFast IPN: {data}")
         received_signature = data.get('signature', '')
         # Verify the signature
         if verify_payfast_signature(data, received_signature):
@@ -315,11 +317,31 @@ def payfast_ipn(request):
             transaction_id = data.get('pf_payment_id')
             amount_gross = data.get('amount_gross')
             email_address = data.get('email_address')
+
+            # Validate email address
+            if not email_address:
+                logger.error(f"PayFast IPN missing email_address: {data}")
+                return HttpResponse(status=400)
+            
+            if payment_status in ['CANCELLED']:
+                if subscription_id:
+                    subscription = Subscription.objects.filter(
+                        subscription_id=subscription_id
+                    ).first()
+                    
+                    if subscription:
+                        if payment_status == 'CANCELLED':
+                            subscription.status = 'canceled'
+                            logger.info(f"Subscription {subscription_id} canceled via IPN")
+                        subscription.save()
+                    else:
+                        logger.warning(f"Received {payment_status} IPN for unknown subscription: {subscription_id}")
+                
+                return HttpResponse(status=200)
             donor = Donor.objects.filter(email=email_address).first()
             currency, _ = Currency.objects.get_or_create(
                 currency_abr="ZAR"
             )
-            subscription_id = data.get('token', None)
             payment_type = "subscription" if subscription_id else "one_time"
             payment_success = "success" if payment_status == "COMPLETE" else "failed"
 
@@ -358,7 +380,11 @@ def payfast_ipn(request):
                 status=payment_success,
                 platform='payfast'
             )
+            logger.info(f"Successfully processed PayFast IPN for transaction {transaction_id}")
             return HttpResponse(status=200)
+        else:
+            logger.error(f"PayFast IPN signature verification failed: {data}")
+            return HttpResponse(status=400)
     return HttpResponse(status=400)
 
 

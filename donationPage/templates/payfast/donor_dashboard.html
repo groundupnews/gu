@@ -4,7 +4,7 @@
 {{ form.media }}
 {% load fb_versions %}
 {% block title %}
-    Payment success{{block.super}}
+    Donor Dashboard{{block.super}}
 {% endblock %}
 {% block content %}
 
@@ -163,6 +163,7 @@
                                     <input type="hidden" name="subscription_id" value="{{subscription.id}}">
                                     <button type="submit" class="btn btn-small btn-danger">Cancel</button>
                                 </form>
+                                <a href="https://payment.payfast.io/eng/recurring/update/{{ subscription.subscription_id }}?return={{ payfast_return_url }}" class="btn btn-primary">Update Card Details</a>
                             {% else %}
                             <p class="text-center">-</p>
                             {% endif %}
