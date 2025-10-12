@@ -130,22 +130,10 @@
                       <td>
                         {% with st=subscription.status|default_if_none:''|lower %}
                           <span class="label
-                          {% if st == 'active' %}
-                              
-                            label-success
-
-                            {% elif st == 'cancelled' or st == 'canceled' %}
-                              
-                            label-danger
-
-                            {% elif st == 'paused' or st == 'suspended' %}
-                              
-                            label-warning
-
-                            {% else %}
-                              
-                            label-default
-
+                            {% if st == 'active' %}label-success
+                            {% elif st == 'cancelled' or st == 'canceled' %}label-danger
+                            {% elif st == 'paused' or st == 'suspended' %}label-warning
+                            {% else %}label-default
                             {% endif %}
                         ">
                             {{ subscription.status }}
