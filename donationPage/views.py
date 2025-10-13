@@ -114,6 +114,7 @@ def donor_dashboard_view(request, token):
         page_number = request.GET.get('page')
         donations_page_obj = paginator.get_page(page_number)
         subscriptions = Subscription.objects.filter(donor=donor).order_by("-created_at")
+        has_active_subscription = subscriptions.filter(status='active').exists()
 
         if request.method == "POST":
             donor_form = DonorForm(request.POST)
@@ -133,7 +134,8 @@ def donor_dashboard_view(request, token):
             'subscriptions': subscriptions,
             'donor_form': donor_form,
             'token': token,
-            'payfast_return_url': settings.PAYFAST_RETURN_URL
+            'payfast_return_url': settings.PAYFAST_RETURN_URL,
+            'has_active_subscription': has_active_subscription
         })
     except (BadSignature, SignatureExpired):
         # Handle invalid or expired token

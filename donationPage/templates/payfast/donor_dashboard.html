@@ -4,179 +4,269 @@
 {{ form.media }}
 {% load fb_versions %}
 {% block title %}
-    Donor Dashboard{{block.super}}
+  Donor Dashboard{{ block.super }}
 {% endblock %}
 {% block content %}
+  <style>
+    .responsive-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 15px;
+      min-height: 60vh;
+    }
+    @media (min-width: 768px) {
+      .responsive-container {
+        padding: 40px 20px;
+      }
+    }
+    .panel {
+      border-radius: 6px;
+    }
+    .panel-heading {
+      font-weight: 600;
+    }
+    .section-title {
+      margin: 20px 0 10px;
+    }
+    .table-responsive {
+      margin-bottom: 15px;
+    }
+    .table > thead > tr > th {
+      white-space: nowrap;
+    }
+    .actions-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .actions-stack .btn {
+      margin: 0;
+    }
+    @media (max-width: 767px) {
+      .actions-stack .btn {
+        width: 100%;
+      }
+    }
+  </style>
 
-<div style="margin: auto; width: 60%; padding: 50px; min-height: 60vh;">
+  <div class="responsive-container">
     <div class="row">
-        <div class="col-md-12 text-center">
-            <h1>Donor Dashboard</h1>
-        </div>
+      <div class="col-xs-12 text-center">
+        <h1>Donor Dashboard</h1>
+      </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <h3>Donor Details</h3>
+      <div class="col-xs-12">
+        <h3 class="section-title">Donor Details</h3>
+      </div>
+      <div class="col-xs-12 col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+          <div class="panel-heading">Update your details</div>
+          <div class="panel-body">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ donor.name }}" autocomplete="name" required />
+              </div>
+              <div class="form-group">
+                <label for="display_name">Display Name</label>
+                <input type="text" class="form-control" id="display_name" name="display_name" value="{{ donor.display_name }}" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ donor.email }}" autocomplete="email" required />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Update Details</button>
+            </form>
+          </div>
         </div>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <form method="POST">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="name">Full Name:</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{donor.name}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="display_name">Display Name:</label>
-                                    <input type="text" class="form-control" id="display_name" name="display_name" value="{{donor.display_name}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email address:</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="{{donor.email}}" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">Update Details</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+      </div>
+    </div>
+    <!-- only shows donation plea if no active sub -->
+    {% if not has_active_subscription %}
+      <div class="row">
+        <div class="col-xs-12">
+          <h3 class="section-title">Make a Donation</h3>
+        </div>
+        <div class="col-xs-12 col-md-8 col-md-offset-2">
+          <div class="panel panel-default">
+            <div class="panel-heading">Support GroundUp</div>
+            <div class="panel-body text-center">
+              <p>You don't currently have an active subscription. Consider making a monthly donation to continuously support our work.</p>
+              <a href="{% url 'make_payment' %}" class="btn btn-success btn-lg">Make a Donation</a>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
+    {% endif %}
 
+    <!-- subs -->
     <div class="row">
-        <div class="col-md-12">
-            <h3>Donations</h3>
-        </div>
-        <div class="col-md-12">
-            <table class="table table-striped table-bordered">
+      <div class="col-xs-12">
+        <h3 class="section-title">Subscriptions</h3>
+      </div>
+      <div class="col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Amount Donated</th>
-                        <th>Donation type</th>
-                        <th>Status</th>
-                    </tr>
+                  <tr>
+                    <th>#</th>
+                    <th>Created at</th>
+                    <th>Amount Donated</th>
+                    <th>Status</th>
+                    <th style="min-width: 200px;">Action</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    {% for donation in donations %}
+                  {% for subscription in subscriptions %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ donation.datetime_of_donation }}</td>
-                        <td>{{ donation.currency }}{{ donation.amount }}</td>
-                        <td>{{ donation.payment_type }}</td>
-                        <td>{{ donation.status }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center">No donors found.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <!-- Pagination Controls -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    {% if donations.has_previous %}
-                    <li>
-                        <a href="?page=1" aria-label="First">
-                            <span aria-hidden="true">&laquo;&laquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?page={{ donations.previous_page_number }}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="disabled">
-                        <span aria-hidden="true">&laquo;&laquo;</span>
-                    </li>
-                    <li class="disabled">
-                        <span aria-hidden="true">&laquo;</span>
-                    </li>
-                    {% endif %}
-        
-                    <!-- Page Numbers -->
-                    {% for num in donations.paginator.page_range %}
-                        {% if donations.number == num %}
-                            <li class="active"><span>{{ num }}</span></li>
-                        {% elif num > donations.number|add:'-5' and num < donations.number|add:'5' %}
-                            <li><a href="?page={{ num }}">{{ num }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-        
-                    {% if donations.has_next %}
-                    <li>
-                        <a href="?page={{ donations.next_page_number }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?page={{ donations.paginator.num_pages }}" aria-label="Last">
-                            <span aria-hidden="true">&raquo;&raquo;</span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="disabled">
-                        <span aria-hidden="true">&raquo;</span>
-                    </li>
-                    <li class="disabled">
-                        <span aria-hidden="true">&raquo;&raquo;</span>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Subscriptions</h3>
-        </div>
-        <div class="col-md-12">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Created at</th>
-                        <th>Amount Donated</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for subscription in subscriptions %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ subscription.created_at }}</td>
-                        <td>ZAR {{ subscription.amount }}</td>
-                        <td>{{ subscription.status }}</td>
-                        <td>
-                            {% if subscription.status == "active" %}
-                                <form method="POST" action="{% url 'cancel_subscription' token %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="subscription_id" value="{{subscription.id}}">
-                                    <button type="submit" class="btn btn-small btn-danger">Cancel</button>
-                                </form>
-                                <a href="https://payment.payfast.io/eng/recurring/update/{{ subscription.subscription_id }}?return={{ payfast_return_url }}" class="btn btn-primary">Update Card Details</a>
-                            {% else %}
-                            <p class="text-center">-</p>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ subscription.created_at|date:'Y-m-d H:i' }}</td>
+                      <td>ZAR {{ subscription.amount|floatformat:2 }}</td>
+                      <td>
+                        {% with st=subscription.status|default_if_none:''|lower %}
+                          <span class="label
+                            {% if st == 'active' %}label-success
+                            {% elif st == 'cancelled' or st == 'canceled' %}label-danger
+                            {% elif st == 'paused' or st == 'suspended' %}label-warning
+                            {% else %}label-default
                             {% endif %}
-                        </td>
+                        ">
+                            {{ subscription.status }}
+                          </span>
+                        {% endwith %}
+                      </td>
+                      <td>
+                        {% if subscription.status == 'active' %}
+                          <div class="actions-stack">
+                            <form method="POST" action="{% url 'cancel_subscription' token %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="subscription_id" value="{{ subscription.id }}" />
+                              <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                            <a href="https://payment.payfast.io/eng/recurring/update/{{ subscription.subscription_id }}?return={{ payfast_return_url }}" class="btn btn-primary btn-sm">Update Card Details</a>
+                          </div>
+                        {% else %}
+                          <p class="text-center" style="margin: 0;">-</p>
+                        {% endif %}
+                      </td>
                     </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center">No subscription found.</td>
-                    </tr>
-                    {% endfor %}
+                  {% endfor %}
                 </tbody>
-            </table>
+              </table>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 class="section-title">Donations</h3>
+      </div>
+      <div class="col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Amount Donated</th>
+                    <th>Donation Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for donation in donations %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ donation.datetime_of_donation|date:'Y-m-d H:i' }}</td>
+                      <td>{{ donation.currency }}{{ donation.amount|floatformat:2 }}</td>
+                      <td>{{ donation.payment_type }}</td>
+                      <td>
+                        {% with st=donation.status|default_if_none:''|lower %}
+                          <span class="label
+                          {% if st == 'complete' or st == 'completed' or st == 'success' %}
+                            label-success
+                            {% elif st == 'pending' or st == 'processing' %}
+                            label-warning
+                            {% elif st == 'failed' or st == 'cancelled' or st == 'canceled' or st == 'declined' %}
+                            label-danger
+                            {% else %}
+                            label-default
+                            {% endif %}
+                        ">
+                            {{ donation.status }}
+                          </span>
+                        {% endwith %}
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="5" class="text-center">No donations found.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- pagination controls -->
+            <nav class="text-center" aria-label="Page navigation">
+              <ul class="pagination pagination-sm">
+                {% if donations.has_previous %}
+                  <li>
+                    <a href="?page=1" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+                  </li>
+                  <li>
+                    <a href="?page={{ donations.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                  </li>
+                {% else %}
+                  <li class="disabled">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </li>
+                  <li class="disabled">
+                    <span aria-hidden="true">&laquo;</span>
+                  </li>
+                {% endif %}
+
+                {% for num in donations.paginator.page_range %}
+                  {% if donations.number == num %}
+                    <li class="active">
+                      <span>{{ num }}</span>
+                    </li>
+                  {% elif num > donations.number|add:'-5' and num < donations.number|add:'5' %}
+                    <li>
+                      <a href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if donations.has_next %}
+                  <li>
+                    <a href="?page={{ donations.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                  </li>
+                  <li>
+                    <a href="?page={{ donations.paginator.num_pages }}" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+                  </li>
+                {% else %}
+                  <li class="disabled">
+                    <span aria-hidden="true">&raquo;</span>
+                  </li>
+                  <li class="disabled">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
