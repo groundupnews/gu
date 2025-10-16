@@ -228,7 +228,7 @@ def payment_view(request):
             first_name = form.cleaned_data.get("first_name")
             last_name = form.cleaned_data.get("last_name")
             name = form.cleaned_data.get("name")
-            display_name = form.cleaned_data.get("display_name")
+            display_name = "Anonymous" # we default to anon; let user change
             amount = form.cleaned_data.get("amount", default_amount)
             payment_type = form.cleaned_data.get("payment_type")
 
@@ -255,11 +255,13 @@ def payment_view(request):
             if donor:
                 if not donor.name:
                     donor.name = name
+                if not donor.display_name:
                     donor.display_name = display_name
                     donor.save()
             else:
                 donor = Donor.objects.create(
-                    email=email, name=name,
+                    email=email, 
+                    name=name,
                     display_name=display_name,
                     donor_url=make_donorUrl()
                 )
