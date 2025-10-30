@@ -376,7 +376,14 @@
                       <td>{{ donations.start_index|add:forloop.counter0 }}</td>
                       <td>{{ donation.datetime_of_donation|date:'Y-m-d H:i' }}</td>
                       <td>{{ donation.currency }}{{ donation.amount|floatformat:2 }}</td>
-                      <td>{{ donation.payment_type }}</td>
+                      <td>
+                        <!-- accounts for givngain -->
+                        {% if donation.payment_type == 'subscription' %}
+                          Subscription
+                        {% else %}
+                          Once-off
+                        {% endif %}
+                      </td>
                       <td>
                         {% with st=donation.status|default_if_none:''|lower %}
                           <span class="label
