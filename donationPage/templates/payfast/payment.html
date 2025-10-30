@@ -47,6 +47,141 @@
         .donor-dash-link {
             padding-top: 20px;
         }
+        
+        .donation-form-panel {
+            background: #ffffff;
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        .donation-form-panel .panel-heading {
+            background: #00b2f0;
+            color: white;
+            border-bottom: none;
+            padding: 24px;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+        }
+        .donation-form-panel .panel-body {
+            padding: 32px 28px;
+        }
+        .donation-intro {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: #f8fafb;
+            border-radius: 6px;
+            border-left: 4px solid #00b2f0;
+        }
+        .donation-intro p {
+            color: #495057;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .donation-form-row {
+            margin-bottom: 20px;
+        }
+        .donation-form-row .form-control {
+            border: 1.5px solid #d1d9e0;
+            border-radius: 6px;
+            padding: 12px 14px;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+        .donation-form-row .form-control:focus {
+            border-color: #00b2f0;
+            box-shadow: 0 0 0 3px rgba(0, 178, 240, 0.1);
+            outline: none;
+        }
+        .donation-form-row label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .radio-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+            padding: 12px;
+            background: #f8fafb;
+            border-radius: 6px;
+        }
+        .radio-group label {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+            color: #495057;
+        }
+        .radio-group label:hover {
+            background: #e9ecef;
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        .donation-submit-btn {
+            background: #000000;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-weight: 600;
+            border-radius: 6px;
+            width: 100%;
+            transition: all 0.2s ease;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .donation-submit-btn:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        .donation-submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .amount-input-wrapper {
+            position: relative;
+        }
+        .amount-input-wrapper::before {
+            content: "R";
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #495057;
+            font-weight: 700;
+            pointer-events: none;
+        }
+        .amount-input-wrapper .form-control {
+            padding-left: 38px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 767px) {
+            .donation-form-panel .panel-body {
+                padding: 24px 20px;
+            }
+            .radio-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .radio-group label {
+                width: 100%;
+            }
+        }
     </style>
 {% endblock %}
 
@@ -66,15 +201,20 @@
 <div style="margin: auto; width: 70%; max-width: 750px; padding: 10px;">
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="custom-card">
-                <div class="custom-card-body text-left">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="donation-form-panel">
+                <div class="panel-heading">Support Independent Journalism</div>
+                <div class="panel-body">
+                    <div class="donation-intro">
+                        <p>Help us hold those in power accountable by making a contribution to support our independent journalism.</p>
+                    </div>
+                    
                     <form method="POST" id="subscriptionForm">
                         {% csrf_token %}
-                        <!-- First Name and Last Name in one line -->
+                        
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
+                            <div class="col-sm-6">
+                                <div class="donation-form-row">
                                     <label for="first_name">First Name</label>
                                     <input type="text" class="form-control" id="first_name" name="first_name" required>
                                     {% for error in form.first_name.errors %}
@@ -82,8 +222,8 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
+                            <div class="col-sm-6">
+                                <div class="donation-form-row">
                                     <label for="last_name">Last Name</label>
                                     <input type="text" class="form-control" id="last_name" name="last_name" required>
                                     {% for error in form.last_name.errors %}
@@ -93,8 +233,7 @@
                             </div>
                         </div>
 
-                        <!-- Email field (full width) -->
-                        <div class="form-group">
+                        <div class="donation-form-row">
                             <label for="email">Email Address</label>
                             <input type="email" class="form-control" id="email" name="email" required>
                             {% for error in form.email.errors %}
@@ -102,30 +241,36 @@
                             {% endfor %}
                         </div>
 
-                        <!-- Inline radio buttons for subscription type -->
-                        <div class="form-group">
-                            <label>Subscription Type</label><br>
-                            <label class="radio-inline">
-                                <input type="radio" name="payment_type" value="subscription" checked> Monthly Subscription
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="payment_type" value="one_time"> One-Time Payment
-                            </label>
+                        <div class="donation-form-row">
+                            <label>Choose Your Contribution Type</label>
+                            <div class="radio-group">
+                                <label>
+                                    <input type="radio" name="payment_type" value="subscription" checked> 
+                                    <span>Monthly Subscription</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="payment_type" value="one_time"> 
+                                    <span>One-Time Donation</span>
+                                </label>
+                            </div>
                         </div>
 
-                        <!-- Float field with default value of 100 and minimum of 1 -->
-                        <div class="form-group">
-                            <label for="amount">Amount (in ZAR)</label>
-                            <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="100" min="1">
+                        <div class="donation-form-row">
+                            <label for="amount">Donation Amount (ZAR)</label>
+                            <div class="amount-input-wrapper">
+                                <input type="number" class="form-control" id="amount" name="amount" value="100" min="10" required>
+                            </div>
                             {% for error in form.amount.errors %}
                                 <span class="help-block">{{ error }}</span>
                             {% endfor %}
                         </div>
 
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary" id="submitButton">Donate</button>
+                        <button type="submit" class="donation-submit-btn" id="submitButton">
+                            Make Donation
+                        </button>
                     </form>
-                    <p class="donor-dash-link">Already a Donor? Access your <a href="{% url 'donor_access' %}">donor dashboard</a></p>
+                    
+                    <p class="donor-dash-link text-center">Already a Donor? Access your <a href="{% url 'donor_access' %}">donor dashboard</a></p>
                 </div>
             </div>
         </div>
@@ -212,41 +357,35 @@
     <script>
         $(document).ready(function() {
             $('#subscriptionForm').on('submit', function(e) {
-                e.preventDefault(); // Prevent default form submission
+                e.preventDefault();
 
-                // Disable the button and show "Submitting..."
                 var submitButton = $('#submitButton');
-                submitButton.prop('disabled', true).text('Submitting...');
+                var originalText = submitButton.text();
+                submitButton.prop('disabled', true).text('Processing...');
 
-                // Collect form data
                 var formData = $(this).serialize();
 
-                // Send form data using AJAX
                 $.ajax({
                     type: 'POST',
-                    url: $(this).attr("action"),  // Change this to your actual Django view URL
+                    url: $(this).attr("action"),
                     data: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
                     success: function(response) {
-
                         if (response.errors){
-                            Object.entries(response.errors).map((error) => {
-                                console.log(error)
-                            });
+                            alert('Please correct the form errors and try again.');
+                            submitButton.prop('disabled', false).text(originalText);
                         } else if(response.html){
                             $("body").append(response.html);
                         }
-
                     },
                     error: function(xhr, status, error) {
-                        // Handle errors
-                        alert('Something went wrong: ' + error);
-                        submitButton.prop('disabled', false).text('Submit');
+                        alert('Something went wrong. Please try again.');
+                        submitButton.prop('disabled', false).text(originalText);
                     }
                 });
             });
         });
     </script>
-
-
-
 {% endblock %}
