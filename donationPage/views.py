@@ -110,7 +110,7 @@ def donor_dashboard_view(request, token):
         donor = get_object_or_404(Donor, donor_url=donor_url)
         donor_form = DonorForm(instance=donor)
         donations = Donation.objects.filter(donor=donor).order_by("-datetime_of_donation")
-        paginator = Paginator(donations, 5)
+        paginator = Paginator(donations, 100)
         page_number = request.GET.get('page')
         donations_page_obj = paginator.get_page(page_number)
         subscriptions = Subscription.objects.filter(donor=donor).order_by("-created_at")
