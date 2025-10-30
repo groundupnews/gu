@@ -186,7 +186,7 @@
                 <tbody>
                   {% for donation in donations %}
                     <tr>
-                      <td>{{ forloop.counter }}</td>
+                      <td>{{ donations.start_index|add:forloop.counter0 }}</td>
                       <td>{{ donation.datetime_of_donation|date:'Y-m-d H:i' }}</td>
                       <td>{{ donation.currency }}{{ donation.amount|floatformat:2 }}</td>
                       <td>{{ donation.payment_type }}</td>
