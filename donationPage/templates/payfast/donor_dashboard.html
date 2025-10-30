@@ -20,13 +20,17 @@
       }
     }
     .panel {
-      border-radius: 6px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
     .panel-heading {
       font-weight: 600;
+      border-radius: 8px 8px 0 0;
     }
     .section-title {
-      margin: 20px 0 10px;
+      margin: 30px 0 15px;
+      font-weight: 600;
+      color: #2c3e50;
     }
     .table-responsive {
       margin-bottom: 15px;
@@ -44,6 +48,151 @@
     }
     @media (max-width: 767px) {
       .actions-stack .btn {
+        width: 100%;
+      }
+    }
+    
+    .donation-form-panel {
+      background: #ffffff;
+      border: 1px solid #e1e8ed;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .donation-form-panel .panel-heading {
+      background: #00b2f0;
+      color: white;
+      border-bottom: none;
+      padding: 24px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .donation-form-panel .panel-body {
+      padding: 32px 28px;
+    }
+    .donation-intro {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 20px;
+      background: #f8fafb;
+      border-radius: 6px;
+      border-left: 4px solid #00b2f0;
+    }
+    .donation-intro p {
+      color: #495057;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .donation-form-row {
+      margin-bottom: 20px;
+    }
+    .donation-form-row .form-control {
+      border: 1.5px solid #d1d9e0;
+      border-radius: 6px;
+      padding: 12px 14px;
+      transition: all 0.2s ease;
+      background: #ffffff;
+    }
+    .donation-form-row .form-control:focus {
+      border-color: #00b2f0;
+      box-shadow: 0 0 0 3px rgba(0, 178, 240, 0.1);
+      outline: none;
+    }
+    .donation-form-row .form-control:disabled,
+    .donation-form-row .form-control[readonly] {
+      background-color: #f5f7f9;
+      cursor: not-allowed;
+      color: #6c757d;
+    }
+    .donation-form-row label {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      padding: 12px;
+      background: #f8fafb;
+      border-radius: 6px;
+    }
+    .radio-group label {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+      color: #495057;
+    }
+    .radio-group label:hover {
+      background: #e9ecef;
+    }
+    .radio-group input[type="radio"] {
+      margin-right: 8px;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+    .donation-submit-btn {
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-weight: 600;
+      border-radius: 6px;
+      width: 100%;
+      transition: all 0.2s ease;
+      margin-top: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .donation-submit-btn:hover {
+      background: #1a1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    .donation-submit-btn:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .amount-input-wrapper {
+      position: relative;
+    }
+    .amount-input-wrapper::before {
+      content: "R";
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #495057;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .amount-input-wrapper .form-control {
+      padding-left: 38px;
+      font-weight: 600;
+    }
+    
+    .form-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #e1e8ed, transparent);
+      margin: 24px 0;
+    }
+    
+    @media (max-width: 767px) {
+      .donation-form-panel .panel-body {
+        padding: 24px 20px;
+      }
+      .radio-group {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .radio-group label {
         width: 100%;
       }
     }
@@ -91,11 +240,67 @@
           <h3 class="section-title">Make a Donation</h3>
         </div>
         <div class="col-xs-12 col-md-8 col-md-offset-2">
-          <div class="panel panel-default">
-            <div class="panel-heading">Support GroundUp</div>
-            <div class="panel-body text-center">
-              <p>You don't currently have an active subscription. Consider making a monthly donation to continuously support our work.</p>
-              <a href="{% url 'make_payment' %}" class="btn btn-success btn-lg">Make a Donation</a>
+          <div class="panel panel-default donation-form-panel">
+            <div class="panel-heading">Support Independent Journalism</div>
+            <div class="panel-body">
+              <div class="donation-intro">
+                <p><strong>No active subscription found.</strong> Help us hold power accountable by making a monthly contribution to support our independent journalism.</p>
+              </div>
+              
+              <form method="POST" id="donationForm" action="{% url 'make_payment' %}">
+                {% csrf_token %}
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="donation-form-row">
+                      <label for="donation_first_name">First Name</label>
+                      <input type="text" class="form-control" id="donation_first_name" name="first_name" 
+                             value="{{ donor.name.split.0|default:'' }}" required>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="donation-form-row">
+                      <label for="donation_last_name">Last Name</label>
+                      <input type="text" class="form-control" id="donation_last_name" name="last_name" 
+                             value="{{ donor.name.split.1|default:'' }}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="donation-form-row">
+                  <label for="donation_email">Email Address</label>
+                  <input type="email" class="form-control" id="donation_email" name="email" 
+                         value="{{ donor.email }}" required readonly>
+                </div>
+
+                <div class="form-divider"></div>
+
+                <div class="donation-form-row">
+                  <label>Choose Your Contribution Type</label>
+                  <div class="radio-group">
+                    <label>
+                      <input type="radio" name="payment_type" value="subscription" checked> 
+                      <span>Monthly Subscription</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="payment_type" value="one_time"> 
+                      <span>One-Time Donation</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="donation-form-row">
+                  <label for="donation_amount">Donation Amount (ZAR)</label>
+                  <div class="amount-input-wrapper">
+                    <input type="number" step="0.01" class="form-control" id="donation_amount" 
+                           name="amount" value="100" min="1" required>
+                  </div>
+                </div>
+
+                <button type="submit" class="donation-submit-btn" id="donationSubmitBtn">
+                  Make Donation
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -270,4 +475,42 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block javascript-includes %}
+  {{ block.super }}
+  <script>
+    $(document).ready(function() {
+      $('#donationForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        var submitButton = $('#donationSubmitBtn');
+        var originalText = submitButton.text();
+        submitButton.prop('disabled', true).text('Processing...');
+        
+        var formData = $(this).serialize();
+        
+        $.ajax({
+          type: 'POST',
+          url: $(this).attr("action"),
+          data: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          success: function(response) {
+            if (response.errors) {
+              alert('Please correct the form errors and try again.');
+              submitButton.prop('disabled', false).text(originalText);
+            } else if (response.html) {
+              $("body").append(response.html);
+            }
+          },
+          error: function(xhr, status, error) {
+            alert('Something went wrong. Please try again.');
+            submitButton.prop('disabled', false).text(originalText);
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}
