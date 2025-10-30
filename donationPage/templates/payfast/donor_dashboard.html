@@ -250,30 +250,12 @@
               <form method="POST" id="donationForm" action="{% url 'make_payment' %}">
                 {% csrf_token %}
                 
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="donation-form-row">
-                      <label for="donation_first_name">First Name</label>
-                      <input type="text" class="form-control" id="donation_first_name" name="first_name" 
-                             value="{{ donor.name.split.0|default:'' }}" required>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="donation-form-row">
-                      <label for="donation_last_name">Last Name</label>
-                      <input type="text" class="form-control" id="donation_last_name" name="last_name" 
-                             value="{{ donor.name.split.1|default:'' }}">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="donation-form-row">
-                  <label for="donation_email">Email Address</label>
-                  <input type="email" class="form-control" id="donation_email" name="email" 
-                         value="{{ donor.email }}" required readonly>
-                </div>
-
-                <div class="form-divider"></div>
+                <input type="hidden" id="donation_first_name" name="first_name" 
+                       value="{{ donor.name.split.0|default:'' }}">
+                <input type="hidden" id="donation_last_name" name="last_name" 
+                       value="{{ donor.name.split.1|default:'' }}">
+                <input type="hidden" id="donation_email" name="email" 
+                       value="{{ donor.email }}">
 
                 <div class="donation-form-row">
                   <label>Choose Your Contribution Type</label>
@@ -292,8 +274,8 @@
                 <div class="donation-form-row">
                   <label for="donation_amount">Donation Amount (ZAR)</label>
                   <div class="amount-input-wrapper">
-                    <input type="number" step="0.01" class="form-control" id="donation_amount" 
-                           name="amount" value="100" min="1" required>
+                    <input type="number" class="form-control" id="donation_amount" 
+                           name="amount" value="100" min="10" required>
                   </div>
                 </div>
 
