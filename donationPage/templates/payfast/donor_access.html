@@ -19,17 +19,19 @@
                     {% if error == "error_sending_email" %}
                         <div class="alert alert-danger">There was error in sending email! Please refresh and try again</div>
                     {% else %}
-                        <div class="alert alert-success">If your email is on our system an email with the dashboard access link has been sent to you.</div>
-                    {% endif %}
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="email">Email address:</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{email}}" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                    </form>
-
+                        {% if error == "donor_not_found" or email_sent %} 
+                            <div class="alert alert-success">If your email is on our system an email with the dashboard access link has been sent to you.</div>
+		        {% else %}
+			    <form method="POST">
+				{% csrf_token %}
+				<div class="form-group">
+				    <label for="email">Your email address:</label>
+				    <input type="email" class="form-control" id="email" name="email" value="{{email}}" required>
+				</div>
+				<button type="submit" class="btn btn-primary btn-block">Submit</button>
+			    </form>
+		        {% endif %}
+		    {% endif %}
 		    {% comment %}
 		    {% if email_sent %}
                         <p class="text-info" style="padding-top: 10px">Note: The access link will be only valid for next 24 hours</p>
