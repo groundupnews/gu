@@ -16,16 +16,10 @@
                     <h3 class="panel-title">Donor Dashboard Access</h3>
                 </div>
                 <div class="panel-body">
-                    {% if error == "donor_not_found" %}
-                        <div class="alert alert-danger">Donor with this email not found! Please contact our support team.</div>
-                    {% endif %}
-
                     {% if error == "error_sending_email" %}
                         <div class="alert alert-danger">There was error in sending email! Please refresh and try again</div>
-                    {% endif %}
-
-                    {% if email_sent %}
-                        <div class="alert alert-success">Email with dashboard access link successfully.</div>
+                    {% else %}
+                        <div class="alert alert-success">If your email is on our system an email with the dashboard access link has been sent to you.</div>
                     {% endif %}
                     <form method="POST">
                         {% csrf_token %}
@@ -36,9 +30,11 @@
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>
                     </form>
 
-                    {% if email_sent %}
+		    {% comment %}
+		    {% if email_sent %}
                         <p class="text-info" style="padding-top: 10px">Note: The access link will be only valid for next 24 hours</p>
                     {% endif %}
+		    {% endcomment %}
                 </div>
             </div>
         </div>
