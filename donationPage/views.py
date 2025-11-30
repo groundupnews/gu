@@ -22,6 +22,8 @@ from donationPage.utils import make_donorUrl
 signer = TimestampSigner()
 logger = logging.getLogger("django")
 
+REMEMBER_COOKIE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
+
 
 #Base page to be displayed
 def page(request):
@@ -68,10 +70,45 @@ def donorDash(request, donor_url):
     return HttpResponse(template.render(context, request))
 
 
+def _remembered_donor(request):
+    cookie_value = request.COOKIES.get("donor_dashboard_token")
+    if not cookie_value:
+        return None, False # no donor found; cookie not invalid//expired
+    try:
+        donor_url = signer.unsign(cookie_value, max_age=REMEMBER_COOKIE_MAX_AGE)
+    except (BadSignature, SignatureExpired):
+        return None, True # no donor & cookie == invalid/expired
+    donor = Donor.objects.filter(donor_url=donor_url).first()
+    if donor is None:
+        return None, True
+    return donor, False # valid donor, cookei == valid!
+
+
+def _attach_remember_cookie(response, donor_url):
+    response.set_cookie(
+        "donor_dashboard_token",
+        signer.sign(donor_url),
+        max_age=REMEMBER_COOKIE_MAX_AGE,
+        httponly=True,
+        secure=not settings.DEBUG,
+        samesite="Lax",
+    )
+
+
 def donor_access_view(request):
-    context = {}
+    remembered_donor, cookie_invalid = _remembered_donor(request)
+    if remembered_donor:
+        auto_token = signer.sign(remembered_donor.donor_url)
+        return redirect('donor_dashboard', token=auto_token)
+    context = {
+        "remember_me": False,
+        "remember_cookie_expired": cookie_invalid,
+    }
     if request.method == 'POST':
         email = request.POST.get("email", None)
+        remember_me = request.POST.get("remember_me") == "on"
+        context["email"] = email
+        context["remember_me"] = remember_me
         if email:
             context["email"] = email
             donor = Donor.objects.filter(email=email).first()
@@ -80,6 +117,9 @@ def donor_access_view(request):
             else:
                 token = signer.sign(donor.donor_url)
                 access_link = reverse('donor_dashboard', kwargs={'token': token})
+                if remember_me:
+                    query = urllib.parse.urlencode({"remember": "1"})
+                    access_link = f"{access_link}?{query}"
                 full_access_link = request.build_absolute_uri(access_link)
                 subject = 'Access Your Donor Dashboard'
                 message = loader.render_to_string('payfast/email/dashboard_access.html', {
@@ -97,17 +137,26 @@ def donor_access_view(request):
                     context["email_sent"] = True
                 except Exception as e:
                     context["error"] = "error_sending_email"
-    return render(
+    response = render(
         request,
         'payfast/donor_access.html',
         context
     )
+    if cookie_invalid:
+        response.delete_cookie("donor_dashboard_token")
+    return response
 
 
 def donor_dashboard_view(request, token):
     try:
         donor_url = signer.unsign(token, max_age=86400)  # 24 hours in seconds
         donor = get_object_or_404(Donor, donor_url=donor_url)
+        remembered_donor, cookie_invalid = _remembered_donor(request)
+        remember_param = request.GET.get("remember", "").lower()
+        refresh_cookie = remember_param in {"1", "true", "yes", "on"} or (
+            remembered_donor and remembered_donor.id == donor.id
+        )
+
         donor_form = DonorForm(instance=donor)
         donations = Donation.objects.filter(donor=donor).order_by("-datetime_of_donation")
         paginator = Paginator(donations, 100)
@@ -128,7 +177,7 @@ def donor_dashboard_view(request, token):
                     messages.INFO,
                     "Updated donor details"
                 )
-        return render(request, 'payfast/donor_dashboard.html', {
+        response = render(request, 'payfast/donor_dashboard.html', {
             'donor': donor,
             'donations': donations_page_obj,
             'subscriptions': subscriptions,
@@ -137,6 +186,11 @@ def donor_dashboard_view(request, token):
             'payfast_return_url': settings.PAYFAST_RETURN_URL,
             'has_active_subscription': has_active_subscription
         })
+        if refresh_cookie:
+            _attach_remember_cookie(response, donor.donor_url)
+        elif cookie_invalid:
+            response.delete_cookie("donor_dashboard_token")
+        return response
     except (BadSignature, SignatureExpired):
         # Handle invalid or expired token
         return HttpResponse("Invalid or expired link.", status=400)
@@ -402,3 +456,14 @@ def verify_payfast_signature(postData, received_signature):
     pfParamString += f'&passphrase={urllib.parse.quote_plus(settings.PAYFAST_PASS_PHRASE.strip())}'
     signature = hashlib.md5(pfParamString.encode()).hexdigest()
     return (received_signature == signature)
+
+
+def donor_dashboard_logout(request):
+    response = redirect('donor_access')
+    response.delete_cookie("donor_dashboard_token")
+    messages.add_message(
+        request,
+        messages.INFO,
+        "You have been logged out on this device."
+    )
+    return response
