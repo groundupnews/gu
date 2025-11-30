@@ -207,7 +207,19 @@
 
     <div class="row">
       <div class="col-xs-12 text-right">
-        <a href="{% url 'donor_dashboard_logout' %}" class="btn btn-link btn-sm">Log out of donor dashboard</a>
+        <form id="donorLogoutForm" method="POST" action="{% url 'donor_dashboard_logout' %}" style="display:inline;">
+          {% csrf_token %}
+          <button
+            type="button"
+            id="donorLogoutBtn"
+            class="btn btn-sm btn-outline-secondary"
+            aria-label="Log out of donor dashboard"
+            title="Log out of donor dashboard"
+            style="border-width:1px; padding:6px 10px; font-weight:600;"
+          >
+            Log out
+          </button>
+        </form>
       </div>
     </div>
 
@@ -505,6 +517,14 @@
             submitButton.prop('disabled', false).text(originalText);
           }
         });
+      });
+
+      // Logout confirmation: show confirm dialog then submit POST form
+      $('#donorLogoutBtn').on('click', function (e) {
+        var doLogout = window.confirm('Log out of the donor dashboard on this device? You can always log back in via email.');
+        if (doLogout) {
+          $('#donorLogoutForm').submit();
+        }
       });
     });
   </script>
