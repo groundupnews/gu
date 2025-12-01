@@ -13,5 +13,6 @@ urlpatterns = [
     path('donations/donor-access/', views.donor_access_view, name='donor_access'),
     path('donations/donor-dashboard/<str:token>/', views.donor_dashboard_view, name='donor_dashboard'),
     path('donations/cancel-subscription/<str:token>/', views.cancel_subscription, name='cancel_subscription'),
+    path('donations/donor-logout/', views.donor_dashboard_logout, name='donor_dashboard_logout'),
     path('<donor_url>/', views.donorDash, name='donation.dashboard'),
 ]

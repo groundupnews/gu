@@ -16,6 +16,9 @@
                     <h3 class="panel-title">Donor Dashboard Access</h3>
                 </div>
                 <div class="panel-body">
+                    {% if remember_cookie_expired %}
+                        <div class="alert alert-info">Your saved access expired. Please request a new link.</div>
+                    {% endif %}
                     {% if error == "error_sending_email" %}
                         <div class="alert alert-danger">There was error in sending email! Please refresh and try again</div>
                     {% else %}
@@ -28,6 +31,13 @@
 				    <label for="email">Your email address:</label>
 				    <input type="email" class="form-control" id="email" name="email" value="{{email}}" required>
 				</div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="remember_me" {% if remember_me %}checked{% endif %}>
+                        Remember me on this device for up to 12 months
+                    </label>
+                </div>
+                <p class="text-muted small">Only choose this on a private device. We store a secure cookie so you can skip the email step.</p>
 				<button type="submit" class="btn btn-primary btn-block">Submit</button>
 			    </form>
 		        {% endif %}
