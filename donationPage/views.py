@@ -272,6 +272,12 @@ def payment_cancel(request):
 
 
 def payment_view(request):
+    if request.method == 'GET':
+        remembered_donor, cookie_invalid = _remembered_donor(request)
+        if remembered_donor:
+            token = signer.sign(remembered_donor.donor_url)
+            return redirect('donor_dashboard', token=token)
+
     default_amount = 100
 
     if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
