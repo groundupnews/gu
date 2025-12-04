@@ -183,6 +183,49 @@
       background: linear-gradient(to right, transparent, #e1e8ed, transparent);
       margin: 24px 0;
     }
+
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .flex-row > [class*='col-'] {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    div.thumbnail {
+        padding: 25px;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        height: 100%;
+        width: 100%;
+        transition: all 0.2s ease;
+    }
+
+    div.thumbnail:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    div.thumbnail h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c3e50;
+        border-bottom: 2px solid #f0f2f5;
+        padding-bottom: 10px;
+    }
+
+    div.thumbnail p {
+        color: #495057;
+        font-size: 14px;
+        line-height: 1.6;
+    }
     
     @media (max-width: 767px) {
       .donation-form-panel .panel-body {
@@ -252,7 +295,7 @@
       </div>
     </div>
     <!-- only shows donation plea if no active sub -->
-    {% if not has_active_subscription %}
+    
       <div class="row">
         <div class="col-xs-12">
           <h3 class="section-title">Make a Donation</h3>
@@ -262,7 +305,11 @@
             <div class="panel-heading">Support Independent Journalism</div>
             <div class="panel-body">
               <div class="donation-intro">
+                {% if not has_active_subscription %}
                 <p><strong>You currently have no subscription.</strong> Help us hold power accountable by making a monthly contribution to support our independent journalism.</p>
+                {% else %}
+                <p>Help us hold power accountable by making a contribution to support our independent journalism.</p>
+                {% endif %}
               </div>
               
               <form method="POST" id="donationForm" action="{% url 'make_payment' %}">
@@ -305,7 +352,7 @@
           </div>
         </div>
       </div>
-    {% endif %}
+    
     
     {% if has_active_subscription %}
     <!-- subs -->
@@ -481,6 +528,64 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 class="section-title" id="alternate-payment">Other Payment Methods</h3>
+        </div>
+    </div>
+    
+    <div class="row flex-row">
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="thumbnail">
+                <h3>EFT</h3>
+                <p><strong>Bank:</strong> Nedbank<br>
+                <strong>Account number:</strong> 1206484632<br>
+                <strong>Branch code:</strong> 198765<br>
+                <strong>Swift:</strong> NEDSZAJJ</p>
+
+                <p>Please use your email address as the reference.</p>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="thumbnail">
+                <h3>PayPal</h3>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <p><input name="cmd" type="hidden" value="_s-xclick"> <input name="hosted_button_id" type="hidden" value="4UETCB7SL6CNA"> <input alt="PayPal" border="0" name="submit" src="https://www.groundup.org.za/media/uploads/images/Graphics/paypal-donate-button.png" style="width:250px;" type="image"> <img alt="" border="0" height="1" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"></p>
+                </form>
+                <p>If you have unused PayPal credits sitting in your account, consider donating them to GroundUp to support independent journalism.</p>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="thumbnail">
+                <h3>US donors</h3>
+                <p>You can make a tax-deductible donation from the United States via the South African Development Fund. Click <a href="http://www.sadevelopmentfund.org/donate">here</a> for various ways to donate. Please indicate that your donation is for "GroundUp".</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row flex-row">
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="thumbnail">
+                <h3>GroundUp details</h3>
+                <p><strong>Non-profit registration:</strong> 254-625-NPO<br>
+                <strong>Public benefit organisation:</strong> 930071956<br>
+                <strong>VAT registration:</strong> 4270293717</p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <div class="thumbnail">
+                <h3><a href="https://pos.snapscan.io/qr/STB24E42"><img alt="Snapscan" src="/static/donationPage/snapscan-logo.png" style="width:120px; margin: inherit !important;"  /></a></h3>
+                <p style="text-align: center;">
+                <span class="mobile-only"><a href="https://pos.snapscan.io/qr/STB24E42">Donate using SnapScan</a>. </span><br />
+                <a href="https://pos.snapscan.io/qr/STB24E42"><img alt="Snapscan QR code" class="barcode" src="/static/donationPage/groundup-snapscan.png" style="width:150px !important;" /></a>
+                </p>
+            </div>
+        </div>
+    </div>
+
   </div>
 {% endblock %}
 
