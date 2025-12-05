@@ -20,6 +20,7 @@ logger = logging.getLogger("django")
 
 def write_letter(request, pk):
     problem = False
+    form = None
 
     # Check the article exists
     article = get_object_or_404(Article, pk=pk)
@@ -110,7 +111,8 @@ def write_letter(request, pk):
 
     startkey = 'time_' + str(article.pk)
     request.session[startkey] = str(time())
-    form = LetterForm()
+    if form is None:
+        form = LetterForm()
     return render(request, 'letters/letter_form.html',
                   {'form': form,
                    'article': article,
