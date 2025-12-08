@@ -41,6 +41,7 @@ OVERRIDE_COMMISSION_CHOICES = (
 BYLINE_CHOICES = (
     ("ST", "Standard"),
     ("TP", "Text By [First Author] Photos By [Second Author]"),
+    ("CU", "Custom"),
 )
 
 LEVEL_CHOICES = (
@@ -350,7 +351,9 @@ class Article(models.Model):
     byline = models.CharField(max_length=200, blank=True,
                               verbose_name='customised byline',
                               help_text="If this is not blank it "
-                              "overrides the value of the author fields")
+                              "overrides the value of the author fields. "
+                              "If 'Custom' style is selected, use {author_01}, "
+                              "{author_02} etc. as placeholders.")
     byline_style = models.CharField(max_length=2, choices=BYLINE_CHOICES,
                                     default="ST")
     editor_feedback = models.TextField(blank=True)
@@ -517,19 +520,40 @@ class Article(models.Model):
     '''
 
     def calc_byline(self, links=False, by_string="By ", and_string=" and "):
-        if self.byline:
+        if self.byline and self.byline_style != "CU":
             return self.byline
+
+        if self.byline_style == "CU":
+            authors = [self.author_01, self.author_02,
+                       self.author_03, self.author_04,
+                       self.author_05]
+            context = {}
+            for i, author in enumerate(authors):
+                key = "author_0" + str(i + 1)
+                if author:
+                    if links:
+                        context[key] = "<a rel=\"author\" href='" + \
+                                       author.get_absolute_url() + \
+                                       "'>" + str(author) + "</a>"
+                    else:
+                        context[key] = str(author)
+                else:
+                    context[key] = ""
+            try:
+                return self.byline.format(**context)
+            except:
+                return self.byline
+
+        names = [self.author_01, self.author_02,
+                 self.author_03, self.author_04,
+                 self.author_05
+                 ]
+        if links:
+            names = ["<a rel=\"author\" href='" + name.get_absolute_url() +
+                     "'>" + str(name) + "</a>"
+                     for name in names if name is not None]
         else:
-            names = [self.author_01, self.author_02,
-                     self.author_03, self.author_04,
-                     self.author_05
-                     ]
-            if links:
-                names = ["<a rel=\"author\" href='" + name.get_absolute_url() +
-                         "'>" + str(name) + "</a>"
-                         for name in names if name is not None]
-            else:
-                names = [str(name) for name in names if name is not None]
+            names = [str(name) for name in names if name is not None]
         # byline_style is Standard
         if self.byline_style == "ST" or len(names) != 2:
             if len(names) == 0:
