@@ -64,17 +64,15 @@ def parse_shortcodes(content):
     if not content:
         return ""
 
-    def _render_shortcode_block(kind, obj, articles):
+    def _render_shortcode_block(kind, obj, articles, feature_first=True):
         """
         kind: 'topic' | 'category'
         obj: Topic | Category
         articles: iterable[Article]
+        feature_first: bool
         """
         if not articles:
             return ""
-
-        first = articles[0]
-        rest = articles[1:]
 
         title = obj.name
         url = obj.get_absolute_url()
@@ -84,17 +82,25 @@ def parse_shortcodes(content):
             {"title": title, "url": url, "kind": kind},
         )
 
-        first_html = render_to_string(
-            "blocks/article_summary_block.html",
-            {
-                "article": first,
-                "include_summary": "1",
-                "include_image": "1",
-                "block_variant": "featured",
-            },
-        )
+        content_html = ""
 
-        rest_html = "".join(
+        if feature_first:
+            first = articles[0]
+            rest = articles[1:]
+
+            content_html += render_to_string(
+                "blocks/article_summary_block.html",
+                {
+                    "article": first,
+                    "include_summary": "1",
+                    "include_image": "1",
+                    "block_variant": "featured",
+                },
+            )
+        else:
+            rest = articles
+
+        content_html += "".join(
             render_to_string(
                 "blocks/article_summary_block.html",
                 {
@@ -115,33 +121,48 @@ def parse_shortcodes(content):
         return (
             '<section class="home-shortcode-block">'
             f"{heading_html}"
-            f"{first_html}"
-            f"{rest_html}"
+            f"{content_html}"
             f"{footer_html}"
             "</section>"
         )
 
-    # parsses {{topic:slug:count}}
-    matches = re.findall(r"{{topic:([-\w]+):(\d+)}}", content)
-    for slug, count in matches:
+    # parsses {{topic:slug:count}} or {{topic:slug:count:featured}}
+    for match in re.finditer(r"{{topic:([-\w]+):(\d+)(?::([01]))?}}", content):
+        full_match = match.group(0)
+        slug = match.group(1)
+        count = match.group(2)
+        featured_str = match.group(3)
+
+        feature_first = True
+        if featured_str == '0':
+            feature_first = False
+
         try:
             topic = models.Topic.objects.get(slug=slug)
             qs = models.Article.objects.published().filter(topics=topic)[: int(count)]
-            html = _render_shortcode_block("topic", topic, list(qs))
-            content = content.replace(f"{{{{topic:{slug}:{count}}}}}", html)
+            html = _render_shortcode_block("topic", topic, list(qs), feature_first)
+            content = content.replace(full_match, html)
         except models.Topic.DoesNotExist:
-            content = content.replace(f"{{{{topic:{slug}:{count}}}}}", "")
+            content = content.replace(full_match, "")
 
-    # parse {{category:slug:count}}
-    matches = re.findall(r"{{category:([-\w]+):(\d+)}}", content)
-    for slug, count in matches:
+    # parse {{category:slug:count}} or {{category:slug:count:featured}}
+    for match in re.finditer(r"{{category:([-\w]+):(\d+)(?::([01]))?}}", content):
+        full_match = match.group(0)
+        slug = match.group(1)
+        count = match.group(2)
+        featured_str = match.group(3)
+
+        feature_first = True
+        if featured_str == '0':
+            feature_first = False
+
         try:
             category = models.Category.objects.get(slug=slug)
             qs = models.Article.objects.published().filter(category=category)[: int(count)]
-            html = _render_shortcode_block("category", category, list(qs))
-            content = content.replace(f"{{{{category:{slug}:{count}}}}}", html)
+            html = _render_shortcode_block("category", category, list(qs), feature_first)
+            content = content.replace(full_match, html)
         except models.Category.DoesNotExist:
-            content = content.replace(f"{{{{category:{slug}:{count}}}}}", "")
+            content = content.replace(full_match, "")
 
     return content
 

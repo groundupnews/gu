@@ -16,15 +16,17 @@ class Block(models.Model):
     selected_topic = models.ForeignKey('newsroom.Topic', on_delete=models.SET_NULL, null=True, blank=True)
     selected_category = models.ForeignKey('newsroom.Category', on_delete=models.SET_NULL, null=True, blank=True)
     num_articles = models.PositiveIntegerField(default=5, blank=True, null=True)
+    feature_first_article = models.BooleanField(default=True, help_text="If checked, the first article will be styled as a featured article.")
 
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def save(self, *args, **kwargs):
+        feat = "1" if self.feature_first_article else "0"
         if self.block_type == 'topic' and self.selected_topic:
-            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}}}}}"
+            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{feat}}}}}"
         elif self.block_type == 'category' and self.selected_category:
-            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}}}}}"
+            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{feat}}}}}"
         super(Block, self).save(*args, **kwargs)
 
     def __str__(self):
