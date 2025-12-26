@@ -21,7 +21,7 @@ class BlockAdmin(admin.ModelAdmin):
         }),
         ('Dynamic Content Configuration', {
             'classes': ('grp-collapse', 'grp-closed'),
-            'fields': ('selected_topic', 'selected_category', 'num_articles', 'feature_first_article'),
+            'fields': ('selected_topic', 'selected_category', 'num_articles', 'feature_first_article', 'show_summary_featured', 'show_summary_standard'),
             'description': 'Select Topic OR Category, and number of articles. This will overwrite the HTML field.'
         }),
         ('HTML Content', {

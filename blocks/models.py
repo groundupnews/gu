@@ -17,16 +17,20 @@ class Block(models.Model):
     selected_category = models.ForeignKey('newsroom.Category', on_delete=models.SET_NULL, null=True, blank=True)
     num_articles = models.PositiveIntegerField(default=5, blank=True, null=True)
     feature_first_article = models.BooleanField(default=True, help_text="If checked, the first article will be styled as a featured article.")
+    show_summary_featured = models.BooleanField(default=True, verbose_name="Show summary for featured article")
+    show_summary_standard = models.BooleanField(default=True, verbose_name="Show summary for standard articles")
 
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def save(self, *args, **kwargs):
         feat = "1" if self.feature_first_article else "0"
+        sum_feat = "1" if self.show_summary_featured else "0"
+        sum_std = "1" if self.show_summary_standard else "0"
         if self.block_type == 'topic' and self.selected_topic:
-            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{feat}}}}}"
+            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}}}}}"
         elif self.block_type == 'category' and self.selected_category:
-            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{feat}}}}}"
+            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}}}}}"
         super(Block, self).save(*args, **kwargs)
 
     def __str__(self):
