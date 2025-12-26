@@ -1,6 +1,7 @@
 import datetime
 import logging
 import json
+import re
 
 from blocks.models import Group
 from bs4 import BeautifulSoup
@@ -17,6 +18,7 @@ from django.http import (
     JsonResponse,
 )
 from django.template import Template, Context
+from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -58,8 +60,98 @@ def get_blocks(group_name="Home"):
         return []
 
 
+def parse_shortcodes(content):
+    if not content:
+        return ""
+
+    def _render_shortcode_block(kind, obj, articles):
+        """
+        kind: 'topic' | 'category'
+        obj: Topic | Category
+        articles: iterable[Article]
+        """
+        if not articles:
+            return ""
+
+        first = articles[0]
+        rest = articles[1:]
+
+        title = obj.name
+        url = obj.get_absolute_url()
+
+        heading_html = render_to_string(
+            "blocks/shortcode_heading.html",
+            {"title": title, "url": url, "kind": kind},
+        )
+
+        first_html = render_to_string(
+            "blocks/article_summary_block.html",
+            {
+                "article": first,
+                "include_summary": "1",
+                "include_image": "1",
+                "block_variant": "featured",
+            },
+        )
+
+        rest_html = "".join(
+            render_to_string(
+                "blocks/article_summary_block.html",
+                {
+                    "article": a,
+                    "include_summary": "1",
+                    "include_image": "1",
+                    "block_variant": "compact",
+                },
+            )
+            for a in rest
+        )
+
+        footer_html = render_to_string(
+            "blocks/shortcode_read_more.html",
+            {"url": url},
+        )
+
+        return (
+            '<section class="home-shortcode-block">'
+            f"{heading_html}"
+            f"{first_html}"
+            f"{rest_html}"
+            f"{footer_html}"
+            "</section>"
+        )
+
+    # parsses {{topic:slug:count}}
+    matches = re.findall(r"{{topic:([-\w]+):(\d+)}}", content)
+    for slug, count in matches:
+        try:
+            topic = models.Topic.objects.get(slug=slug)
+            qs = models.Article.objects.published().filter(topics=topic)[: int(count)]
+            html = _render_shortcode_block("topic", topic, list(qs))
+            content = content.replace(f"{{{{topic:{slug}:{count}}}}}", html)
+        except models.Topic.DoesNotExist:
+            content = content.replace(f"{{{{topic:{slug}:{count}}}}}", "")
+
+    # parse {{category:slug:count}}
+    matches = re.findall(r"{{category:([-\w]+):(\d+)}}", content)
+    for slug, count in matches:
+        try:
+            category = models.Category.objects.get(slug=slug)
+            qs = models.Article.objects.published().filter(category=category)[: int(count)]
+            html = _render_shortcode_block("category", category, list(qs))
+            content = content.replace(f"{{{{category:{slug}:{count}}}}}", html)
+        except models.Category.DoesNotExist:
+            content = content.replace(f"{{{{category:{slug}:{count}}}}}", "")
+
+    return content
+
+
 def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
     context[context_key] = get_blocks(group_name)
+
+    for block in context[context_key]:
+        if hasattr(block, 'html'):
+            block.html = parse_shortcodes(block.html)
 
     # Add featured front page photos if any blocks in the group contain _Featured_Photos
     blocks = context[context_key]
@@ -915,7 +1007,7 @@ def advanced_search(request):
     search_type = request.GET.get("search_type")
     first_author = request.GET.get("first_author")
     first_author_only = True if first_author == "on" else False
-    author_text = request.GET.get("author_text")
+    author_text = request.GET.get('author')
 
     try:
         author_param = request.GET.get("author")

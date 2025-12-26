@@ -2,11 +2,30 @@ from django.db import models
 
 # Create your models here.
 
+BLOCK_TYPES = (
+    ('standard', 'Standard HTML'),
+    ('topic', 'Topic'),
+    ('category', 'Category'),
+)
+
 
 class Block(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    block_type = models.CharField(max_length=20, choices=BLOCK_TYPES, default='standard')
+
+    selected_topic = models.ForeignKey('newsroom.Topic', on_delete=models.SET_NULL, null=True, blank=True)
+    selected_category = models.ForeignKey('newsroom.Category', on_delete=models.SET_NULL, null=True, blank=True)
+    num_articles = models.PositiveIntegerField(default=5, blank=True, null=True)
+
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if self.block_type == 'topic' and self.selected_topic:
+            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}}}}}"
+        elif self.block_type == 'category' and self.selected_category:
+            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}}}}}"
+        super(Block, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
