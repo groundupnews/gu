@@ -1,16 +1,34 @@
 {% load qanda_extras %}
 
-<div class="row">
-		<div class="col-xs-12 col-md-6">
-				<div class="random_qanda">
-						<a href="/qanda/">
-								<img style="width:100%;"  src="/static/agony/images/ask_athalie.webp" alt="Ask Athalie Banner" />
-						</a>
-				</div>
-		</div>
-		<div class="col-xs-12 col-md-6" style="background-color: white;">
-				<div class="random_qanda">
-						{%  qanda_random %}
-				</div>
-		</div>
-</div>
+<section class="home-shortcode-block">
+    <h3 class="shortcode-heading">
+        <a href="/qanda/">Ask Athalie</a>
+    </h3>
+
+    {% qanda_random %}
+
+    <div style="margin-top: 10px; margin-bottom: 10px;">
+        <a href="/qanda/">
+            <img style="width:100%;" src="/static/agony/images/ask_athalie.webp" alt="Ask Athalie" />
+        </a>
+    </div>
+
+    <div class="shortcode-readmore">
+        <a href="/qanda/">See our latest Q & As &gt;</a>
+    </div>
+</section>
+
+<style>
+    .shortcode-heading {
+        font-style: italic;
+        margin: 6px 0 6px;
+        font-weight: 600;
+        font-size: 24px !important;
+    }
+    .shortcode-heading a { color: #2378ba; text-decoration: none; }
+    .shortcode-heading a:hover { text-decoration: underline; }
+
+    .shortcode-readmore { text-align: right; margin-top: 4px; }
+    .shortcode-readmore a { color: #2378ba; text-decoration: none; font-weight: bold }
+    .shortcode-readmore a:hover { text-decoration: underline; }
+</style>
