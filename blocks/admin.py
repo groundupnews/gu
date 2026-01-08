@@ -17,11 +17,11 @@ class BlockAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'block_type', )
+            'fields': ('name', 'block_type', 'custom_title')
         }),
         ('Dynamic Content Configuration', {
             'classes': ('grp-collapse', 'grp-closed'),
-            'fields': ('selected_topic', 'selected_category', 'num_articles', 'feature_first_article', 'show_summary_featured', 'show_summary_standard'),
+            'fields': ('selected_topic', 'selected_category', 'num_articles', 'feature_first_article', 'show_summary_featured', 'show_summary_standard', 'show_title_featured', 'show_title_standard'),
             'description': 'Select Topic OR Category, and number of articles. This will overwrite the HTML field.'
         }),
         ('HTML Content', {

@@ -64,24 +64,48 @@ def parse_shortcodes(content):
     if not content:
         return ""
 
-    def _render_shortcode_block(kind, obj, articles, feature_first=True, show_summary_featured=True, show_summary_standard=True):
+    def _render_shortcode_block(kind, obj, articles, feature_first=True, show_summary_featured=True, show_summary_standard=True, title=None, show_title_featured=True, show_title_standard=True):
         """
-        kind: 'topic' | 'category'
-        obj: Topic | Category
+        kind: 'topic' | 'category' | 'chart_of_the_week'
+        obj: Topic | Category | None
         articles: iterable[Article]
         feature_first: bool
         show_summary_featured: bool
         show_summary_standard: bool
+        title: str | None
+        show_title_featured: bool
+        show_title_standard: bool
         """
         if not articles:
             return ""
 
-        title = obj.name
-        url = obj.get_absolute_url()
+        if title:
+            display_title = title
+        elif obj:
+            display_title = obj.name
+        else:
+            display_title = "Chart of the Week"
+
+        url = obj.get_absolute_url() if obj else "/category/charts/"
+
+        if kind == 'chart_of_the_week':
+             return render_to_string(
+                "blocks/chart_of_the_week.html",
+                {
+                    "title": display_title,
+                    "url": url,
+                    "articles": articles,
+                    "feature_first": feature_first,
+                    "show_summary_featured": show_summary_featured,
+                    "show_summary_standard": show_summary_standard,
+                    "show_title_featured": show_title_featured,
+                    "show_title_standard": show_title_standard,
+                },
+            )
 
         heading_html = render_to_string(
             "blocks/shortcode_heading.html",
-            {"title": title, "url": url, "kind": kind},
+            {"title": display_title, "url": url, "kind": kind},
         )
 
         content_html = ""
@@ -95,6 +119,7 @@ def parse_shortcodes(content):
                 {
                     "article": first,
                     "include_summary": "1" if show_summary_featured else "0",
+                    "include_title": "1" if show_title_featured else "0",
                     "include_image": "1",
                     "block_variant": "featured",
                 },
@@ -108,6 +133,7 @@ def parse_shortcodes(content):
                 {
                     "article": a,
                     "include_summary": "1" if show_summary_standard else "0",
+                    "include_title": "1" if show_title_standard else "0",
                     "include_image": "1",
                     "block_variant": "compact",
                 },
@@ -129,13 +155,16 @@ def parse_shortcodes(content):
         )
 
     # parsses {{topic:slug:count}} or {{topic:slug:count:featured}} or {{topic:slug:count:featured:sum_feat:sum_std}}
-    for match in re.finditer(r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?}}", content):
+    for match in re.finditer(r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", content):
         full_match = match.group(0)
         slug = match.group(1)
         count = match.group(2)
         featured_str = match.group(3)
         sum_feat_str = match.group(4)
         sum_std_str = match.group(5)
+        title = match.group(6)
+        title_feat_str = match.group(7)
+        title_std_str = match.group(8)
 
         feature_first = True
         if featured_str == '0':
@@ -149,22 +178,33 @@ def parse_shortcodes(content):
         if sum_std_str == '0':
             show_summary_standard = False
 
+        show_title_featured = True
+        if title_feat_str == '0':
+            show_title_featured = False
+
+        show_title_standard = True
+        if title_std_str == '0':
+            show_title_standard = False
+
         try:
             topic = models.Topic.objects.get(slug=slug)
             qs = models.Article.objects.published().filter(topics=topic)[: int(count)]
-            html = _render_shortcode_block("topic", topic, list(qs), feature_first, show_summary_featured, show_summary_standard)
+            html = _render_shortcode_block("topic", topic, list(qs), feature_first, show_summary_featured, show_summary_standard, title, show_title_featured, show_title_standard)
             content = content.replace(full_match, html)
         except models.Topic.DoesNotExist:
             content = content.replace(full_match, "")
 
     # parse {{category:slug:count}} or {{category:slug:count:featured}} or {{category:slug:count:featured:sum_feat:sum_std}}
-    for match in re.finditer(r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?}}", content):
+    for match in re.finditer(r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", content):
         full_match = match.group(0)
         slug = match.group(1)
         count = match.group(2)
         featured_str = match.group(3)
         sum_feat_str = match.group(4)
         sum_std_str = match.group(5)
+        title = match.group(6)
+        title_feat_str = match.group(7)
+        title_std_str = match.group(8)
 
         feature_first = True
         if featured_str == '0':
@@ -178,10 +218,57 @@ def parse_shortcodes(content):
         if sum_std_str == '0':
             show_summary_standard = False
 
+        show_title_featured = True
+        if title_feat_str == '0':
+            show_title_featured = False
+
+        show_title_standard = True
+        if title_std_str == '0':
+            show_title_standard = False
+
         try:
             category = models.Category.objects.get(slug=slug)
             qs = models.Article.objects.published().filter(category=category)[: int(count)]
-            html = _render_shortcode_block("category", category, list(qs), feature_first, show_summary_featured, show_summary_standard)
+            html = _render_shortcode_block("category", category, list(qs), feature_first, show_summary_featured, show_summary_standard, title, show_title_featured, show_title_standard)
+            content = content.replace(full_match, html)
+        except models.Category.DoesNotExist:
+            content = content.replace(full_match, "")
+
+    # parse {{chart_of_the_week:count:featured:sum_feat:sum_std:title}}
+    for match in re.finditer(r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", content):
+        full_match = match.group(0)
+        count = match.group(1)
+        featured_str = match.group(2)
+        sum_feat_str = match.group(3)
+        sum_std_str = match.group(4)
+        title = match.group(5)
+        title_feat_str = match.group(6)
+        title_std_str = match.group(7)
+
+        feature_first = True
+        if featured_str == '0':
+            feature_first = False
+
+        show_summary_featured = True
+        if sum_feat_str == '0':
+            show_summary_featured = False
+
+        show_summary_standard = True
+        if sum_std_str == '0':
+            show_summary_standard = False
+
+        show_title_featured = True
+        if title_feat_str == '0':
+            show_title_featured = False
+
+        show_title_standard = True
+        if title_std_str == '0':
+            show_title_standard = False
+
+        try:
+            category = models.Category.objects.get(slug='charts')
+            qs = models.Article.objects.published().filter(category=category)[: int(count)]
+            html = _render_shortcode_block("chart_of_the_week", category, list(qs), feature_first, show_summary_featured, show_summary_standard, title, show_title_featured, show_title_standard)
             content = content.replace(full_match, html)
         except models.Category.DoesNotExist:
             content = content.replace(full_match, "")
