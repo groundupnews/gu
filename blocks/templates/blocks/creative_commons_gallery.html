@@ -1,0 +1,38 @@
+{% load fb_versions %}
+<section class="home-shortcode-block creative-commons-gallery">
+    <h3 class="shortcode-heading">
+        <a href="{% url 'gallery:gallery.front' %}">Creative Commons Gallery</a>
+    </h3>
+
+    {% if photos %}
+    <div class="row">
+        {% for photo in photos %}
+        <div class="col-xs-12 col-lg-4 {% if forloop.counter > 1 %}hidden-xs hidden-sm hidden-md{% endif %}" style="margin-bottom: 10px;">
+            <a href="{% url 'gallery:photo.detail' photo.pk %}">
+                 {% if forloop.counter == 1 %}
+                 <img src="{% version photo.image 'medium' %}"
+                      alt="{{ photo.alt }}"
+                      style="width:100%; max-width: 340px; display:block; margin: 0 auto;" />
+                 {% else %}
+                 {# stops downloading the other 2 images on mobile #}
+                 <picture>
+                     <source media="(min-width: 1200px)" srcset="{% version photo.image 'medium' %}">
+                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                          alt="{{ photo.alt }}"
+                          style="width:100%; max-width: 340px; display:block; margin: 0 auto;" />
+                 </picture>
+                 {% endif %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <p style="font-size: 16px; line-height: 1.3;">
+        Photo’s from our gallery are available to use for free
+    </p>
+
+    <div class="shortcode-readmore">
+        <a href="{% url 'gallery:gallery.front' %}">See more &gt;</a>
+    </div>
+</section>

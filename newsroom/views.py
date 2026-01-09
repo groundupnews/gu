@@ -273,6 +273,20 @@ def parse_shortcodes(content):
         except models.Category.DoesNotExist:
             content = content.replace(full_match, "")
 
+    if "{{creative_commons_gallery}}" in content:
+        from gallery.models import Photograph
+        # get up to three random featured photos
+        photos = list(Photograph.objects.filter(featured=True).order_by('?')[:3])
+        if len(photos) < 3:
+            additional = Photograph.objects.exclude(pk__in=[p.pk for p in photos]).order_by('?')[:3 - len(photos)]
+            photos.extend(additional)
+        
+        if photos:
+            html = render_to_string("blocks/creative_commons_gallery.html", {"photos": photos})
+            content = content.replace("{{creative_commons_gallery}}", html)
+        else:
+             content = content.replace("{{creative_commons_gallery}}", "")
+
     return content
 
 

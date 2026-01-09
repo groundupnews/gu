@@ -7,12 +7,13 @@ BLOCK_TYPES = (
     ('topic', 'Topic'),
     ('category', 'Category'),
     ('chart_of_the_week', 'Chart of the Week'),
+    ('creative_commons_gallery', 'Creative Commons Gallery'),
 )
 
 
 class Block(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    block_type = models.CharField(max_length=20, choices=BLOCK_TYPES, default='standard')
+    block_type = models.CharField(max_length=50, choices=BLOCK_TYPES, default='standard')
     custom_title = models.CharField(max_length=200, blank=True, help_text="Override the default title")
 
     selected_topic = models.ForeignKey('newsroom.Topic', on_delete=models.SET_NULL, null=True, blank=True)
@@ -42,6 +43,8 @@ class Block(models.Model):
             self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
         elif self.block_type == 'chart_of_the_week':
             self.html = f"{{{{chart_of_the_week:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+        elif self.block_type == 'creative_commons_gallery':
+            self.html = "{{creative_commons_gallery}}"
             
         super(Block, self).save(*args, **kwargs)
 
