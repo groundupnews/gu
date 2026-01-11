@@ -25,6 +25,11 @@
             <div class="col-xs-12 col-md-6">
                 <h2>Most Read</h2>
                 {{most_popular_html|safe}}
+
+                {% if most_deeply_read_html %}
+                    <h2>Deeply Read</h2>
+                    {{most_deeply_read_html|safe}}
+                {% endif %}
                 <div class="more_articles__qanda">{% include "agony/qanda_snippet.html" %}</div>
             </div>
             <div class="col-xs-12 col-md-6">

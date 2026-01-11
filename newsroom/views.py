@@ -325,6 +325,7 @@ class ArticleList(generic.ListView):
         context = super(ArticleList, self).get_context_data(**kwargs)
         #  context = get_blocks_in_context(context)
         context["most_popular_html"] = models.MostPopular.get_most_popular_html()
+        context["most_deeply_read_html"] = models.MostDeeplyRead.get_most_deeply_read_html()
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
         context["letters"] = (
             Letter.objects.published()
