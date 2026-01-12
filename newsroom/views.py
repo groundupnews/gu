@@ -154,124 +154,70 @@ def parse_shortcodes(content):
             "</section>"
         )
 
-    # parsses {{topic:slug:count}} or {{topic:slug:count:featured}} or {{topic:slug:count:featured:sum_feat:sum_std}}
-    for match in re.finditer(r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", content):
-        full_match = match.group(0)
-        slug = match.group(1)
-        count = match.group(2)
-        featured_str = match.group(3)
-        sum_feat_str = match.group(4)
-        sum_std_str = match.group(5)
-        title = match.group(6)
-        title_feat_str = match.group(7)
-        title_std_str = match.group(8)
+    def get_bool_val(val, default=True):
+        if val == '0':
+            return False
+        return default
 
-        feature_first = True
-        if featured_str == '0':
-            feature_first = False
+    def handle_match(match, kind):
+        if kind == 'chart_of_the_week':
+            # groups: 1=count, 2=featured, 3=sum_feat, 4=sum_std, 5=title, 6=title_feat, 7=title_std
+            slug = None
+            count = match.group(1)
+            featured_str = match.group(2)
+            sum_feat_str = match.group(3)
+            sum_std_str = match.group(4)
+            title = match.group(5)
+            title_feat_str = match.group(6)
+            title_std_str = match.group(7)
+        else:
+            # here its : 1=slug, 2=count, 3=featured, 4=sum_feat, 5=sum_std, 6=title, 7=title_feat, 8=title_std
+            slug = match.group(1)
+            count = match.group(2)
+            featured_str = match.group(3)
+            sum_feat_str = match.group(4)
+            sum_std_str = match.group(5)
+            title = match.group(6)
+            title_feat_str = match.group(7)
+            title_std_str = match.group(8)
 
-        show_summary_featured = True
-        if sum_feat_str == '0':
-            show_summary_featured = False
-
-        show_summary_standard = True
-        if sum_std_str == '0':
-            show_summary_standard = False
-
-        show_title_featured = True
-        if title_feat_str == '0':
-            show_title_featured = False
-
-        show_title_standard = True
-        if title_std_str == '0':
-            show_title_standard = False
-
-        try:
-            topic = models.Topic.objects.get(slug=slug)
-            qs = models.Article.objects.published().filter(topics=topic)[: int(count)]
-            html = _render_shortcode_block("topic", topic, list(qs), feature_first, show_summary_featured, show_summary_standard, title, show_title_featured, show_title_standard)
-            content = content.replace(full_match, html)
-        except models.Topic.DoesNotExist:
-            content = content.replace(full_match, "")
-
-    # parse {{category:slug:count}} or {{category:slug:count:featured}} or {{category:slug:count:featured:sum_feat:sum_std}}
-    for match in re.finditer(r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", content):
-        full_match = match.group(0)
-        slug = match.group(1)
-        count = match.group(2)
-        featured_str = match.group(3)
-        sum_feat_str = match.group(4)
-        sum_std_str = match.group(5)
-        title = match.group(6)
-        title_feat_str = match.group(7)
-        title_std_str = match.group(8)
-
-        feature_first = True
-        if featured_str == '0':
-            feature_first = False
-
-        show_summary_featured = True
-        if sum_feat_str == '0':
-            show_summary_featured = False
-
-        show_summary_standard = True
-        if sum_std_str == '0':
-            show_summary_standard = False
-
-        show_title_featured = True
-        if title_feat_str == '0':
-            show_title_featured = False
-
-        show_title_standard = True
-        if title_std_str == '0':
-            show_title_standard = False
+        # aprse booleans
+        feature_first = get_bool_val(featured_str)
+        show_summary_featured = get_bool_val(sum_feat_str)
+        show_summary_standard = get_bool_val(sum_std_str)
+        show_title_featured = get_bool_val(title_feat_str)
+        show_title_standard = get_bool_val(title_std_str)
 
         try:
-            category = models.Category.objects.get(slug=slug)
-            qs = models.Article.objects.published().filter(category=category)[: int(count)]
-            html = _render_shortcode_block("category", category, list(qs), feature_first, show_summary_featured, show_summary_standard, title, show_title_featured, show_title_standard)
-            content = content.replace(full_match, html)
-        except models.Category.DoesNotExist:
-            content = content.replace(full_match, "")
+            if kind == 'topic':
+                obj = models.Topic.objects.get(slug=slug)
+                qs = models.Article.objects.published().filter(topics=obj)
+            elif kind == 'category':
+                obj = models.Category.objects.get(slug=slug)
+                qs = models.Article.objects.published().filter(category=obj)
+            elif kind == 'chart_of_the_week':
+                obj = models.Category.objects.get(slug='charts') # we hardcode chart of the week with slug 'charts';
+                qs = models.Article.objects.published().filter(category=obj)
+            
+            qs = qs[:int(count)]
+            return _render_shortcode_block(
+                kind, obj, list(qs), feature_first, 
+                show_summary_featured, show_summary_standard, title,
+                show_title_featured, show_title_standard
+            )
+        except (models.Topic.DoesNotExist, models.Category.DoesNotExist):
+            return ""
 
-    # parse {{chart_of_the_week:count:featured:sum_feat:sum_std:title}}
-    for match in re.finditer(r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", content):
-        full_match = match.group(0)
-        count = match.group(1)
-        featured_str = match.group(2)
-        sum_feat_str = match.group(3)
-        sum_std_str = match.group(4)
-        title = match.group(5)
-        title_feat_str = match.group(6)
-        title_std_str = match.group(7)
+    patterns = [
+        (r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", 'topic'),
+        (r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", 'category'),
+        (r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", 'chart_of_the_week'),
+    ]
 
-        feature_first = True
-        if featured_str == '0':
-            feature_first = False
-
-        show_summary_featured = True
-        if sum_feat_str == '0':
-            show_summary_featured = False
-
-        show_summary_standard = True
-        if sum_std_str == '0':
-            show_summary_standard = False
-
-        show_title_featured = True
-        if title_feat_str == '0':
-            show_title_featured = False
-
-        show_title_standard = True
-        if title_std_str == '0':
-            show_title_standard = False
-
-        try:
-            category = models.Category.objects.get(slug='charts')
-            qs = models.Article.objects.published().filter(category=category)[: int(count)]
-            html = _render_shortcode_block("chart_of_the_week", category, list(qs), feature_first, show_summary_featured, show_summary_standard, title, show_title_featured, show_title_standard)
-            content = content.replace(full_match, html)
-        except models.Category.DoesNotExist:
-            content = content.replace(full_match, "")
+    for pattern, kind in patterns:
+        for match in re.finditer(pattern, content):
+            html = handle_match(match, kind)
+            content = content.replace(match.group(0), html)
 
     if "{{creative_commons_gallery}}" in content:
         from gallery.models import Photograph
