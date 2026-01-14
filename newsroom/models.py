@@ -844,6 +844,46 @@ class MostPopular(models.Model):
     class Meta:
         verbose_name_plural = "most popular"
 
+class MostDeeplyRead(models.Model):
+    article_list = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return self.article_list[0:100]
+
+    @staticmethod
+    def get_list():
+        try:
+            obj = MostDeeplyRead.objects.latest("modified")
+            article_list = obj.article_list.split("\n")
+            article_list = [item.split("|") for item in article_list]
+        except MostDeeplyRead.DoesNotExist:
+            article_list = None
+        return article_list
+
+    @staticmethod
+    def get_most_deeply_read_html():
+        article_list = MostDeeplyRead.get_list()
+        if article_list is not None and len(article_list) > 0:
+            try:
+                html = "<ol class='most-popular'>"
+                for article in article_list:
+                    if len(article) >= 2:
+                        entry = "<li><a href='" + \
+                                reverse('newsroom:article.detail', args=[article[0]]) + \
+                                "'>" + article[1] + "</a></li>"
+                        html = html + entry
+                html = html + "</ol>"
+            except:
+                html = ""
+        else:
+            html = ""
+        return html
+
+    class Meta:
+        verbose_name_plural = "most deeply read"
+
 class Correction(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     update_type = models.CharField(max_length=1, default="C",

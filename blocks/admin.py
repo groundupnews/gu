@@ -10,9 +10,29 @@ class BlockGroupInline(admin.TabularInline):
     extra = 1
 
 class BlockAdmin(admin.ModelAdmin):
-    list_display = ('name', 'modified', )
+    list_display = ('name', 'block_type', 'modified', )
     # ordering = ['-modified',]
     search_fields = ['name', 'html',]
+    list_filter = ('block_type',)
+
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'block_type', 'custom_title')
+        }),
+        ('Dynamic Content Configuration', {
+            'classes': ('grp-collapse', 'grp-closed'),
+            'fields': ('selected_topic', 'selected_category', 'num_articles', 'feature_first_article', 'show_summary_featured', 'show_summary_standard', 'show_title_featured', 'show_title_standard'),
+            'description': 'Select Topic OR Category, and number of articles. This will overwrite the HTML field.'
+        }),
+        ('HTML Content', {
+            'fields': ('html',)
+        }),
+    )
+
+    autocomplete_lookup_fields = {
+        'fk': ['selected_topic', 'selected_category'],
+    }
+    raw_id_fields = ('selected_topic', 'selected_category')
 
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'block_list', 'modified', )

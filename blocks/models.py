@@ -2,11 +2,51 @@ from django.db import models
 
 # Create your models here.
 
+BLOCK_TYPES = (
+    ('standard', 'Standard HTML'),
+    ('topic', 'Topic'),
+    ('category', 'Category'),
+    ('chart_of_the_week', 'Chart of the Week'),
+    ('creative_commons_gallery', 'Creative Commons Gallery'),
+)
+
 
 class Block(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    block_type = models.CharField(max_length=50, choices=BLOCK_TYPES, default='standard')
+    custom_title = models.CharField(max_length=200, blank=True, help_text="Override the default title")
+
+    selected_topic = models.ForeignKey('newsroom.Topic', on_delete=models.SET_NULL, null=True, blank=True)
+    selected_category = models.ForeignKey('newsroom.Category', on_delete=models.SET_NULL, null=True, blank=True)
+    num_articles = models.PositiveIntegerField(default=5, blank=True, null=True)
+    feature_first_article = models.BooleanField(default=True, help_text="If checked, the first article will be styled as a featured article.")
+    show_summary_featured = models.BooleanField(default=True, verbose_name="Show summary for featured article")
+    show_summary_standard = models.BooleanField(default=True, verbose_name="Show summary for standard articles")
+    show_title_featured = models.BooleanField(default=True, verbose_name="Show title for featured article")
+    show_title_standard = models.BooleanField(default=True, verbose_name="Show title for standard articles")
+
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        feat = "1" if self.feature_first_article else "0"
+        sum_feat = "1" if self.show_summary_featured else "0"
+        sum_std = "1" if self.show_summary_standard else "0"
+        title_feat = "1" if self.show_title_featured else "0"
+        title_std = "1" if self.show_title_standard else "0"
+        
+        title = self.custom_title.replace(":", "") if self.custom_title else ""
+
+        if self.block_type == 'topic' and self.selected_topic:
+            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+        elif self.block_type == 'category' and self.selected_category:
+            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+        elif self.block_type == 'chart_of_the_week':
+            self.html = f"{{{{chart_of_the_week:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+        elif self.block_type == 'creative_commons_gallery':
+            self.html = "{{creative_commons_gallery}}"
+            
+        super(Block, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

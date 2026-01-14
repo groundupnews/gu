@@ -1,0 +1,56 @@
+{% comment %}
+Inputs:
+- article
+- include_image: "1"/"0"
+- include_summary: "1"/"0"
+- include_title: "1"/"0"
+- block_variant: "featured" | "compact"
+{% endcomment %}
+
+<div class="home__article__summary">
+    <div class="row {% if block_variant == "featured" %}home__sticky{% endif %}">
+        {% if include_image == "1" and article.cached_summary_image %}
+            <div class="col-xs-12 {% if include_title != '0' or include_summary == '1' %}col-md-6{% endif %}">
+                <a style="display:block;" href="{{article.get_absolute_url}}">
+                    <img class="summary-image"
+                         src="{{ article.cached_summary_image }}"
+                         {% if article.summary_image_alt %}
+                         alt="{{ article.summary_image_alt }}"
+                         {% else %}
+                         alt="Summary image for article"
+                         {% endif %}
+                    />
+                </a>
+            </div>
+        {% endif %}
+
+        {% if include_title != '0' or include_summary == '1' %}
+            <div class="col-xs-12 {% if include_image == "1" and article.cached_summary_image %}col-md-6{% endif %}">
+                {% if include_title != "0" %}
+                <h2 class="home__articles__article__text__title">
+                    <a href="{{article.get_absolute_url}}">
+                        {{article.title|safe }}
+                    </a>
+                </h2>
+                {% endif %}
+
+                {% if include_summary == "1" %}
+                    {% if article.summary_text %}
+                        {{article.summary_text|safe}}
+                    {% else %}
+                        <p class="home__articles__article__text__summary">
+                            {{article.cached_summary_text|safe}}
+                        </p>
+                    {% endif %}
+                {% endif %}
+
+                {% if include_title != "0" %}
+                <div class="home__articles_article__details">
+                    <p>{{ article.cached_byline|safe }}</p>
+                    <p>{{article.category}} | {{article.published|date:"j F Y"}}</p>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
