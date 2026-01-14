@@ -307,6 +307,7 @@ class HomePage(ArticleList):
 
     def get(self, request, *args, **kwargs):
         # Add messages here. E.g.
+        messages.add_message(request, messages.INFO, "Temporary update to our <a href=https://groundup.org.za/privacy>privacy policy</a>.")
         # messages.add_message(
         #     request,
         #     messages.INFO,
