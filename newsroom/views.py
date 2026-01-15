@@ -64,7 +64,17 @@ def parse_shortcodes(content):
     if not content:
         return ""
 
-    def _render_shortcode_block(kind, obj, articles, feature_first=True, show_summary_featured=True, show_summary_standard=True, title=None, show_title_featured=True, show_title_standard=True):
+    def _render_shortcode_block(
+        kind,
+        obj,
+        articles,
+        feature_first=True,
+        show_summary_featured=True,
+        show_summary_standard=True,
+        title=None,
+        show_title_featured=True,
+        show_title_standard=True,
+    ):
         """
         kind: 'topic' | 'category' | 'chart_of_the_week'
         obj: Topic | Category | None
@@ -88,8 +98,8 @@ def parse_shortcodes(content):
 
         url = obj.get_absolute_url() if obj else "/category/charts/"
 
-        if kind == 'chart_of_the_week':
-             return render_to_string(
+        if kind == "chart_of_the_week":
+            return render_to_string(
                 "blocks/chart_of_the_week.html",
                 {
                     "title": display_title,
@@ -155,12 +165,12 @@ def parse_shortcodes(content):
         )
 
     def get_bool_val(val, default=True):
-        if val == '0':
+        if val == "0":
             return False
         return default
 
     def handle_match(match, kind):
-        if kind == 'chart_of_the_week':
+        if kind == "chart_of_the_week":
             # groups: 1=count, 2=featured, 3=sum_feat, 4=sum_std, 5=title, 6=title_feat, 7=title_std
             slug = None
             count = match.group(1)
@@ -189,29 +199,46 @@ def parse_shortcodes(content):
         show_title_standard = get_bool_val(title_std_str)
 
         try:
-            if kind == 'topic':
+            if kind == "topic":
                 obj = models.Topic.objects.get(slug=slug)
                 qs = models.Article.objects.published().filter(topics=obj)
-            elif kind == 'category':
+            elif kind == "category":
                 obj = models.Category.objects.get(slug=slug)
                 qs = models.Article.objects.published().filter(category=obj)
-            elif kind == 'chart_of_the_week':
-                obj = models.Category.objects.get(slug='charts') # we hardcode chart of the week with slug 'charts';
+            elif kind == "chart_of_the_week":
+                obj = models.Category.objects.get(
+                    slug="charts"
+                )  # we hardcode chart of the week with slug 'charts';
                 qs = models.Article.objects.published().filter(category=obj)
-            
-            qs = qs[:int(count)]
+
+            qs = qs[: int(count)]
             return _render_shortcode_block(
-                kind, obj, list(qs), feature_first, 
-                show_summary_featured, show_summary_standard, title,
-                show_title_featured, show_title_standard
+                kind,
+                obj,
+                list(qs),
+                feature_first,
+                show_summary_featured,
+                show_summary_standard,
+                title,
+                show_title_featured,
+                show_title_standard,
             )
         except (models.Topic.DoesNotExist, models.Category.DoesNotExist):
             return ""
 
     patterns = [
-        (r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", 'topic'),
-        (r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", 'category'),
-        (r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}", 'chart_of_the_week'),
+        (
+            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}",
+            "topic",
+        ),
+        (
+            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}",
+            "category",
+        ),
+        (
+            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}",
+            "chart_of_the_week",
+        ),
     ]
 
     for pattern, kind in patterns:
@@ -221,17 +248,22 @@ def parse_shortcodes(content):
 
     if "{{creative_commons_gallery}}" in content:
         from gallery.models import Photograph
+
         # get up to three random featured photos
-        photos = list(Photograph.objects.filter(featured=True).order_by('?')[:3])
+        photos = list(Photograph.objects.filter(featured=True).order_by("?")[:3])
         if len(photos) < 3:
-            additional = Photograph.objects.exclude(pk__in=[p.pk for p in photos]).order_by('?')[:3 - len(photos)]
+            additional = Photograph.objects.exclude(
+                pk__in=[p.pk for p in photos]
+            ).order_by("?")[: 3 - len(photos)]
             photos.extend(additional)
-        
+
         if photos:
-            html = render_to_string("blocks/creative_commons_gallery.html", {"photos": photos})
+            html = render_to_string(
+                "blocks/creative_commons_gallery.html", {"photos": photos}
+            )
             content = content.replace("{{creative_commons_gallery}}", html)
         else:
-             content = content.replace("{{creative_commons_gallery}}", "")
+            content = content.replace("{{creative_commons_gallery}}", "")
 
     return content
 
@@ -240,7 +272,7 @@ def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
     context[context_key] = get_blocks(group_name)
 
     for block in context[context_key]:
-        if hasattr(block, 'html'):
+        if hasattr(block, "html"):
             block.html = parse_shortcodes(block.html)
 
     # Add featured front page photos if any blocks in the group contain _Featured_Photos
@@ -271,7 +303,9 @@ class ArticleList(generic.ListView):
         context = super(ArticleList, self).get_context_data(**kwargs)
         #  context = get_blocks_in_context(context)
         context["most_popular_html"] = models.MostPopular.get_most_popular_html()
-        context["most_deeply_read_html"] = models.MostDeeplyRead.get_most_deeply_read_html()
+        context["most_deeply_read_html"] = (
+            models.MostDeeplyRead.get_most_deeply_read_html()
+        )
         date_from = timezone.now() - datetime.timedelta(days=DAYS_AGO)
         context["letters"] = (
             Letter.objects.published()
@@ -300,6 +334,11 @@ class HomePage(ArticleList):
         context = get_blocks_in_context(context, "Home_5", "home_5")
         context = get_blocks_in_context(context, "Home_6", "home_6")
         context = get_blocks_in_context(context, "Home_7", "home_7")
+        context = get_blocks_in_context(context, "Home_8", "home_8")
+        context = get_blocks_in_context(context, "Home_9", "home_9")
+        context = get_blocks_in_context(context, "Home_10", "home_10")
+        context = get_blocks_in_context(context, "Home_11", "home_11")
+        context = get_blocks_in_context(context, "Home_12", "home_12")
         return context
 
     # LEAVE THIS COMMENTED OUT CODE IN CASE OF EMERGENCY IN
@@ -307,7 +346,11 @@ class HomePage(ArticleList):
 
     def get(self, request, *args, **kwargs):
         # Add messages here. E.g.
-        messages.add_message(request, messages.INFO, "Temporary update to our <a href=https://groundup.org.za/privacy>privacy policy</a>.")
+        messages.add_message(
+            request,
+            messages.INFO,
+            "Temporary update to our <a href=https://groundup.org.za/privacy>privacy policy</a>.",
+        )
         # messages.add_message(
         #     request,
         #     messages.INFO,
@@ -1099,7 +1142,7 @@ def advanced_search(request):
     search_type = request.GET.get("search_type")
     first_author = request.GET.get("first_author")
     first_author_only = True if first_author == "on" else False
-    author_text = request.GET.get('author')
+    author_text = request.GET.get("author")
 
     try:
         author_param = request.GET.get("author")
