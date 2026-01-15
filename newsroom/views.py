@@ -678,6 +678,7 @@ def get_context(article):
             "article_body": article.body,
             "article_letters": article.letter_set.published(),
             "most_popular_html": models.MostPopular.get_most_popular_html(),
+            "most_deeply_read_html": models.MostDeeplyRead.get_most_deeply_read_html(),
             "letters": Letter.objects.published()
             .filter(published__gte=date_from)
             .order_by("-published"),
