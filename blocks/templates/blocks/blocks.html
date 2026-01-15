@@ -26,6 +26,11 @@ For Quick Links on the home page edit the ProfiledLinks block in the admin front
 		<h2>Most popular</h2>
 		{{most_popular_html|safe}}
 	    </div>
+        {% elif b.name == "_Deeply" %}
+            <div id="most-popular">
+		<h2>Most time spent reading</h2>
+		{{most_deeply_read_html|safe}}
+	    </div>
         {% elif b.name == "_Random_qanda" %}
             <div id="random_agony">
                 {% include 'agony/random_question.html' %}
