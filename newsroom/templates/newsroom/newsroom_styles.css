@@ -1072,7 +1072,6 @@ div.inline-form input, div.inline-form select {
 {% endif %}
 
 .shortcode-heading {
-    font-style: italic;
     margin: 6px 0 6px;
     font-weight: 600;
     font-size: 24px !important;
