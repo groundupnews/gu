@@ -44,6 +44,25 @@ class Block(models.Model):
         default=True, verbose_name="Show title for standard articles"
     )
 
+    show_byline_featured = models.BooleanField(
+        default=True, verbose_name="Show byline for featured article"
+    )
+    show_byline_standard = models.BooleanField(
+        default=True, verbose_name="Show byline for standard articles"
+    )
+    show_date_featured = models.BooleanField(
+        default=True, verbose_name="Show date for featured article"
+    )
+    show_date_standard = models.BooleanField(
+        default=True, verbose_name="Show date for standard articles"
+    )
+    show_category_featured = models.BooleanField(
+        default=True, verbose_name="Show category for featured article"
+    )
+    show_category_standard = models.BooleanField(
+        default=True, verbose_name="Show category for standard articles"
+    )
+
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
@@ -53,15 +72,23 @@ class Block(models.Model):
         sum_std = "1" if self.show_summary_standard else "0"
         title_feat = "1" if self.show_title_featured else "0"
         title_std = "1" if self.show_title_standard else "0"
+        byline_feat = "1" if self.show_byline_featured else "0"
+        byline_std = "1" if self.show_byline_standard else "0"
+        date_feat = "1" if self.show_date_featured else "0"
+        date_std = "1" if self.show_date_standard else "0"
+        cat_feat = "1" if self.show_category_featured else "0"
+        cat_std = "1" if self.show_category_standard else "0"
 
         title = self.custom_title.replace(":", "") if self.custom_title else ""
 
+        flags = f"{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}:{byline_feat}:{byline_std}:{date_feat}:{date_std}:{cat_feat}:{cat_std}"
+
         if self.block_type == "topic" and self.selected_topic:
-            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+            self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{flags}}}}}"
         elif self.block_type == "category" and self.selected_category:
-            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+            self.html = f"{{{{category:{self.selected_category.slug}:{self.num_articles}:{flags}}}}}"
         elif self.block_type == "chart_of_the_week":
-            self.html = f"{{{{chart_of_the_week:{self.num_articles}:{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}}}}}"
+            self.html = f"{{{{chart_of_the_week:{self.num_articles}:{flags}}}}}"
         elif self.block_type == "creative_commons_gallery":
             self.html = "{{creative_commons_gallery}}"
 
