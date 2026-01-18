@@ -74,6 +74,12 @@ def parse_shortcodes(content):
         title=None,
         show_title_featured=True,
         show_title_standard=True,
+        show_byline_featured=True,
+        show_byline_standard=True,
+        show_date_featured=True,
+        show_date_standard=True,
+        show_category_featured=True,
+        show_category_standard=True,
     ):
         """
         kind: 'topic' | 'category' | 'chart_of_the_week'
@@ -85,6 +91,12 @@ def parse_shortcodes(content):
         title: str | None
         show_title_featured: bool
         show_title_standard: bool
+        show_byline_featured: bool
+        show_byline_standard: bool
+        show_date_featured: bool
+        show_date_standard: bool
+        show_category_featured: bool
+        show_category_standard: bool
         """
         if not articles:
             return ""
@@ -110,6 +122,12 @@ def parse_shortcodes(content):
                     "show_summary_standard": show_summary_standard,
                     "show_title_featured": show_title_featured,
                     "show_title_standard": show_title_standard,
+                    "show_byline_featured": show_byline_featured,
+                    "show_byline_standard": show_byline_standard,
+                    "show_date_featured": show_date_featured,
+                    "show_date_standard": show_date_standard,
+                    "show_category_featured": show_category_featured,
+                    "show_category_standard": show_category_standard,
                 },
             )
 
@@ -130,6 +148,9 @@ def parse_shortcodes(content):
                     "article": first,
                     "include_summary": "1" if show_summary_featured else "0",
                     "include_title": "1" if show_title_featured else "0",
+                    "include_byline": "1" if show_byline_featured else "0",
+                    "include_date": "1" if show_date_featured else "0",
+                    "include_category": "1" if show_category_featured else "0",
                     "include_image": "1",
                     "block_variant": "featured",
                 },
@@ -144,6 +165,9 @@ def parse_shortcodes(content):
                     "article": a,
                     "include_summary": "1" if show_summary_standard else "0",
                     "include_title": "1" if show_title_standard else "0",
+                    "include_byline": "1" if show_byline_standard else "0",
+                    "include_date": "1" if show_date_standard else "0",
+                    "include_category": "1" if show_category_standard else "0",
                     "include_image": "1",
                     "block_variant": "compact",
                 },
@@ -180,6 +204,12 @@ def parse_shortcodes(content):
             title = match.group(5)
             title_feat_str = match.group(6)
             title_std_str = match.group(7)
+            byline_feat_str = match.group(8)
+            byline_std_str = match.group(9)
+            date_feat_str = match.group(10)
+            date_std_str = match.group(11)
+            cat_feat_str = match.group(12)
+            cat_std_str = match.group(13)
         else:
             # here its : 1=slug, 2=count, 3=featured, 4=sum_feat, 5=sum_std, 6=title, 7=title_feat, 8=title_std
             slug = match.group(1)
@@ -190,13 +220,25 @@ def parse_shortcodes(content):
             title = match.group(6)
             title_feat_str = match.group(7)
             title_std_str = match.group(8)
+            byline_feat_str = match.group(9)
+            byline_std_str = match.group(10)
+            date_feat_str = match.group(11)
+            date_std_str = match.group(12)
+            cat_feat_str = match.group(13)
+            cat_std_str = match.group(14)
 
-        # aprse booleans
+        # parse booleans
         feature_first = get_bool_val(featured_str)
         show_summary_featured = get_bool_val(sum_feat_str)
         show_summary_standard = get_bool_val(sum_std_str)
         show_title_featured = get_bool_val(title_feat_str)
         show_title_standard = get_bool_val(title_std_str)
+        show_byline_featured = get_bool_val(byline_feat_str)
+        show_byline_standard = get_bool_val(byline_std_str)
+        show_date_featured = get_bool_val(date_feat_str)
+        show_date_standard = get_bool_val(date_std_str)
+        show_category_featured = get_bool_val(cat_feat_str)
+        show_category_standard = get_bool_val(cat_std_str)
 
         try:
             if kind == "topic":
@@ -222,21 +264,27 @@ def parse_shortcodes(content):
                 title,
                 show_title_featured,
                 show_title_standard,
+                show_byline_featured,
+                show_byline_standard,
+                show_date_featured,
+                show_date_standard,
+                show_category_featured,
+                show_category_standard,
             )
         except (models.Topic.DoesNotExist, models.Category.DoesNotExist):
             return ""
 
     patterns = [
         (
-            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}",
+            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "topic",
         ),
         (
-            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}",
+            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "category",
         ),
         (
-            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?}}",
+            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "chart_of_the_week",
         ),
     ]

@@ -5,6 +5,9 @@ Inputs:
 - include_summary: "1"/"0"
 - include_title: "1"/"0"
 - block_variant: "featured" | "compact"
+- include_byline: "1"/"0"
+- include_date: "1"/"0"
+- include_category: "1"/"0"
 {% endcomment %}
 
 <div class="home__article__summary">
@@ -46,8 +49,16 @@ Inputs:
 
                 {% if include_title != "0" %}
                 <div class="home__articles_article__details">
-                    <p>{{ article.cached_byline|safe }}</p>
-                    <p>{{article.category}} | {{article.published|date:"j F Y"}}</p>
+                    {% if include_byline != "0" %}
+                        <p>{{ article.cached_byline|safe }}</p>
+                    {% endif %}
+                    {% if include_category != "0" or include_date != "0" %}
+                        <p>
+                            {% if include_category != "0" %}{{article.category}}{% endif %}
+                            {% if include_category != "0" and include_date != "0" %} | {% endif %}
+                            {% if include_date != "0" %}{{article.published|date:"j F Y"}}{% endif %}
+                        </p>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>

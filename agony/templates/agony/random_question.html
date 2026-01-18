@@ -1,16 +1,126 @@
 {% load qanda_extras %}
 
+<style>
+    .aa-banner {
+        background-color: #b3cad4;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-bottom: 20px;
+        overflow: hidden;
+        height: 200px;
+    }
+
+    .aa-content {
+        flex: 1;
+        padding: 20px 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .aa-content h2 {
+        font-weight: bold;
+        font-size: 38px;
+        margin: 0 0 2px 0;
+        line-height: 1;
+        text-shadow: none;
+        font-family: "Open Sans", sans-serif;
+    }
+
+    .aa-content p {
+        font-size: 20px;
+        margin: 0;
+        line-height: 1.3;
+        text-shadow: none;
+    }
+
+    .aa-image {
+        width: 40%;
+        min-width: 250px;
+        position: relative;
+        height: 100%;
+    }
+
+    .aa-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: left;
+        display: block;
+        border: none;
+    }
+
+    .aa-link {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .aa-link:hover,
+    .aa-link:focus {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .aa-link .aa-content h2,
+    .aa-link .aa-content p {
+        color: #010023;
+    }
+
+    .aa-question-text {
+        font-family: "Open Sans", sans-serif;
+        font-size: 19px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+        color: black;
+    }
+    
+    .aa-question-text a {
+        color: black;
+    }
+
+    @media (max-width: 767px) {
+        .aa-banner {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .aa-image {
+            width: 100%;
+            height: 260px;
+        }
+
+        .aa-image img {
+            object-fit: cover;
+        }
+
+        .aa-content {
+            padding: 20px;
+        }
+
+        .aa-content h2 {
+            font-size: 28px;
+        }
+    }
+</style>
+
 <section class="home-shortcode-block">
-    <h3 class="shortcode-heading">
-        <a href="/qanda/">Ask Athalie</a>
-    </h3>
 
-    {% qanda_random %}
+    <a href="/qanda/" class="aa-link">
+        <div class="aa-banner">
+            <div class="aa-image">
+                <img src="/static/agony/images/athalie_block.png" alt="Ask Athalie">
+            </div>
+            <div class="aa-content">
+                <h2>Ask Athalie</h2>
+                <p>Answers to your questions on social grants, housing, and more.</p>
+            </div>
+        </div>
+    </a>
 
-    <div style="margin-top: 10px; margin-bottom: 10px;">
-        <a href="/qanda/">
-            <img style="width:100%;" src="/static/agony/images/ask_athalie.webp" alt="Ask Athalie" />
-        </a>
+    <div class="aa-question-text">
+        {% qanda_random %}
     </div>
 
     <div class="shortcode-readmore">
