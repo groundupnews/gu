@@ -4,6 +4,10 @@
     border-bottom: 2px solid   #e6e6e6;
 }
 
+.chart-featured .home__article__summary {
+    border-bottom: none !important;
+}
+
 .chart-grid .home__article__summary {
     border-bottom: none !important;
 }
