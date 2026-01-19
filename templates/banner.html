@@ -1,14 +1,16 @@
 {% load static %}
 
-<header>
-    <div class="container">
-        <span id="logo">
+<header class="gu-header">
+    <div class="container gu-header__container">
+        <div class="gu-header__branding">
             <a href="{% url 'newsroom:home' %}">
-                <img src="{% static logo|default:'newsroom/images/Logo_white.png' %}" alt="GroundUp Logo" />
+                <img src="{% static logo|default:'newsroom/images/Logo_white.png' %}" alt="GroundUp Logo" class="gu-logo" />
             </a>
-        </span>
+        </div>
+        <div class="gu-header__nav-wrapper">
         {% block mainmenu %}
             {% include menu_template|default:"menu.html" %}
         {% endblock %}
+        </div>
     </div>
 </header>
