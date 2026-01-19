@@ -5,7 +5,6 @@ header.gu-header {
     position: relative;
     z-index: 1000;
     border-bottom: 1px solid #000;
-    overflow-x: hidden;
 }
 
 .gu-header__container {
@@ -216,7 +215,7 @@ header.gu-header {
     padding: 15px;
     border-bottom: 1px solid #ccc;
     position: absolute;
-    top: 60px;
+    top: 100%;
     width: 100%;
     left: 0;
     z-index: 999;
@@ -268,15 +267,16 @@ header.gu-header {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 60px;
+        top: 100%;
         left: 0;
         right: 0;
         background-color: #0e1517;
         padding: 0;
         border-top: 1px solid #000;
-        max-height: calc(100vh - 60px);
+        max-height: 80vh;
         overflow-y: auto;
         box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        z-index: 1001;
     }
     
     .gu-menu-checkbox:checked ~ .gu-nav__links {
