@@ -1,4 +1,3 @@
-
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
         integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         crossorigin="anonymous">
@@ -14,17 +13,6 @@ Handles menu click
      }, function() {
          $(this).removeClass('open');
      });
-     $('#toggle-search').click(function() {
-         if ($('#search-box').hasClass('search-box-closed')) {
-             $('#search-box').removeClass('search-box-closed');
-             $("#id_q").focus();
-             $(this).html('X');
-         } else {
-             $('#search-box').addClass('search-box-closed');
-             $(this).html('🔍');
-         }
-     });
-
  });
 
 </script>
