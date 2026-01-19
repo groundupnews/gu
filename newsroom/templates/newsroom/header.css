@@ -5,6 +5,7 @@ header.gu-header {
     position: relative;
     z-index: 1000;
     border-bottom: 1px solid #000;
+    overflow-x: hidden;
 }
 
 .gu-header__container {
@@ -12,15 +13,31 @@ header.gu-header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    height: 60px;
+    height: auto;
+    min-height: 60px;
     max-width: 1200px;
     margin: 0 auto;
+    flex-wrap: nowrap;
+}
+
+.gu-header__branding {
+    flex-shrink: 1;
+    min-width: 0;
+    margin-right: 10px;
 }
 
 .gu-logo {
     height: 32px;
     width: auto;
     vertical-align: middle;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 350px) {
+    .gu-logo {
+        height: 24px;
+    }
 }
 
 .gu-header__nav-wrapper {
@@ -28,6 +45,7 @@ header.gu-header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .gu-nav {
@@ -89,6 +107,7 @@ header.gu-header {
     display: flex;
     align-items: center;
     margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .gu-btn-donate {
