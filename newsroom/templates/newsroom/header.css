@@ -12,15 +12,31 @@ header.gu-header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    height: 60px;
+    height: auto;
+    min-height: 60px;
     max-width: 1200px;
     margin: 0 auto;
+    flex-wrap: nowrap;
+}
+
+.gu-header__branding {
+    flex-shrink: 1;
+    min-width: 0;
+    margin-right: 10px;
 }
 
 .gu-logo {
     height: 32px;
     width: auto;
     vertical-align: middle;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 350px) {
+    .gu-logo {
+        height: 24px;
+    }
 }
 
 .gu-header__nav-wrapper {
@@ -28,6 +44,7 @@ header.gu-header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .gu-nav {
@@ -89,6 +106,7 @@ header.gu-header {
     display: flex;
     align-items: center;
     margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .gu-btn-donate {
@@ -197,7 +215,7 @@ header.gu-header {
     padding: 15px;
     border-bottom: 1px solid #ccc;
     position: absolute;
-    top: 60px;
+    top: 100%;
     width: 100%;
     left: 0;
     z-index: 999;
@@ -249,15 +267,16 @@ header.gu-header {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 60px;
+        top: 100%;
         left: 0;
         right: 0;
         background-color: #0e1517;
         padding: 0;
         border-top: 1px solid #000;
-        max-height: calc(100vh - 60px);
+        max-height: 80vh;
         overflow-y: auto;
         box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        z-index: 1001;
     }
     
     .gu-menu-checkbox:checked ~ .gu-nav__links {

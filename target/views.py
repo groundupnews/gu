@@ -195,3 +195,9 @@ class TargetDelete(PermissionRequiredMixin, generic.edit.DeleteView):
     permission_required = 'target.delete_target'
     model = models.Target
     success_url = reverse_lazy('target:list')
+
+
+class TargetLatest(generic.RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        target = models.Target.objects.published().latest('published')
+        return reverse('target:detail', args=[target.pk])
