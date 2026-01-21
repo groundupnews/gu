@@ -358,6 +358,7 @@ class ArticleList(generic.ListView):
         context["letters"] = (
             Letter.objects.published()
             .filter(published__gte=date_from)
+            .filter(recommended=True)
             .order_by("-published")
         )
         context["agony"] = QandA.objects.published().order_by("-published")

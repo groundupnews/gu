@@ -1,7 +1,7 @@
 {% with letter_slice=letters|slice:":5" %}
   {% if letter_slice %}
     <div id="latest-letters">
-      <h2>Latest reader letter{{ letter_slice|length|pluralize }}</h2>
+      <h2>Selected letters to the editor</h2>
       {% for letter in letter_slice %}
 	<h3>{{letter.title}}</h3>
         <p>{{ letter.text|truncatechars:100 }} <a href="{{letter.get_absolute_url}}">Read more</a></p>
