@@ -60,9 +60,12 @@ def get_blocks(group_name="Home"):
         return []
 
 
-def parse_shortcodes(content):
+def parse_shortcodes(content, exclude_article_ids=None):
     if not content:
         return ""
+
+    if exclude_article_ids is None:
+        exclude_article_ids = []
 
     def _render_shortcode_block(
         kind,
@@ -210,6 +213,7 @@ def parse_shortcodes(content):
             date_std_str = match.group(11)
             cat_feat_str = match.group(12)
             cat_std_str = match.group(13)
+            exclude_duplicates_str = match.group(14)
         else:
             # here its : 1=slug, 2=count, 3=featured, 4=sum_feat, 5=sum_std, 6=title, 7=title_feat, 8=title_std
             slug = match.group(1)
@@ -226,6 +230,7 @@ def parse_shortcodes(content):
             date_std_str = match.group(12)
             cat_feat_str = match.group(13)
             cat_std_str = match.group(14)
+            exclude_duplicates_str = match.group(15)
 
         # parse booleans
         feature_first = get_bool_val(featured_str)
@@ -239,6 +244,7 @@ def parse_shortcodes(content):
         show_date_standard = get_bool_val(date_std_str)
         show_category_featured = get_bool_val(cat_feat_str)
         show_category_standard = get_bool_val(cat_std_str)
+        exclude_duplicates = True if exclude_duplicates_str == "1" else False
 
         try:
             if kind == "topic":
@@ -252,6 +258,9 @@ def parse_shortcodes(content):
                     slug="charts"
                 )  # we hardcode chart of the week with slug 'charts';
                 qs = models.Article.objects.published().filter(category=obj)
+
+            if exclude_duplicates and exclude_article_ids:
+                qs = qs.exclude(pk__in=exclude_article_ids)
 
             qs = qs[: int(count)]
             return _render_shortcode_block(
@@ -276,15 +285,15 @@ def parse_shortcodes(content):
 
     patterns = [
         (
-            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
+            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "topic",
         ),
         (
-            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
+            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "category",
         ),
         (
-            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
+            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "chart_of_the_week",
         ),
     ]
@@ -319,9 +328,17 @@ def parse_shortcodes(content):
 def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
     context[context_key] = get_blocks(group_name)
 
+    exclude_article_ids = []
+    if "article_list" in context:
+        if "page_obj" in context and context["page_obj"]:
+            if context["page_obj"].number == 1:
+                exclude_article_ids = [a.pk for a in context["article_list"]]
+        else:
+            exclude_article_ids = [a.pk for a in context["article_list"]]
+
     for block in context[context_key]:
         if hasattr(block, "html"):
-            block.html = parse_shortcodes(block.html)
+            block.html = parse_shortcodes(block.html, exclude_article_ids)
 
     # Add featured front page photos if any blocks in the group contain _Featured_Photos
     blocks = context[context_key]
