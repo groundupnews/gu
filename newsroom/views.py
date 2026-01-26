@@ -244,7 +244,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
         show_date_standard = get_bool_val(date_std_str)
         show_category_featured = get_bool_val(cat_feat_str)
         show_category_standard = get_bool_val(cat_std_str)
-        exclude_duplicates = get_bool_val(exclude_duplicates_str, default=False)
+        exclude_duplicates = True if exclude_duplicates_str == "1" else False
 
         try:
             if kind == "topic":
