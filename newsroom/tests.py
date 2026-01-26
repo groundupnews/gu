@@ -18,41 +18,57 @@ from django.contrib.auth.models import Permission
 from django.contrib.flatpages.models import FlatPage
 from django.urls import reverse
 
-class HtmlCleanUp(TestCase):
 
+class HtmlCleanUp(TestCase):
     def test_html_cleaners(self):
         """HTML is correctly cleaned"""
 
         html = "<p class='plod'></p><p>Hello</p><p class=''> &nbsp; </p><p class='test'> Good bye </p>"
-        self.assertEqual(utils.remove_unnecessary_white_space(html),
-                         "<p>Hello</p><p class='test'> Good bye </p>")
+        self.assertEqual(
+            utils.remove_unnecessary_white_space(html),
+            "<p>Hello</p><p class='test'> Good bye </p>",
+        )
 
-        html = bs('<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>', "html.parser")
-        self.assertEqual(str(utils.replaceImgHeightWidthWithClass(html)),
-                         '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>', "html.parser")
+        html = bs(
+            '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>',
+            "html.parser",
+        )
+        self.assertEqual(
+            str(utils.replaceImgHeightWidthWithClass(html)),
+            '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>',
+            "html.parser",
+        )
 
-        html = bs('<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>', "html.parser")
+        html = bs(
+            '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>',
+            "html.parser",
+        )
         # self.assertEqual(str(utils.replacePImgWithFigureImg(html)),
         #                 '<figure><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;"/><figcaption>This is the caption.</figcaption></figure>')
         html = '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg" style="width: 1382px; height: 1037px;" /></p><p class="caption">This is the caption.</p>'
-        self.assertEqual(utils.replaceBadHtmlWithGood(html),
-                         '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>')
-        html1 = "<p>The dog ran away.</p>" \
-                "<p>The dog -- ran away.</p>" \
-                "<p>The dog --- ran away.</p>" \
-                "<p>The dog--ran away.</p>" \
-                "<p>The dog---ran away.</p>"
-        html2 = "<p>The dog ran away.</p>" \
-                "<p>The dog – ran away.</p>" \
-                "<p>The dog — ran away.</p>" \
-                "<p>The dog--ran away.</p>" \
-                "<p>The dog---ran away.</p>"
+        self.assertEqual(
+            utils.replaceBadHtmlWithGood(html),
+            '<p><img alt="" src="/media/uploads/church-SiyavuyaKhaya-20150128.jpg"/></p><p class="caption">This is the caption.</p>',
+        )
+        html1 = (
+            "<p>The dog ran away.</p>"
+            "<p>The dog -- ran away.</p>"
+            "<p>The dog --- ran away.</p>"
+            "<p>The dog--ran away.</p>"
+            "<p>The dog---ran away.</p>"
+        )
+        html2 = (
+            "<p>The dog ran away.</p>"
+            "<p>The dog – ran away.</p>"
+            "<p>The dog — ran away.</p>"
+            "<p>The dog--ran away.</p>"
+            "<p>The dog---ran away.</p>"
+        )
         html3 = str(utils.processDashes(bs(html1, "html.parser")))
         self.assertEqual(html2, html3)
 
 
 class ArticleTest(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         cls.client = Client()
@@ -92,8 +108,7 @@ class ArticleTest(TestCase):
         a.body = "<p>The quick brown fox jumps over the lazy dog.</p>"
         a.slug = "test-article-1"
         a.category = Category.objects.get(name="News")
-        a.external_primary_image = \
-            "http://www.w3schools.com/html/pic_mountain.jpg"
+        a.external_primary_image = "http://www.w3schools.com/html/pic_mountain.jpg"
         a.save()
         a.publish_now()
 
@@ -121,79 +136,95 @@ class ArticleTest(TestCase):
         self.assertEqual(len(articles), 2)
         article = Article.objects.published()[1]
         self.assertEqual(article.title, "Test article 1")
-        self.assertEqual(article.cached_primary_image,
-            "http://www.w3schools.com/html/pic_mountain.jpg")
+        self.assertEqual(
+            article.cached_primary_image,
+            "http://www.w3schools.com/html/pic_mountain.jpg",
+        )
         article = Article.objects.published()[0]
         self.assertEqual(article.title, "Test article 2")
 
     def test_pages(self):
         client = Client()
-        response = client.get('/article/test-article-1/')
+        response = client.get("/article/test-article-1/")
         self.assertEqual(response.status_code, 200)
         client = Client()
-        response = client.get('/article/test-article-2/')
+        response = client.get("/article/test-article-2/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/')
+        response = client.get("/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/article/no-exist/')
+        response = client.get("/article/no-exist/")
         self.assertEqual(response.status_code, 404)
-        response = client.get('/content/test-article-1/')
+        response = client.get("/content/test-article-1/")
         self.assertEqual(response.status_code, 302)
-        response = client.get('/category/')
+        response = client.get("/category/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/category/News/')
+        response = client.get("/category/News/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/category/news/')
+        response = client.get("/category/news/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/category/Opinion/')
+        response = client.get("/category/Opinion/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/category/opinion/')
+        response = client.get("/category/opinion/")
         self.assertEqual(response.status_code, 200)
-        response = client.get('/topic/')
+        response = client.get("/topic/")
         self.assertEqual(response.status_code, 200)
         topic = Topic.objects.all()[0]
-        url = reverse('newsroom:topic.detail', args=[topic,])
+        url = reverse(
+            "newsroom:topic.detail",
+            args=[
+                topic,
+            ],
+        )
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
-        response = client.get('/author/')
+        response = client.get("/author/")
         self.assertEqual(response.status_code, 200)
         author = Author.objects.all()[0]
-        url = '/author/' + str(author.pk) + '/'
+        url = "/author/" + str(author.pk) + "/"
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
-        url = reverse('newsroom:author.add');
+        url = reverse("newsroom:author.add")
         response = client.get(url)
-        url = reverse('newsroom:topic_create');
+        url = reverse("newsroom:topic_create")
         response = client.get(url)
         self.assertEqual(response.status_code, 302)
-        reponse = client.get(url);
+        reponse = client.get(url)
         self.assertEqual(response.status_code, 302)
 
-        user = User.objects.create_user('staff', 'staff@example.com', 'abcde')
+        user = User.objects.create_user("staff", "staff@example.com", "abcde")
         user.is_staff = True
         user.is_active = True
-        permission1 = Permission.objects.get(name='Can add author')
+        permission1 = Permission.objects.get(name="Can add author")
         user.user_permissions.add(permission1)
-        permission2 = Permission.objects.get(name='Can change author')
+        permission2 = Permission.objects.get(name="Can change author")
         user.user_permissions.add(permission2)
-        permission3 = Permission.objects.get(name='Can add topic')
+        permission3 = Permission.objects.get(name="Can add topic")
         user.user_permissions.add(permission3)
-        permission4 = Permission.objects.get(name='Can change topic')
+        permission4 = Permission.objects.get(name="Can change topic")
         user.user_permissions.add(permission4)
         user.save()
 
         staff = Client()
-        staff.login(username='staff', password='abcde')
-        url = reverse('newsroom:author.update', args=[author.pk,])
+        staff.login(username="staff", password="abcde")
+        url = reverse(
+            "newsroom:author.update",
+            args=[
+                author.pk,
+            ],
+        )
         response = staff.get(url)
         self.assertEqual(response.status_code, 200)
 
         response = staff.get(url)
         self.assertEqual(response.status_code, 200)
-        url = reverse('newsroom:topic_update', args=[topic.pk,])
+        url = reverse(
+            "newsroom:topic_update",
+            args=[
+                topic.pk,
+            ],
+        )
         response = staff.get(url)
         self.assertEqual(response.status_code, 200)
-
 
     def test_duplicate_save(self):
         a = Article()
@@ -231,6 +262,7 @@ class ArticleTest(TestCase):
         num_published = Article.objects.published().count()
         self.assertTrue(num_published > 0)
         from django.core import serializers
+
         data = serializers.serialize("xml", Article.objects.published())
         objs = serializers.deserialize("xml", data)
         self.assertTrue(len(list(objs)) == num_published)
@@ -246,12 +278,15 @@ class ArticleTest(TestCase):
         letter.rejected = False
         letter.published = timezone.now()
         letter.save()
+        count = Letter.objects.published().count()
+        self.assertEqual(count, 1)
+        letter = Letter.objects.published()[0]
 
         c = Client()
-        url = reverse('letters:letter_thanks')
+        url = reverse("letters:letter_thanks")
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
-        url = reverse('letters:letter_to_editor', args=(1,))
+        url = reverse("letters:letter_to_editor", args=(article.pk,))
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -266,39 +301,37 @@ class ArticleTest(TestCase):
         letter.save()
 
         from letters.management.commands import processletters
+
         processletters.process()
         letters = Letter.objects.all()
         for l in letters:
             self.assertEqual(l.notified_letter_writer, True)
 
-
-
     def test_preview(self):
-
         article = Article.objects.get(slug="test-article-1")
         client = Client()
-        response = client.get('/prev_gen/' + str(article.pk))
+        response = client.get("/prev_gen/" + str(article.pk))
         self.assertEqual(response.status_code, 302)
-        response = client.get('/prev_gen/test-article-1/')
+        response = client.get("/prev_gen/test-article-1/")
         self.assertEqual(response.status_code, 404)
         article = Article.objects.get(slug="test-article-1")
         self.assertTrue(len(article.secret_link) > 40)
-        user = User.objects.create_user('admin', 'admin@example.com', 'abcde')
+        user = User.objects.create_user("admin", "admin@example.com", "abcde")
         user.is_staff = True
         user.is_active = True
-        permission = Permission.objects.get(name='Can change article')
+        permission = Permission.objects.get(name="Can change article")
         user.user_permissions.add(permission)
         user.save()
-        client.login(username='admin', password='abcde')
-        response = client.get('/prev_gen/' + str(article.pk))
+        client.login(username="admin", password="abcde")
+        response = client.get("/prev_gen/" + str(article.pk))
         self.assertEqual(response.status_code, 302)
         article = Article.objects.get(slug="test-article-1")
         self.assertTrue(len(article.secret_link) > 0)
-        response = client.get('/preview/' + article.secret_link + '/')
+        response = client.get("/preview/" + article.secret_link + "/")
         self.assertEqual(response.status_code, 302)
         article.published = None
         article.save()
-        response = client.get('/preview/' + article.secret_link + '/')
+        response = client.get("/preview/" + article.secret_link + "/")
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
@@ -308,21 +341,22 @@ class ArticleTest(TestCase):
     def test_corrections(self):
         article = Article.objects.get(slug="test-article-1")
         client = Client()
-        response = client.get(reverse('newsroom:correction.list'))
+        response = client.get(reverse("newsroom:correction.list"))
         self.assertEqual(response.status_code, 200)
-        user = User.objects.create_user('admin', 'admin@example.com', 'abcde')
+        user = User.objects.create_user("admin", "admin@example.com", "abcde")
         user.is_staff = True
         user.is_active = True
-        permission = Permission.objects.get(name='Can add correction')
+        permission = Permission.objects.get(name="Can add correction")
         user.user_permissions.add(permission)
-        permission = Permission.objects.get(name='Can change correction')
+        permission = Permission.objects.get(name="Can change correction")
         user.user_permissions.add(permission)
-        permission = Permission.objects.get(name='Can delete correction')
+        permission = Permission.objects.get(name="Can delete correction")
         user.user_permissions.add(permission)
         user.save()
-        client.login(username='admin', password='abcde')
-        response = client.get(reverse('newsroom:correction.create') +
-                                      "?article_pk=" + str(article.pk))
+        client.login(username="admin", password="abcde")
+        response = client.get(
+            reverse("newsroom:correction.create") + "?article_pk=" + str(article.pk)
+        )
         self.assertEqual(response.status_code, 200)
         correction = Correction()
         correction.article = article
@@ -330,24 +364,31 @@ class ArticleTest(TestCase):
         correction.text = "This is a test of the corrections."
         correction.save()
         correction = Correction.objects.get(pk=correction.pk)
-        response = client.get(reverse('newsroom:correction.update', args=[correction.pk]) +
-                                      "?article_pk=" + str(correction.article.pk))
+        response = client.get(
+            reverse("newsroom:correction.update", args=[correction.pk])
+            + "?article_pk="
+            + str(correction.article.pk)
+        )
         self.assertEqual(response.status_code, 200)
-        response = client.get(reverse('newsroom:correction.delete', args=[correction.pk])  +
-                                      "?article_pk=" + str(correction.article.pk))
+        response = client.get(
+            reverse("newsroom:correction.delete", args=[correction.pk])
+            + "?article_pk="
+            + str(correction.article.pk)
+        )
         self.assertEqual(response.status_code, 200)
-        response = client.get(reverse('newsroom:article.add'))
+        response = client.get(reverse("newsroom:article.add"))
         self.assertEqual(response.status_code, 200)
 
         client = Client()
-        response = client.get(reverse('newsroom:correction.update', args=[1]))
+        response = client.get(reverse("newsroom:correction.update", args=[1]))
         self.assertEqual(response.status_code, 302)
-        response = client.get(reverse('newsroom:correction.delete', args=[1]))
+        response = client.get(reverse("newsroom:correction.delete", args=[1]))
         self.assertEqual(response.status_code, 302)
-        response = client.get(reverse('newsroom:correction.create') +
-                                      "?article_pk=" + str(article.pk))
+        response = client.get(
+            reverse("newsroom:correction.create") + "?article_pk=" + str(article.pk)
+        )
         self.assertEqual(response.status_code, 302)
-        response = client.get(reverse('newsroom:article.add'))
+        response = client.get(reverse("newsroom:article.add"))
         self.assertEqual(response.status_code, 302)
 
     def test_flatpages(self):
@@ -360,7 +401,7 @@ class ArticleTest(TestCase):
         f.sites.add(s)
         f.save()
         client = Client()
-        response = client.get('/about/')
+        response = client.get("/about/")
         self.assertEqual(response.status_code, 200)
 
     def add_corrections(self, articles):
@@ -380,59 +421,64 @@ class ArticleTest(TestCase):
                     article=a,
                     update_type=update_type,
                     text="We corrected the spelling of John Bloggs",
-                    notify_republishers=notify_republishers)
+                    notify_republishers=notify_republishers,
+                )
 
     def test_correction_republisher_notification(self):
         for i in range(5):
             Republisher.objects.create(
-                name = "Name" + str(i),
-                email_addresses="email" + str(i) + "a@example.com," +
-                "email" + str(i) + "b@example.com",
+                name="Name" + str(i),
+                email_addresses="email"
+                + str(i)
+                + "a@example.com,"
+                + "email"
+                + str(i)
+                + "b@example.com",
                 message="Dear republisher " + str(i),
-                slug="republisher" + str(i))
+                slug="republisher" + str(i),
+            )
         republishers = Republisher.objects.all()
         articles = Article.objects.published()
         for a in articles:
             for r in republishers:
                 republisher_article = RepublisherArticle.objects.create(
-                    article=a,
-                    republisher=r)
+                    article=a, republisher=r
+                )
         res = emailrepublishers.process()
-        self.assertEqual(res['failures'], 0)
-        self.assertEqual(res['successes'], len(articles) * len(republishers))
+        self.assertEqual(res["failures"], 0)
+        self.assertEqual(res["successes"], len(articles) * len(republishers))
         # We add a bunch of corrections, process them twice. Then repeat.
         self.add_corrections(articles)
         res = notifycorrections.process(1)
-        self.assertEqual(res['failures'], 0)
-        self.assertEqual(res['successes'], 10)
+        self.assertEqual(res["failures"], 0)
+        self.assertEqual(res["successes"], 10)
         # Repeat with nothing happening
         res = notifycorrections.process(1)
-        self.assertEqual(res['failures'], 0)
-        self.assertEqual(res['successes'], 0)
+        self.assertEqual(res["failures"], 0)
+        self.assertEqual(res["successes"], 0)
         # And repeat from the top
         self.add_corrections(articles)
         res = notifycorrections.process(1)
-        self.assertEqual(res['failures'], 0)
-        self.assertEqual(res['successes'], 10)
+        self.assertEqual(res["failures"], 0)
+        self.assertEqual(res["successes"], 10)
         # Repeat with nothing happening
         res = notifycorrections.process(1)
-        self.assertEqual(res['failures'], 0)
-        self.assertEqual(res['successes'], 0)
+        self.assertEqual(res["failures"], 0)
+        self.assertEqual(res["successes"], 0)
+
 
 class ArticleDetailTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.topic = Topic.objects.create(name="Test Topic", slug="test-topic")
-        cls.category = Category.objects.create(name="Test Category", slug="test-category")
+        cls.category = Category.objects.create(
+            name="Test Category", slug="test-category"
+        )
         cls.author = Author.objects.create(
-            first_names="Test",
-            last_name="Author",
-            email="test@example.com"
+            first_names="Test", last_name="Author", email="test@example.com"
         )
         cls.article = Article.objects.create(
-            title="Test Article",
-            slug="test-article",
-            category=cls.category
+            title="Test Article", slug="test-article", category=cls.category
         )
         cls.article.author_01 = cls.author
         cls.article.topics.add(cls.topic)
@@ -440,8 +486,7 @@ class ArticleDetailTest(TestCase):
 
     def test_article_absolute_url(self):
         self.assertEqual(
-            self.article.get_absolute_url(),
-            f'/article/{self.article.slug}/'
+            self.article.get_absolute_url(), f"/article/{self.article.slug}/"
         )
 
     def test_article_str(self):
@@ -466,12 +511,9 @@ class ArticleDetailTest(TestCase):
     def test_article_topics(self):
         self.assertIn(self.topic, self.article.topics.all())
 
+
 class CategoryTest(TestCase):
     def test_category_creation(self):
-        category = Category.objects.create(
-            name="Test Category",
-            slug="test-category"
-        )
+        category = Category.objects.create(name="Test Category", slug="test-category")
         self.assertEqual(str(category), category.name)
-        self.assertEqual(category.get_absolute_url(), 
-                        f'/category/{category.slug}/')
+        self.assertEqual(category.get_absolute_url(), f"/category/{category.slug}/")
