@@ -63,6 +63,12 @@ class Block(models.Model):
         default=True, verbose_name="Show category for standard articles"
     )
 
+    exclude_duplicates = models.BooleanField(
+        default=False,
+        verbose_name="Exclude duplicates",
+        help_text="If checked, articles already displayed on the page will be excluded.",
+    )
+
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
@@ -78,10 +84,11 @@ class Block(models.Model):
         date_std = "1" if self.show_date_standard else "0"
         cat_feat = "1" if self.show_category_featured else "0"
         cat_std = "1" if self.show_category_standard else "0"
+        exclude_duplicates = "1" if self.exclude_duplicates else "0"
 
         title = self.custom_title.replace(":", "") if self.custom_title else ""
 
-        flags = f"{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}:{byline_feat}:{byline_std}:{date_feat}:{date_std}:{cat_feat}:{cat_std}"
+        flags = f"{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}:{byline_feat}:{byline_std}:{date_feat}:{date_std}:{cat_feat}:{cat_std}:{exclude_duplicates}"
 
         if self.block_type == "topic" and self.selected_topic:
             self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{flags}}}}}"
