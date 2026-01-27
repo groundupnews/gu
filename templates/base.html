@@ -88,7 +88,9 @@
 
         {% block analytics %}
             {% include "piwik.html" %}
+            {% comment %}
             {% include "google_analytics.html" %}
+            {% endcomment %}
         {% endblock %}
 
         {% block additional_head %}
