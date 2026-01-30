@@ -12,6 +12,10 @@
     border-bottom: none !important;
 }
 
+.home__article__summary.dynamic-block-article {
+    border-bottom: none !important;
+}
+
 /****************/
 .home {
 /*    background-color: #F0F0F2;*/

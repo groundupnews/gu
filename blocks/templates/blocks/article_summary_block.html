@@ -10,7 +10,7 @@ Inputs:
 - include_category: "1"/"0"
 {% endcomment %}
 
-<div class="home__article__summary">
+<div class="home__article__summary dynamic-block-article">
     <div class="row {% if block_variant == "featured" %}home__sticky{% endif %}">
         {% if include_image == "1" and article.cached_summary_image %}
             <div class="col-xs-12 {% if include_title != '0' or include_summary == '1' %}col-md-6{% endif %}">
