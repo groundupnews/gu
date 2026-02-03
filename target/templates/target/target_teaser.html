@@ -1,32 +1,30 @@
 {% load static %}
 <a href="{% url "target:detail" object.pk %}" class="target-teaser-link" aria-label="Play Target #{{object.number}}">
     <div id="target-teaser">
-        <div class="row">
-            <div class="col-xs-6" style="padding-right: 5px;">
-                <table aria-hidden="true">
-                    <tr>
-                        <td>{{ object.letters.1|upper }}</td>
-                        <td>{{ object.letters.2|upper }}</td>
-                        <td>{{ object.letters.3|upper }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ object.letters.4|upper }}</td>
-                        <td class="filled">{{ object.letters.0|upper }}</td>
-                        <td>{{ object.letters.5|upper }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ object.letters.6|upper }}</td>
-                        <td>{{ object.letters.7|upper }}</td>
-                        <td>{{ object.letters.8|upper }}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-xs-6" style="padding-left: 5px;">
-                <h2>Target #{{object.number}}</h2>
-                <p>Can you solve it?</p>
-                <p style="font-size: 11px; margin-bottom: 5px;">New puzzle every Monday &amp; Friday</p>
-                <div class="target-cta">Play Now &rarr;</div>
-            </div>
+        <div class="teaser-grid">
+            <table aria-hidden="true">
+                <tr>
+                    <td>{{ object.letters.1|upper }}</td>
+                    <td>{{ object.letters.2|upper }}</td>
+                    <td>{{ object.letters.3|upper }}</td>
+                </tr>
+                <tr>
+                    <td>{{ object.letters.4|upper }}</td>
+                    <td class="filled">{{ object.letters.0|upper }}</td>
+                    <td>{{ object.letters.5|upper }}</td>
+                </tr>
+                <tr>
+                    <td>{{ object.letters.6|upper }}</td>
+                    <td>{{ object.letters.7|upper }}</td>
+                    <td>{{ object.letters.8|upper }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="teaser-content">
+            <h2>Target #{{object.number}}</h2>
+            <p>Can you solve it?</p>
+            <p style="font-size: 11px; margin-bottom: 5px;">New puzzle every Monday &amp; Friday</p>
+            <div class="target-cta">Play Now &rarr;</div>
         </div>
     </div>
 </a>
