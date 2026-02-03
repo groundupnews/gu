@@ -1,35 +1,24 @@
 {% load static %}
-<div id="sudoku-teaser">
-    <div class="row">
-    <div class="col-xs-6 col-md-4">
-        <table>
-            {% for item in object.puzzle %}
-                {% autoescape off %}{% cycle '<tr>' '' '' '' '' '' '' '' '' %}{% endautoescape %}
-
-                <td>
-                    <a href="{% url "sudoku:latest" %}">
-                    {% if item == "0" %}
-                        &nbsp;
-                    {% else %}
-                        {{item}}
-                    {% endif %}
-                    </a>
-                </td>
-                {% autoescape off %}{% cycle '' '' '' '' '' '' '' '' '</tr>' %}{% endautoescape %}
-            {% endfor %}
-        </table>
+<a href="{% url "sudoku:latest" %}" class="sudoku-teaser-link" aria-label="Play Sudoku #{{object.number}}">
+    <div id="sudoku-teaser">
+        <div class="row">
+            <div class="col-xs-6" style="padding-right: 5px;">
+                <table aria-hidden="true">
+                    {% for item in object.puzzle %}
+                        {% if forloop.counter0|divisibleby:9 %}<tr>{% endif %}
+                        <td class="{% if item != '0' %}filled{% endif %}">
+                            {% if item != "0" %}{{item}}{% endif %}
+                        </td>
+                        {% if forloop.counter|divisibleby:9 %}</tr>{% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-xs-6" style="padding-left: 5px;">
+                <h2>Sudoku #{{object.number}}</h2>
+                <p>Can you solve it?</p>
+                <p style="font-size: 11px; margin-bottom: 5px;">New puzzle daily</p>
+                <div class="sudoku-cta">Play Now &rarr;</div>
+            </div>
+        </div>
     </div>
-    <div class="col-xs-6 col-md-8">
-        <h2>Sudoku {{object.number}}</h2>
-        <p>
-            <a
-                href="{% url "sudoku:latest" %}">
-                Can you solve it?
-            </a>
-        </p>
-        <p>
-            New puzzle daily
-        </p>
-    </div>
-    </div>
-</div>
+</a>
