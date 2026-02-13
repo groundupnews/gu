@@ -131,6 +131,7 @@
     <body>
 
         {% block body %}
+            <a href="#main-content" class="skip-link">Skip to main content</a>
             {% include 'icons.svg' %}
 
             {% block banner %}
@@ -146,8 +147,10 @@
 	        {% endblock %}
 
                 {% block content-wrapper %}
+                    <main id="main-content">
 	            {% block content %}
 	            {% endblock %}
+                    </main>
                 {% endblock %}
 
 	        {% block admin-area %}

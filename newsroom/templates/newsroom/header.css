@@ -84,7 +84,8 @@ header.gu-header {
 
 @media (min-width: 992px) {
     .gu-nav__links > li > a:hover, 
-    .gu-nav__submenu-trigger:hover {
+    .gu-nav__submenu-trigger:hover,
+    .gu-nav__submenu-trigger.expanded {
         border-bottom: 2px solid #00B1F0;
         padding-bottom: 8px;
     }
@@ -167,7 +168,8 @@ header.gu-header {
         border-top: 2px solid #00B1F0;
     }
 
-    .gu-nav__item--has-submenu:hover .gu-nav__submenu {
+    .gu-nav__item--has-submenu:hover .gu-nav__submenu,
+    .gu-nav__submenu.expanded {
         display: block;
     }
     
