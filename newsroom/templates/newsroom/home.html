@@ -1,50 +1,57 @@
 {% extends 'base.html' %}
 
-{% block title %}GroundUp: South African news that matters{% endblock %}
+	{% block title %}GroundUp: South African news that matters{% endblock %}
 
-{% block seo_fields %}
-    {{block.super}}
-    <meta property="og:title" content="GroundUp: South African news that matters"/>
-{% endblock %}
+	{% block seo_fields %}
+	{{block.super}}
+	<meta property="og:title" content="GroundUp: South African news that matters"/>
+	{% endblock %}
 
-{% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                {% include 'blocks/blocks.html' with blocks=topblocks%}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-	        {% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {% include 'paginator.html' %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {% include 'blocks/blocks.html' with blocks=bottomblocks%}
-            </div>
-        </div>
-        <div class="row more-to-read">
-            <div class="col-xs-12 col-md-6">
-                <h2>Most Read</h2>
-                {{most_popular_html|safe}}
+	{% block content %}
+	<div class="container">
+		{% if page_obj.number == 1 %}
+		<div class="row">
+			<div class="col-xs-12">
+				{% include 'blocks/blocks.html' with blocks=topblocks%}
+			</div>
+		</div>
+		{% endif %}
 
-                {% if most_deeply_read_html %}
-                    <h2>Most time spent reading</h2>
-                    {{most_deeply_read_html|safe}}
-                {% endif %}
-                <div class="more_articles__qanda">{% include "agony/qanda_snippet.html" %}</div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="more_articles__letters">
-                    {% include 'letters/letters.html' %}
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+		<div class="row">
+			<div class="col-xs-12">
+				{% include 'newsroom/list.html' with articles=article_list include_image="1" include_summary="1" md_size="12" %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				{% include 'paginator.html' %}
+			</div>
+		</div>
+
+
+		{% if page_obj.number == 1 %}
+		<div class="row">
+			<div class="col-xs-12">
+				{% include 'blocks/blocks.html' with blocks=bottomblocks%}
+			</div>
+		</div>
+		<div class="row more-to-read">
+			<div class="col-xs-12 col-md-6">
+				<h2>Most Read</h2>
+				{{most_popular_html|safe}}
+
+				{% if most_deeply_read_html %}
+	<h2>Most time spent reading</h2>
+				{{most_deeply_read_html|safe}}
+				{% endif %}
+				<div class="more_articles__qanda">{% include "agony/qanda_snippet.html" %}</div>
+			</div>
+			<div class="col-xs-12 col-md-6">
+				<div class="more_articles__letters">
+					{% include 'letters/letters.html' %}
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	{% endblock %}
