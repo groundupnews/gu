@@ -1,0 +1,24 @@
+[
+{
+    "model": "licencing.licence",
+    "pk": 1,
+    "fields": {
+        "name": "Creative Commons Attribution-NoDerivatives 4.0 International License.",
+        "text": "<h3 >You are free to:</h3>\r\n          <ol>\r\n            <li>\r\n              <strong>Share</strong> — copy and redistribute the material in any\r\n              medium or format for any purpose, even commercially.\r\n            </li>\r\n            <li>\r\n              The licensor cannot revoke these freedoms as long as you follow\r\n              the license terms.\r\n            </li>\r\n          </ol>\r\n          <h2 id=\"terms\">Under the following terms:</h2>\r\n          <ol>\r\n            <li class=\"cc-by\">\r\n              <strong>Attribution</strong> — You must give\r\n              <a href=\"#ref-appropriate-credit\" id=\"src-appropriate-credit\">appropriate credit</a>, provide a link to the license, and\r\n              <span rel=\"cc:requires\" resource=\"http://creativecommons.org/ns#Notice\"><a href=\"#ref-indicate-changes\" id=\"src-indicate-changes\">indicate if changes were made</a></span>. You may do so in any reasonable manner, but not in any way that\r\n              suggests the licensor endorses you or your use.\r\n            </li>\r\n            <li class=\"cc-nd\">\r\n              <strong>NoDerivatives</strong> — If you\r\n              <a href=\"#ref-some-kinds-of-mods\" id=\"src-some-kinds-of-mods\">remix, transform, or build upon</a>\r\n              the material, you may not distribute the modified material.\r\n            </li>\r\n            <li>\r\n              <strong>No additional restrictions</strong> — You may not apply\r\n              legal terms or\r\n              <a href=\"#ref-technological-measures\" id=\"src-technological-measures\">technological measures</a>\r\n              that legally restrict others from doing anything the license\r\n              permits.\r\n            </li>\r\n          </ol>\r\n          <h2 class=\"b-header has-text-black padding-bottom-big padding-top-normal\" style=\"font-weight: bold\">\r\n            Notices:\r\n          </h2>\r\n          <p>\r\n            You do not have to comply with the license for elements of the\r\n            material in the public domain or where your use is permitted by an\r\n            applicable\r\n            <a href=\"#ref-exception-or-limitation\" id=\"src-exception-or-limitation\">exception or limitation</a>.\r\n          </p>\r\n          <p>\r\n            No warranties are given. The license may not give you all of the\r\n            permissions necessary for your intended use. For example, other\r\n            rights such as\r\n            <a href=\"#ref-publicity-privacy-or-moral-rights\" id=\"src-publicity-privacy-or-moral-rights\">publicity, privacy, or moral rights</a>\r\n            may limit how you use the material.\r\n          </p>",
+        "notes": "",
+        "created": "2026-03-09T21:13:43.404Z",
+        "modified": "2026-03-11T13:49:21.881Z"
+    }
+},
+{
+    "model": "licencing.licence",
+    "pk": 2,
+    "fields": {
+        "name": "GroundUp Republication Licence",
+        "text": "<p>GroundUp has given select publishers permission to republish this article, free of charge, on these conditions:</p>\r\n\r\n<ul>\r\n<li>\r\nOther than in-house style edits, corrections of typos and grammar, the article may not be further edited, unless permission is obtained from GroundUp. \r\n</li>\r\n<li>\r\nThe article must be republished in full, unless permission is obtained from GroundUp to shorten it.\r\n</li>\r\n<li>\r\nThe article's authors and the article's images must be clearly credited.\r\n</li>\r\n<li>\r\nGroundUp must be credited.\r\n</li>\r\n<li>\r\nIf published online, the HTML to count (but not track) traffic to the article that is provided by GroundUp must be inserted into the article, unless permission is obtained from GroundUp not to include this.  \r\n</li>\r\n</ul>",
+        "notes": "",
+        "created": "2026-03-09T21:20:38.156Z",
+        "modified": "2026-03-11T15:31:23.802Z"
+    }
+}
+]
