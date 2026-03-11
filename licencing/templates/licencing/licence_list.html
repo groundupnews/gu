@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Licences {{ block.super }}{% endblock %}
+{% block css-override %}
+  <style>{% include  "licencing/licencing.css" %}</style>
+  {{ block.super }}
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>Licences</h1>
+        {% if object_list %}
+          <ul>
+            {% for licence in object_list %}
+              <li>
+                <a href="{% url 'licencing:detail' pk=licence.pk %}">{{ licence.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+          {% with query_params=query_params %}
+            {% include "paginator.html" %}
+          {% endwith %}
+        {% else %}
+          <p>No licences found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

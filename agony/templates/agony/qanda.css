@@ -14,7 +14,7 @@ h1 {
     font-size: 36px;
 }
 
-p {
+p, ul {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.8rem;
 }

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ object.name }} {{ block.super }}{% endblock %}
+{% block css-override %}
+  <style>{% include  "licencing/licencing.css" %}</style>
+  {{ block.super }}
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>{{ object.name }}</h1>
+        <p>{{ object.text|safe }}</p>
+        {% if request.user.is_staff %}
+          <h2>Licensees</h2>
+          {% with licensees=object.licensee_set.all %}
+            {% if licensees %}
+              <ul>
+                {% for licensee in licensees %}
+                  <li>
+                    {{ licensee.republisher }}
+                    {% with contracts=licensee.contract_set.all %}
+                      {% if contracts %}
+                        <ul>
+                          {% for contract in contracts %}
+                            <li>
+                              {{ contract.date_from }} – {{ contract.date_to }}
+                              {% if contract.document %}<a href="{{ contract.document.url }}">View Contract</a>{% endif %}
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% else %}
+                        <p>No contracts with {{ licensee.republisher }}</p>
+                      {% endif %}
+                    </li>
+                  {% endwith %}
+                  {% if perms.licencing.change_licence %}
+                    <a href="{% url 'admin:licencing_contract_add' %}">Add</a>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            {% else %}
+              <p>No licensees</p>
+            {% endif %}
+          {% endwith %}
+        {% endif %}
+				  <hr/>
+        {% if perms.licencing.change_licence %}
+          <a href="{% url 'admin:licencing_licence_change' object.pk %}">Edit</a>
+          <br />
+        {% endif %}
+
+        <a href="{% url 'licencing:list' %}">Back to Licences</a>
+          <p>
+            <small>Created: {{ object.created }} - Last modified: {{ object.modified }}</small>
+          </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

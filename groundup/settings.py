@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     # 'judgment',
     "pgsearch",
     "donationPage",
+    "licencing",
 )
 
 MIDDLEWARE = (
