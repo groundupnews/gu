@@ -1,116 +1,144 @@
-<style>/* General styling for the Subscription Section */
+<style>
     .subscribe-section {
-        background-color: rgb(0, 178, 240);
-        padding: 15px 20px 35px 20px;
-        color: white;
-        margin-bottom: 20px;
-        overflow: hidden; 
-        position: relative;
-        display: flex;
-        align-items: stretch;
-    }
-    
-    /* Input field styling */
-    .subscribe-section input {
-        color: #000;
-    }
-    
-    /* Button styling */
-    .btn.btn-black {
-        background-color: black;
-        color: white;
-    }
-    
-    /* Background image for the right column */
-    .subscribe-section .col-sm-5 {
-        background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 252.28 251.65"><defs><symbol id="shutter-piece" viewBox="0 0 120.84 73.02"><path d="M80.64,3.4c-1.43-2.36-3.59-4.63-8.67-2.63C42.91,12.25,13.42,32.25,0,73.02h120.84L80.64,3.4Z" style="fill:%23000;"/></symbol></defs><g id="Layer_1-2"><circle cx="126.14" cy="125.82" r="24" style="fill:%23fff;"/><use width="120.84" height="73.02" transform="translate(10.3 6.8)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(-34.85 166.63) rotate(-60)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(80.99 285.65) rotate(-120)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(241.98 244.84) rotate(-180)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(287.14 85.02) rotate(120)" xlink:href="%23shutter-piece"/><use width="120.84" height="73.02" transform="translate(171.3 -34) rotate(60)" xlink:href="%23shutter-piece"/></g></svg>');
-        background-size: 60%;
-        background-position: center;
-        background-repeat: no-repeat;
-        min-height: 150px;
-        padding: 0;
-        margin: 0;
-    }
-    
-    /* Content column styling */
-    .subscribe-section .col-sm-7 {
-        padding-right: 20px;
-    }
-    
-    /* Flexbox for form alignment */
-    #mc-embedded-subscribe-form {
+        background-color: #f8f9fa;
+        padding: 40px;
+        color: #333;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .subscribe-content {
+        flex: 1 1 60%;
+        padding-right: 20px;
+        z-index: 2; 
+        min-width: 300px;
+    }
+
+    /* logo handling */
+    .subscribe-image {
+        flex: 0 0 150px;
+        height: 150px;
+        background-image: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 31 31' style='enable-background:new 0 0 31 31;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E.st0%7Bfill:%23151F21;%7D.st1%7Bfill:%2300B1F0;%7D%3C/style%3E%3Cg%3E%3Cpath class='st0' d='M3.6,25.3c-1.7-2-2.8-4.2-3.3-6.7c-0.5-2.2-0.5-4.4,0.1-6.6c0.1-0.3,0.2-0.5,0.5-0.5c3.5,0,10.7,0,10.7,0S6.3,20.7,3.6,25.3z'/%3E%3Cpath class='st0' d='M19.3,19.3c0,0,5.3-9.1,8-13.7c0.6,0.8,1,1.4,1.4,2.1c2,3.5,2.7,7.2,1.8,11.2c-0.1,0.4-0.2,0.5-0.6,0.5C26.5,19.3,19.3,19.3,19.3,19.3z'/%3E%3Cpath class='st0' d='M10.6,17.4c0,0,5.2,8.8,7.9,13.3c-0.9,0.1-1.7,0.2-2.4,0.2c-4,0.1-7.5-1.2-10.5-3.7C5.2,27,5,26.8,5.2,26.4C6.9,23.6,10.6,17.4,10.6,17.4z'/%3E%3Cpath class='st0' d='M12.7,0.3c1.9-0.4,3.8-0.4,5.6-0.1c2.7,0.5,5.1,1.7,7.2,3.4C25.9,4,26,4.3,25.7,4.8c-1.6,2.7-5.2,8.7-5.2,8.7S15.3,4.7,12.7,0.3z'/%3E%3Cpath class='st0' d='M15.9,9.6c0,0-9.8,0-14.7,0c0-0.2,0.2-0.5,0.2-0.7C3.3,5.1,6.1,2.6,10,1c0.5-0.2,0.8-0.2,1.1,0.4C12.6,4,15.9,9.6,15.9,9.6z'/%3E%3Cpath class='st0' d='M15.2,21.3h14.5c0,0-0.2,0.5-0.3,0.8c-1.8,3.9-4.5,6.2-8.5,7.8c-0.3,0.1-0.6,0.2-0.8-0.2C18.5,27,15.2,21.3,15.2,21.3z'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st1' cx='15.5' cy='15.5' r='3.1'/%3E%3C/g%3E%3C/svg%3E");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 1;
+    }
+    
+    /* typography */
+    .subscribe-section h2 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        color: #111;
+    }
+    
+    .subscribe-section p {
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    #mc-embedded-subscribe-form {
+        display: flex;
         flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .subscribe-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0;
     }
     
-    /* Input field styling */
-    .form-control {
+    .subscribe-section .form-control {
         flex: 1;
+        width: auto;
         min-width: 200px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 12px 15px;
+        height: auto;
+        color: #333;
     }
     
-    /* Button styling */
-    .btn {
-        white-space: nowrap;
+    .subscribe-section .btn {
+        background-color: #000;
+        color: white;
+        border: 2px solid #000;
+        border-radius: 4px;
+        padding: 10px 25px;
+        font-weight: 600;
+        margin-left: 0;
+        transition: all 0.2s ease;
+    }
+
+    .subscribe-section .btn:hover,
+    .subscribe-section .btn:focus {
+        background-color: #333;
+        border-color: #333;
+        outline: 2px solid rgba(0,0,0,0.2);
+        color: #fff;
     }
     
-    /* Mobile responsiveness */
     @media (max-width: 767px) {
         .subscribe-section {
-            flex-direction: column;
-            padding: 20px;
+            flex-direction: column-reverse;
+            text-align: center;
+            padding: 30px 20px;
         }
-        
-        .subscribe-section .col-sm-7 {
+    
+        .subscribe-content {
             padding-right: 0;
             width: 100%;
+            min-width: 0;
         }
-        
+
+        .subscribe-image {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            flex: none;
+        }
+    
         #mc-embedded-subscribe-form {
             flex-direction: column;
-            gap: 15px;
+            align-items: stretch;
         }
-        
-        .form-control {
-            width: 100%;
-            min-width: auto;
+
+        .subscribe-label {
+            text-align: left;
+            margin-bottom: 5px;
         }
-        
-        .btn {
-            width: 100%;
-        }
-        
-        .inline-group {
-            width: 100%;
-        }
-    }
     
-    @media (max-width: 576px) {
-        .subscribe-section {
-            padding: 15px;
+        .subscribe-section .btn,
+        .subscribe-section .form-control {
+            width: 100%;
         }
     }
 </style>
     
 <div class="subscribe-section" id="subscribe-section">
-    <div class="col-sm-7">
+    <div class="subscribe-content">
         <h2>Don't miss out on the latest news</h2>
         <p>We respect your privacy, and promise we won't spam you.</p>
         <form action="https://groundup.us3.list-manage.com/subscribe/post?u=de6b759dc2cdfe70bfebce58c&amp;id=21dfeb9ddb&amp;f_id=00d4c2e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="">
-            <div class="inline-group">
-                <input type="email" name="EMAIL" placeholder="Your email address" class="required email form-control" id="mce-EMAIL" required="" value="">
-            </div>
+            
+            <label for="mce-EMAIL" class="subscribe-label">Email address</label>
+            <input type="email" name="EMAIL" placeholder="Your email address" class="required email form-control" id="mce-EMAIL" required="" value="">
+            
             <div aria-hidden="true" style="position: absolute; left: -5000px;">
-                <input type="text" name="b_de6b759dc2cdfe70bfebce58c_21dfeb9ddb" tabindex="-1" value="">
+                <input type="text" name="b_de6b759dc2cdfe70bfebce58c_21dfeb9ddb" tabindex="-1" value="" aria-label="Do not fill this field">
             </div>
-            <div class="inline-group">
-                <button type="submit" id="mc-embedded-subscribe" name="subscribe" class="btn btn-black">Subscribe Now</button>
-            </div>
+            
+            <button type="submit" id="mc-embedded-subscribe" name="subscribe" class="btn btn-black">Subscribe Now</button>
         </form>
     </div>
-    <div class="col-sm-5 hidden-xs">
-        <!-- Background image section -->
-    </div>
+    <div class="subscribe-image" aria-hidden="true"></div>
 </div>
