@@ -105,9 +105,6 @@ h2.gallery {
 /* Thumbnails */
 
 
-#gallery-home-albums h2 {
-    margin-bottom: 0;
-}
 
 .thumbnail {
     height: 222px;
@@ -133,17 +130,11 @@ h2.gallery {
     overflow: hidden;
 }
 
-.thumbnail .album-head {
-    height: 36px;
-}
-
 #gallery-photo img {
     max-width: 100%;
-}
-
-#gallery-photo-labels div {
-    padding-left: 0;
-    margin-bottom: 6px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
 }
 
 #gallery-sidebar-advert {
@@ -154,14 +145,264 @@ h2.gallery {
     margin-top:16px;
 }
 
-.photo-label {
+.photo-meta-list {
+    margin-bottom: 20px;
+}
+
+.photo-meta-item {
+    display: flex;
+    margin-bottom: 12px;
+    align-items: baseline;
+}
+
+.photo-meta-label {
+    width: 110px;
+    flex-shrink: 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    color: #666;
+}
+
+.photo-meta-label::after {
+    content: ":";
+    color: #999;
+    margin-right: 8px;
+}
+
+.photo-meta-value {
+    flex-grow: 1;
+    word-break: break-word;
+}
+.gallery-download-dropdown {
+    margin: 20px 0 24px;
+}
+
+.gallery-download-dropdown .dropdown-menu {
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    padding: 8px 0;
+    min-width: 240px;
+}
+
+.gallery-download-dropdown .dropdown-menu > li > a {
+    padding: 8px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    text-decoration: none;
+    display: block;
+}
+
+.gallery-download-dropdown .dropdown-menu > li > a:hover,
+.gallery-download-dropdown .dropdown-menu > li > a:focus {
+    background-color: #f5f9fc;
+    color: #26aae2;
+}
+
+.gallery-download-dropdown .dropdown-header {
+    padding: 8px 20px 4px;
+    font-size: 1.1rem;
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.gallery-download-dropdown .main-download-link {
+    display: block;
+}
+
+.gallery-download-dropdown .main-download-link strong {
+    font-size: 1.4rem;
     display: inline-block;
-    width: 130px;
-    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.gallery-download-dropdown .main-download-link .fa {
+    margin-right: 6px;
+    color: #26aae2;
+}
+
+.gallery-download-dropdown .main-download-link .help-block {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #777;
+    margin-left: 20px;
+}
+
+.gallery-download-dropdown .download-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gallery-download-dropdown .download-size {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.gallery-download-dropdown .download-res {
+    font-size: 1.2rem;
+    color: #888;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 12px;
+}
+
+/* Download Page Styles */
+.download-page-header {
+    margin-bottom: 30px;
+}
+
+.download-page-header h1 {
+    color: #222;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #26aae2;
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
+.download-preview-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.download-preview-image {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #fff;
+}
+
+.download-content-section {
+    background: #fff;
+    padding: 0;
+}
+
+.download-info-card {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.download-info-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.donation-appeal {
+    background: #fdfdfd;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.donation-appeal p {
+    font-size: 1.4rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.license-info h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.attribution-box {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: #333;
+    margin-top: 20px;
+}
+
+.download-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.download-option-card {
+    flex: 1 1 200px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.download-option-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    border-color: #ccc;
+}
+
+.download-option-card h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.download-option-card p {
+    margin-bottom: 15px;
+    color: #888;
+    font-size: 1.3rem;
 }
 
 .photo-label::after {
     content: ":";
+    color: #999;
+}
+
+.photo-copyright {
+    margin-top: 16px;
+    font-size: 1.3rem;
+    color: #777;
+    font-style: italic;
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+}
+
+.photo-copy-links {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.photo-copy-links h5 {
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
 #gallery-photo-details .dropdown
@@ -204,9 +445,21 @@ h2.gallery {
 }
 
 #gallery-photo-details {
-    border-bottom: 1px solid #e6e6e6;
-    margin-bottom: 10px;
-    padding: 10px;
+    background: #fdfdfd;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+#gallery-photo-details h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #26aae2;
+    font-size: 2.2rem;
+    color: #222;
 }
 
 .sidebar-block {
