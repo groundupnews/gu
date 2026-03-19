@@ -1,15 +1,31 @@
 {% load fb_versions %}
 
-<div class="thumbnail" >
-    <a href="{% url 'gallery:photo.detail' photo.pk %}">
-            <img src="{% version photo.image 'medium' %}"
-                 alt="{{photo.alt}}" />
-    </a>
-    <div class="caption"><a
-                             href="{% url 'gallery:photo.detail' photo.pk %}"
-                         >{{photo.alt|safe|truncatechars_html:74}}</a></div>
-    <span class="tooltiptext"><a
-                                  href="{% url 'gallery:photo.detail' photo.pk %}"
-                              >{{photo.suggested_caption|safe}}<br />
-        {{photo.date_taken|date:"j F Y"}}</a></span>
+<div class="gu-photo-card">
+    <div class="gu-photo-card__media">
+        <a href="{% url 'gallery:photo.detail' photo.pk %}" class="gu-photo-card__link">
+            <img src="{% version photo.image 'medium' %}" alt="{{photo.alt}}" class="gu-photo-card__img" />
+            <div class="gu-photo-card__overlay">
+                {% if photo.alt %}
+                <p class="gu-photo-card__caption">{{photo.alt|safe|truncatechars:90}}</p>
+                {% endif %}
+                {% if photo.photographer %}
+                <span class="gu-photo-card__photographer">{{photo.photographer}}</span>
+                {% endif %}
+                {% if photo.date_taken %}
+                <span class="gu-photo-card__date">{{photo.date_taken|date:"j M Y"}}</span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+    <div class="gu-photo-card__grid-info">
+        {% if photo.alt %}
+        <a href="{% url 'gallery:photo.detail' photo.pk %}" class="gu-photo-card__grid-title">{{photo.alt|truncatechars:80}}</a>
+        {% endif %}
+        {% if photo.date_taken %}
+        <a href="{% url 'gallery:photo.list' %}?date={{photo.date_taken|date:'Ymd'}}" class="gu-photo-card__grid-date">{{photo.date_taken|date:"j M Y"}}</a>
+        {% endif %}
+        {% if photo.photographer %}
+        <span class="gu-photo-card__grid-photographer">{{photo.photographer}}</span>
+        {% endif %}
+    </div>
 </div>

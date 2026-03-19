@@ -44,33 +44,36 @@
         {{photo.suggested_caption|safe}}
 
 
-        <div class="dropdown">
-            <a id="drop1" href="#"
-               role="button"
-               class="dropdown-toggle btn btn-default btn-info"
-               data-toggle="dropdown">Download <b class="caret"></b></a>
+        <div class="dropdown gallery-download-dropdown">
+            <button id="drop1" type="button"
+               class="btn btn-primary dropdown-toggle"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-download"></i> Download <span class="caret"></span>
+            </button>
 
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" aria-labelledby="drop1">
                 <li>
-                    <a href="{% url 'gallery:photo.download' photo.pk %}">
-                        <strong>📥 Download Page</strong>
-                        <br><small>Find all of our download options here</small>
+                    <a href="{% url 'gallery:photo.download' photo.pk %}" class="main-download-link">
+                        <i class="fa fa-external-link"></i> 
+                        <strong>Full Download Page</strong>
+                        <span class="help-block">View all format options and details</span>
                     </a>
                 </li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Quick Downloads:</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Quick Download</li>
                 {% for version in versions %}
                     {% version photo.image version.0 as image %}
                     <li>
-                        <a href="#" onclick="downloadAndRedirect('{{image.url}}', '{% url 'gallery:photo.download' photo.pk %}'); return false;">
-                            {{version.1.verbose_name|capfirst}}
-                            ({{image.width}}px X {{image.height}}px)
+                        <a href="#" onclick="downloadAndRedirect('{{image.url}}', '{% url 'gallery:photo.download' photo.pk %}'); return false;" class="download-option">
+                            <span class="download-size">{{version.1.verbose_name|capfirst}}</span>
+                            <span class="download-res">{{image.width}} &times; {{image.height}}px</span>
                         </a>
                     </li>
                 {% endfor %}
                 <li>
-                    <a href="#" onclick="downloadAndRedirect('{{photo.image.url}}', '{% url 'gallery:photo.download' photo.pk %}'); return false;">
-                        Original ({{photo.image.width}}px X {{photo.image.height}}px)
+                    <a href="#" onclick="downloadAndRedirect('{{photo.image.url}}', '{% url 'gallery:photo.download' photo.pk %}'); return false;" class="download-option">
+                        <span class="download-size">Original</span>
+                        <span class="download-res">{{photo.image.width}} &times; {{photo.image.height}}px</span>
                     </a>
                 </li>
             </ul>
@@ -79,56 +82,55 @@
 
 
 
-        <div id="gallery-photo-labels">
-            <div class="col-xs-4">
-                <span class="photo-label">Date taken</span>
-            </div>
-            <div class="col-xs-8">
-                <a href="{% url 'gallery:photo.list' %}?date={{photo.date_taken|date:"Ymd"}}">
-                    {{photo.date_taken|date:"j F Y"}}
-                </a>
-            </div>
-
-            <div class="col-xs-4"><span class="photo-label">Photo by</span></div>
-            <div class="col-xs-8">
-                <a href="{% url 'gallery:photo.list' %}?photographer={{photo.photographer.pk}}">
-                    {{photo.photographer}}
-                </a>
+        <div id="gallery-photo-labels" class="photo-meta-list">
+            <div class="photo-meta-item">
+                <div class="photo-meta-label">Date taken</div>
+                <div class="photo-meta-value">
+                    <a href="{% url 'gallery:photo.list' %}?date={{photo.date_taken|date:'Ymd'}}">
+                        {{photo.date_taken|date:"j F Y"}}
+                    </a>
+                </div>
             </div>
 
-            <div class="col-xs-4">
-                <span class="photo-label">Credit</span>
+            <div class="photo-meta-item">
+                <div class="photo-meta-label">Photo by</div>
+                <div class="photo-meta-value">
+                    <a href="{% url 'gallery:photo.list' %}?photographer={{photo.photographer.pk}}">
+                        {{photo.photographer}}
+                    </a>
+                </div>
             </div>
 
-            <div class="col-xs-8">
-                {% if photo.credit %}
-                    {{photo.credit}}
-                {% else %}
-                    {{photo.photographer}}/GroundUp
-                {% endif %}
+            <div class="photo-meta-item">
+                <div class="photo-meta-label">Credit</div>
+                <div class="photo-meta-value">
+                    {% if photo.credit %}
+                        {{photo.credit}}
+                    {% else %}
+                        {{photo.photographer}}/GroundUp
+                    {% endif %}
+                </div>
             </div>
 
-            <div class="col-xs-4"><span class="photo-label">Albums</span></div>
-            <div class="col-xs-8">
-                {% for album in photo.albums.all %}
-                    <a href="{% url 'gallery:album.detail' album.pk %}">{{album}}</a>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-xs-4">
-                <span class="photo-label">Keywords</span>
-            </div>
-            <div class="col-xs-8">
-                {% for keyword in photo.keywords.all %}
-                    <a href="{% url 'gallery:photo.list' keyword %}">
-                        {{keyword}}</a>{% if not forloop.last %},&nbsp;{% endif %}
-                {% endfor %}
+            <div class="photo-meta-item">
+                <div class="photo-meta-label">Keywords</div>
+                <div class="photo-meta-value">
+                    {% for keyword in photo.keywords.all %}
+                        <a href="{% url 'gallery:photo.list' keyword %}">
+                            {{keyword}}</a>{% if not forloop.last %},&nbsp;{% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
         {% if photo.copyright %}
-            {{photo.copyright|safe}}
+            <div class="photo-copyright" style="clear: both;">
+                {{photo.copyright|safe}}
+            </div>
         {% else %}
-            {{default_copyright|safe}}
+            <div class="photo-copyright" style="clear: both;">
+                {{default_copyright|safe}}
+            </div>
         {% endif %}
 
         {% include "gallery/how_to_use.html" %}
@@ -136,14 +138,18 @@
         {% version photo.image 'extra_large' as extra_large_image %}
         {% version photo.image 'huge' as huge_image %}
 
-        <div class="row" style="margin-top:20px; border: 2px solid red; padding: 10px;">
-            <div class="col-xs-6 text-center">
-                <div><strong>Extra Large Photo</strong></div>
-                <button type="button" class="btn btn-lg btn-primary" onclick="copyLink('https://{{ request.get_host }}{{ extra_large_image.url }}', this)">📋 Copy link</button>
+        <div class="photo-copy-links" style="display: flex; gap: 10px; align-items: flex-end;">
+            <div style="flex: 1; text-align: center;">
+                <h5>Extra Large Photo</h5>
+                <button type="button" class="btn btn-default btn-block" onclick="copyLink('https://{{ request.get_host }}{{ extra_large_image.url }}', this)">
+                    <i class="fa fa-clipboard"></i> Copy Link
+                </button>
             </div>
-            <div class="col-xs-6 text-center">
-                <div><strong>Huge Photo</strong></div>
-                <button type="button" class="btn btn-lg btn-primary" onclick="copyLink('https://{{ request.get_host }}{{ huge_image.url }}', this)">📋 Copy link</button>
+            <div style="flex: 1; text-align: center;">
+                <h5>Huge Photo</h5>
+                <button type="button" class="btn btn-default btn-block" onclick="copyLink('https://{{ request.get_host }}{{ huge_image.url }}', this)">
+                    <i class="fa fa-clipboard"></i> Copy Link
+                </button>
             </div>
         </div>
 
@@ -151,13 +157,13 @@
         function copyLink(link, btn) {
             navigator.clipboard.writeText(link).then(function() {
                 var originalText = btn.innerHTML;
-                btn.innerHTML = '✓';
-                btn.classList.remove('btn-primary');
+                btn.innerHTML = '✓ Copied';
+                btn.classList.remove('btn-default');
                 btn.classList.add('btn-success');
                 setTimeout(function(){
                     btn.innerHTML = originalText;
                     btn.classList.remove('btn-success');
-                    btn.classList.add('btn-primary');
+                    btn.classList.add('btn-default');
                 }, 2000);
             });
         }

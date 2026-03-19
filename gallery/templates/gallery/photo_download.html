@@ -13,57 +13,59 @@
     Download: {{photo.alt}}
 {% endblock %}
 
-{% block breadcrumbs %}
-    <div id="gallery-breadcrumbs">
-        <a href="{% url 'gallery:gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
-        <a href="{% url 'gallery:photo.list' %}">Photos</a>&nbsp;|&nbsp;
-        <a href="{% url 'gallery:photo.detail' photo.pk %}">{{photo.alt}}</a>&nbsp;|&nbsp;
-        Download
-    </div>
-{% endblock %}
 
-{% block gallery_above_line %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <figure id="gallery-photo">
-                    <img src="{% version photo.image 'large' %}" alt="{{photo.alt}}" class="img-responsive" />
-                </figure>
+{% block content %}
+<div id="gallery" class="download-page">
+    
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="gallery-breadcrumbs">
+                <a href="{% url 'gallery:gallery.front' %}">Gallery front</a>&nbsp;|&nbsp;
+                <a href="{% url 'gallery:photo.list' %}">Photos</a>&nbsp;|&nbsp;
+                <a href="{% url 'gallery:photo.detail' photo.pk %}">{{photo.alt}}</a>&nbsp;|&nbsp;
+                Download
             </div>
-            <div class="col-md-6">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">📸 Thank you for using GroundUp's image library!</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p><strong>Help us keep our journalism free and accessible</strong></p>
-                        <p>
-                            GroundUp is a non-profit news organisation. 
-                            We depend on donations to continue our work. 
-                            With your help, we can hold those in power accountable 
-                            and train the next generation of journalists.
-                        </p>
-                        <p class="text-center" style="margin: 20px 0;">
-                            <a href="{% url 'make_payment' %}" class="btn btn-success btn-lg">
-                                💝 Donate to GroundUp
-                            </a>
-                        </p>
-                        
-                        <hr>
-                        
-                        <h4>📋 Editorial Usage & Licensing</h4>
-                        <p>{% if photo.copyright %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="download-page-header">
+                <h1>Download Photo</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="download-preview-section">
+                <figure>
+                    <img src="{% version photo.image 'large' %}" alt="{{photo.alt}}" class="download-preview-image" />
+                </figure>
+                <div style="margin-top: 15px; color: #777; font-style: italic;">
+                    {{photo.alt}}
+                </div>
+            </div>
+
+            <div class="download-info-card">
+                <div class="license-info">
+                    <h4>Usage & Attribution</h4>
+                    <p>
+                        {% if photo.copyright %}
                             {{photo.copyright|safe}}
                         {% else %}
                             {{default_copyright|safe}}
                         {% endif %}
-                        Please read our 
-                        <a href="https://groundup.org.za/how-image-lib-works/" target="_blank">
-                            guide on how our image library works
-                        </a> for usage terms and attribution requirements.</p>
-                        
-                        <div class="well well-sm">
-                            <strong>Required Attribution:</strong><br>
+                    </p>
+                    <p>
+                        Please read our <a href="https://groundup.org.za/how-image-lib-works/" target="_blank" style="text-decoration: underline;">
+                            guide on how the image library works
+                        </a>.
+                    </p>
+                    
+                    <div style="margin-top: 20px;">
+                        <span style="font-weight: bold; text-transform: uppercase; font-size: 0.9em; color: #999;">Required Attribution:</span>
+                        <div class="attribution-box">
                             {% if photo.credit %}
                                 {{photo.credit}}
                             {% else %}
@@ -74,65 +76,65 @@
                 </div>
             </div>
         </div>
-        
-        <div class="row" style="margin-top: 30px;">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">⬇️ Download Options</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            {% for version in versions %}
-                                {% version photo.image version.0 as image %}
-                                <div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
-                                    <div class="thumbnail text-center">
-                                        <h5>{{version.1.verbose_name|capfirst}}</h5>
-                                        <p class="text-muted">{{image.width}}px × {{image.height}}px</p>
-                                        <a href="#" onclick="downloadImage('{{image.url}}'); return false;" class="btn btn-primary btn-block">
-                                            Download {{version.1.verbose_name|capfirst}}
-                                        </a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            <div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
-                                <div class="thumbnail text-center">
-                                    <h5>Original</h5>
-                                    <p class="text-muted">{{photo.image.width}}px × {{photo.image.height}}px</p>
-                                    <a href="#" onclick="downloadImage('{{photo.image.url}}'); return false;" class="btn btn-primary btn-block">
-                                        Download Original
-                                    </a>
-                                </div>
-                            </div>
+
+        <div class="col-md-7">
+            
+            <div class="download-info-card donation-appeal">
+                <h3 style="color: #26aae2; border-bottom: none;">Support Free Journalism</h3>
+                <p>
+                    <strong>GroundUp is a non-profit news organisation.</strong> 
+                    We depend on donations to keep our journalism and these photos free for everyone.
+                </p>
+                <div class="text-center" style="margin-top: 20px;">
+                    <a href="{% url 'make_payment' %}" class="btn btn-success btn-lg" style="font-weight: 600; padding: 12px 30px;">
+                        <i class="fa fa-heart"></i> Donate to GroundUp
+                    </a>
+                </div>
+            </div>
+
+            <div class="download-info-card">
+                <h3>Select Download Format</h3>
+                <div class="download-grid">
+                    {% for version in versions %}
+                        {% version photo.image version.0 as image %}
+                        <div class="download-option-card">
+                            <h5>{{version.1.verbose_name|capfirst}}</h5>
+                            <p>{{image.width}} &times; {{image.height}}px</p>
+                            <a href="#" onclick="downloadImage('{{image.url}}'); return false;" class="btn btn-primary btn-block">
+                                <i class="fa fa-download"></i> Download
+                            </a>
                         </div>
+                    {% endfor %}
+                    
+                    <div class="download-option-card">
+                        <h5>Original</h5>
+                        <p>{{photo.image.width}} &times; {{photo.image.height}}px</p>
+                        <a href="#" onclick="downloadImage('{{photo.image.url}}'); return false;" class="btn btn-primary btn-block">
+                            <i class="fa fa-download"></i> Download
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="text-center" style="margin: 30px 0;">
-            <a href="{% url 'gallery:photo.detail' photo.pk %}" class="btn btn-default">
-                ← Back to Photo Details
-            </a>
+            
+            <div class="text-right" style="margin-top: 20px;">
+                <a href="{% url 'gallery:photo.detail' photo.pk %}" class="btn btn-default">
+                    &larr; Return to Photo Details
+                </a>
+            </div>
+
         </div>
     </div>
-    
-    <script>
-    function downloadImage(imageUrl) {
-        // temp a element which will trigger the photo download!
-        var downloadLink = document.createElement('a');
-        downloadLink.href = imageUrl;
-        downloadLink.download = '';
-        downloadLink.style.display = 'none';
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
-    </script>
-{% endblock %}
+</div>
 
-{% block gallery-sidebar %}
-{% endblock %}
-
-{% block gallery_below_line %}
+<script>
+function downloadImage(imageUrl) {
+    var downloadLink = document.createElement('a');
+    downloadLink.href = imageUrl;
+    downloadLink.download = '';
+    downloadLink.style.display = 'none';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+</script>
 {% endblock %}

@@ -84,4 +84,4 @@ class PhotoTest(TestCase):
         c.login(username='admin', password='password')
         response = c.get(reverse('gallery:photo.list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.photo.suggested_caption)
+        self.assertContains(response, self.photo.alt)

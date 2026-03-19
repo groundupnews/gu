@@ -7,10 +7,8 @@
 {% endblock %}
 
 {% block css-override %}
-    {% compress css %}
     <link rel="stylesheet"
-	  href="{% static 'gallery/css/gallery_styles.css' %}" />
-    {% endcompress %}
+          href="{% static 'gallery/css/gallery_styles.css' %}?v=9" />
 {% endblock %}
 
 {% block seo_fields %}
