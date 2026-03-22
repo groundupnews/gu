@@ -43,6 +43,11 @@
                                         <img
                                             src="{% version photo.image 'extra_large' %}"
                                             alt="{{photo.suggested_caption}}{% if photo.photographer %} - {{photo.photographer}}{% endif %}"
+                                            {% if photo.slider_position == 'contain' %}
+                                            style="object-fit: contain;"
+                                            {% elif photo.slider_position != 'center' %}
+                                            style="object-position: {{ photo.slider_position }};"
+                                            {% endif %}
                                         />
                                         {% if photo.suggested_caption %}
                                         <div class="swiper-caption">

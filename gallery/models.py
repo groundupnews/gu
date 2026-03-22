@@ -63,6 +63,19 @@ class PhotographQuerySet(models.QuerySet):
 
 
 class Photograph(models.Model):
+    SLIDER_POSITION_CHOICES = (
+        ('center', 'Middle (Default)'),
+        ('top', 'Top'),
+        ('bottom', 'Bottom'),
+        ('left', 'Left'),
+        ('right', 'Right'),
+        ('top left', 'Top Left'),
+        ('top right', 'Top Right'),
+        ('bottom left', 'Bottom Left'),
+        ('bottom right', 'Bottom Right'),
+        ('contain', 'Show Entire Image'),
+    )
+
     image = FileBrowseField(max_length=200, directory=settings.DIRECTORY)
     albums = models.ManyToManyField(Album, blank=True)
     photographer = models.ForeignKey(Author, blank=True, null=True,
@@ -74,6 +87,9 @@ class Photograph(models.Model):
                            "for assistive technology")
     date_taken = models.DateField(blank=True, null=True)
     featured = models.BooleanField(default=False)
+    slider_position = models.CharField(
+        max_length=20, choices=SLIDER_POSITION_CHOICES, default='center',
+        help_text="Which part of the image to show in the front page slider")
     copyright = models.TextField(blank=True,
                                  help_text="Leave blank for default")
     credit = models.TextField(blank=True, help_text="Leave blank for default")
