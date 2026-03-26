@@ -1,64 +1,138 @@
 from django.contrib import admin
 from django.forms import TextInput, Textarea
 from django.db.models import CharField, TextField
+from django import forms
 
 from . import models
 
 
 class KeywordAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name", )}
+    prepopulated_fields = {"slug": ("name",)}
 
 
 class DuplicateInline(admin.TabularInline):
     model = models.Duplicate
 
 
-class PhotographAdmin(admin.ModelAdmin):
-    fields = ('image', 'photographer', 'suggested_caption',
-              'alt', 'date_taken',
-              'featured', 'slider_position', 'keywords', 'albums', 'copyright', 'credit',
-              ('featured_on_front_page_from', 'featured_on_front_page_to'),
-              ('include_short_title', 'include_suggested_caption'), )
-    search_fields = ['pk', 'suggested_caption', 'alt', 'keywords__name',
-                     'photographer__first_names', 'photographer__last_name',
-                     'albums__name', ]
-    ordering = ['-modified', ]
-    raw_id_fields = ('photographer', 'keywords', 'albums', )
-    autocomplete_lookup_fields = {
-        'fk': ['photographer', ],
-        'm2m': ['keywords', 'albums', ]
-    }
-    list_display = ('id', 'alt', 'thumbnail', 'photographer',
-                    'date_taken', 'created',
-                    'featured', 'modified', )
-    list_editable = ('featured',)
-    inlines = [DuplicateInline, ]
+class PhotographChangelistForm(forms.ModelForm):
+    suggested_caption = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 3,
+                "cols": 140,
+                "style": "min-width: 450px",
+            }
+        ),
+    )
+    alt = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"style": "width:280px;"}),
+    )
 
-    #def save_model(self, request, obj, form, change):
-    #    super(PhotographAdmin, self).save_model(request, obj, form, change)
-    #    for duplicate in obj.duplicate_set.all():
-    #        duplicate.create_duplicate()
+    class Meta:
+        model = models.Photograph
+        fields = "__all__"
+
+
+class PhotographAdmin(admin.ModelAdmin):
+    fields = (
+        "image",
+        "photographer",
+        "alt",
+        "suggested_caption",
+        "date_taken",
+        "featured",
+        "slider_position",
+        "keywords",
+        "albums",
+        "copyright",
+        "credit",
+        ("featured_on_front_page_from", "featured_on_front_page_to"),
+        ("include_short_title", "include_suggested_caption"),
+    )
+    search_fields = [
+        "pk",
+        "suggested_caption",
+        "alt",
+        "keywords__name",
+        "photographer__first_names",
+        "photographer__last_name",
+        "albums__name",
+    ]
+    ordering = [
+        "-modified",
+    ]
+    raw_id_fields = (
+        "photographer",
+        "keywords",
+        "albums",
+    )
+    autocomplete_lookup_fields = {
+        "fk": [
+            "photographer",
+        ],
+        "m2m": [
+            "keywords",
+            "albums",
+        ],
+    }
+    list_display = (
+        "id",
+        "alt",
+        "suggested_caption",
+        "thumbnail",
+        "photographer",
+        "date_taken",
+        "created",
+        "featured",
+        "modified",
+    )
+    list_editable = (
+        "alt",
+        "suggested_caption",
+        "featured",
+    )
+    inlines = [
+        DuplicateInline,
+    ]
+
+    def get_changelist_form(self, request, **kwargs):
+        return PhotographChangelistForm
 
 
 class PhotoInline(admin.TabularInline):
-    search_fields = ['']
-    fields = ('photograph',)
-    raw_id_fields = ('photograph',)
+    search_fields = [""]
+    fields = ("photograph",)
+    raw_id_fields = ("photograph",)
     autocomplete_lookup_fields = {
-        'fk': ['photograph__id', ]
+        "fk": [
+            "photograph__id",
+        ]
     }
     model = models.Photograph.albums.through
-    ordering = ['-photograph__id', ]
+    ordering = [
+        "-photograph__id",
+    ]
     formfield_overrides = {
-        CharField: {'widget': TextInput(attrs={'size': '500'})},
-        TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 40})},
+        CharField: {"widget": TextInput(attrs={"size": "500"})},
+        TextField: {"widget": Textarea(attrs={"rows": 4, "cols": 40})},
     }
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'description', ]
-    list_display = ['pk', 'name', 'description', ]
-    inlines = [PhotoInline, ]
+    search_fields = [
+        "name",
+        "description",
+    ]
+    list_display = [
+        "pk",
+        "name",
+        "description",
+    ]
+    inlines = [
+        PhotoInline,
+    ]
 
 
 admin.site.register(models.Album, AlbumAdmin)

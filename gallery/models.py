@@ -14,17 +14,24 @@ class Keyword(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     def get_absolute_url(self):
-        return reverse('gallery:keyword.detail', args=[self.slug, ])
+        return reverse(
+            "gallery:keyword.detail",
+            args=[
+                self.slug,
+            ],
+        )
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     @staticmethod
     def autocomplete_search_fields():
         return ("name__icontains",)
 
     class Meta:
-        ordering = ['name', ]
+        ordering = [
+            "name",
+        ]
 
 
 class Album(models.Model):
@@ -46,61 +53,76 @@ class Album(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('gallery:album.detail', args=[self.pk, ])
+        return reverse(
+            "gallery:album.detail",
+            args=[
+                self.pk,
+            ],
+        )
 
     @staticmethod
     def autocomplete_search_fields():
         return ("pk__iexact", "name__icontains")
 
     class Meta:
-        ordering = ['name', ]
+        ordering = [
+            "name",
+        ]
 
 
 class PhotographQuerySet(models.QuerySet):
-
     def ordered_by_date_taken(self):
         return self.order_by("-date_taken")
 
 
 class Photograph(models.Model):
     SLIDER_POSITION_CHOICES = (
-        ('center', 'Middle (Default)'),
-        ('top', 'Top'),
-        ('bottom', 'Bottom'),
-        ('left', 'Left'),
-        ('right', 'Right'),
-        ('top left', 'Top Left'),
-        ('top right', 'Top Right'),
-        ('bottom left', 'Bottom Left'),
-        ('bottom right', 'Bottom Right'),
-        ('contain', 'Show Entire Image'),
+        ("center", "Middle (Default)"),
+        ("top", "Top"),
+        ("bottom", "Bottom"),
+        ("left", "Left"),
+        ("right", "Right"),
+        ("top left", "Top Left"),
+        ("top right", "Top Right"),
+        ("bottom left", "Bottom Left"),
+        ("bottom right", "Bottom Right"),
+        ("contain", "Show Entire Image"),
     )
 
     image = FileBrowseField(max_length=200, directory=settings.DIRECTORY)
     albums = models.ManyToManyField(Album, blank=True)
-    photographer = models.ForeignKey(Author, blank=True, null=True,
-                                     on_delete=models.CASCADE)
+    photographer = models.ForeignKey(
+        Author, blank=True, null=True, on_delete=models.CASCADE
+    )
     suggested_caption = models.CharField(max_length=600, blank=True)
-    alt = models.CharField(max_length=600, blank=True,
-                           verbose_name="short title",
-                           help_text="Description of image "
-                           "for assistive technology")
+    alt = models.CharField(
+        max_length=600,
+        blank=True,
+        verbose_name="short title",
+        help_text="Keep short. Used for both assistive technology and as title in gallery",
+    )
     date_taken = models.DateField(blank=True, null=True)
     featured = models.BooleanField(default=False)
     slider_position = models.CharField(
-        max_length=20, choices=SLIDER_POSITION_CHOICES, default='center',
-        help_text="Which part of the image to show in the front page slider")
-    copyright = models.TextField(blank=True,
-                                 help_text="Leave blank for default")
+        max_length=20,
+        choices=SLIDER_POSITION_CHOICES,
+        default="center",
+        help_text="Which part of the image to show in the front page slider",
+    )
+    copyright = models.TextField(blank=True, help_text="Leave blank for default")
     credit = models.TextField(blank=True, help_text="Leave blank for default")
-    featured_on_front_page_from = models.DateTimeField(blank=True, null=True,
-                                                       help_text="Start date/time for featuring on front page")
-    featured_on_front_page_to = models.DateTimeField(blank=True, null=True,
-                                                     help_text="End date/time for featuring on front page")
-    include_short_title = models.BooleanField(default=False,
-                                             help_text="Include short title when featured on front page")
-    include_suggested_caption = models.BooleanField(default=False,
-                                                   help_text="Include suggested caption when featured on front page")
+    featured_on_front_page_from = models.DateTimeField(
+        blank=True, null=True, help_text="Start date/time for featuring on front page"
+    )
+    featured_on_front_page_to = models.DateTimeField(
+        blank=True, null=True, help_text="End date/time for featuring on front page"
+    )
+    include_short_title = models.BooleanField(
+        default=False, help_text="Include short title when featured on front page"
+    )
+    include_suggested_caption = models.BooleanField(
+        default=False, help_text="Include suggested caption when featured on front page"
+    )
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     keywords = models.ManyToManyField(Keyword, blank=True)
@@ -108,17 +130,27 @@ class Photograph(models.Model):
     objects = PhotographQuerySet.as_manager()
 
     def __str__(self):
-        return ", ".join([str(self.pk), str(self.image).rsplit('/', 1)[-1],
-                          str(self.photographer), ])
+        return ", ".join(
+            [
+                str(self.pk),
+                str(self.image).rsplit("/", 1)[-1],
+                str(self.photographer),
+            ]
+        )
 
     def get_absolute_url(self):
-        return reverse('gallery:photo.detail', args=[self.pk, ])
+        return reverse(
+            "gallery:photo.detail",
+            args=[
+                self.pk,
+            ],
+        )
 
     def thumbnail(self):
         return format_html(
             '<img src="/media/{}" alt="{}">',
             str(self.image.version_generate("thumbnail")),
-            self.suggested_caption
+            self.suggested_caption,
         )
 
     # def save(self, *args, **kwargs):
@@ -130,7 +162,7 @@ class Photograph(models.Model):
     #         duplicate.create_duplicate()
 
     class Meta:
-        ordering = ['-featured', '-date_taken', '-modified']
+        ordering = ["-featured", "-date_taken", "-modified"]
 
 
 """Hack class to make it easy to upload multiple photos into database,
@@ -163,4 +195,7 @@ class Duplicate(models.Model):
             super(Duplicate, self).save(*args, **kwargs)
 
     class Meta:
-        unique_together = ("photograph", "image", )
+        unique_together = (
+            "photograph",
+            "image",
+        )
