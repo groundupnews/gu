@@ -21,7 +21,7 @@ class BlockAdmin(admin.ModelAdmin):
         }),
         ('Dynamic Content Source', {
             'fields': (('selected_topic', 'selected_category'),
-                       ('num_articles', 'feature_first_article', 'exclude_duplicates')),
+                       ('num_articles', 'feature_first_article', 'exclude_duplicates', 'display_in_columns')),
             'description': 'Select Topic OR Category, and number of articles. This will overwrite the HTML field.'
         }),
         ('Featured Article Display', {

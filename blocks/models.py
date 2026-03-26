@@ -68,6 +68,11 @@ class Block(models.Model):
         verbose_name="Exclude duplicates",
         help_text="If checked, articles already displayed on the page will be excluded.",
     )
+    display_in_columns = models.BooleanField(
+        default=False,
+        verbose_name="Display standard articles in columns",
+        help_text="If checked, standard articles will be displayed in a two-column grid.",
+    )
 
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -85,10 +90,11 @@ class Block(models.Model):
         cat_feat = "1" if self.show_category_featured else "0"
         cat_std = "1" if self.show_category_standard else "0"
         exclude_duplicates = "1" if self.exclude_duplicates else "0"
+        display_in_columns = "1" if self.display_in_columns else "0"
 
         title = self.custom_title.replace(":", "") if self.custom_title else ""
 
-        flags = f"{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}:{byline_feat}:{byline_std}:{date_feat}:{date_std}:{cat_feat}:{cat_std}:{exclude_duplicates}"
+        flags = f"{feat}:{sum_feat}:{sum_std}:{title}:{title_feat}:{title_std}:{byline_feat}:{byline_std}:{date_feat}:{date_std}:{cat_feat}:{cat_std}:{exclude_duplicates}:{display_in_columns}"
 
         if self.block_type == "topic" and self.selected_topic:
             self.html = f"{{{{topic:{self.selected_topic.slug}:{self.num_articles}:{flags}}}}}"

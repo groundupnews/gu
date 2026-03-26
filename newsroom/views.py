@@ -83,6 +83,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
         show_date_standard=True,
         show_category_featured=True,
         show_category_standard=True,
+        display_in_columns=False,
     ):
         """
         kind: 'topic' | 'category' | 'chart_of_the_week'
@@ -100,6 +101,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
         show_date_standard: bool
         show_category_featured: bool
         show_category_standard: bool
+        display_in_columns: bool
         """
         if not articles:
             return ""
@@ -161,22 +163,44 @@ def parse_shortcodes(content, exclude_article_ids=None):
         else:
             rest = articles
 
-        content_html += "".join(
-            render_to_string(
-                "blocks/article_summary_block.html",
-                {
-                    "article": a,
-                    "include_summary": "1" if show_summary_standard else "0",
-                    "include_title": "1" if show_title_standard else "0",
-                    "include_byline": "1" if show_byline_standard else "0",
-                    "include_date": "1" if show_date_standard else "0",
-                    "include_category": "1" if show_category_standard else "0",
-                    "include_image": "1",
-                    "block_variant": "compact",
-                },
+        if display_in_columns and rest:
+            content_html += '<div class="row custom-block-grid">'
+            content_html += "".join(
+                '<div class="col-xs-12 col-sm-6">'
+                + render_to_string(
+                    "blocks/article_summary_block.html",
+                    {
+                        "article": a,
+                        "include_summary": "1" if show_summary_standard else "0",
+                        "include_title": "1" if show_title_standard else "0",
+                        "include_byline": "1" if show_byline_standard else "0",
+                        "include_date": "1" if show_date_standard else "0",
+                        "include_category": "1" if show_category_standard else "0",
+                        "include_image": "1",
+                        "block_variant": "compact",
+                    },
+                )
+                + "</div>"
+                for a in rest
             )
-            for a in rest
-        )
+            content_html += '</div>'
+        else:
+            content_html += "".join(
+                render_to_string(
+                    "blocks/article_summary_block.html",
+                    {
+                        "article": a,
+                        "include_summary": "1" if show_summary_standard else "0",
+                        "include_title": "1" if show_title_standard else "0",
+                        "include_byline": "1" if show_byline_standard else "0",
+                        "include_date": "1" if show_date_standard else "0",
+                        "include_category": "1" if show_category_standard else "0",
+                        "include_image": "1",
+                        "block_variant": "compact",
+                    },
+                )
+                for a in rest
+            )
 
         footer_html = render_to_string(
             "blocks/shortcode_read_more.html",
@@ -214,6 +238,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
             cat_feat_str = match.group(12)
             cat_std_str = match.group(13)
             exclude_duplicates_str = match.group(14)
+            display_in_columns_str = "0"
         else:
             # here its : 1=slug, 2=count, 3=featured, 4=sum_feat, 5=sum_std, 6=title, 7=title_feat, 8=title_std
             slug = match.group(1)
@@ -231,6 +256,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
             cat_feat_str = match.group(13)
             cat_std_str = match.group(14)
             exclude_duplicates_str = match.group(15)
+            display_in_columns_str = match.group(16)
 
         # parse booleans
         feature_first = get_bool_val(featured_str)
@@ -245,6 +271,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
         show_category_featured = get_bool_val(cat_feat_str)
         show_category_standard = get_bool_val(cat_std_str)
         exclude_duplicates = True if exclude_duplicates_str == "1" else False
+        display_in_columns = True if display_in_columns_str == "1" else False
 
         try:
             if kind == "topic":
@@ -279,17 +306,18 @@ def parse_shortcodes(content, exclude_article_ids=None):
                 show_date_standard,
                 show_category_featured,
                 show_category_standard,
+                display_in_columns,
             )
         except (models.Topic.DoesNotExist, models.Category.DoesNotExist):
             return ""
 
     patterns = [
         (
-            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
+            r"{{topic:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "topic",
         ),
         (
-            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
+            r"{{category:([-\w]+):(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "category",
         ),
         (
