@@ -340,29 +340,13 @@ GRAPPELLI_INDEX_DASHBOARD = "groundup.dashboard.CustomIndexDashboard"
 GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 
 NEWSROOM_ARTICLE_COPYRIGHT = (
-    "<p>&copy; " + str(datetime.date.today().year) + " GroundUp. "
-    "This article is licensed under a "
-    '<a rel="license"'
-    '   href="http://creativecommons.org/licenses/by-nd/4.0/">'
-    "Creative Commons Attribution-NoDerivatives 4.0 "
-    "International License"
-    "</a>.</p>"
-    "<p>You may republish this article, "
-    "so long as you credit the authors and "
-    "GroundUp, and do not change the text. "
-    "Please include a link back to the original "
-    "article."
+    "<p>"
+    "&copy; " + str(datetime.date.today().year) + " GroundUp. "
+    "This article is licensed under the <a href='https://groundup.org.za/licencing/detail/2/'>"
+    "GroundUp Republication Licence Version 1.0</a>. "
+    "Email <a href='mailto:info@groundup.org.za'>info@groundup.org.za</a> "
+    "to request permission to republish."
     "</p>"
-    "<p>We put an invisible pixel in the article so "
-    "that we can count traffic to republishers. "
-    "All analytics tools are solely on our servers. "
-    "We do not give our logs to any third party. "
-    "Logs are deleted after two weeks. We do not "
-    "use any IP address identifying information "
-    "except to count regional traffic. "
-    "We are solely interested in counting hits, "
-    "<b>not tracking</b> users. If you republish, "
-    "please do not delete the invisible pixel.</p>"
 )
 
 
