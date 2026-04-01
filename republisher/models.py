@@ -16,32 +16,38 @@ def validate_email_list(email_string_list):
 
 class Republisher(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    email_addresses = models.CharField(max_length=250,
-                                       validators=[validate_email_list, ])
+    email_addresses = models.CharField(
+        max_length=250,
+        validators=[
+            validate_email_list,
+        ],
+    )
     message = models.TextField(blank=True)
     slug = models.SlugField(max_length=20, blank=True)
-    ask_for_analytics = models.BooleanField(default=False)
+    ask_for_analytics = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        ordering = ["name", ]
+        ordering = [
+            "name",
+        ]
 
 
 class RepublisherArticle(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     republisher = models.ForeignKey(Republisher, on_delete=models.CASCADE)
     wait_time = models.PositiveIntegerField(
-        default=0,
-        help_text="Minimum number of minutes after publication till sent.")
-    note = models.TextField(blank=True,
-                            help_text="A note for the republisher "
-                            "specific to this article.")
-    status = models.CharField(max_length=20,
-                              choices=SCHEDULE_RESULTS,
-                              default="scheduled")
+        default=0, help_text="Minimum number of minutes after publication till sent."
+    )
+    note = models.TextField(
+        blank=True, help_text="A note for the republisher specific to this article."
+    )
+    status = models.CharField(
+        max_length=20, choices=SCHEDULE_RESULTS, default="scheduled"
+    )
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
@@ -50,8 +56,11 @@ class RepublisherArticle(models.Model):
     def published(self):
         return self.article.published
 
-    published.admin_order_field = 'article__published'
+    published.admin_order_field = "article__published"
 
     class Meta:
-        ordering = ["article__published", "republisher", ]
+        ordering = [
+            "article__published",
+            "republisher",
+        ]
         unique_together = (("article", "republisher"),)
