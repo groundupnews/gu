@@ -342,7 +342,7 @@ GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 NEWSROOM_ARTICLE_COPYRIGHT = (
     "<p>"
     "&copy; " + str(datetime.date.today().year) + " GroundUp. "
-    "This article is licensed under the <a href='https://groundup.org.za/licencing/detail/2/'>"
+    "This article is published under the <a href='https://groundup.org.za/licencing/detail/2/'>"
     "GroundUp Republication Licence Version 1.0</a>. "
     "Email <a href='mailto:info@groundup.org.za'>info@groundup.org.za</a> "
     "to request permission to republish."
