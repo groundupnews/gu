@@ -1,5 +1,16 @@
-# robots.txt for http://www.groundup.org.za/
+# Claude-specific access: same restrictions as everyone else,
+# but /preview/ is explicitly allowed
+User-agent: Claude-User
+Allow: /preview/
+Disallow: /admin/
+Disallow: /invoices/
+Disallow: /preview/
+Disallow: /prev_gen/
+Disallow: /copy_article/
+Disallow: /article_print/
+Disallow: /commissions/
 
+# Standard rules for all other bots
 User-agent: *
 Disallow: /admin/
 Disallow: /invoices/
