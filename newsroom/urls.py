@@ -14,7 +14,7 @@ urlpatterns = [
         (views.home_page_view),
         name='home'),
 
-    re_path(r'^advanced_search/$', views.advanced_search, name='advanced.search'),
+    # re_path(r'^advanced_search/$', views.advanced_search, name='advanced.search'),
 
     re_path(r'^category/opinion_and_analysis/$',
         cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))
