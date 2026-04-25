@@ -25,6 +25,7 @@ media/
 output.txt
 fbtest.py
 *.json
+*.save
 
 # C extensions
 *.so
