@@ -1376,7 +1376,7 @@ def advanced_search(request):
             "page": page,
             "page_num": page_num,
             "num_pages": num_pages,
-            "num_items": len(article_list),
+            "num_items": paginator.count,
             "search_type": search_type,
             "gallery": gallery,
             "additional_parameters": additional_parameters,
