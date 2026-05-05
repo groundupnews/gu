@@ -60,12 +60,15 @@ INSTALLED_APPS = (
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    # Configure the django-otp package.
+    "allauth.mfa",
+    # django_otp and allauth_2fa are kept until the 2FA data migration has been
+    # run on production (newsroom.0050_migrate_2fa_to_allauth_mfa). After running
+    # `manage.py migrate` on production, comment these out and remove the
+    # django-allauth-2fa and django-otp packages from requirements.txt.
     "django_otp",
     "django_otp.plugins.otp_totp",
     "django_otp.plugins.otp_static",
     "debug_toolbar",
-    # Enable two-factor auth.
     "allauth_2fa",
     "haystack",
     "compressor",
@@ -141,12 +144,10 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+MFA_TOTP_ISSUER = "GroundUp"
 
-# Set the allauth adapter to be the 2FA adapter.
-ACCOUNT_ADAPTER = "allauth_2fa.adapter.OTPAdapter"
-
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 # ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 # ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/user/"
@@ -195,8 +196,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Africa/Johannesburg"
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
