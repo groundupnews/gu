@@ -251,7 +251,9 @@ class Author(models.Model):
             super(Author, self).save(*args, **kwargs)
 
     class Meta:
-        unique_together = (("first_names", "last_name"),)
+        constraints = [
+            models.UniqueConstraint(fields=["first_names", "last_name"], name="unique_first_names_last_name")
+        ]
         ordering = [
             "last_name",
             "first_names",
@@ -921,10 +923,9 @@ class UserEdit(models.Model):
     edit_time = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = (
-            "article",
-            "user",
-        )
+        constraints = [
+            models.UniqueConstraint(fields=["article", "user"], name="unique_article_user")
+        ]
         ordering = [
             "article__published",
             "edit_time",

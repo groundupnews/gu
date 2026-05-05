@@ -414,7 +414,9 @@ class Invoice(models.Model):
 
     class Meta:
         ordering = ['status', '-modified', ]
-        unique_together = ['author', 'invoice_num', ]
+        constraints = [
+            models.UniqueConstraint(fields=['author', 'invoice_num'], name='unique_author_invoice_num')
+        ]
 
 
 class CommissionQuerySet(models.QuerySet):
