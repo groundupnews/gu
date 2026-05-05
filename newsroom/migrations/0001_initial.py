@@ -4,7 +4,8 @@ import datetime
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-from django.utils.timezone import utc
+from datetime import timezone as tz
+utc = tz.utc
 import filebrowser.fields
 
 
