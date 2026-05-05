@@ -289,6 +289,12 @@ class Invoice(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def calc_payment(self):
+        if self.pk is None:
+            self.amount_paid = Decimal('0.0000')
+            self.vat_paid = Decimal('0.0000')
+            self.tax_paid = Decimal('0.0000')
+            return (self.amount_paid, self.vat_paid, self.tax_paid, Decimal('0.0000'))
+        
         commissions = Commission.objects.for_authors().\
                       filter(invoice=self)
         total_uncorrected = Decimal(0.0000)
@@ -422,8 +428,6 @@ class CommissionQuerySet(models.QuerySet):
 
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
-
-    RateCard.populate_rates()
 
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, blank=True, null=True,
