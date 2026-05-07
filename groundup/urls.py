@@ -74,7 +74,6 @@ urlpatterns = (
         path("", include("sudoku.urls")),
         path("", include("analyzer.urls")),
         path("", include("security.urls")),
-        path("", include("allauth_2fa.urls")),
         path("donation/", include("donationPage.urls")),
         path("accounts/", include("allauth.urls")),
         path(

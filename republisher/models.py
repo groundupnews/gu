@@ -63,4 +63,6 @@ class RepublisherArticle(models.Model):
             "article__published",
             "republisher",
         ]
-        unique_together = (("article", "republisher"),)
+        constraints = [
+            models.UniqueConstraint(fields=["article", "republisher"], name="unique_article_republisher")
+        ]

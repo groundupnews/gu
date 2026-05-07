@@ -1,7 +1,7 @@
 beautifulsoup4==4.12.2
-django-filebrowser==4.0.3
-django-grappelli==3.0.8
-Django==4.2.30
+git+https://github.com/SkillBeatsAll/django-filebrowser.git@feature/django5x
+django-grappelli==4.0.3
+Django==5.2
 
 html2text
 httplib2
@@ -20,13 +20,19 @@ django-haystack
 python-dateutil
 piexif
 django-allauth
+fido2
+# django-allauth-2fa and django-otp are kept until the 2FA data migration
+# (newsroom.0050_migrate_2fa_to_allauth_mfa) has been run on production.
+# After `manage.py migrate` on production, remove allauth2fa & otp
+# comment out django_otp/allauth_2fa from INSTALLED_APPS in settings.py.
+django-allauth-2fa
+django-otp
 smartypants
 django-ajax-selects
 django-debug-toolbar
 django-el-pagination
 csscompressor
 django-compressor
-django-allauth-2fa
 clfparser
 pdfkit
 pymemcache

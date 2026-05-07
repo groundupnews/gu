@@ -195,7 +195,6 @@ class Duplicate(models.Model):
             super(Duplicate, self).save(*args, **kwargs)
 
     class Meta:
-        unique_together = (
-            "photograph",
-            "image",
-        )
+        constraints = [
+            models.UniqueConstraint(fields=["photograph", "image"], name="unique_photograph_image")
+        ]
