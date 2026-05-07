@@ -552,7 +552,7 @@
                 {{ republisherFormSet.management_form }}
                 {% for form in republisherFormSet %}
                     <div class="republisher-form inline-form">
-                        {{form}}
+                        {{form.as_p}}
                     </div>
                 {% endfor %}
             </div>
