@@ -27,3 +27,21 @@ class URLSWork(TestCase):
         response = c.get(url)
         self.assertEqual(response.status_code, 200, 
                         "Password change URL should be accessible")
+
+    def test_allauth_login_accepts_email_address(self):
+        """Users can sign in with their email address on the allauth login form."""
+        User.objects.create_user("admin", "admin@example.com", "abcde")
+
+        response = self.client.post(
+            reverse("account_login"),
+            {
+                "login": "admin@example.com",
+                "password": "abcde",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            int(self.client.session["_auth_user_id"]),
+            User.objects.get(username="admin").pk,
+        )

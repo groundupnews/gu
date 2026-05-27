@@ -21,12 +21,6 @@ python-dateutil
 piexif
 django-allauth
 fido2
-# django-allauth-2fa and django-otp are kept until the 2FA data migration
-# (newsroom.0050_migrate_2fa_to_allauth_mfa) has been run on production.
-# After `manage.py migrate` on production, remove allauth2fa & otp
-# comment out django_otp/allauth_2fa from INSTALLED_APPS in settings.py.
-django-allauth-2fa
-django-otp
 smartypants
 django-ajax-selects
 django-debug-toolbar

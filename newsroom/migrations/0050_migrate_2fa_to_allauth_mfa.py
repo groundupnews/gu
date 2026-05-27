@@ -12,27 +12,42 @@ def migrate_totp_secrets(apps, schema_editor):
     django_otp stores the key as a hex-encoded string.
     allauth.mfa stores the secret as base32 in a JSON data field.
     """
-    TOTPDevice = apps.get_model("otp_totp", "TOTPDevice")
     Authenticator = apps.get_model("mfa", "Authenticator")
+    connection = schema_editor.connection
+
+    if "otp_totp_totpdevice" not in connection.introspection.table_names():
+        print("\n2FA migration: no django-otp TOTP table found; skipped.")
+        return
 
     migrated = 0
     skipped = 0
 
-    for device in TOTPDevice.objects.filter(confirmed=True):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT user_id, key
+            FROM otp_totp_totpdevice
+            WHERE confirmed = %s
+            """,
+            [True],
+        )
+        devices = cursor.fetchall()
+
+    for user_id, key in devices:
         # conv hex key -> raw bytes -> base32 string
         try:
-            secret_b32 = base64.b32encode(binascii.unhexlify(device.key)).decode("ascii")
+            secret_b32 = base64.b32encode(binascii.unhexlify(key)).decode("ascii")
         except (binascii.Error, ValueError):
             skipped += 1
             continue
 
         # we skip if curr user already has a TOTP authenticator (avoid duplicates)
-        if Authenticator.objects.filter(user=device.user, type="totp").exists():
+        if Authenticator.objects.filter(user_id=user_id, type="totp").exists():
             skipped += 1
             continue
 
         Authenticator.objects.create(
-            user=device.user,
+            user_id=user_id,
             type="totp",
             data={"secret": secret_b32},
         )
@@ -45,7 +60,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("newsroom", "0049_alter_article_copyright"),
-        ("otp_totp", "__first__"),
         ("mfa", "__first__"),
     ]
 
