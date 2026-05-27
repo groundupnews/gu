@@ -61,15 +61,7 @@ INSTALLED_APPS = (
     "allauth.account",
     "allauth.socialaccount",
     "allauth.mfa",
-    # django_otp and allauth_2fa are kept until the 2FA data migration has been
-    # run on production (newsroom.0050_migrate_2fa_to_allauth_mfa). After running
-    # `manage.py migrate` on production, comment these out and remove the
-    # django-allauth-2fa and django-otp packages from requirements.txt.
-    "django_otp",
-    "django_otp.plugins.otp_totp",
-    "django_otp.plugins.otp_static",
     "debug_toolbar",
-    "allauth_2fa",
     "haystack",
     "compressor",
     "ajax_select",
@@ -98,13 +90,6 @@ MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # Configure the django-otp package. Note this must be after the
-    # AuthenticationMiddleware.
-    "django_otp.middleware.OTPMiddleware",
-    # Reset login flow middleware. If this middleware is included, the login
-    # flow is reset if another page is loaded between login and successfully
-    # entering two-factor credentials.
-    "allauth_2fa.middleware.AllauthTwoFactorMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     # SessionAuthenticationMiddleware is deprecated
