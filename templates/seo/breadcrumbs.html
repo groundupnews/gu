@@ -1,0 +1,15 @@
+{% load seo_tags %}
+{% if breadcrumbs %}
+    <nav class="gu-breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+            {% for crumb in breadcrumbs %}
+                {% if forloop.last or not crumb.url %}
+                    <li><span aria-current="page">{{ crumb.name }}</span></li>
+                {% else %}
+                    <li><a href="{{ crumb.url }}">{{ crumb.name }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
+    {% breadcrumb_jsonld breadcrumbs %}
+{% endif %}

@@ -57,6 +57,7 @@
             {% endfor %}
         </div>
     {% endif %}
+    {% include "seo/breadcrumbs.html" %}
     <h1 id="article_title" class="article__title {% if can_edit %} editable {% endif %}"
         {% if can_edit %}
         style="display:inline-block"
