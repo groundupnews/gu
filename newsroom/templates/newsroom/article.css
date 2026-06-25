@@ -678,3 +678,41 @@ article figure, article p.caption {
 }
 
 {% endif %}
+
+/* SEO breadcrumb navigation */
+.gu-breadcrumbs {
+    display: none;
+}
+
+.gu-breadcrumbs ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.gu-breadcrumbs li {
+    display: inline-flex;
+    align-items: center;
+}
+
+.gu-breadcrumbs li + li::before {
+    content: "\203A";
+    margin: 0 8px;
+    color: #999;
+}
+
+.gu-breadcrumbs a {
+    color: #4D4D4D;
+    text-decoration: none;
+}
+
+.gu-breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+.gu-breadcrumbs [aria-current="page"] {
+    color: #999;
+}
