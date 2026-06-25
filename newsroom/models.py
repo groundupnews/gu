@@ -697,6 +697,23 @@ class Article(models.Model):
         else:
             return "Text by " + names[0] + ". Photos by " + names[1] + "."
 
+    def get_authors(self):
+        """Return nonnull author objects
+
+        Used to build the NewsArticle structured author list.
+        """
+        return [
+            author
+            for author in (
+                self.author_01,
+                self.author_02,
+                self.author_03,
+                self.author_04,
+                self.author_05,
+            )
+            if author is not None
+        ]
+
     """Gets only the necessary part of primary image by URL. i.e. it removes
     the domain if the domain is in ALLOWED_HOSTS.
     """
