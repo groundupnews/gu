@@ -522,6 +522,11 @@ class AuthorDetail(ArticleList):
         context["image"] = self.author.photo
         context["description"] = self.author.description
         context["author"] = self.author
+        context["breadcrumbs"] = [
+            {"name": "Home", "url": "/"},
+            {"name": "Authors", "url": reverse("newsroom:author.list")},
+            {"name": str(self.author), "url": self.author.get_absolute_url()},
+        ]
         return context
 
 
@@ -537,6 +542,13 @@ class CategoryDetail(ArticleList):
     def get_context_data(self, **kwargs):
         context = super(CategoryDetail, self).get_context_data(**kwargs)
         context["heading"] = self.category.name
+        context["breadcrumbs"] = [
+            {"name": "Home", "url": "/"},
+            {
+                "name": self.category.name,
+                "url": self.category.get_absolute_url(),
+            },
+        ]
         return context
 
 
@@ -591,6 +603,27 @@ class RegionDetail(ArticleList):
         ]
         context["title"] = str(self.region).rpartition("/")[2]
         context["heading"] = "|".join(regions)
+
+        # Breadcrumbs -- home > region hierarchy
+        chain = []
+        name = self.region.name
+        while name:
+            chain.append(name)
+            name = name.rpartition("/")[0]
+        chain.reverse()
+        breadcrumbs = [{"name": "Home", "url": "/"}]
+        for full_name in chain:
+            try:
+                ancestor = models.Region.objects.get(name=full_name)
+            except models.Region.DoesNotExist:
+                continue
+            breadcrumbs.append(
+                {
+                    "name": ancestor.name.rpartition("/")[2],
+                    "url": ancestor.get_absolute_url(),
+                }
+            )
+        context["breadcrumbs"] = breadcrumbs
         return context
 
 
@@ -622,6 +655,11 @@ class TopicDetail(ArticleList):
         context = super(TopicDetail, self).get_context_data(**kwargs)
         context["heading"] = self.topic.name.upper()
         context["topic"] = self.topic
+        context["breadcrumbs"] = [
+            {"name": "Home", "url": "/"},
+            {"name": "Topics", "url": reverse("newsroom:topic.list")},
+            {"name": self.topic.name, "url": self.topic.get_absolute_url()},
+        ]
         return context
 
     def get_template_names(self):
@@ -767,9 +805,19 @@ def get_context(article):
     else:
         display_region = ""
 
+    breadcrumbs = [
+        {"name": "Home", "url": "/"},
+        {
+            "name": article.category.name,
+            "url": article.category.get_absolute_url(),
+        },
+        {"name": strip_tags(article.title), "url": article.get_absolute_url()},
+    ]
+
     try:
         dict = {
             "article": article,
+            "breadcrumbs": breadcrumbs,
             "display_region": display_region,
             "recommended": article.get_recommended(),
             "related": article.get_related(),

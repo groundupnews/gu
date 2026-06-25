@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load fb_versions %}
+{% load seo_tags %}
 
 {% block title %}
     {{article.title|striptags|safe}}{{block.super}}
@@ -41,6 +42,8 @@
     <meta property="article:published_time" content="{{article.published|date:'c'}}"/>
     <meta property="article:modified_time" content="{{article.modified|date:'c'}}"/>
     <meta name="author" content="{{ article.cached_byline_no_links }}">
+
+    {% news_article_jsonld article %}
 
 {% endblock %}
 
