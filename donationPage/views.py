@@ -41,34 +41,6 @@ def page(request):
     return HttpResponse(template.render(context,request))
 
 
-#dashboard page to be displayed when a donor url is accessed
-def donorDash(request, donor_url):
-    url=donor_url
-    Cdonor=Donor.objects.get(donor_url=url)
-    donations = Donation.objects.all().filter(donor=Cdonor)
-    form = DonorForm(instance=Cdonor)
-    for donation in donations:
-        donation.datetime_of_donation=donation.datetime_of_donation.strftime("%Y-%m-%d")
-        donation.amount = "{:,.2f}".format(donation.amount)
-    context = {'donations':donations, 'form':form,}
-    template = loader.get_template('donationPage/dashboard.html')
-    if request.method == 'POST':
-        form = DonorForm(request.POST)
-        if form.is_valid():
-            # Get the user profile based on the email (or any other unique identifier)
-            user_profile, created = Donor.objects.get_or_create(email=form.cleaned_data['email'])
-
-            # Update the fields with the submitted data
-            user_profile.name = form.cleaned_data['name']
-            user_profile.display_name = form.cleaned_data['display_name']
-            user_profile.email = form.cleaned_data['email']
-
-            # Save the updated user profile to the database
-            user_profile.save()
-            messages.add_message(request, messages.INFO, "Details updated.")
-            return redirect('donation.dashboard', donor_url=donor_url)
-    return HttpResponse(template.render(context, request))
-
 
 def _remembered_donor(request):
     cookie_value = request.COOKIES.get("donor_dashboard_token")
