@@ -96,7 +96,8 @@ REMOTE = {
             "url": "https://puzzles.groundup.org.za/crossword/7/solve/",
             "archive_url": "https://puzzles.groundup.org.za/crossword/",
             "title": "Cryptic-ish #7",
-            "description": "",
+            "short_description": "A fun puzzle that doesn't take itself too seriously.",
+            "description": "A fun puzzle that doesn't take itself too seriously. An irreverent mix of puns, general knowledge and newsy clues.",
             "num_rows": 3,
             "num_cols": 3,
             "grid": [[{"block": False, "number": 1}] * 3] * 3,
@@ -245,6 +246,14 @@ class PuzzlesBlockTests(TestCase):
         self.assertIn("GroundUp Puzzles", html)
         self.assertIn("All puzzles", html)
         self.assertNotIn("game", html.lower())
+
+    def test_the_blurb_is_the_short_description_not_the_long_one(self):
+        with patch("blocks.puzzles.requests.get", return_value=FakeResponse(REMOTE)):
+            html = render_to_string(
+                "blocks/puzzles_block.html", puzzles_block.puzzles_block_context()
+            )
+        self.assertIn("too seriously.", html)
+        self.assertNotIn("irreverent mix", html)
 
     def test_the_quiz_is_marked_coming_soon_and_is_not_a_link(self):
         with patch("blocks.puzzles.requests.get", return_value=FakeResponse(REMOTE)):

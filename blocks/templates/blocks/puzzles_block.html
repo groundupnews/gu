@@ -26,28 +26,12 @@ from blocks/puzzles.py.
                 {% endif %}
             </div>
             <h4 class="gup-hero__name">{% if crossword.placeholder %}Crosswords{% else %}{{ crossword.title }}{% endif %}</h4>
-            <p class="gup-hero__blurb">{% if crossword.description and not crossword.placeholder %}{{ crossword.description|truncatewords:22 }}{% else %}A cryptic-ish grid with a South African twist.{% endif %}</p>
+            <p class="gup-hero__blurb">{% if crossword.placeholder %}A cryptic-ish grid with a South African twist.{% else %}{% firstof crossword.short_description crossword.description|truncatewords:22 "A cryptic-ish grid with a South African twist." %}{% endif %}</p>
             <span class="gup-btn">{% if crossword.placeholder %}Browse the crosswords{% else %}Play the crossword{% endif %} &rarr;</span>
         </div>
     </a>
 
     <div class="gup-tiles">
-
-        <a class="gup-card gup-tile gup-t-sudoku" href="{{ sudoku.url }}">
-            <div class="gup-tile__art">
-                <div class="gup-sudoku" aria-hidden="true">
-                    {% for digit in sudoku.cells %}<span>{{ digit }}</span>{% endfor %}
-                </div>
-            </div>
-            <div class="gup-tile__body">
-                <h4 class="gup-tile__name">Sudoku</h4>
-                <p class="gup-tile__blurb">Fill every row, column and box with one to nine.</p>
-                <div class="gup-tile__foot">
-                    <span class="gup-badge">{% if sudoku.placeholder %}Daily{% else %}{{ sudoku.difficulty|default:"Daily" }}{% endif %}</span>
-                    <span class="gup-tile__play">{% if sudoku.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
-                </div>
-            </div>
-        </a>
 
         <a class="gup-card gup-tile gup-t-target" href="{{ target.url }}">
             <div class="gup-tile__art">
@@ -61,6 +45,22 @@ from blocks/puzzles.py.
                 <div class="gup-tile__foot">
                     <span class="gup-badge">Mon &amp; Fri</span>
                     <span class="gup-tile__play">{% if target.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
+                </div>
+            </div>
+        </a>
+
+        <a class="gup-card gup-tile gup-t-sudoku" href="{{ sudoku.url }}">
+            <div class="gup-tile__art">
+                <div class="gup-sudoku" aria-hidden="true">
+                    {% for digit in sudoku.cells %}<span>{{ digit }}</span>{% endfor %}
+                </div>
+            </div>
+            <div class="gup-tile__body">
+                <h4 class="gup-tile__name">Sudoku</h4>
+                <p class="gup-tile__blurb">Fill every row, column and box with one to nine.</p>
+                <div class="gup-tile__foot">
+                    <span class="gup-badge">{% if sudoku.placeholder %}Daily{% else %}{{ sudoku.difficulty|default:"Daily" }}{% endif %}</span>
+                    <span class="gup-tile__play">{% if sudoku.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
                 </div>
             </div>
         </a>
