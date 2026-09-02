@@ -469,6 +469,12 @@ S18A_RECEIPT_START = 332
 # address(es) notified when a donor requests an S18A certificate.
 S18A_STAFF_EMAILS = ["info@groundup.org.za"]
 
+# used in api!
+PUZZLES_SITE_URL = "https://puzzles.groundup.org.za"
+PUZZLES_API_URL = PUZZLES_SITE_URL + "/api/puzzles/"
+PUZZLES_API_TIMEOUT = 2.5
+PUZZLES_API_CACHE_SECONDS = 300
+
 
 from .local_settings import *
 

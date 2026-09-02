@@ -1,0 +1,399 @@
+.gup {
+    --gup-ink: #151f22;
+    --gup-rule: #e3e3dc;
+    --gup-muted: #5a6266;
+    --gup-dim: #9a9a9a;
+    --gup-link: #0250bb;
+    --accent: #00b1f0;
+    --accent-deep: #0091c6;
+    --accent-soft: #e2f5fd;
+
+    display: block;
+    margin: 0 0 28px;
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    color: var(--gup-ink);
+}
+
+.gup * { box-sizing: border-box; }
+
+.gup .gup-t-crossword { --accent: #00b1f0; --accent-deep: #0086b8; --accent-soft: #e6f6fd; }
+.gup .gup-t-sudoku    { --accent: #4d57c4; --accent-deep: #3b44a8; --accent-soft: #eeeff9; }
+.gup .gup-t-target    { --accent: #1f8a5b; --accent-deep: #19714a; --accent-soft: #e9f4ee; }
+.gup .gup-t-quiz      { --accent: #d4582f; --accent-deep: #b8461f; --accent-soft: #fcefe9; }
+
+/* section head */
+.gup .gup__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2px 16px;
+    margin: 0 0 18px;
+    padding: 0 0 10px;
+    border-bottom: 3px solid var(--gup-ink);
+}
+
+.gup .gup__title {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 26px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -.6px;
+    text-transform: none;
+    color: var(--gup-ink);
+}
+
+.gup .gup__all {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gup-link);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.gup .gup__all:hover,
+.gup .gup__all:focus { text-decoration: underline; }
+
+/* the cards*/
+
+.gup .gup-card {
+    display: block;
+    border: 1px solid var(--gup-rule);
+    border-top: 4px solid var(--accent);
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+}
+
+.gup a.gup-card:hover,
+.gup a.gup-card:focus {
+    border-color: var(--accent);
+    border-top-color: var(--accent);
+    text-decoration: none;
+}
+
+/* featured puzzle! */
+.gup .gup-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin: 0 0 18px;
+}
+
+.gup .gup-hero__art {
+    flex: 0 1 232px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    background: var(--accent-soft);
+}
+
+.gup .gup-hero__text {
+    flex: 1 1 264px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 22px 24px;
+}
+
+.gup .gup-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+}
+
+.gup .gup-hero__name {
+    margin: 0 0 7px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 28px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -.8px;
+    text-transform: none;
+    color: var(--gup-ink);
+}
+
+.gup .gup-hero__blurb {
+    margin: 0 0 18px;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--gup-muted);
+}
+
+
+.gup .gup-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    gap: 16px;
+}
+
+.gup .gup-tile { display: flex; flex-direction: column; }
+
+.gup .gup-tile__art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 134px;
+    padding: 18px;
+    background: var(--accent-soft);
+}
+
+.gup .gup-tile__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 15px 15px;
+}
+
+.gup .gup-tile__name {
+    margin: 0 0 4px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 17px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -.2px;
+    text-transform: none;
+    color: var(--gup-ink);
+}
+
+.gup .gup-tile__blurb {
+    margin: 0 0 13px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--gup-muted);
+}
+
+.gup .gup-tile__foot {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.gup .gup-tile__play {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-deep);
+}
+
+/* The quiz forgoes the accent edge and tint until it launches: the
+   colour is what says "this one you can play". */
+.gup .gup-tile--soon {
+    border-top-color: var(--gup-rule);
+    border-style: dashed;
+    background: #fbfbfa;
+}
+
+.gup .gup-tile--soon .gup-tile__art { background: none; }
+
+.gup .gup-tile--soon .gup-tile__name,
+.gup .gup-tile--soon .gup-tile__blurb { color: var(--gup-dim); }
+
+.gup .gup-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+}
+
+.gup .gup-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--accent-deep);
+}
+
+.gup .gup-badge--solid {
+    border-radius: 3px;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.gup .gup-badge--quiet {
+    border-color: #d2d2d2;
+    color: var(--gup-dim);
+}
+
+.gup .gup-btn {
+    display: inline-block;
+    padding: 11px 22px;
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+.gup .gup-hero:hover .gup-btn,
+.gup .gup-hero:focus .gup-btn { filter: brightness(.92); }
+
+.gup .gup-mini {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 13), 1fr);
+    gap: 1px;
+    width: min(100%, 196px);
+    min-width: 0;
+    background: var(--gup-ink);
+    border: 2px solid var(--gup-ink);
+}
+
+.gup .gup-mini span {
+    position: relative;
+    aspect-ratio: 1;
+    background: #fff;
+}
+
+.gup .gup-mini span.is-block { background: var(--gup-ink); }
+
+.gup .gup-mini b {
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    font-size: 7px;
+    font-weight: 600;
+    line-height: 1;
+    color: #8c8c8c;
+}
+
+.gup .gup-sudoku {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    /* Rows need declaring too, or the last one spills past the border. */
+    grid-template-rows: repeat(9, 1fr);
+    width: 102px;
+    height: 102px;
+    background: #fff;
+    border: 1.5px solid var(--gup-ink);
+    overflow: hidden;
+}
+
+.gup .gup-sudoku span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 0;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gup-ink);
+    border-right: 1px solid #dcdce6;
+    border-bottom: 1px solid #dcdce6;
+}
+
+.gup .gup-sudoku span:nth-child(9n) { border-right: 0; }
+.gup .gup-sudoku span:nth-child(3n):not(:nth-child(9n)) { border-right: 1px solid var(--accent); }
+.gup .gup-sudoku span:nth-child(n+73) { border-bottom: 0; }
+.gup .gup-sudoku span:nth-child(n+19):nth-child(-n+27),
+.gup .gup-sudoku span:nth-child(n+46):nth-child(-n+54) { border-bottom: 1px solid var(--accent); }
+
+.gup .gup-letters {
+    display: grid;
+    grid-template-columns: repeat(3, 31px);
+    gap: 4px;
+}
+
+.gup .gup-letters span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    background: #fff;
+    border: 1px solid #dcdcd4;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gup-ink);
+}
+
+.gup .gup-letters span.is-centre {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.gup .gup-quiz {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 102px;
+}
+
+.gup .gup-quiz span {
+    position: relative;
+    height: 16px;
+    background: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 3px;
+}
+
+.gup .gup-quiz span::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    margin-top: -4px;
+    border: 1px solid #d4d4d4;
+    border-radius: 50%;
+}
+
+.gup .gup-quiz span:first-child {
+    width: 88%;
+    height: 11px;
+    background: #dcdcdc;
+    border: none;
+}
+
+.gup .gup-quiz span:first-child::before { content: none; }
+
+.gup .gup-quiz span.is-picked { border-color: #c8c8c8; }
+.gup .gup-quiz span.is-picked::before { background: #b8b8b8; border-color: #b8b8b8; }
+
+@supports (container-type: inline-size) {
+    .gup { container-type: inline-size; }
+}
+
+@container (max-width: 460px) {
+    .gup .gup-tiles {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        scrollbar-width: thin;
+        padding-bottom: 6px;
+        gap: 14px;
+    }
+
+    .gup .gup-tiles > * {
+        flex: 0 0 min(76%, 240px);
+        scroll-snap-align: start;
+    }
+
+    .gup .gup-hero__art { flex-basis: 100%; padding: 20px 18px; }
+    .gup .gup-mini { width: min(100%, 224px); }
+    .gup .gup-hero__text { padding: 18px 18px 20px; }
+    .gup .gup-hero__name { font-size: 25px; }
+}

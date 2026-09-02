@@ -1,0 +1,84 @@
+{% comment %}
+The GroundUp Puzzles block, rendered by {% puzzles_block %}. Data comes
+from blocks/puzzles.py.
+{% endcomment %}
+
+<style>{% include "blocks/puzzles_block.css" %}</style>
+
+<section class="gup">
+    <header class="gup__head">
+        <h3 class="gup__title">GroundUp Puzzles</h3>
+        <a class="gup__all" href="{{ puzzles_url }}">All puzzles &rsaquo;</a>
+    </header>
+
+    <a class="gup-card gup-hero gup-t-crossword" href="{{ crossword.url }}">
+        <div class="gup-hero__art">
+            <div class="gup-mini" style="--cols:{{ crossword.num_cols }}" aria-hidden="true">
+                {% for row in crossword.grid %}{% for cell in row %}<span{% if cell.block %} class="is-block"{% endif %}>{% if cell.number %}<b>{{ cell.number }}</b>{% endif %}</span>{% endfor %}{% endfor %}
+            </div>
+        </div>
+        <div class="gup-hero__text">
+            <div class="gup-hero__tags">
+                <span class="gup-label">Crossword</span>
+                {% if not crossword.placeholder %}
+                <span class="gup-badge gup-badge--solid">New</span>
+                <span class="gup-badge">{{ crossword.num_cols }} &times; {{ crossword.num_rows }}</span>
+                {% endif %}
+            </div>
+            <h4 class="gup-hero__name">{% if crossword.placeholder %}Crosswords{% else %}{{ crossword.title }}{% endif %}</h4>
+            <p class="gup-hero__blurb">{% if crossword.description and not crossword.placeholder %}{{ crossword.description|truncatewords:22 }}{% else %}A cryptic-ish grid with a South African twist.{% endif %}</p>
+            <span class="gup-btn">{% if crossword.placeholder %}Browse the crosswords{% else %}Play the crossword{% endif %} &rarr;</span>
+        </div>
+    </a>
+
+    <div class="gup-tiles">
+
+        <a class="gup-card gup-tile gup-t-sudoku" href="{{ sudoku.url }}">
+            <div class="gup-tile__art">
+                <div class="gup-sudoku" aria-hidden="true">
+                    {% for digit in sudoku.cells %}<span>{{ digit }}</span>{% endfor %}
+                </div>
+            </div>
+            <div class="gup-tile__body">
+                <h4 class="gup-tile__name">Sudoku</h4>
+                <p class="gup-tile__blurb">Fill every row, column and box with one to nine.</p>
+                <div class="gup-tile__foot">
+                    <span class="gup-badge">{% if sudoku.placeholder %}Daily{% else %}{{ sudoku.difficulty|default:"Daily" }}{% endif %}</span>
+                    <span class="gup-tile__play">{% if sudoku.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
+                </div>
+            </div>
+        </a>
+
+        <a class="gup-card gup-tile gup-t-target" href="{{ target.url }}">
+            <div class="gup-tile__art">
+                <div class="gup-letters" aria-hidden="true">
+                    {% for cell in target.cells %}<span{% if cell.centre %} class="is-centre"{% endif %}>{{ cell.char }}</span>{% endfor %}
+                </div>
+            </div>
+            <div class="gup-tile__body">
+                <h4 class="gup-tile__name">{{ target.title }}</h4>
+                <p class="gup-tile__blurb">Nine letters. How many words can you find?</p>
+                <div class="gup-tile__foot">
+                    <span class="gup-badge">Mon &amp; Fri</span>
+                    <span class="gup-tile__play">{% if target.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
+                </div>
+            </div>
+        </a>
+
+        <div class="gup-card gup-tile gup-tile--soon gup-t-quiz">
+            <div class="gup-tile__art">
+                <div class="gup-quiz" aria-hidden="true">
+                    <span></span><span></span><span class="is-picked"></span><span></span>
+                </div>
+            </div>
+            <div class="gup-tile__body">
+                <h4 class="gup-tile__name">News Quiz</h4>
+                <p class="gup-tile__blurb">Questions on the week's news.</p>
+                <div class="gup-tile__foot">
+                    <span class="gup-badge gup-badge--quiet">Coming soon</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
