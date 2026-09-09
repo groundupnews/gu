@@ -1,0 +1,28 @@
+<button class="gu-share-btn" type="button"
+        data-title="{{ share_title|striptags }}"
+        data-url="{{ share_url|default:request.build_absolute_uri }}"
+        title="Share this page">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+         stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    Share
+</button>
+<script>
+ (function () {
+     if (window.guShareBound) { return; }
+     window.guShareBound = true;
+     document.addEventListener("click", function (event) {
+         var btn = event.target.closest && event.target.closest(".gu-share-btn");
+         if (!btn) { return; }
+         if (navigator.share) {
+             navigator.share({title: btn.dataset.title, url: btn.dataset.url});
+         } else if (navigator.clipboard) {
+             navigator.clipboard.writeText(btn.dataset.url).then(function () {
+                 var previous = btn.innerHTML;
+                 btn.textContent = "Copied!";
+                 setTimeout(function () { btn.innerHTML = previous; }, 2000);
+             });
+         }
+     });
+ })();
+</script>
