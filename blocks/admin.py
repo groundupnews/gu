@@ -22,7 +22,7 @@ class BlockAdmin(admin.ModelAdmin):
         ('Dynamic Content Source', {
             'fields': (('selected_topic', 'selected_category'),
                        ('num_articles', 'feature_first_article', 'exclude_duplicates', 'display_in_columns')),
-            'description': 'Select Topic OR Category, and number of articles. This will overwrite the HTML field.'
+            'description': 'For Videos, set the number of videos below. For Topic or Category, select the source; this overwrites the HTML field.'
         }),
         ('Featured Article Display', {
             'classes': ('grp-collapse',),
@@ -33,6 +33,12 @@ class BlockAdmin(admin.ModelAdmin):
             'classes': ('grp-collapse',),
             'fields': (('show_title_standard', 'show_summary_standard'),
                        ('show_byline_standard', 'show_date_standard', 'show_category_standard')),
+        }),
+        ('Video Display', {
+            'classes': ('video-display-options',),
+            'fields': ('video_featured', 'video_dates', 'video_categories',
+                       'video_summaries', 'video_durations'),
+            'description': 'Videos appear in a compact, swipeable row. These options apply only to video blocks.'
         }),
         ('HTML Content', {
             'classes': ('grp-collapse',),
