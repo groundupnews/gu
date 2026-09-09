@@ -3,7 +3,7 @@ import datetime
 from django.db.models import Q, F, ExpressionWrapper, Value
 from django.db.models import IntegerField, CharField, DateTimeField
 from django.db.models.functions import Concat
-from newsroom.models import Article, Author, Category, Topic
+from newsroom.models import Article, Author, Category, Topic, Video
 from newsroom.settings import SEARCH_MAXLEN
 from gallery.models import Photograph
 from agony.models import QandA
@@ -115,6 +115,53 @@ def searchArticles(search_string=None,
     return articles
 
 
+def searchVideos(search_string=None,
+                 author_pk=None, topic_pk=None,
+                 from_date=None, to_date=None):
+
+    query = Q()
+    if search_string:
+        list_of_terms = parseSearchString(search_string[:SEARCH_MAXLEN])
+        for term in list_of_terms:
+            if term not in ignored_words:
+                query = (query & (Q(title__icontains=term) |
+                         Q(summary__icontains=term) |
+                         Q(body__icontains=term) |
+                         Q(credits__icontains=term) |
+                         Q(byline__icontains=term) |
+                         Q(chapters__description__icontains=term) |
+                         Q(topics__name__icontains=term)))
+
+    if author_pk:
+        try:
+            query = query & Q(author=Author.objects.get(pk=author_pk))
+        except:
+            pass
+
+    if topic_pk:
+        try:
+            query = query & Q(topics=Topic.objects.get(pk=topic_pk))
+        except:
+            pass
+
+    if from_date:
+        try:
+            query = query & Q(published__gte=from_date)
+        except:
+            pass
+
+    if to_date:
+        try:
+            query = query & Q(published__lte=(to_date +
+                                              datetime.timedelta(days=1)))
+        except:
+            pass
+
+    videos = Video.objects.published().filter(query)
+
+    return videos
+
+
 def searchPhotos(search_string=None,
                  author_pk=None,
                  from_date=None, to_date=None):
@@ -157,9 +204,10 @@ def searchArticlesAndPhotos(search_string=None,
                             inc_articles=True, inc_photos=None,
                             author_pk=None, first_author=False,
                             category_pk=None, topic_pk=None,
-                            from_date=None, to_date=None):
+                            from_date=None, to_date=None,
+                            inc_videos=None):
 
-    articles = photos = result = []
+    articles = photos = videos = result = []
 
     if inc_articles:
         articles = searchArticles(search_string, author_pk, first_author,
@@ -185,13 +233,24 @@ def searchArticlesAndPhotos(search_string=None,
                                      "obj_type", "alt", "alt",
                                      "fullname", "date_taken").order_by('-date_taken').distinct()
 
-    if inc_articles and inc_photos:
-        result = list(articles) + list(photos)
-                        #key=lambda x: getattr(x, "published", getattr(x, "date_taken")), reverse=True)
-    elif inc_articles:
-        result = articles
-    elif inc_photos:
-        result = photos
+    if inc_videos:
+        # Left as model instances, unlike the two above, so the template can
+        # call thumbnail_url() and get_absolute_url() on them.
+        videos = searchVideos(search_string, author_pk, topic_pk,
+                              from_date, to_date). \
+                              annotate(obj_type=Value(2,
+                                                      output_field=IntegerField())). \
+                              order_by('-published').distinct()
+
+    selected = [queryset for queryset, wanted
+                in ((articles, inc_articles),
+                    (photos, inc_photos),
+                    (videos, inc_videos)) if wanted]
+
+    if len(selected) > 1:
+        result = [item for queryset in selected for item in queryset]
+    elif selected:
+        result = selected[0]
 
     return result
 
