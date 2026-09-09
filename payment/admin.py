@@ -45,7 +45,7 @@ class InvoiceStatusListFilter(admin.SimpleListFilter):
 
 
 class CommissionAdmin(admin.ModelAdmin):
-    list_display = ('invoice', 'article',
+    list_display = ('invoice', 'article', 'video',
                     'commission_due', 'taxable','fund')
     list_editable = ('fund', 'commission_due', 'taxable',)
     search_fields = ('invoice__author__first_names',
@@ -53,9 +53,9 @@ class CommissionAdmin(admin.ModelAdmin):
     list_filter = ['invoice__author', ApprovedCommissionListFilter, \
                    InvoiceStatusListFilter]
     ordering = ['-modified', ]
-    raw_id_fields = ('invoice', 'article', )
+    raw_id_fields = ('invoice', 'article', 'video', )
     autocomplete_lookup_fields = {
-        'fk': ['invoice', 'article',],
+        'fk': ['invoice', 'article', 'video',],
     }
 
 class InvoiceAdmin(admin.ModelAdmin):

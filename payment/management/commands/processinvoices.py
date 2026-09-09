@@ -11,8 +11,8 @@ import logging
 from django.utils import timezone
 from newsroom import settings
 
-from newsroom.models import Article, Author
-from payment.models import Commission, Invoice
+from newsroom.models import Article, Author, Video
+from payment.models import Commission, Invoice, create_video_payments
 
 def generate_commissions():
     num_commissions = 0
@@ -46,6 +46,9 @@ def generate_commissions():
 
             article.commissions_processed = True
             article.save()
+    for video in Video.objects.published().filter(contributors__isnull=False).distinct():
+        with transaction.atomic():
+            num_commissions += len(create_video_payments(video))
     return num_commissions
 
 def notify_freelancers():

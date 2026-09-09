@@ -19,7 +19,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import FormView
 from django.views.generic.edit import CreateView
 
-from newsroom.models import Author
+from newsroom.models import Author, Video
 
 from . import forms, models, settings
 
@@ -393,6 +393,16 @@ def commission_detail(request, pk=None):
                 try:
                     author = get_object_or_404(Author, pk=int(author_pk))
                     form.fields["author"].initial = author.pk
+                except:
+                    pass
+            # The videos section links here with the payee and the video
+            # already chosen (see newsroom/video_form.html).
+            video_pk = request.GET.get("video", None)
+            if video_pk:
+                try:
+                    video = get_object_or_404(Video, pk=int(video_pk))
+                    form.fields["video"].initial = video.pk
+                    form.fields["description"].initial = "Video contributor"
                 except:
                     pass
     return render(request, "payment/commission_detail.html",
