@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load seo_tags %}
+
+{% block title %}{{ video.title }} {{block.super}}{% endblock %}
+
+{% block seo_fields %}
+    {{block.super}}
+    <meta property="og:type" content="video.other"/>
+    <meta property="og:title" content="{{ video.title }}"/>
+    <meta property="og:image" content="{{ video.thumbnail_url }}"/>
+    <meta property="og:video" content="{{ video.watch_url }}"/>
+    <meta property="og:video:type" content="text/html"/>
+    <meta name="twitter:card" content="player"/>
+    <meta name="twitter:title" content="{{ video.title }}"/>
+    <meta name="twitter:description" content="{{ meta_description }}"/>
+    <meta name="twitter:image" content="{{ video.thumbnail_url }}"/>
+    <meta name="twitter:player" content="{{ video.embed_url }}"/>
+    <meta name="twitter:player:width" content="{% if video.is_short %}405{% else %}1280{% endif %}"/>
+    <meta name="twitter:player:height" content="{% if video.is_short %}720{% else %}720{% endif %}"/>
+    {% video_jsonld video %}
+{% endblock %}
+
+{% block content %}
+    {% if not video.is_published %}
+        <div class="container">
+            <p class="gu-video-unpublished">Not published. Only people who can edit
+                videos are seeing this page.</p>
+        </div>
+    {% endif %}
+    <div class="container">
+        {% comment %}Full width: a video page has no sidebar.{% endcomment %}
+        <article class="article gu-video-detail">
+            {% include "seo/breadcrumbs.html" %}
+
+            <h1 class="article__title">{{ video.title }}</h1>
+            {% if video.summary %}
+                <h2 class="article__subtitle">{{ video.summary }}</h2>
+            {% endif %}
+            <div class="article__details__date-by">
+                <time {% if video.published %}datetime='{{ video.published|date:"Y-m-d H:i:sO" }}'>{{ video.published|date:"j F Y" }}{% else %}datetime="">Unpublished{% endif %}</time>
+                {% if video.get_byline %}| <span class="gu-video-byline">By {{ video.get_byline }}</span>{% endif %}
+                {% if video.watch_time %}| {{ video.watch_time }}{% endif %}
+                <span class="gu-video-actions">
+                    {% include "share_button.html" with share_title=video.title %}
+                </span>
+            </div>
+
+            <div class="gu-video-player{% if video.is_short %} gu-video-player--short{% endif %}"
+                 data-video-player
+                 data-embed="{{ video.embed_url }}"
+                 data-title="{{ video.title }}">
+                <img src="{{ video.thumbnail_url }}"
+                     onerror="this.onerror=null;this.src='{{ video.fallback_thumbnail_url }}';"
+                     alt="{{ video.thumbnail_alt }}" />
+                <a class="gu-video-player__start" href="{{ video.watch_url }}"
+                   aria-label="Play {{ video.title }}">
+                    <span class="gu-video-play gu-video-play--lg"><span></span></span>
+                </a>
+            </div>
+            {% if video.credits %}
+                <div class="article__image__caption">{{ video.credits }}</div>
+            {% endif %}
+
+            {% if video.body or chapters or video.transcript_on_request %}
+                <div class="gu-video-body">
+                    {{ video.body|safe }}
+
+                    {% if chapters %}
+                        <h2 class="subheading">In this video</h2>
+                        <div class="gu-video-chapters">
+                            {% for chapter in chapters %}
+                                <button type="button" class="gu-video-chapter"
+                                        data-video-seek="{{ chapter.seconds }}">
+                                    <span class="gu-video-chapter__time">{{ chapter.timecode }}</span>
+                                    <span class="gu-video-chapter__text">{{ chapter.description }}</span>
+                                </button>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if video.transcript_on_request %}
+                        <p class="gu-video-note">A transcript of this video is
+                            available on request. Email
+                            <a href="mailto:info@groundup.org.za">info@groundup.org.za</a>.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if credits %}
+                <div class="gu-video-credits">
+                    <h2 class="gu-video-credits__title">Credits</h2>
+                    <dl class="gu-video-credits__list">
+                        {% for row in credits %}
+                            <dt>{{ row.role }}</dt>
+                            <dd>{% for person in row.people %}{{ person }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd>
+                        {% endfor %}
+                    </dl>
+                </div>
+            {% endif %}
+
+            {% if video.topics.all %}
+                <div class="article__topics">
+                    <span class="article__topics__header">TOPICS:&nbsp;</span>
+                    {% for topic in video.topics.all %}
+                        <a class="article__topic"
+                           href="{% url 'newsroom:topic.detail' topic.slug %}">
+                            {{ topic.name|capfirst }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="article__copyright gu-video-licence">
+                {{ video.copyright|safe }}
+            </div>
+        </article>
+
+        {% if related_videos %}
+            <section class="gu-video-section">
+                <h2 class="gu-video-section__title">More videos</h2>
+                <div class="gu-video-grid">
+                    {% for other in related_videos %}
+                        {% include "newsroom/video_card.html" with video=other %}
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if related_articles %}
+            <section class="gu-video-section">
+                <h2 class="gu-video-section__title">Read more</h2>
+                <ul class="gu-video-readmore">
+                    {% for article in related_articles %}
+                        <li>
+                            <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        <section class="gu-video-support">
+            <h2>Support our video journalism</h2>
+            <p>GroundUp videos are free to watch and may be republished under
+                the <a href="{{ licence_url }}">GroundUp Republication
+                Licence</a>. Reader donations pay for them.</p>
+            <a class="gu-btn-donate" href="{% url 'make_payment' %}">Donate</a>
+        </section>
+
+        {% include "newsroom/video_follow.html" %}
+    </div>
+{% endblock %}
+
+{% block admin-area %}
+    {% if perms.newsroom.change_video %}
+        <div class="container">
+            <p>
+                <a class="btn btn-default" href="{% url 'newsroom:video.update' video.slug %}">Edit this video</a>
+                <a class="btn btn-default" href="{% url 'newsroom:video.manage' %}">Manage videos</a>
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript-includes %}
+    {{block.super}}
+    <script>
+     {% include "newsroom/video_player.js" %}
+    </script>
+{% endblock %}

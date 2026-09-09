@@ -106,6 +106,36 @@ urlpatterns = [
     path("wetell/", views.WetellListView.as_view(), name="wetell.list"),
     path("wetell/latest/", views.WetellLatestView.as_view(), name="wetell.latest"),
     path("wetell/<int:pk>/", views.WetellDetailView.as_view(), name="wetell.detail"),
+    # Videos
+    path(
+        "videos/",
+        cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))(
+            views.VideoList.as_view()
+        ),
+        name="video.list",
+    ),
+    path("videos/rss/", feeds.LatestVideosRssFeed(), name="video.rss"),
+    path("videos/atom/", feeds.LatestVideosAtomFeed(), name="video.atom"),
+    path("videos/manage/", views.VideoManageList.as_view(), name="video.manage"),
+    path("videos/add/", views.VideoCreate.as_view(), name="video.add"),
+    path(
+        "videos/category/<slug:slug>/",
+        cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))(
+            views.VideoList.as_view()
+        ),
+        name="video.category",
+    ),
+    path("videos/<slug:slug>/edit/", views.VideoUpdate.as_view(), name="video.update"),
+    path(
+        "videos/<slug:slug>/delete/", views.VideoDelete.as_view(), name="video.delete"
+    ),
+    path(
+        "videos/<slug:slug>/",
+        cache_except_staff(decorator=cache_page(settings.CACHE_PERIOD))(
+            views.VideoDetail.as_view()
+        ),
+        name="video.detail",
+    ),
     ###############################
     # Old feature article redirects
     re_path(

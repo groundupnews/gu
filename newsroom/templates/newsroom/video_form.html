@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{% if object %}Edit video{% else %}Add a video{% endif %} {{block.super}}{% endblock %}
+
+{% block additional_head %}
+    {{block.super}}
+    {% comment %}The same editor, styles and plugins an article body is
+    written with.{% endcomment %}
+    <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
+    <script src="{% static 'newsroom/js/ck_styles.js' %}?v=20260721"></script>
+    <script src="{% static 'newsroom/js/ck_init.js' %}?v=20220211b"></script>
+{% endblock %}
+
+{% block content %}
+    {{ form.media }}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>{% if object %}Edit video{% else %}Add a video{% endif %}</h1>
+                <form class="gu-video-form" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    <fieldset>
+                        <legend>The video</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.title %}
+                        {% include "newsroom/video_form_field.html" with field=form.slug %}
+                        {% include "newsroom/video_form_field.html" with field=form.youtube_id %}
+                        {% include "newsroom/video_form_field.html" with field=form.video_format %}
+                        {% include "newsroom/video_form_field.html" with field=form.duration %}
+                        {% include "newsroom/video_form_field.html" with field=form.category %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Words</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.summary %}
+                        {% include "newsroom/video_form_field.html" with field=form.body %}
+                        {% include "newsroom/video_form_field.html" with field=form.credits %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Credit</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.author %}
+                        {% include "newsroom/video_form_field.html" with field=form.byline %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Contributors</legend>
+                        {{ contributor_formset.management_form }}
+                        {{ contributor_formset.non_form_errors }}
+                        <table class="gu-video-contributors-table">
+                            <thead>
+                                <tr>
+                                    <th>Person</th>
+                                    <th>What they did</th>
+                                    <th>Detail</th>
+                                    <th>Order</th>
+                                    <th>Do not pay</th>
+                                    <th>Remove</th>
+                                    {% if perms.payment.change_commission %}
+                                        <th>Payment</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contributor_form in contributor_formset %}
+                                    <tr>
+                                        {{ contributor_form.id }}
+                                        <td>{{ contributor_form.author.errors }}{{ contributor_form.author }}</td>
+                                        <td>{{ contributor_form.role.errors }}{{ contributor_form.role }}</td>
+                                        <td>{{ contributor_form.note.errors }}{{ contributor_form.note }}</td>
+                                        <td>{{ contributor_form.position.errors }}{{ contributor_form.position }}</td>
+                                        <td>{{ contributor_form.no_payment.errors }}{{ contributor_form.no_payment }}</td>
+                                        <td>{{ contributor_form.DELETE }}</td>
+                                        {% if perms.payment.change_commission %}
+                                            <td>
+                                                {% if object and contributor_form.instance.pk %}
+                                                    <a href="{% url 'payments:commissions.detail.add' %}?author={{ contributor_form.instance.author_id }}&amp;video={{ object.pk }}"
+                                                       target="_blank">Raise&nbsp;payment</a>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <span class="helptext">Everyone who worked on the video,
+                            and what they did. These are the names in the credits
+                            on the page, and what a payment is raised against.
+                            Publishing the video raises a payment item for each
+                            of them; tick <b>do not pay</b> for anyone who is
+                            not to be paid, such as staff on a salary. Use the
+                            payment link for anything the system has not
+                            raised.</span>
+
+                        {% if perms.payment.change_commission and payments %}
+                            <table class="gu-video-manage-table">
+                                <thead>
+                                    <tr>
+                                        <th>Paid to</th>
+                                        <th>For</th>
+                                        <th>Amount</th>
+                                        <th>Invoice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in payments %}
+                                        <tr>
+                                            <td>{{ payment.invoice.author }}</td>
+                                            <td>{{ payment.description }}{% if payment.notes %} - {{ payment.notes }}{% endif %}</td>
+                                            <td>{{ payment.commission_due|floatformat:2 }}</td>
+                                            <td>
+                                                <a href="{% url 'payments:invoice.detail' payment.invoice.author.pk payment.invoice.invoice_num %}">
+                                                    {{ payment.invoice.get_status_display }}</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>In this video</legend>
+                        {{ chapter_formset.management_form }}
+                        {{ chapter_formset.non_form_errors }}
+                        <table class="gu-video-chapters-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>What happens</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for chapter_form in chapter_formset %}
+                                    <tr>
+                                        {{ chapter_form.id }}
+                                        <td>{{ chapter_form.timecode.errors }}{{ chapter_form.timecode }}</td>
+                                        <td>{{ chapter_form.description.errors }}{{ chapter_form.description }}</td>
+                                        <td>{{ chapter_form.DELETE }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <span class="helptext">Leave rows blank if the video has no
+                            chapters. Times are m:ss, e.g. 2:41.</span>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Links</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.topics %}
+                        {% include "newsroom/video_form_field.html" with field=form.related_articles %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Thumbnail</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.thumbnail %}
+                        {% include "newsroom/video_form_field.html" with field=form.thumbnail_alt %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Publishing</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.published %}
+                        {% include "newsroom/video_form_field.html" with field=form.promote %}
+                        {% include "newsroom/video_form_field.html" with field=form.include_on_home %}
+                        {% include "newsroom/video_form_field.html" with field=form.transcript_on_request %}
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Copyright and licence</legend>
+                        {% include "newsroom/video_form_field.html" with field=form.copyright %}
+                    </fieldset>
+
+                    <input class="btn btn-primary submit-btn" type="submit"
+                           value="{% if object %}Update{% else %}Create{% endif %}">
+                    {% if object %}
+                        <a class="btn btn-default" href="{{ object.get_absolute_url }}">View</a>
+                        {% if perms.newsroom.delete_video %}
+                            <a class="btn btn-default"
+                               href="{% url 'newsroom:video.delete' object.slug %}">Delete</a>
+                        {% endif %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript-includes %}
+    {{block.super}}
+    <script>
+     {% include "handle_slug.js" %}
+     document.getElementById("id_title").addEventListener(
+         "input", function(e) {
+             var slug = document.getElementById("id_slug");
+             if (!slug.dataset.touched) {
+                 slug.value = makeSlug(e.target.value);
+             }
+         });
+     document.getElementById("id_slug").addEventListener(
+         "input", function(e) {
+             e.target.dataset.touched = "y";
+         });
+     document.getElementById("id_title").focus();
+
+     // CKEditor replaces the body textarea and writes back to it on submit.
+     if (window.CKEDITOR) {
+         document.querySelectorAll("textarea.gu-ckeditor").forEach(
+             function (field) {
+                 CKEDITOR.replace(field.id, {
+                     customConfig: "{% static 'newsroom/js/ck_inline_config.js' %}?v=20220204g"
+                 });
+             });
+     }
+    </script>
+{% endblock %}
