@@ -46,4 +46,12 @@ $(document).ready(function() {
 	    });
         }
     }
+
+    $("textarea.gu-ckeditor").each(function () {
+        if (this.id && !CKEDITOR.instances[this.id]) {
+            CKEDITOR.replace(this.id, {
+                customConfig: '/static/newsroom/js/ck_config.js?v=20220203'
+            });
+        }
+    });
 });

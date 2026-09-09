@@ -1,6 +1,6 @@
 from ajax_select import LookupChannel, register
 from django.db.models import Q
-from newsroom.models import Article, Author, Topic
+from newsroom.models import Article, Author, Topic, Video
 
 
 @register('articles')
@@ -98,6 +98,23 @@ class TopicLookup(LookupChannel):
         query = Q(name__icontains=q) | Q(pk__icontains=q) | \
                 Q(slug__icontains=q)
         return self.model.objects.filter(query).order_by("name")
+
+    def format_item_display(self, item):
+        return str(item)
+
+
+@register('videos')
+class VideoLookup(LookupChannel):
+    """Used by the payments form, so drafts are included"""
+
+    model = Video
+
+    help_text = "Title of video"
+
+    def get_query(self, q, request):
+        query = Q(title__icontains=q) | Q(pk__icontains=q) | \
+                Q(summary__icontains=q)
+        return self.model.objects.filter(query).order_by("-pk")[:10]
 
     def format_item_display(self, item):
         return str(item)
