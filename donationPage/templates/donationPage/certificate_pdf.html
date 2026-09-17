@@ -4,75 +4,72 @@
     <meta charset="utf-8">
     <title>Donation Receipt {{ certificate.receipt_number|default:"" }}</title>
     <style>
-      @page { size: A4; margin: 0; }
+      @page { size: A4; margin: 24mm 22mm 26mm; }
       * { box-sizing: border-box; }
+      html { font-size: 17px; }
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         color: #1a1a1a;
-        font-size: 17px;
         line-height: 1.55;
       }
-      .page {
-        height: 100%;
-        padding: 24mm 22mm 26mm;
-      }
+      .page { height: 100%; }
       table.layout { width: 100%; height: 100%; border-collapse: collapse; }
       table.layout > tbody > tr > td { padding: 0; }
-      td.body-cell { vertical-align: top; height: 100%; }
+      td.body-cell { vertical-align: top; }
       td.foot-cell { vertical-align: bottom; }
 
       /* Header */
       .header { width: 100%; }
-      .header img { width: 290px; display: block; margin-left: auto; }
+      .header img { width: 17.0588rem; display: block; margin-left: auto; }
       .header .addr {
         text-align: right;
-        font-size: 13px;
+        font-size: 0.7647rem;
         line-height: 1.7;
-        margin-top: 12px;
+        margin-top: 0.7059rem;
         color: #2b2b2b;
         white-space: nowrap;
       }
       .header .addr a { color: #00b1f0; text-decoration: none; }
       .header .reg {
         text-align: right;
-        font-size: 13px;
+        font-size: 0.7647rem;
         font-weight: bold;
-        margin-top: 10px;
+        margin-top: 0.5882rem;
         white-space: nowrap;
       }
 
       /* Title row */
       .title-row {
-        margin-top: 70px;
+        margin-top: 4.1176rem;
         width: 100%;
-        font-size: 18px;
+        font-size: 1.0588rem;
       }
       .title-row td { vertical-align: top; }
       .title-row .left { text-align: left; }
       .title-row .right { text-align: right; }
 
-      p.para { margin: 30px 0; }
+      p.para { margin: 1.7647rem 0; }
 
       /* Donor details */
-      table.details { width: 100%; border-collapse: collapse; margin: 36px 0; }
-      table.details td { padding: 7px 0; vertical-align: top; }
+      table.details { width: 100%; border-collapse: collapse; margin: 2.1176rem 0; }
+      table.details td { padding: 0.4118rem 0; vertical-align: top; }
       table.details td.label {
         width: 40%;
         text-transform: uppercase;
         white-space: nowrap;
-        padding-right: 16px;
+        padding-right: 0.9412rem;
       }
       table.details td.value a { color: #00b1f0; text-decoration: none; }
-      .group-gap td { padding-top: 22px; }
+      .group-gap td { padding-top: 1.2941rem; }
 
       /* Signature — sits in the bottom-aligned footer cell */
-      .sig-img { height: 80px; margin-bottom: 6px; }
+      .sig-img { height: 4.7059rem; margin-bottom: 0.3529rem; }
       table.sig { width: 100%; border-collapse: collapse; }
       table.sig td.right { text-align: right; }
-      .sig-title { margin-top: 4px; }
+      .sig-title { margin-top: 0.2353rem; }
     </style>
   </head>
   <body>

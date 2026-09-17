@@ -1,5 +1,4 @@
 import calendar
-import pdfkit
 import os
 from decimal import Decimal
 from dateutil import relativedelta
@@ -18,10 +17,11 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import FormView
 from django.views.generic.edit import CreateView
+from weasyprint import HTML
 
 from newsroom.models import Author
 
-from . import forms, models, settings
+from . import forms, models
 
 
 '''There is business logic in this view that belongs in themodel.
@@ -469,7 +469,10 @@ def invoice_pdf(request, pk):
                          invoice.description,
                          str(invoice.author), ]) + ".pdf"
     filename = filename.replace(" ", "-")
-    pdf = pdfkit.from_string(html, False, options=settings.PDF_OPTIONS)
+    # page size and margins come from the @page rule in the template
+    pdf = HTML(string=html,
+               base_url=request.build_absolute_uri()).write_pdf(
+                   presentational_hints=True)
     response =  HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
     return response

@@ -15,21 +15,23 @@
                 CR_{{invoice.requisition_number}}_{{invoice.date_time_processed|date:"Ymd"}}_{{invoice.author}}
             </title>
             <style>
+             @page {
+                 size: A4;
+                 margin: 10mm 10mm 10mm 30mm;
+             }
              body {
-                 width: 850px;
-                 margin: auto;
+                 margin: 0;
+                 font-size: 12px;
              }
              table {
+                 width: 100%;
                  margin-bottom: 16px;
+                 border-collapse: collapse;
              }
 
              #top td, #commissions th {
                  text-align: left;
                  padding: 8px;
-             }
-
-             table {
-                 border-collapse: collapse;
              }
              #commissions td, #commissions th {
                  border: 1px solid black;
