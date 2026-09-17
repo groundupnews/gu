@@ -504,8 +504,11 @@ def send_certificate_email(certificate, subject=None, body=None):
         email.attach(certificate_filename(certificate), pdf, 'application/pdf')
         email.send()
     except Exception as e:
-        logger.error("Failed to email S18A certificate %s: %s",
-                     certificate.pk, e)
+        try:
+            logger.error("Failed to email S18A certificate %s: %s",
+                         certificate.pk, e)
+        except Exception:
+            pass
         return False, str(e)
 
     certificate.mark_emailed()
