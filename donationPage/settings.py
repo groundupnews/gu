@@ -1,5 +1,3 @@
-import os
-
 from django.conf import settings
 
 
@@ -39,18 +37,3 @@ STAFF_EMAILS = getattr(settings, 'S18A_STAFF_EMAILS', ['donations@groundup.org.z
 EMAIL_SUBJECT = getattr(
     settings, 'S18A_EMAIL_SUBJECT',
     "Your GroundUp Section 18A donation tax certificate")
-
-# pdfkit / wkhtmltopdf options, mirroring payment.settings.
-_S18A_FILE_ROOT = getattr(settings, 'DONATION_S18A_FILE_ROOT',
-                          os.path.join(settings.MEDIA_ROOT, 's18a'))
-
-PDF_OPTIONS = getattr(settings, 'DONATION_S18A_PDF_OPTIONS', {
-    'page-size': 'A4',
-    'cache-dir': os.path.join(_S18A_FILE_ROOT, 'tmp/'),
-    'enable-local-file-access': '',
-    'encoding': 'UTF-8',
-    'margin-top': '0',
-    'margin-bottom': '0',
-    'margin-left': '0',
-    'margin-right': '0',
-})

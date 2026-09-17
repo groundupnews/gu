@@ -28,5 +28,5 @@ django-el-pagination
 csscompressor
 django-compressor
 clfparser
-pdfkit
+weasyprint
 pymemcache

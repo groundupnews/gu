@@ -28,7 +28,7 @@ def make_donation(donor, currency, when, amount, status="success"):
 
 
 class PdfMockMixin:
-    """stub out wkhtmltopdf and keep archived PDFs in a throwaway directory.
+    """stub out WeasyPrint and keep archived PDFs in a throwaway directory.
 
     approve() now renders and stores the issued PDF, so anything that
     approves a certificate needs both of these.
@@ -36,9 +36,11 @@ class PdfMockMixin:
 
     def setUp(self):
         super().setUp()
-        patcher = mock.patch("donationPage.pdf.pdfkit.from_string",
-                             return_value=b"%PDF-fake")
+        patcher = mock.patch("donationPage.pdf.HTML")
         self.mock_pdf = patcher.start()
+        rendered = self.mock_pdf.return_value.render.return_value
+        rendered.pages = [mock.Mock()]
+        rendered.write_pdf.return_value = b"%PDF-fake"
         self.addCleanup(patcher.stop)
 
         media = tempfile.mkdtemp()

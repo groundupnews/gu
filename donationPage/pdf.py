@@ -5,9 +5,9 @@ import mimetypes
 import os
 import re
 
-import pdfkit
 from django.contrib.staticfiles import finders
 from django.template.loader import render_to_string
+from weasyprint import CSS, HTML
 
 from . import settings as donation_settings
 
@@ -33,11 +33,25 @@ def _certificate_context(certificate):
     }
 
 
+FONT_SIZES = (17, 16, 15, 14, 13, 12, 11, 10)
+
+
 def render_certificate_pdf(certificate):
-    """Render a certificate to PDF bytes using wkhtmltopdf (via pdfkit)."""
+    """Render a certificate to PDF bytes using WeasyPrint.
+
+    page size and margins come from the @page rule in the template;
+    images are embedded as data URIs
+    """
     html = render_to_string('donationPage/certificate_pdf.html',
                             _certificate_context(certificate))
-    return pdfkit.from_string(html, False, options=donation_settings.PDF_OPTIONS)
+    document = HTML(string=html)
+    for font_size in FONT_SIZES:
+        sheet = CSS(string="html {{ font-size: {}px !important; }}"
+                    .format(font_size))
+        rendered = document.render(stylesheets=[sheet])
+        if len(rendered.pages) == 1:
+            break
+    return rendered.write_pdf()
 
 
 def certificate_filename(certificate):
