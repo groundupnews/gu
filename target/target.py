@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from curses.ascii import isalpha
+import os
 import random
 import sys
 
@@ -28,16 +29,16 @@ def hashCode2(str):
 
 def makeTarget(wordFile="words.txt", user_letters=None):
 
-    STATIC_ROOT = settings.STATIC_ROOT + "target/words/"
+    STATIC_ROOT = os.path.join(settings.STATIC_ROOT, "target", "words")
 
-    offensive1 = open(STATIC_ROOT + "offensive.1").readlines()
-    offensive2 = open(STATIC_ROOT + "offensive.2").readlines()
-    profane1 = open(STATIC_ROOT + "profane.1").readlines()
-    profane3 = open(STATIC_ROOT + "profane.3").readlines()
+    offensive1 = open(os.path.join(STATIC_ROOT, "offensive.1")).readlines()
+    offensive2 = open(os.path.join(STATIC_ROOT, "offensive.2")).readlines()
+    profane1 = open(os.path.join(STATIC_ROOT, "profane.1")).readlines()
+    profane3 = open(os.path.join(STATIC_ROOT, "profane.3")).readlines()
 
     banned = offensive1 + offensive2 + profane1 + profane3
 
-    with open(STATIC_ROOT + wordFile, 'r', errors='replace') as f:
+    with open(os.path.join(STATIC_ROOT, wordFile), 'r', errors='replace') as f:
         words = [w[:-1] for w in f.readlines()
              if all(isalpha(c) for c in w[:-1]) and w == w.lower() and
              len(w) > 4 and len(w) < 11 and w not in banned]
