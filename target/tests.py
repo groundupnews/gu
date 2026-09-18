@@ -31,7 +31,7 @@ class URLSWork(TestCase):
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
         target = models.Target.objects.all()[0]
-        url = reverse('target:detail', args=(target.number,))
+        url = reverse('target:detail', args=(target.pk,))
         response = c.get(url)
         self.assertEqual(response.status_code, 200)
         url = reverse('target:create')
