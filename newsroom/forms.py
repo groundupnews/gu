@@ -12,8 +12,9 @@ IMAGE_SIZE_CHOICES = [(item, VERSIONS[item]['verbose_name'],)
 IMAGE_SIZE_CHOICES.append(('LEAVE', 'LEAVE',))
 
 SEARCH_TYPES=[('article', 'Articles'),
+             ('video', 'Videos'),
              ('image', 'Images'),
-             ('both', 'Both')]
+             ('both', 'Everything')]
 
 class AuthorForm(forms.ModelForm):
     email = forms.EmailField(required=True)
@@ -171,3 +172,67 @@ class AdvancedSearchForm(forms.Form):
     date_from = forms.DateTimeField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     date_to = forms.DateTimeField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     results_per_page = forms.ChoiceField(choices=RESULTS_PER_PAGE, required=False)
+
+
+class VideoForm(forms.ModelForm):
+    youtube_id = forms.CharField(
+        label='YouTube URL',
+        help_text='Paste the watch URL or the Short URL.',
+        widget=forms.TextInput(
+            attrs={'placeholder': 'https://www.youtube.com/watch?v=...'}))
+    author = AutoCompleteSelectField("authors", required=False,
+                                     help_text=None, label="Author")
+    topics = AutoCompleteSelectMultipleField("topics", required=False,
+                                             help_text=None, label="Topics")
+    related_articles = AutoCompleteSelectMultipleField(
+        "articles", required=False, help_text=None, label="Related articles")
+    published = forms.DateTimeField(
+        required=False,
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'},
+                                   format='%Y-%m-%dT%H:%M'),
+        help_text='Leave blank to keep the video off the site.')
+    # Plain text rather than the filebrowser widget
+    thumbnail = forms.CharField(
+        required=False,
+        help_text='Path under the media directory. Leave blank to use the '
+                  'thumbnail YouTube generates.')
+
+    class Meta:
+        model = models.Video
+        fields = [
+            'title', 'slug', 'youtube_id', 'video_format', 'category',
+            'summary', 'body', 'duration', 'author', 'byline', 'credits',
+            'thumbnail', 'thumbnail_alt', 'topics', 'related_articles',
+            'published', 'promote', 'include_on_home',
+            'transcript_on_request', 'copyright',
+        ]
+        widgets = {
+            'summary': forms.Textarea(attrs={'rows': 3}),
+            'body': forms.Textarea(attrs={'rows': 10,
+                                          'class': 'gu-ckeditor'}),
+            'credits': forms.Textarea(attrs={'rows': 2}),
+            'copyright': forms.Textarea(attrs={'rows': 3}),
+        }
+
+
+# The timecode format is validated by the model field's validator
+VideoChapterFormSet = forms.inlineformset_factory(
+    models.Video, models.VideoChapter, fields=['timecode', 'description'],
+    help_texts={'timecode': '', 'description': ''},
+    extra=4, can_delete=True)
+
+
+class VideoContributorForm(forms.ModelForm):
+    """One row of the credits. The author has to be on system!"""
+
+    author = AutoCompleteSelectField("authors", help_text=None, label="Person")
+
+    class Meta:
+        model = models.VideoContributor
+        fields = ['author', 'role', 'note', 'position', 'no_payment', ]
+        help_texts = {'note': '', 'position': '', 'no_payment': ''}
+
+
+VideoContributorFormSet = forms.inlineformset_factory(
+    models.Video, models.VideoContributor, form=VideoContributorForm,
+    extra=3, can_delete=True)

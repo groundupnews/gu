@@ -5,6 +5,7 @@ from django.db import models
 BLOCK_TYPES = (
     ("standard", "Standard HTML"),
     ("topic", "Topic"),
+    ("videos", "Videos"),
     ("category", "Category"),
     ("chart_of_the_week", "Chart of the Week"),
     ("creative_commons_gallery", "Creative Commons Gallery"),
@@ -73,6 +74,12 @@ class Block(models.Model):
         verbose_name="Display standard articles in columns",
         help_text="If checked, standard articles will be displayed in a two-column grid.",
     )
+
+    video_featured = models.BooleanField(default=False, verbose_name="Feature first video")
+    video_dates = models.BooleanField(default=False, verbose_name="Show dates")
+    video_categories = models.BooleanField(default=True, verbose_name="Show categories")
+    video_summaries = models.BooleanField(default=False, verbose_name="Show summaries")
+    video_durations = models.BooleanField(default=True, verbose_name="Show durations")
 
     html = models.TextField(blank=True)
     modified = models.DateTimeField(auto_now=True, editable=False)

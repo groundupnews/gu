@@ -90,6 +90,8 @@ class CommissionForm(ModelForm):
                                      help_text=None, label="Payee")
     article = AutoCompleteSelectField('articles', required=False,
                                       help_text=None)
+    video = AutoCompleteSelectField('videos', required=False,
+                                    help_text=None)
     fund = forms.ModelChoiceField(
         queryset=Fund.objects.filter(ledger=True).filter(deprecated=False),
         label='Pastel', required=False)
@@ -100,9 +102,17 @@ class CommissionForm(ModelForm):
             raise forms.ValidationError("Please enter a user")
         return data
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("article") and cleaned_data.get("video"):
+            raise forms.ValidationError(
+                "A payment item is for one article or one video, not both. "
+                "Raise a second item for the other one.")
+        return cleaned_data
+
     class Meta:
         model = Commission
-        fields = ['author', 'article', 'fund', 'description', 'notes',
+        fields = ['author', 'article', 'video', 'fund', 'description', 'notes',
                   'commission_due', 'taxable', 'vatable', 'vat_amount' ]
 
 

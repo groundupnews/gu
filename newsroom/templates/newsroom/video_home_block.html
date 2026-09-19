@@ -1,0 +1,31 @@
+{% if home_videos %}
+    <section class="gu-video-block" data-video-block aria-label="{{ video_block.custom_title|default:'Videos' }}">
+        <header class="gu-video-block__header">
+            <h2>{{ video_block.custom_title|default:"Videos" }}</h2>
+            <div class="gu-video-block__actions">
+                <a class="gu-video-block__all" href="{% url 'newsroom:video.list' %}">All videos <span aria-hidden="true">&#8594;</span></a>
+                <div class="gu-video-block__controls" hidden>
+                    <button type="button" data-video-direction="-1" aria-label="Previous videos"><span aria-hidden="true">&#8592;</span></button>
+                    <button type="button" data-video-direction="1" aria-label="Next videos"><span aria-hidden="true">&#8594;</span></button>
+                </div>
+            </div>
+        </header>
+        <div class="gu-video-block__rail" tabindex="0" role="region" aria-label="{{ video_block.custom_title|default:'Videos' }}: scroll to browse">
+            {% for video in home_videos %}
+                <a class="gu-video-block__card{% if forloop.first and video_block.video_featured %} gu-video-block__card--lead{% endif %}" href="{{ video.get_absolute_url }}">
+                    {% if video_block.video_durations %}
+                        {% include "newsroom/video_thumb.html" with video=video play="sm" %}
+                    {% else %}
+                        {% include "newsroom/video_thumb.html" with video=video play="sm" runtime=0 %}
+                    {% endif %}
+                    <div class="gu-video-block__body">
+                        {% if video_block.video_categories and video.category %}<span class="gu-video-block__category">{{ video.category.card_label }}</span>{% endif %}
+                        <h3>{{ video.title }}</h3>
+                        {% if video_block.video_summaries and video.summary %}<p class="gu-video-block__summary">{{ video.summary|striptags|truncatewords:18 }}</p>{% endif %}
+                        {% if video_block.video_dates %}<time class="gu-video-block__meta" datetime="{{ video.published|date:'c' }}">{{ video.published|date:"j F Y" }}</time>{% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

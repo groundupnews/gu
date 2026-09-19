@@ -19,6 +19,15 @@
                        value="{{query|default:""}}" />
                 <input type="hidden" name="search_type" value="qanda_search_str" />
                 <input type="hidden" name="is_simple" value="true" />
+            {% elif video_search %}
+                <input type="text"
+                       maxlength="{{SEARCH_MAXLEN}}"
+                       name="adv_search"
+                       id="id_q"
+	               placeholder="Search videos"
+                       value="{{query|default:""}}" />
+                <input type="hidden" name="search_type" value="video" />
+                <input type="hidden" name="is_simple" value="true" />
             {% elif gallery %}
                 <input type="text"
                        maxlength="{{SEARCH_MAXLEN}}"

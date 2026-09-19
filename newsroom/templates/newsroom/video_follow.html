@@ -1,0 +1,20 @@
+{% comment %}
+The follow row at the foot of a video page.
+Context: follow_links (newsroom.settings.FOLLOW_LINKS).
+{% endcomment %}
+{% if follow_links %}
+    <section class="gu-follow">
+        <h2 class="gu-follow__title">Follow GroundUp</h2>
+        <p class="gu-follow__intro">New videos, and the reporting behind them,
+            wherever you already are.</p>
+        <div class="gu-follow__row">
+            {% for link in follow_links %}
+                <a class="gu-follow__link" href="{{ link.url }}"
+                   target="_blank" rel="noopener">
+                    {% include "insert_icon.html" with icon=link.icon %}
+                    <span>{{ link.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

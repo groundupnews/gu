@@ -29,7 +29,7 @@ from django.contrib.sitemaps.views import sitemap
 
 from newsroom.models import Article
 from newsroom.models import Author
-from newsroom.sitemap import ArticleSitemap
+from newsroom.sitemap import ArticleSitemap, VideoSitemap
 
 from gallery.models import Photograph
 
@@ -82,6 +82,7 @@ urlpatterns = (
             {
                 "sitemaps": {
                     "articles": ArticleSitemap,
+                    "videos": VideoSitemap,
                     "authors": GenericSitemap(
                         author_dict, priority=0.5, changefreq="weekly"
                     ),

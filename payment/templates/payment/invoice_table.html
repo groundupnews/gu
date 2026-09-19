@@ -1,7 +1,7 @@
 {% load humanize %}
 <table id="invoice-table" cellpadding="10" class="table table-bordered table-condensed">
     <tr>
-        <th>Article</th>
+        <th>Article or video</th>
         <th>Description</th>
         <th>Excl. tax</th>
         <th>PAYE</th>
@@ -32,12 +32,18 @@
                         <a href="{% url "newsroom:article.detail" commission.article.slug %}">
                             {{commission.article.title}}
                         </a>
+                    {% elif commission.video %}
+                        <a href="{{commission.video.get_absolute_url}}">
+                            {{commission.video.title}}
+                        </a>
                     {% endif %}
                 </td>
                 <td>
                     {{commission.description}}
                     {% if commission.article.category %}
                         <br /><em>{{commission.article.category}}</em>
+                    {% elif commission.video %}
+                        <br /><em>Video{% if commission.video.category %}: {{commission.video.category}}{% endif %}</em>
                     {% endif %}
                     {% if commission.notes %}
                         <br />

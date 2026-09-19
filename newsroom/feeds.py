@@ -7,7 +7,7 @@ from django.utils.feedgenerator import Atom1Feed, Rss201rev2Feed
 from django.utils.encoding import iri_to_uri
 
 from newsroom.settings import LOGO
-from .models import Article
+from .models import Article, Video
 
 
 class LatestArticlesRssFeed(Feed):
@@ -115,3 +115,48 @@ class LatestFullArticlesAtomFeed(LatestArticlesAtomFeed):
 
     def item_content(self, article):
         return article.body
+
+
+class LatestVideosRssFeed(Feed):
+    title = "GroundUp Videos"
+    link = "/videos/"
+    feed_type = Rss201rev2Feed
+    description = "Video journalism from GroundUp, on our YouTube channel."
+
+    def items(self):
+        return Video.objects.list_view()[:15]
+
+    def item_title(self, video):
+        return video.title
+
+    def item_pubdate(self, video):
+        return video.published
+
+    def item_updateddate(self, video):
+        return video.modified
+
+    def item_description(self, video):
+        return video.summary
+
+    def item_author_name(self, video):
+        return video.get_byline()
+
+    def item_categories(self, video):
+        if video.category:
+            return (video.category.name, )
+        return ()
+
+    def item_enclosure_url(self, video):
+        return video.thumbnail_url()
+
+    def item_enclosure_mime_type(self, video):
+        return "image/jpeg"
+
+    def item_enclosure_length(self, video):
+        # Not known without fetching the thumbnail
+        return 0
+
+
+class LatestVideosAtomFeed(LatestVideosRssFeed):
+    feed_type = Atom1Feed
+    subtitle = LatestVideosRssFeed.description
