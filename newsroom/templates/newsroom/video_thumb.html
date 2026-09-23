@@ -4,7 +4,7 @@ Thumbnail for one video. Parameters:
   play   - "" for no play button, "sm" or "lg" for one
   runtime - pass 0 where the runtime is already shown alongside
 {% endcomment %}
-<span class="gu-video-thumb{% if video.is_short %} gu-video-thumb--short{% endif %}">
+<span class="gu-video-thumb">
     <img src="{{ video.thumbnail_url }}"
          onerror="this.onerror=null;this.src='{{ video.fallback_thumbnail_url }}';"
          alt="{{ video.thumbnail_alt }}"

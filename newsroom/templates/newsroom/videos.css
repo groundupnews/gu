@@ -8,10 +8,6 @@
     overflow: hidden;
 }
 
-.gu-video-thumb--short {
-    aspect-ratio: 9 / 16;
-}
-
 .gu-video-thumb img {
     width: 100%;
     height: 100%;
@@ -410,70 +406,6 @@ a:focus > .gu-video-thumb .gu-video-play span {
     outline-offset: 2px;
 }
 
-/* Shorts rail */
-
-.gu-shorts {
-    border-top: 2px solid #D6D6DA;
-    margin-top: 44px;
-    padding-top: 20px;
-}
-
-.gu-shorts__header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-}
-
-.gu-shorts__header h2 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.4px;
-    margin: 0 0 16px;
-}
-
-.gu-shorts__note {
-    font-size: 14px;
-    line-height: 16px;
-    color: #999;
-}
-
-.gu-shorts__rail {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(170px, 1fr);
-    gap: 18px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-}
-
-.gu-short {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    scroll-snap-align: start;
-}
-
-.gu-short:hover,
-.gu-short:focus {
-    color: inherit;
-    text-decoration: none;
-}
-
-.gu-short h3 {
-    font-size: 16px;
-    line-height: 21px;
-    font-weight: 700;
-    margin: 10px 0 0;
-}
-
-.gu-short:hover h3,
-.gu-short:focus h3 {
-    text-decoration: underline;
-}
-
 /* single video page */
 
 .gu-video-detail {
@@ -514,13 +446,6 @@ a:focus > .gu-video-thumb .gu-video-play span {
     aspect-ratio: 16 / 9;
     background-color: #000;
     margin-top: 12px;
-}
-
-.gu-video-player--short {
-    aspect-ratio: 9 / 16;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .gu-video-player img {
@@ -604,18 +529,19 @@ a:focus > .gu-video-thumb .gu-video-play span {
     color: #0250bb;
 }
 
-.gu-video-body p.gu-video-note {
-    font-style: italic;
-    color: #4d4d4d;
-    font-size: 17px;
-    margin-top: 14px;
-}
-
 
 .gu-video-section {
     border-top: 2px solid #D6D6DA;
     padding-top: 16px;
     margin-bottom: 34px;
+}
+
+.gu-video-detail .gu-video-section--readmore {
+    margin-bottom: 24px;
+}
+
+.gu-video-licence {
+    margin-bottom: 30px;
 }
 
 .gu-video-section__title {
@@ -736,13 +662,6 @@ a:focus > .gu-video-thumb .gu-video-play span {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.4px;
-    margin: 0 0 4px;
-}
-
-.gu-follow__intro {
-    font-size: 16px;
-    line-height: 23px;
-    color: #666;
     margin: 0 0 18px;
 }
 
@@ -943,6 +862,32 @@ a:focus > .gu-video-thumb .gu-video-play span {
 
 .gu-video-contributors-table input[type=number] {
     width: 60px;
+}
+
+/* Role checkboxes in the contributors table */
+
+.gu-video-roles ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 2;
+    column-gap: 18px;
+    min-width: 280px;
+}
+
+.gu-video-roles li {
+    break-inside: avoid;
+    font-size: 13px;
+    line-height: 19px;
+}
+
+.gu-video-roles label {
+    font-weight: 400;
+    margin: 0;
+}
+
+.gu-video-roles input[type=checkbox] {
+    margin-right: 5px;
 }
 
 .gu-video-contributors-table ul.errorlist {

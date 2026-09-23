@@ -177,11 +177,11 @@ class AdvancedSearchForm(forms.Form):
 class VideoForm(forms.ModelForm):
     youtube_id = forms.CharField(
         label='YouTube URL',
-        help_text='Paste the watch URL or the Short URL.',
+        help_text='Paste the watch URL. A Short URL works too.',
         widget=forms.TextInput(
             attrs={'placeholder': 'https://www.youtube.com/watch?v=...'}))
-    author = AutoCompleteSelectField("authors", required=False,
-                                     help_text=None, label="Author")
+    authors = AutoCompleteSelectMultipleField(
+        "authors", required=False, help_text=None, label="Authors")
     topics = AutoCompleteSelectMultipleField("topics", required=False,
                                              help_text=None, label="Topics")
     related_articles = AutoCompleteSelectMultipleField(
@@ -200,11 +200,10 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = models.Video
         fields = [
-            'title', 'slug', 'youtube_id', 'video_format', 'category',
-            'summary', 'body', 'duration', 'author', 'byline', 'credits',
+            'title', 'slug', 'youtube_id', 'category',
+            'summary', 'body', 'duration', 'authors', 'byline', 'credits',
             'thumbnail', 'thumbnail_alt', 'topics', 'related_articles',
-            'published', 'promote', 'include_on_home',
-            'transcript_on_request', 'copyright',
+            'published', 'promote', 'include_on_home', 'copyright',
         ]
         widgets = {
             'summary': forms.Textarea(attrs={'rows': 3}),
@@ -222,15 +221,48 @@ VideoChapterFormSet = forms.inlineformset_factory(
     extra=4, can_delete=True)
 
 
+class VideoRolesField(forms.MultipleChoiceField):
+    """Role checkboxes, stored as comma-separated keys."""
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault('choices', models.VIDEO_ROLE_CHOICES)
+        kwargs.setdefault('widget', forms.CheckboxSelectMultiple)
+        super().__init__(**kwargs)
+
+    def prepare_value(self, value):
+        if isinstance(value, str):
+            return models.split_roles(value)
+        return value
+
+    def clean(self, value):
+        return models.join_roles(super().clean(value))
+
+    def has_changed(self, initial, data):
+        # Initial is a string, data a list. Without this a blank extra row
+        # looks edited.
+        if isinstance(initial, str):
+            initial = models.split_roles(initial)
+        return super().has_changed(initial, data)
+
+
 class VideoContributorForm(forms.ModelForm):
     """One row of the credits. The author has to be on system!"""
 
     author = AutoCompleteSelectField("authors", help_text=None, label="Person")
+    # Optional so blank rows validate; clean() needs it once a person is set.
+    roles = VideoRolesField(required=False, label="What they did")
 
     class Meta:
         model = models.VideoContributor
-        fields = ['author', 'role', 'note', 'position', 'no_payment', ]
-        help_texts = {'note': '', 'position': '', 'no_payment': ''}
+        fields = ['author', 'roles', 'note', 'position', 'no_payment', ]
+        help_texts = {'roles': '', 'note': '', 'position': '',
+                      'no_payment': ''}
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('author') and not cleaned_data.get('roles'):
+            self.add_error('roles', 'Tick at least one job.')
+        return cleaned_data
 
 
 VideoContributorFormSet = forms.inlineformset_factory(

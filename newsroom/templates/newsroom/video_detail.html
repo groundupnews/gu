@@ -15,8 +15,8 @@
     <meta name="twitter:description" content="{{ meta_description }}"/>
     <meta name="twitter:image" content="{{ video.thumbnail_url }}"/>
     <meta name="twitter:player" content="{{ video.embed_url }}"/>
-    <meta name="twitter:player:width" content="{% if video.is_short %}405{% else %}1280{% endif %}"/>
-    <meta name="twitter:player:height" content="{% if video.is_short %}720{% else %}720{% endif %}"/>
+    <meta name="twitter:player:width" content="1280"/>
+    <meta name="twitter:player:height" content="720"/>
     {% video_jsonld video %}
 {% endblock %}
 
@@ -45,7 +45,7 @@
                 </span>
             </div>
 
-            <div class="gu-video-player{% if video.is_short %} gu-video-player--short{% endif %}"
+            <div class="gu-video-player"
                  data-video-player
                  data-embed="{{ video.embed_url }}"
                  data-title="{{ video.title }}">
@@ -61,7 +61,7 @@
                 <div class="article__image__caption">{{ video.credits }}</div>
             {% endif %}
 
-            {% if video.body or chapters or video.transcript_on_request %}
+            {% if video.body or chapters %}
                 <div class="gu-video-body">
                     {{ video.body|safe }}
 
@@ -76,12 +76,6 @@
                                 </button>
                             {% endfor %}
                         </div>
-                    {% endif %}
-
-                    {% if video.transcript_on_request %}
-                        <p class="gu-video-note">A transcript of this video is
-                            available on request. Email
-                            <a href="mailto:info@groundup.org.za">info@groundup.org.za</a>.</p>
                     {% endif %}
                 </div>
             {% endif %}
@@ -98,6 +92,19 @@
                 </div>
             {% endif %}
 
+            {% if related_articles %}
+                <section class="gu-video-section gu-video-section--readmore">
+                    <h2 class="gu-video-section__title">Read more</h2>
+                    <ul class="gu-video-readmore">
+                        {% for article in related_articles %}
+                            <li>
+                                <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endif %}
+
             {% if video.topics.all %}
                 <div class="article__topics">
                     <span class="article__topics__header">TOPICS:&nbsp;</span>
@@ -108,10 +115,6 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
-            <div class="article__copyright gu-video-licence">
-                {{ video.copyright|safe }}
-            </div>
         </article>
 
         {% if related_videos %}
@@ -125,19 +128,6 @@
             </section>
         {% endif %}
 
-        {% if related_articles %}
-            <section class="gu-video-section">
-                <h2 class="gu-video-section__title">Read more</h2>
-                <ul class="gu-video-readmore">
-                    {% for article in related_articles %}
-                        <li>
-                            <a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </section>
-        {% endif %}
-
         <section class="gu-video-support">
             <h2>Support our video journalism</h2>
             <p>GroundUp videos are free to watch and may be republished under
@@ -147,6 +137,10 @@
         </section>
 
         {% include "newsroom/video_follow.html" %}
+
+        <div class="article__copyright gu-video-licence">
+            {{ video.copyright|safe }}
+        </div>
     </div>
 {% endblock %}
 

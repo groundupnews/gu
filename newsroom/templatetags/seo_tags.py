@@ -179,6 +179,14 @@ def news_article_jsonld(context, article):
     return _ld_script(data)
 
 
+def _person(request, author):
+    return {
+        "@type": "Person",
+        "name": str(author),
+        "url": _abs(request, author.get_absolute_url()),
+    }
+
+
 def _video_object(context, video, include_context=True):
     """VideoObject for one video. Chapters become Clip parts, which is what
     Google reads for key moments in search results."""
@@ -210,29 +218,16 @@ def _video_object(context, video, include_context=True):
         data["dateModified"] = video.modified.isoformat()
     if video.duration_iso():
         data["duration"] = video.duration_iso()
-    if video.author_id:
-        data["author"] = {
-            "@type": "Person",
-            "name": str(video.author),
-            "url": _abs(request, video.author.get_absolute_url()),
-        }
+    authors = list(video.authors.all())
+    contributors = list(video.contributors.all())
+    if not authors and not video.byline:
+        # Same fallback as the byline
+        authors = [c.author for c in contributors if "reporting" in c.role_list()]
+    if authors:
+        data["author"] = [_person(request, author) for author in authors]
     elif video.byline:
         data["author"] = {"@type": "Person", "name": video.byline}
-    contributors = list(video.contributors.all())
     if contributors:
-        if "author" not in data:
-            reporters = [c for c in contributors if c.role == "reporting"]
-            if reporters:
-                data["author"] = [
-                    {
-                        "@type": "Person",
-                        "name": str(contributor.author),
-                        "url": _abs(
-                            request, contributor.author.get_absolute_url()
-                        ),
-                    }
-                    for contributor in reporters
-                ]
         data["contributor"] = [
             {"@type": "Person", "name": str(contributor.author)}
             for contributor in contributors

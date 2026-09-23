@@ -20,6 +20,7 @@ from socialmedia.admin import TweetInline
 from socialmedia.common import SCHEDULE_RESULTS
 
 from . import models, utils
+from .forms import VideoRolesField
 
 # Used to select sizes of images
 IMAGE_SIZE_CHOICES = [
@@ -427,11 +428,20 @@ class VideoChapterInline(admin.TabularInline):
     extra = 4
 
 
+class VideoContributorInlineForm(forms.ModelForm):
+    roles = VideoRolesField(label="What they did")
+
+    class Meta:
+        model = models.VideoContributor
+        fields = "__all__"
+
+
 class VideoContributorInline(admin.TabularInline):
     """The credits, and what each of them is paid. Publishing the video raises
     the payment items; see payment.models.create_video_payments."""
 
     model = models.VideoContributor
+    form = VideoContributorInlineForm
     extra = 3
     raw_id_fields = [
         "author",
@@ -443,7 +453,7 @@ class VideoContributorInline(admin.TabularInline):
     }
     fields = [
         "author",
-        "role",
+        "roles",
         "note",
         "position",
         "no_payment",
@@ -520,14 +530,12 @@ class VideoAdmin(admin.ModelAdmin):
     list_display = [
         "title",
         "category",
-        "video_format",
         "duration",
         "published",
         "promote",
         "include_on_home",
     ]
     list_filter = [
-        "video_format",
         "category",
         "promote",
         "include_on_home",
@@ -537,15 +545,13 @@ class VideoAdmin(admin.ModelAdmin):
     search_fields = ["title", "summary", "youtube_id"]
     prepopulated_fields = {"slug": ("title",)}
     raw_id_fields = [
-        "author",
+        "authors",
         "topics",
         "related_articles",
     ]
     autocomplete_lookup_fields = {
-        "fk": [
-            "author",
-        ],
         "m2m": [
+            "authors",
             "topics",
             "related_articles",
         ],
@@ -558,7 +564,6 @@ class VideoAdmin(admin.ModelAdmin):
                     "title",
                     "slug",
                     "youtube_id",
-                    "video_format",
                     "duration",
                     "category",
                 )
@@ -570,7 +575,7 @@ class VideoAdmin(admin.ModelAdmin):
         ),
         (
             "Credit",
-            {"fields": ("author", "byline")},
+            {"fields": ("authors", "byline")},
         ),
         (
             "Thumbnail",
@@ -592,7 +597,6 @@ class VideoAdmin(admin.ModelAdmin):
                     "published",
                     "promote",
                     "include_on_home",
-                    "transcript_on_request",
                 )
             },
         ),

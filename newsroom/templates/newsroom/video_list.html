@@ -79,7 +79,7 @@
                             Watch{% if hero.duration %} · {{ hero.duration }}{% endif %}
                         </a>
                         <span class="gu-videos-hero__meta">
-                            {{ hero.published|date:"j F Y" }}{% if hero.get_byline %} · {{ hero.get_byline }}{% endif %}
+                            {{ hero.published|date:"j F Y" }}
                         </span>
                     </div>
                 </div>
@@ -106,23 +106,6 @@
 
         {% if page_obj.paginator.num_pages > 1 %}
             {% include 'paginator.html' %}
-        {% endif %}
-
-        {% if shorts %}
-            <section class="gu-shorts">
-                <div class="gu-shorts__header">
-                    <h2>Shorts</h2>
-                    <span class="gu-shorts__note">Vertical videos from our YouTube channel</span>
-                </div>
-                <div class="gu-shorts__rail">
-                    {% for short in shorts %}
-                        <a class="gu-short" href="{{ short.get_absolute_url }}">
-                            {% include "newsroom/video_thumb.html" with video=short play="sm" %}
-                            <h3>{{ short.title }}</h3>
-                        </a>
-                    {% endfor %}
-                </div>
-            </section>
         {% endif %}
     </div>
 {% endblock %}

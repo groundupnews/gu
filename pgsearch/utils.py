@@ -134,7 +134,9 @@ def searchVideos(search_string=None,
 
     if author_pk:
         try:
-            query = query & Q(author=Author.objects.get(pk=author_pk))
+            author = Author.objects.get(pk=author_pk)
+            query = query & (Q(authors=author) |
+                             Q(contributors__author=author))
         except:
             pass
 
@@ -157,7 +159,7 @@ def searchVideos(search_string=None,
         except:
             pass
 
-    videos = Video.objects.published().filter(query)
+    videos = Video.objects.published().filter(query).distinct()
 
     return videos
 
@@ -237,10 +239,8 @@ def searchArticlesAndPhotos(search_string=None,
         # Left as model instances, unlike the two above, so the template can
         # call thumbnail_url() and get_absolute_url() on them.
         videos = searchVideos(search_string, author_pk, topic_pk,
-                              from_date, to_date). \
-                              annotate(obj_type=Value(2,
-                                                      output_field=IntegerField())). \
-                              order_by('-published').distinct()
+                              from_date, to_date).annotate(
+            obj_type=Value(2, output_field=IntegerField()))
 
     selected = [queryset for queryset, wanted
                 in ((articles, inc_articles),

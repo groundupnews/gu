@@ -28,14 +28,15 @@ SEARCH_MAXLEN = getattr(settings, 'NEWSROOM_SEARCH_MAXLEN', 60)
 LOGO = getattr(settings, 'NEWSROOM_LOGO', 'newsroom/images/GroundUpLogo.png')
 
 VIDEOS_PER_PAGE = getattr(settings, 'NEWSROOM_VIDEOS_PER_PAGE', 12)
-SHORTS_ON_LIST = getattr(settings, 'NEWSROOM_SHORTS_ON_LIST', 8)
 VIDEOS_ON_HOME = getattr(settings, 'NEWSROOM_VIDEOS_ON_HOME', 4)
 YOUTUBE_CHANNEL_URL = getattr(settings, 'NEWSROOM_YOUTUBE_CHANNEL_URL',
                               'https://www.youtube.com/@GroundUpNews')
 VIDEOS_INTRO = getattr(
     settings, 'NEWSROOM_VIDEOS_INTRO',
-    'Explainers, investigations and reporting from across South Africa. '
     'Every GroundUp video is free to watch.')
+
+VIDEO_DEFAULT_BYLINE = getattr(settings, 'NEWSROOM_VIDEO_DEFAULT_BYLINE',
+                               'GroundUp Video Team')
 
 VIDEO_LICENCE_URL = getattr(settings, 'NEWSROOM_VIDEO_LICENCE_URL',
                             'https://groundup.org.za/licencing/detail/2/')

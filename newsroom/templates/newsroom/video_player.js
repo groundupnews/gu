@@ -55,16 +55,4 @@
             play(parseInt(hash[1], 10));
         }
     }
-
-    document.querySelectorAll("[data-copy-link]").forEach(function (link) {
-        link.addEventListener("click", function (event) {
-            if (!navigator.clipboard) {
-                return;
-            }
-            event.preventDefault();
-            navigator.clipboard.writeText(link.href).then(function () {
-                link.title = "Link copied";
-            });
-        });
-    });
 })();

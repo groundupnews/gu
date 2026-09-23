@@ -28,7 +28,6 @@
                         {% include "newsroom/video_form_field.html" with field=form.title %}
                         {% include "newsroom/video_form_field.html" with field=form.slug %}
                         {% include "newsroom/video_form_field.html" with field=form.youtube_id %}
-                        {% include "newsroom/video_form_field.html" with field=form.video_format %}
                         {% include "newsroom/video_form_field.html" with field=form.duration %}
                         {% include "newsroom/video_form_field.html" with field=form.category %}
                     </fieldset>
@@ -42,7 +41,7 @@
 
                     <fieldset>
                         <legend>Credit</legend>
-                        {% include "newsroom/video_form_field.html" with field=form.author %}
+                        {% include "newsroom/video_form_field.html" with field=form.authors %}
                         {% include "newsroom/video_form_field.html" with field=form.byline %}
                     </fieldset>
 
@@ -58,7 +57,7 @@
                                     <th>Detail</th>
                                     <th>Order</th>
                                     <th>Do not pay</th>
-                                    <th>Remove</th>
+                                    <th>Remove credit</th>
                                     {% if perms.payment.change_commission %}
                                         <th>Payment</th>
                                     {% endif %}
@@ -69,7 +68,7 @@
                                     <tr>
                                         {{ contributor_form.id }}
                                         <td>{{ contributor_form.author.errors }}{{ contributor_form.author }}</td>
-                                        <td>{{ contributor_form.role.errors }}{{ contributor_form.role }}</td>
+                                        <td class="gu-video-roles">{{ contributor_form.roles.errors }}{{ contributor_form.roles }}</td>
                                         <td>{{ contributor_form.note.errors }}{{ contributor_form.note }}</td>
                                         <td>{{ contributor_form.position.errors }}{{ contributor_form.position }}</td>
                                         <td>{{ contributor_form.no_payment.errors }}{{ contributor_form.no_payment }}</td>
@@ -166,7 +165,6 @@
                         {% include "newsroom/video_form_field.html" with field=form.published %}
                         {% include "newsroom/video_form_field.html" with field=form.promote %}
                         {% include "newsroom/video_form_field.html" with field=form.include_on_home %}
-                        {% include "newsroom/video_form_field.html" with field=form.transcript_on_request %}
                     </fieldset>
 
                     <fieldset>

@@ -4,9 +4,7 @@ Context: follow_links (newsroom.settings.FOLLOW_LINKS).
 {% endcomment %}
 {% if follow_links %}
     <section class="gu-follow">
-        <h2 class="gu-follow__title">Follow GroundUp</h2>
-        <p class="gu-follow__intro">New videos, and the reporting behind them,
-            wherever you already are.</p>
+        <h2 class="gu-follow__title">Follow GroundUp for more videos</h2>
         <div class="gu-follow__row">
             {% for link in follow_links %}
                 <a class="gu-follow__link" href="{{ link.url }}"

@@ -376,8 +376,7 @@ def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
 
     for block in blocks:
         if block.block_type == "videos" or block.name == "_Videos":
-            count = (block.num_articles if block.block_type == "videos"
-                     else settings.VIDEOS_ON_HOME)
+            count = block.num_articles if block.block_type == "videos" else None
             if count is None:
                 count = settings.VIDEOS_ON_HOME
             block.videos = list(models.Video.objects.for_home_page()[:count])
@@ -1334,7 +1333,7 @@ def advanced_search(request):
             True if search_type == "article" or search_type == "both" else False
         )
 
-    inc_videos = True if search_type in ("video", "both") else False
+    inc_videos = search_type in ("video", "both")
     if search_type == "video":
         inc_articles = inc_photos = False
 
@@ -1559,10 +1558,6 @@ class VideoList(ListView):
         context["category"] = self.category
         context["categories"] = models.VideoCategory.objects.all()
         context["hero"] = self.hero if context["page_obj"].number == 1 else None
-        shorts = models.Video.objects.shorts()
-        if self.category:
-            shorts = shorts.filter(category=self.category)
-        context["shorts"] = shorts[: settings.SHORTS_ON_LIST]
         context["youtube_channel_url"] = settings.YOUTUBE_CHANNEL_URL
         context["breadcrumbs"] = video_breadcrumbs(self.category)
         context["intro"] = settings.VIDEOS_INTRO
@@ -1672,7 +1667,7 @@ class VideoManageList(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         # The list shows how many people are credited on each video and how many payments
-        return models.Video.objects.select_related("category", "author").annotate(
+        return models.Video.objects.select_related("category").annotate(
             credit_count=Count("contributors", distinct=True),
             payment_count=Count(
                 "payments",

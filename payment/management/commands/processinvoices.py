@@ -47,8 +47,7 @@ def generate_commissions():
             article.commissions_processed = True
             article.save()
     for video in Video.objects.published().filter(contributors__isnull=False).distinct():
-        with transaction.atomic():
-            num_commissions += len(create_video_payments(video))
+        num_commissions += len(create_video_payments(video))
     return num_commissions
 
 def notify_freelancers():

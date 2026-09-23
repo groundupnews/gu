@@ -787,7 +787,7 @@ class PayeRequisition(models.Model):
 def video_payment_notes(video, author):
     """The jobs this person is credited with, for the payment item's note."""
     return ", ".join(
-        contributor.get_role_display()
+        contributor.roles_display()
         for contributor in video.contributors.all()
         if contributor.author_id == author.pk and not contributor.no_payment
     )

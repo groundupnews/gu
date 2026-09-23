@@ -1185,17 +1185,13 @@ class WetellBulletin(models.Model):
         ]
 
 
-VIDEO_FORMAT_CHOICES = (
-    ("L", "Landscape (standard YouTube video)"),
-    ("S", "Vertical (YouTube Short)"),
-)
-
 # XXX: change video roles here
 VIDEO_ROLE_CHOICES = (
     ("reporting", "Reporting"),
     ("producing", "Producing"),
     ("presenting", "Presenting"),
     ("script", "Script"),
+    ("story_editing", "Story editing"),
     ("camera", "Camera"),
     ("sound", "Sound"),
     ("editing", "Video editing"),
@@ -1208,6 +1204,18 @@ VIDEO_ROLE_CHOICES = (
 )
 
 VIDEO_ROLE_ORDER = {key: index for index, (key, label) in enumerate(VIDEO_ROLE_CHOICES)}
+
+VIDEO_ROLE_LABELS = dict(VIDEO_ROLE_CHOICES)
+
+
+def split_roles(value):
+    """The stored roles, in the order they are credited."""
+    keys = [key for key in (value or "").split(",") if key in VIDEO_ROLE_LABELS]
+    return sorted(set(keys), key=lambda key: VIDEO_ROLE_ORDER[key])
+
+
+def join_roles(keys):
+    return ",".join(split_roles(",".join(keys)))
 
 # TODO: double check regex, but my testing was good on it; 
 # editor facing only anyway, so should be fine & safe
@@ -1224,9 +1232,17 @@ YOUTUBE_URL_RE = re.compile(
 
 YOUTUBE_ID_RE = re.compile(r"[A-Za-z0-9_-]{11}")
 
-DURATION_RE = re.compile(r"^(?:(?P<h>\d+):)?(?P<m>\d{1,2}):(?P<s>\d{2})$")
+DURATION_RE = re.compile(r"^(?:(?P<h>\d+):)?(?P<m>\d{1,2}):(?P<s>[0-5]\d)$")
 
 validate_duration = RegexValidator(DURATION_RE, "Use m:ss or h:mm:ss, e.g. 9:42.")
+
+
+def timecode_seconds(value):
+    match = DURATION_RE.match(value or "")
+    if not match:
+        return None
+    hours = int(match.group("h") or 0)
+    return hours * 3600 + int(match.group("m")) * 60 + int(match.group("s"))
 
 
 def extract_youtube_id(value):
@@ -1290,14 +1306,7 @@ class VideoQuerySet(models.QuerySet):
         return self.filter(published__lte=timezone.now())
 
     def list_view(self):
-        return (
-            self.published()
-            .filter(video_format="L")
-            .select_related("category", "author")
-        )
-
-    def shorts(self):
-        return self.published().filter(video_format="S").select_related("category")
+        return self.published().select_related("category").prefetch_related("authors")
 
     def for_home_page(self):
         return self.list_view().filter(include_on_home=True)
@@ -1309,13 +1318,7 @@ class Video(models.Model):
     youtube_id = models.CharField(
         max_length=200,
         verbose_name="YouTube video",
-        help_text="Paste the YouTube URL or Short URL. Only the video id is kept. ",
-    )
-    video_format = models.CharField(
-        max_length=1,
-        choices=VIDEO_FORMAT_CHOICES,
-        default="L",
-        help_text="Verticals are shown in the Shorts rail rather than the main grid.",
+        help_text="Paste the YouTube URL. Only the video id is kept.",
     )
     category = models.ForeignKey(
         VideoCategory,
@@ -1341,18 +1344,19 @@ class Video(models.Model):
         verbose_name="length (m:ss)",
         help_text="Length as m:ss or h:mm:ss, e.g. 9:42.",
     )
-    author = models.ForeignKey(
+    authors = models.ManyToManyField(
         Author,
         blank=True,
-        null=True,
         related_name="videos",
-        on_delete=models.SET_NULL,
+        help_text="Who the video is bylined to. Leave blank and the byline "
+        "falls back to whoever is credited with reporting, and then to "
+        "'{}'.".format(settings.VIDEO_DEFAULT_BYLINE),
     )
     byline = models.CharField(
         max_length=200,
         blank=True,
         verbose_name="customised byline",
-        help_text="If this is not blank it overrides the author field, "
+        help_text="If this is not blank it overrides the authors field, "
         "e.g. 'GroundUp Video Team'.",
     )
     credits = models.TextField(
@@ -1389,15 +1393,11 @@ class Video(models.Model):
         help_text="Pin this video to the top of the videos page instead of the newest.",
     )
     include_on_home = models.BooleanField(default=True)
-    transcript_on_request = models.BooleanField(
-        default=True,
-        help_text="Show the note offering a transcript of the video.",
-    )
     copyright = models.TextField(
         blank=True,
         default=settings.VIDEO_COPYRIGHT,
         verbose_name="copyright and licence",
-        help_text="Shown at the foot of the video page. Use unfiltered HTMl"
+        help_text="Shown at the foot of the video page. Use unfiltered HTML.",
     )
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -1416,16 +1416,10 @@ class Video(models.Model):
         )
 
     @property
-    def is_short(self):
-        return self.video_format == "S"
-
-    @property
     def is_published(self):
         return self.published is not None and self.published <= timezone.now()
 
     def watch_url(self):
-        if self.is_short:
-            return "https://www.youtube.com/shorts/" + self.youtube_id
         return "https://www.youtube.com/watch?v=" + self.youtube_id
 
     def embed_url(self):
@@ -1437,8 +1431,7 @@ class Video(models.Model):
         if self.thumbnail:
             return self.thumbnail.url
         # hqdefault always exists; maxresdefault does not for every upload.
-        quality = "oardefault" if self.is_short else "maxresdefault"
-        return "https://i.ytimg.com/vi/{}/{}.jpg".format(self.youtube_id, quality)
+        return "https://i.ytimg.com/vi/{}/maxresdefault.jpg".format(self.youtube_id)
 
     def fallback_thumbnail_url(self):
         return "https://i.ytimg.com/vi/{}/hqdefault.jpg".format(self.youtube_id)
@@ -1446,37 +1439,37 @@ class Video(models.Model):
     def get_byline(self):
         if self.byline:
             return self.byline
-        if self.author:
-            return str(self.author)
-        # we fallback
-        reporters = [
-            str(contributor.author)
-            for contributor in self.contributors.all()
-            if contributor.role == "reporting"
-        ]
-        return ", ".join(reporters)
+        names = [str(author) for author in self.authors.all()]
+        if not names:
+            # we fallback
+            names = [
+                str(contributor.author)
+                for contributor in self.contributors.all()
+                if "reporting" in contributor.role_list()
+            ]
+        if not names:
+            return settings.VIDEO_DEFAULT_BYLINE
+        return ", ".join(names)
 
     def credits_by_role(self):
-        """The contributors grouped for the credits block"""
+        """The contributors grouped for the credits block. Someone who did
+        more than one job is credited under each of them."""
         contributors = sorted(
-            self.contributors.all(),
-            key=lambda c: (VIDEO_ROLE_ORDER.get(c.role, 99), c.position, c.pk or 0),
+            self.contributors.all(), key=lambda c: (c.position, c.pk or 0)
         )
         rows = []
-        for contributor in contributors:
-            label = contributor.get_role_display()
-            if rows and rows[-1]["role"] == label:
-                rows[-1]["people"].append(contributor.credit())
-            else:
-                rows.append({"role": label, "people": [contributor.credit()]})
+        for key, label in VIDEO_ROLE_CHOICES:
+            people = [
+                contributor.credit()
+                for contributor in contributors
+                if key in contributor.role_list()
+            ]
+            if people:
+                rows.append({"role": label, "people": people})
         return rows
 
     def duration_seconds(self):
-        match = DURATION_RE.match(self.duration or "")
-        if not match:
-            return None
-        hours = int(match.group("h") or 0)
-        return hours * 3600 + int(match.group("m")) * 60 + int(match.group("s"))
+        return timecode_seconds(self.duration)
 
     def duration_iso(self):
         """ISO 8601 duration for schema.org VideoObject."""
@@ -1534,7 +1527,7 @@ class Video(models.Model):
             "-published",
         ]
         indexes = [
-            models.Index(fields=["-published", "video_format"]),
+            models.Index(fields=["-published"]),
         ]
 
 
@@ -1546,7 +1539,13 @@ class VideoContributor(models.Model):
     author = models.ForeignKey(
         Author, related_name="video_contributions", on_delete=models.CASCADE
     )
-    role = models.CharField(max_length=20, choices=VIDEO_ROLE_CHOICES, default="reporting")
+    roles = models.CharField(
+        max_length=200,
+        default="reporting",
+        verbose_name="what they did",
+        help_text="Everything this person did on the video. They are credited "
+        "under each of them.",
+    )
     note = models.CharField(
         max_length=100,
         blank=True,
@@ -1559,7 +1558,7 @@ class VideoContributor(models.Model):
     no_payment = models.BooleanField(
         default=False,
         verbose_name="do not pay",
-        help_text="Tick where this person is not to be paid for the video, "
+        help_text="Tick if this person is not to be paid for the video. "
         "Publishing the video raises a payment item for everyone else.",
     )
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -1570,8 +1569,23 @@ class VideoContributor(models.Model):
             return "{} ({})".format(self.author, self.note)
         return str(self.author)
 
+    def role_list(self):
+        """The role keys, in the order they are credited."""
+        return split_roles(self.roles)
+
+    def role_labels(self):
+        return [VIDEO_ROLE_LABELS[key] for key in self.role_list()]
+
+    def roles_display(self):
+        return ", ".join(self.role_labels())
+
+    def save(self, *args, **kwargs):
+        # Always stored in credit order.
+        self.roles = ",".join(split_roles(self.roles))
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return "{} - {}".format(self.credit(), self.get_role_display())
+        return "{} - {}".format(self.credit(), self.roles_display())
 
     class Meta:
         verbose_name = "video contributor"
@@ -1584,9 +1598,8 @@ class VideoContributor(models.Model):
                 fields=[
                     "video",
                     "author",
-                    "role",
                 ],
-                name="unique_video_contributor_role",
+                name="unique_video_contributor",
             ),
         ]
 
@@ -1604,11 +1617,7 @@ class VideoChapter(models.Model):
     description = models.CharField(max_length=250)
 
     def seconds(self):
-        match = DURATION_RE.match(self.timecode or "")
-        if not match:
-            return 0
-        hours = int(match.group("h") or 0)
-        return hours * 3600 + int(match.group("m")) * 60 + int(match.group("s"))
+        return timecode_seconds(self.timecode) or 0
 
     def __str__(self):
         return "{} {}".format(self.timecode, self.description)
