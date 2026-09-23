@@ -20,3 +20,4 @@ Disallow: /copy_article/
 Disallow: /article_print/
 Disallow: /commissions/
 
+Sitemap: https://groundup.org.za/sitemap.xml
