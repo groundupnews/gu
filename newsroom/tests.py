@@ -939,8 +939,8 @@ class VideoTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # The categories in the design ship as a data migration.
-        cls.explainers = VideoCategory.objects.get(slug="explainers")
-        cls.documentaries = VideoCategory.objects.get(slug="documentaries")
+        cls.explainers = VideoCategory.objects.get(slug="explainer")
+        cls.documentaries = VideoCategory.objects.get(slug="feature")
         cls.topic = Topic.objects.create(name="Pyramid schemes", slug="pyramid-schemes")
 
         cls.newest = Video.objects.create(
@@ -967,11 +967,10 @@ class VideoTest(TestCase):
             published=timezone.now() - datetime.timedelta(days=30),
         )
 
-        cls.short = Video.objects.create(
+        cls.middle = Video.objects.create(
             title="What the grant increase buys",
             slug="what-the-grant-increase-buys",
             youtube_id="KXsqwgXEifE",
-            video_format="S",
             published=timezone.now() - datetime.timedelta(days=2),
         )
 
@@ -981,13 +980,12 @@ class VideoTest(TestCase):
             youtube_id="aaaaaaaaaaa",
         )
 
-    def test_querysets_split_shorts_from_the_main_grid(self):
+    def test_the_grid_holds_every_published_video(self):
         listed = Video.objects.list_view()
         self.assertIn(self.newest, listed)
+        self.assertIn(self.middle, listed)
         self.assertIn(self.older, listed)
-        self.assertNotIn(self.short, listed)
         self.assertNotIn(self.unpublished, listed)
-        self.assertEqual(list(Video.objects.shorts()), [self.short])
 
     def test_duration_conversions(self):
         self.assertEqual(self.newest.duration_seconds(), 582)
@@ -1004,19 +1002,26 @@ class VideoTest(TestCase):
         self.assertEqual(
             self.newest.watch_url(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         )
+        # A video uploaded as a Short is still just a video.
         self.assertEqual(
-            self.short.watch_url(), "https://www.youtube.com/shorts/KXsqwgXEifE"
+            self.middle.watch_url(), "https://www.youtube.com/watch?v=KXsqwgXEifE"
         )
         self.assertIn("maxresdefault", self.newest.thumbnail_url())
-        self.assertIn("oardefault", self.short.thumbnail_url())
+        self.assertIn("maxresdefault", self.middle.thumbnail_url())
         self.assertIn("hqdefault", self.newest.fallback_thumbnail_url())
 
-    def test_byline_falls_back_to_the_author(self):
-        author = Author.objects.create(
+    def test_byline_falls_back_to_the_authors_then_the_video_team(self):
+        self.assertEqual(self.older.get_byline(), "GroundUp Video Team")
+        first = Author.objects.create(
             first_names="Barbara", last_name="Maregele", email="b@example.com"
         )
-        self.older.author = author
-        self.assertEqual(self.older.get_byline(), str(author))
+        second = Author.objects.create(
+            first_names="Ashraf", last_name="Nkosi", email="a@example.com"
+        )
+        self.older.authors.set([first, second])
+        self.assertEqual(
+            self.older.get_byline(), "{}, {}".format(first, second)
+        )
         self.older.byline = "GroundUp Video Team"
         self.assertEqual(self.older.get_byline(), "GroundUp Video Team")
 
@@ -1025,8 +1030,10 @@ class VideoTest(TestCase):
         self.assertEqual(response.status_code, 200)
         # The newest video is the hero; the rest fill the grid.
         self.assertEqual(response.context["hero"], self.newest)
-        self.assertEqual(list(response.context["videos"]), [self.older])
-        self.assertEqual(list(response.context["shorts"]), [self.short])
+        self.assertEqual(
+            list(response.context["videos"]), [self.middle, self.older]
+        )
+        self.assertContains(response, "What the grant increase buys")
         self.assertContains(response, "Municipal debt explained")
         self.assertNotContains(response, "Not ready yet")
 
@@ -1038,12 +1045,12 @@ class VideoTest(TestCase):
 
     def test_category_page_filters(self):
         response = self.client.get(
-            reverse("newsroom:video.category", args=["documentaries"])
+            reverse("newsroom:video.category", args=["feature"])
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["hero"], self.older)
         self.assertEqual(list(response.context["videos"]), [])
-        self.assertContains(response, "Documentaries")
+        self.assertContains(response, "Feature")
 
     def test_detail_page(self):
         response = self.client.get(self.newest.get_absolute_url())
@@ -1173,7 +1180,8 @@ class VideoTest(TestCase):
         response = self.client.get(reverse("newsroom:home"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            list(response.context["home_videos"]), [self.newest, self.older]
+            list(response.context["home_videos"]),
+            [self.newest, self.middle, self.older],
         )
         markup = main_markup(response)
         self.assertIn('class="gu-video-block"', markup)
@@ -1248,7 +1256,7 @@ class VideoTest(TestCase):
 class VideoEditingTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.category = VideoCategory.objects.get(slug="explainers")
+        cls.category = VideoCategory.objects.get(slug="explainer")
         cls.video = Video.objects.create(
             title="Municipal debt explained",
             slug="municipal-debt-explained",
@@ -1293,7 +1301,6 @@ class VideoEditingTest(TestCase):
                 "slug": "how-to-avoid-pyramid-schemes",
                 # Pasted straight from the browser's address bar.
                 "youtube_id": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                "video_format": "L",
                 "duration": "9:42",
                 "category": self.category.pk,
                 "summary": "Thousands of South Africans have lost money.",
@@ -1304,7 +1311,6 @@ class VideoEditingTest(TestCase):
                 "thumbnail_alt": "",
                 "published": published,
                 "include_on_home": "on",
-                "transcript_on_request": "on",
                 "chapters-TOTAL_FORMS": "2",
                 "chapters-INITIAL_FORMS": "0",
                 "chapters-MIN_NUM_FORMS": "0",
@@ -1331,8 +1337,7 @@ class VideoEditingTest(TestCase):
             with self.assertRaises(RuntimeError):
                 self.client.post(reverse("newsroom:video.add"), {
                     "title": "Rolled back", "slug": "rolled-back",
-                    "youtube_id": "dQw4w9WgXcQ", "video_format": "L",
-                    "chapters-TOTAL_FORMS": "1", "chapters-INITIAL_FORMS": "0",
+                    "youtube_id": "dQw4w9WgXcQ",                    "chapters-TOTAL_FORMS": "1", "chapters-INITIAL_FORMS": "0",
                     "chapters-0-timecode": "0:00", "chapters-0-description": "Opening",
                     **NO_CONTRIBUTORS,
                 })
@@ -1347,7 +1352,6 @@ class VideoEditingTest(TestCase):
                 "title": "Nope",
                 "slug": "nope",
                 "youtube_id": "https://vimeo.com/12345",
-                "video_format": "L",
                 "duration": "nine minutes",
                 "chapters-TOTAL_FORMS": "0",
                 "chapters-INITIAL_FORMS": "0",
@@ -1405,14 +1409,14 @@ class VideoContributorTest(TestCase):
 
     def add_credits(self):
         VideoContributor.objects.create(
-            video=self.video, author=self.camera, role="camera"
+            video=self.video, author=self.camera, roles="camera"
         )
         VideoContributor.objects.create(
-            video=self.video, author=self.second_camera, role="camera",
+            video=self.video, author=self.second_camera, roles="camera",
             note="second camera", position=110,
         )
         VideoContributor.objects.create(
-            video=self.video, author=self.reporter, role="reporting"
+            video=self.video, author=self.reporter, roles="reporting"
         )
 
     def test_credits_are_grouped_by_role_in_the_order_the_roles_are_declared(self):
@@ -1430,7 +1434,7 @@ class VideoContributorTest(TestCase):
         self.add_credits()
         self.assertEqual(self.video.get_byline(), "Barbara Maregele")
         # An author or a typed byline still wins.
-        self.video.author = self.camera
+        self.video.authors.add(self.camera)
         self.assertEqual(self.video.get_byline(), "Ashraf Hendricks")
         self.video.byline = "GroundUp Video Team"
         self.assertEqual(self.video.get_byline(), "GroundUp Video Team")
@@ -1443,14 +1447,63 @@ class VideoContributorTest(TestCase):
         self.assertIn("Masixole Feni (second camera)", markup)
         self.assertIn("By Barbara Maregele", markup)
 
-    def test_the_same_person_cannot_hold_the_same_role_twice(self):
+    def test_a_person_is_credited_once_on_a_video(self):
         VideoContributor.objects.create(
-            video=self.video, author=self.camera, role="camera"
+            video=self.video, author=self.camera, roles="camera"
         )
         with self.assertRaises(IntegrityError):
             VideoContributor.objects.create(
-                video=self.video, author=self.camera, role="camera"
+                video=self.video, author=self.camera, roles="editing"
             )
+
+    def test_one_person_can_be_credited_with_several_jobs(self):
+        credit = VideoContributor.objects.create(
+            video=self.video, author=self.camera,
+            # Out of order, and with a duplicate, as a form can hand it over.
+            roles="editing,camera,editing",
+        )
+        credit.refresh_from_db()
+        self.assertEqual(credit.role_list(), ["camera", "editing"])
+        self.assertEqual(credit.roles_display(), "Camera, Video editing")
+        VideoContributor.objects.create(
+            video=self.video, author=self.reporter,
+            roles="reporting,story_editing", position=90,
+        )
+        self.assertEqual(
+            self.video.credits_by_role(),
+            [
+                {"role": "Reporting", "people": ["Barbara Maregele"]},
+                {"role": "Story editing", "people": ["Barbara Maregele"]},
+                {"role": "Camera", "people": ["Ashraf Hendricks"]},
+                {"role": "Video editing", "people": ["Ashraf Hendricks"]},
+            ],
+        )
+
+    def test_the_form_takes_several_jobs_for_one_person(self):
+        self.client.login(username="editor", password="abcde")
+        response = self.client.post(
+            reverse("newsroom:video.update", args=[self.video.slug]),
+            {
+                "title": self.video.title,
+                "slug": self.video.slug,
+                "youtube_id": self.video.youtube_id,
+                "chapters-TOTAL_FORMS": "0",
+                "chapters-INITIAL_FORMS": "0",
+                "chapters-MIN_NUM_FORMS": "0",
+                "chapters-MAX_NUM_FORMS": "1000",
+                "contributors-TOTAL_FORMS": "1",
+                "contributors-INITIAL_FORMS": "0",
+                "contributors-MIN_NUM_FORMS": "0",
+                "contributors-MAX_NUM_FORMS": "1000",
+                "contributors-0-author": str(self.camera.pk),
+                "contributors-0-roles": ["editing", "camera"],
+                "contributors-0-note": "",
+                "contributors-0-position": "100",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        credit = self.video.contributors.get()
+        self.assertEqual(credit.role_list(), ["camera", "editing"])
 
     def test_an_editor_can_add_contributors_through_the_form(self):
         self.client.login(username="editor", password="abcde")
@@ -1460,7 +1513,6 @@ class VideoContributorTest(TestCase):
                 "title": self.video.title,
                 "slug": self.video.slug,
                 "youtube_id": self.video.youtube_id,
-                "video_format": "L",
                 "chapters-TOTAL_FORMS": "0",
                 "chapters-INITIAL_FORMS": "0",
                 "chapters-MIN_NUM_FORMS": "0",
@@ -1470,24 +1522,51 @@ class VideoContributorTest(TestCase):
                 "contributors-MIN_NUM_FORMS": "0",
                 "contributors-MAX_NUM_FORMS": "1000",
                 "contributors-0-author": str(self.reporter.pk),
-                "contributors-0-role": "reporting",
+                "contributors-0-roles": ["reporting"],
                 "contributors-0-note": "",
                 "contributors-0-position": "100",
                 "contributors-1-author": str(self.camera.pk),
-                "contributors-1-role": "camera",
+                "contributors-1-roles": ["camera"],
                 "contributors-1-note": "",
                 "contributors-1-position": "100",
                 # Left blank: an untouched row must not become a credit.
-                "contributors-2-role": "reporting",
                 "contributors-2-note": "",
                 "contributors-2-position": "100",
             },
         )
-        self.assertEqual(response.status_code, 302)
         self.assertEqual(
-            [(c.author.last_name, c.role) for c in self.video.contributors.all()],
+            response.status_code, 302,
+            response.context["contributor_formset"].errors
+            if response.context else "")
+        self.assertEqual(
+            [(c.author.last_name, c.roles) for c in self.video.contributors.all()],
             [("Maregele", "reporting"), ("Hendricks", "camera")],
         )
+
+    def test_a_contributor_without_a_job_is_an_error(self):
+        self.client.login(username="editor", password="abcde")
+        response = self.client.post(
+            reverse("newsroom:video.update", args=[self.video.slug]),
+            {
+                "title": self.video.title,
+                "slug": self.video.slug,
+                "youtube_id": self.video.youtube_id,
+                "chapters-TOTAL_FORMS": "0",
+                "chapters-INITIAL_FORMS": "0",
+                "chapters-MIN_NUM_FORMS": "0",
+                "chapters-MAX_NUM_FORMS": "1000",
+                "contributors-TOTAL_FORMS": "1",
+                "contributors-INITIAL_FORMS": "0",
+                "contributors-MIN_NUM_FORMS": "0",
+                "contributors-MAX_NUM_FORMS": "1000",
+                "contributors-0-author": str(self.camera.pk),
+                "contributors-0-note": "",
+                "contributors-0-position": "100",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("roles", response.context["contributor_formset"].errors[0])
+        self.assertEqual(self.video.contributors.count(), 0)
 
     def test_a_contributor_without_a_name_is_an_error_and_saves_nothing(self):
         self.client.login(username="editor", password="abcde")
@@ -1497,7 +1576,6 @@ class VideoContributorTest(TestCase):
                 "title": "A new title that must not be saved",
                 "slug": self.video.slug,
                 "youtube_id": self.video.youtube_id,
-                "video_format": "L",
                 "chapters-TOTAL_FORMS": "0",
                 "chapters-INITIAL_FORMS": "0",
                 "chapters-MIN_NUM_FORMS": "0",
@@ -1507,7 +1585,7 @@ class VideoContributorTest(TestCase):
                 "contributors-MIN_NUM_FORMS": "0",
                 "contributors-MAX_NUM_FORMS": "1000",
                 "contributors-0-author": "",
-                "contributors-0-role": "camera",
+                "contributors-0-roles": ["camera"],
                 "contributors-0-note": "",
                 "contributors-0-position": "100",
             },
@@ -1526,7 +1604,6 @@ class VideoContributorTest(TestCase):
                 "title": self.video.title,
                 "slug": self.video.slug,
                 "youtube_id": self.video.youtube_id,
-                "video_format": "L",
                 "chapters-TOTAL_FORMS": "0",
                 "chapters-INITIAL_FORMS": "0",
                 "chapters-MIN_NUM_FORMS": "0",
@@ -1536,11 +1613,11 @@ class VideoContributorTest(TestCase):
                 "contributors-MIN_NUM_FORMS": "0",
                 "contributors-MAX_NUM_FORMS": "1000",
                 "contributors-0-author": str(self.reporter.pk),
-                "contributors-0-role": "reporting",
+                "contributors-0-roles": ["reporting"],
                 "contributors-0-note": "",
                 "contributors-0-position": "100",
                 "contributors-1-author": str(self.camera.pk),
-                "contributors-1-role": "camera",
+                "contributors-1-roles": ["camera"],
                 "contributors-1-note": "",
                 "contributors-1-position": "100",
                 "contributors-1-no_payment": "on",
@@ -1571,7 +1648,7 @@ class VideoContributorTest(TestCase):
         # Publishing the video raised the payment item; see
         # payment.models.create_video_payments.
         VideoContributor.objects.create(
-            video=self.video, author=freelancer, role="camera"
+            video=self.video, author=freelancer, roles="camera"
         )
         editor = User.objects.get(username="editor")
         editor.user_permissions.add(
@@ -1620,7 +1697,7 @@ class VideoQATest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.category = VideoCategory.objects.get(slug="explainers")
+        cls.category = VideoCategory.objects.get(slug="explainer")
         cls.topic = Topic.objects.create(name="Grants", slug="grants")
         cls.news = Category.objects.create(name="News", slug="news")
         cls.article = Article.objects.create(
@@ -1648,7 +1725,6 @@ class VideoQATest(TestCase):
 
     def admin_post(self, url, extra):
         payload = {
-            "video_format": "L",
             "chapters-TOTAL_FORMS": "0",
             "chapters-INITIAL_FORMS": "0",
             "chapters-MIN_NUM_FORMS": "0",
@@ -1684,7 +1760,6 @@ class VideoQATest(TestCase):
                 "title": "Pasted short",
                 "slug": "pasted-short",
                 "youtube_id": "https://www.youtube.com/shorts/lRQ1kJJNjko?feature=share",
-                "video_format": "S",
             },
         )
         self.assertEqual(
@@ -1726,7 +1801,7 @@ class VideoQATest(TestCase):
         self.client.force_login(self.superuser)
         for model_name, term, expected in [
             ("video", "municipal", self.video.pk),
-            ("videocategory", "explainers", self.category.pk),
+            ("videocategory", "explainer", self.category.pk),
             ("topic", "grants", self.topic.pk),
         ]:
             response = self.client.get(
@@ -1752,7 +1827,7 @@ class VideoQATest(TestCase):
                 "contributors-TOTAL_FORMS": "1",
                 "contributors-INITIAL_FORMS": "0",
                 "contributors-0-author": str(author.pk),
-                "contributors-0-role": "camera",
+                "contributors-0-roles": ["camera"],
                 "contributors-0-position": "100",
             },
         )
@@ -1778,7 +1853,7 @@ class VideoQATest(TestCase):
             freelancer="f",
         )
         VideoContributor.objects.create(
-            video=self.video, author=author, role="camera"
+            video=self.video, author=author, roles="camera"
         )
         self.client.force_login(self.superuser)
         markup = self.client.get(
@@ -1810,7 +1885,7 @@ class VideoQATest(TestCase):
                 "contributors-TOTAL_FORMS": "1",
                 "contributors-INITIAL_FORMS": "0",
                 "contributors-0-author": str(author.pk),
-                "contributors-0-role": "camera",
+                "contributors-0-roles": ["camera"],
                 "contributors-0-position": "100",
             },
         )
@@ -1856,7 +1931,6 @@ class VideoQATest(TestCase):
                 "title": "Pasted through the form",
                 "slug": "pasted-through-the-form",
                 "youtube_id": "https://www.youtube.com/watch?v=lRQ1kJJNjko",
-                "video_format": "L",
                 "related_articles": [str(self.article.pk)],
                 "chapters-TOTAL_FORMS": "0",
                 "chapters-INITIAL_FORMS": "0",
@@ -1904,7 +1978,7 @@ class VideoQATest(TestCase):
         self.client.force_login(self.superuser)
         cases = [
             (reverse("newsroom:video.list"), 200),
-            (reverse("newsroom:video.category", args=["explainers"]), 200),
+            (reverse("newsroom:video.category", args=["explainer"]), 200),
             (reverse("newsroom:video.rss"), 200),
             (reverse("newsroom:video.atom"), 200),
             (reverse("newsroom:video.manage"), 200),
@@ -1918,6 +1992,43 @@ class VideoQATest(TestCase):
         for url, expected in cases:
             self.assertEqual(self.client.get(url).status_code, expected, url)
 
+    def test_the_page_furniture_is_in_the_order_editorial_asked_for(self):
+        self.video.related_articles.add(self.article)
+        VideoContributor.objects.create(
+            video=self.video,
+            author=Author.objects.create(first_names="Ashraf",
+                                         last_name="Hendricks"),
+            roles="camera",
+        )
+        self.video.topics.add(self.topic)
+        markup = main_markup(self.client.get(self.video.get_absolute_url()))
+        order = [
+            "gu-video-credits",
+            "gu-video-section--readmore",
+            "article__topics",
+            "gu-video-support",
+            "gu-follow",
+            "gu-video-licence",
+        ]
+        positions = [markup.index(name) for name in order]
+        self.assertEqual(positions, sorted(positions), order)
+
+    def test_the_follow_row_says_what_it_is_for(self):
+        markup = main_markup(self.client.get(self.video.get_absolute_url()))
+        self.assertIn("Follow GroundUp for more videos", markup)
+        self.assertNotIn("wherever you already are", markup)
+
+    def test_the_videos_page_intro(self):
+        response = self.client.get(reverse("newsroom:video.list"))
+        self.assertContains(response, "Every GroundUp video is free to watch.")
+        self.assertNotContains(response, "Explainers, investigations and")
+
+    def test_the_categories_are_the_ones_editorial_asked_for(self):
+        self.assertEqual(
+            list(VideoCategory.objects.values_list("name", flat=True)),
+            ["Explainer", "News reel", "Roundup", "Feature"],
+        )
+
     def test_editing_keeps_and_changes_chapters(self):
         self.client.force_login(self.superuser)
         chapter = self.video.chapters.first()
@@ -1927,7 +2038,6 @@ class VideoQATest(TestCase):
                 "title": self.video.title,
                 "slug": self.video.slug,
                 "youtube_id": self.video.youtube_id,
-                "video_format": "L",
                 "duration": "7:15",
                 "chapters-TOTAL_FORMS": "2",
                 "chapters-INITIAL_FORMS": "1",
@@ -1968,14 +2078,15 @@ class VideoQATest(TestCase):
         ]:
             self.assertEqual(self.client.get(url).status_code, 200, url)
 
-    def test_a_short_renders_its_own_page(self):
+    def test_a_video_uploaded_as_a_short_is_an_ordinary_landscape_page(self):
         short = Video.objects.create(
             title="A short", slug="a-short", youtube_id="lRQ1kJJNjko",
-            video_format="S", published=timezone.now(),
+            published=timezone.now(),
         )
         response = self.client.get(short.get_absolute_url())
-        self.assertContains(response, "gu-video-player--short")
-        self.assertContains(response, "youtube.com/shorts/lRQ1kJJNjko")
+        self.assertNotContains(response, "gu-video-player--short")
+        self.assertNotContains(response, "youtube.com/shorts/lRQ1kJJNjko")
+        self.assertContains(response, "youtube.com/watch?v=lRQ1kJJNjko")
 
     def test_the_video_page_reuses_the_site_article_markup(self):
         markup = main_markup(self.client.get(self.video.get_absolute_url()))
