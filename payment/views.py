@@ -324,6 +324,9 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
         if invoice.status == "0" or invoice.status == "1":
             can_edit = True
 
+    # editor looking at their own invoice gets to approve it as the author too
+    own_invoice = staff_view and invoice.author.user_id == user.pk
+
     if invoice.author.freelancer == "c":
         description = "payment reconciliation"
     else:
@@ -334,6 +337,7 @@ def invoice_detail(request, author_pk, invoice_num, print_view=False):
                    'description': description,
                    'commissionformset': commissionformset,
                    'staff_view': staff_view,
+                   'own_invoice': own_invoice,
                    'form': form,
                    'can_edit': can_edit,
                    'can_edit_commissions': can_edit_commissions,

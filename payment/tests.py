@@ -578,3 +578,57 @@ class VideoPaymentAutomationTest(TestCase):
             self.assertEqual(generate_commissions(), 1)
             self.assertEqual(generate_commissions(), 0)
         self.assertEqual(self.items_for(video, self.camera).count(), 1)
+
+
+class EditorOwnInvoiceTest(TestCase):
+    """An editor can approve their own invoice as the author."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = Author.objects.create(
+            first_names="Ed", last_name="Itor", email="editor@example.com",
+            freelancer="f",
+        )
+        cls.editor = cls.author.user
+        cls.editor.is_staff = cls.editor.is_superuser = True
+        cls.editor.save()
+        cls.other = Author.objects.create(
+            first_names="Jo", last_name="Other", email="jo@example.com",
+            freelancer="f",
+        )
+
+    def invoice_for(self, author):
+        invoice = Invoice.create_invoice(author)
+        invoice.status = "0"
+        invoice.save()
+        return invoice
+
+    def post(self, invoice, button):
+        from payment.forms import InvoiceStaffForm
+        form = InvoiceStaffForm(instance=invoice)
+        data = {name: form[name].value() for name in form.fields
+                if form[name].value() is not None}
+        data.update({
+            button: "1",
+            "form-TOTAL_FORMS": "0", "form-INITIAL_FORMS": "0",
+            "form-MIN_NUM_FORMS": "0", "form-MAX_NUM_FORMS": "1000",
+        })
+        return self.client.post(invoice.get_absolute_url(), data)
+
+    def test_button_only_on_own_invoice(self):
+        self.client.force_login(self.editor)
+        own = self.invoice_for(self.author)
+        other = self.invoice_for(self.other)
+        self.assertContains(self.client.get(own.get_absolute_url()),
+                            "Approve as author")
+        self.assertNotContains(self.client.get(other.get_absolute_url()),
+                               "Approve as author")
+
+    def test_approving_as_author_is_not_editor_approval(self):
+        self.client.force_login(self.editor)
+        invoice = self.invoice_for(self.author)
+        self.post(invoice, "pay_button")
+        invoice.refresh_from_db()
+        self.assertEqual(invoice.status, "2")
+        self.assertIsNotNone(invoice.date_time_reporter_approved)
+        self.assertIsNone(invoice.date_time_editor_approved)

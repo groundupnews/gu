@@ -211,6 +211,13 @@
                                                value="Approve" />
                                         &nbsp;
                                     {% endif %}
+                                    {% if own_invoice and invoice.status < "2" %}
+                                        <input type="submit"
+                                               name="pay_button"
+                                               class="btn btn-primary"
+                                               value="Approve as author" />
+                                        &nbsp;
+                                    {% endif %}
                                     <input type="submit"
                                            name="paid_button"
                                            class="btn
