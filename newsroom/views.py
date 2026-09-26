@@ -10,7 +10,8 @@ from django.contrib.sessions.models import Session
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.sites.models import Site
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Q
+from django.db import transaction
+from django.db.models import Count, Q
 from django.http import (
     Http404,
     HttpResponseForbidden,
@@ -43,6 +44,9 @@ from .forms import (
     ArticleListForm,
     AdvancedSearchForm,
     AuthorForm,
+    VideoForm,
+    VideoChapterFormSet,
+    VideoContributorFormSet,
 )
 from payment.models import Commission
 from socialmedia.models import Tweet
@@ -365,11 +369,24 @@ def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
             exclude_article_ids = [a.pk for a in context["article_list"]]
 
     for block in context[context_key]:
-        if hasattr(block, "html"):
+        if hasattr(block, "html") and block.block_type != "videos":
             block.html = parse_shortcodes(block.html, exclude_article_ids)
 
-    # Add featured front page photos if any blocks in the group contain _Featured_Photos
     blocks = context[context_key]
+
+    for block in blocks:
+        if block.block_type == "videos" or block.name == "_Videos":
+            count = block.num_articles if block.block_type == "videos" else None
+            if count is None:
+                count = settings.VIDEOS_ON_HOME
+            videos = models.Video.objects.for_home_page()
+            # Don't repeat the video pinned above everything else
+            if context.get("pinned_video"):
+                videos = videos.exclude(pk=context["pinned_video"].pk)
+            block.videos = list(videos[:count])
+            if block.name == "_Videos":
+                context["home_videos"] = block.videos
+
     if any(block.name == "_Featured_Photos" for block in blocks):
         from django.utils import timezone
         from gallery.models import Photograph
@@ -419,6 +436,8 @@ class HomePage(ArticleList):
 
     def get_context_data(self, **kwargs):
         context = super(HomePage, self).get_context_data(**kwargs)
+        if context["page_obj"].number == 1:
+            context["pinned_video"] = models.Video.objects.pinned_to_home()
         context = get_blocks_in_context(context, "Home_Top", "topblocks")
         context = get_blocks_in_context(context, "Home_0", "home_0")
         context = get_blocks_in_context(context, "Home_1", "home_1")
@@ -1320,6 +1339,10 @@ def advanced_search(request):
             True if search_type == "article" or search_type == "both" else False
         )
 
+    inc_videos = search_type in ("video", "both")
+    if search_type == "video":
+        inc_articles = inc_photos = False
+
     adv_search_form = AdvancedSearchForm(request.GET or None)
 
     if adv_search_form.is_valid():
@@ -1356,6 +1379,7 @@ def advanced_search(request):
                     topic_pk,
                     cleaned_adv_form.get("date_from"),
                     cleaned_adv_form.get("date_to"),
+                    inc_videos,
                 )
             except Exception as e:
                 print("Exception", e)
@@ -1500,6 +1524,163 @@ class WetellDetailView(DetailView):
 class WetellLatestView(WetellDetailView):
     def get_object(self):
         return models.WetellBulletin.objects.latest("published")
+
+
+def video_breadcrumbs(category=None, video=None):
+    crumbs = [
+        {"name": "Videos", "url": reverse("newsroom:video.list")},
+    ]
+    if category:
+        crumbs.append({"name": category.name, "url": category.get_absolute_url()})
+    if video:
+        crumbs.append({"name": video.title, "url": video.get_absolute_url()})
+    return crumbs
+
+
+class VideoList(ListView):
+    model = models.Video
+    template_name = "newsroom/video_list.html"
+    context_object_name = "videos"
+    paginate_by = settings.VIDEOS_PER_PAGE
+
+    def get_category(self):
+        slug = self.kwargs.get("slug")
+        if not slug:
+            return None
+        return get_object_or_404(models.VideoCategory, slug=slug)
+
+    def get_queryset(self):
+        self.category = self.get_category()
+        videos = models.Video.objects.list_view()
+        if self.category:
+            videos = videos.filter(category=self.category)
+        self.hero = videos.filter(promote=True).first() or videos.first()
+        if self.hero:
+            videos = videos.exclude(pk=self.hero.pk)
+        return videos
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category"] = self.category
+        context["categories"] = models.VideoCategory.objects.all()
+        context["hero"] = self.hero if context["page_obj"].number == 1 else None
+        context["youtube_channel_url"] = settings.YOUTUBE_CHANNEL_URL
+        context["breadcrumbs"] = video_breadcrumbs(self.category)
+        context["intro"] = settings.VIDEOS_INTRO
+        context["video_search"] = True
+        context["meta_description"] = (
+            strip_tags(self.category.introduction) or self.category.name
+            if self.category
+            else settings.VIDEOS_INTRO
+        )
+        return context
+
+
+class VideoDetail(DetailView):
+    model = models.Video
+    template_name = "newsroom/video_detail.html"
+    context_object_name = "video"
+
+    def get_queryset(self):
+        # Staff who can edit videos may preview an unpublished one
+        user = self.request.user
+        if user.is_staff and user.has_perm("newsroom.change_video"):
+            return models.Video.objects.all()
+        return models.Video.objects.published()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        video = self.object
+        context["chapters"] = video.chapters.all()
+        context["credits"] = video.credits_by_role()
+        context["related_videos"] = video.get_related_videos(number=4)
+        context["related_articles"] = video.related_articles.published()
+        context["breadcrumbs"] = video_breadcrumbs(video.category, video)
+        context["youtube_channel_url"] = settings.YOUTUBE_CHANNEL_URL
+        context["follow_links"] = settings.FOLLOW_LINKS
+        context["licence_url"] = settings.VIDEO_LICENCE_URL
+        context["meta_description"] = strip_tags(video.summary)
+        context["video_search"] = True
+        return context
+
+
+class VideoFormMixin:
+    model = models.Video
+    form_class = VideoForm
+    template_name = "newsroom/video_form.html"
+
+    # context name -> (formset class, prefix)
+    formsets = {
+        "chapter_formset": (VideoChapterFormSet, "chapters"),
+        "contributor_formset": (VideoContributorFormSet, "contributors"),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for name, (formset_class, prefix) in self.formsets.items():
+            if name not in context:
+                context[name] = formset_class(instance=self.object, prefix=prefix)
+        if self.object:
+            context["payments"] = (
+                self.object.payments.filter(deleted=False)
+                .select_related("invoice", "invoice__author")
+            )
+        return context
+
+    @transaction.atomic
+    def form_valid(self, form):
+        formsets = {
+            name: formset_class(
+                self.request.POST, instance=form.instance, prefix=prefix
+            )
+            for name, (formset_class, prefix) in self.formsets.items()
+        }
+        if not all(formset.is_valid() for formset in formsets.values()):
+            return self.render_to_response(self.get_context_data(form=form, **formsets))
+        response = super().form_valid(form)
+        for formset in formsets.values():
+            formset.instance = self.object
+            formset.save()
+        messages.add_message(
+            self.request, messages.INFO, "Video saved: " + self.object.title
+        )
+        return response
+
+
+class VideoCreate(PermissionRequiredMixin, VideoFormMixin, CreateView):
+    permission_required = "newsroom.add_video"
+
+
+class VideoUpdate(PermissionRequiredMixin, VideoFormMixin, UpdateView):
+    permission_required = "newsroom.change_video"
+
+
+class VideoDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = "newsroom.delete_video"
+    model = models.Video
+    template_name = "newsroom/video_confirm_delete.html"
+
+    def get_success_url(self):
+        return reverse("newsroom:video.list")
+
+
+class VideoManageList(PermissionRequiredMixin, ListView):
+    permission_required = "newsroom.change_video"
+    model = models.Video
+    template_name = "newsroom/video_manage_list.html"
+    context_object_name = "videos"
+    paginate_by = 50
+
+    def get_queryset(self):
+        # The list shows how many people are credited on each video and how many payments
+        return models.Video.objects.select_related("category").annotate(
+            credit_count=Count("contributors", distinct=True),
+            payment_count=Count(
+                "payments",
+                filter=Q(payments__deleted=False),
+                distinct=True,
+            ),
+        ).order_by("-published", "-pk")
 
 
 """ Used to test logging

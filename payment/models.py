@@ -7,11 +7,14 @@ from django.db.models import Max
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from django.db import transaction
+from django.db.models.signals import post_delete, post_save, pre_save
+from django.dispatch import receiver
 
 from dateutil import relativedelta
 
 from filebrowser.fields import FileBrowseField
-from newsroom.models import Article, Author, LEVEL_CHOICES
+from newsroom.models import (Article, Author, Video, VideoContributor,
+                             LEVEL_CHOICES)
 from newsroom import utils
 
 INVOICE_STATUS_CHOICES = (
@@ -36,6 +39,7 @@ COMMISSION_DESCRIPTION_CHOICES = (
     ("Photographs", "Photographs"),
     ("Subediting", "Subediting"),
     ("Sundry", "Sundry"),
+    ("Video contributor", "Video contributor"),
 )
 
 RATES = {
@@ -434,6 +438,10 @@ class Commission(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, blank=True, null=True,
                                 on_delete=models.CASCADE)
+    # Deleting a video must not delete what was paid for it, hence SET_NULL.
+    video = models.ForeignKey(Video, blank=True, null=True,
+                              related_name="payments",
+                              on_delete=models.SET_NULL)
     description = models.CharField(max_length=100, blank=True,
                                    verbose_name="secondary description",
                                    default="Article author",
@@ -653,14 +661,19 @@ class Commission(models.Model):
         due = self.commission_due - tax + vat
         return (due, vat, tax, self.commission_due)
 
+    def work(self):
+        """What was paid for: an article, a video, or nothing in particular."""
+        return self.article or self.video
+
     def __str__(self):
-        if self.invoice is not None and self.article is not None:
+        work = self.work()
+        if self.invoice is not None and work is not None:
             return " ".join([str(self.pk), str(self.invoice.author),
-                             str(self.article)])
+                             str(work)])
         elif self.invoice is not None:
             return " ".join([str(self.pk), str(self.invoice.author)])
-        elif self.article is not None:
-            return " ".join([str(self.pk), str(self.article)])
+        elif work is not None:
+            return " ".join([str(self.pk), str(work)])
         else:
             return str(self.pk)
 
@@ -769,3 +782,108 @@ class PayeRequisition(models.Model):
             this.date_from = date_from
             this.payee = payee
             this.save()
+
+
+def video_payment_notes(video, author):
+    """The jobs this person is credited with, for the payment item's note."""
+    return ", ".join(
+        contributor.roles_display()
+        for contributor in video.contributors.all()
+        if contributor.author_id == author.pk and not contributor.no_payment
+    )
+
+
+@transaction.atomic
+def create_video_payments(video):
+    """One payment item per person credited on a published video. Skips anyone marked 'do not pay' and anyone the invoices
+    system does not pay at all. Returns the items it raised."""
+    created = []
+    if not video.is_published:
+        return created
+    # Serialize the invoice job and editor saves for this video so they cannot
+    # both pass the existence check and create the same payment.
+    video = Video.objects.select_for_update().get(pk=video.pk)
+    for contributor in video.contributors.select_related("author"):
+        author = contributor.author
+        if contributor.no_payment or author.freelancer == "n":
+            continue
+        # Deleted items count here: one an editor has thrown away must not
+        # come back on the next save.
+        existing = Commission.objects.filter(video=video,
+                                             invoice__author=author)
+        if existing.exists():
+            # A job added to someone already on the video belongs on the item
+            # that is already there, as long as nobody has priced or approved
+            # it yet.
+            existing.filter(sys_generated=True, deleted=False,
+                            fund__isnull=True, commission_due=0).\
+                update(notes=video_payment_notes(video, author))
+            continue
+        commission = Commission()
+        commission.video = video
+        commission.description = "Video contributor"
+        commission.notes = video_payment_notes(video, author)
+        commission.sys_generated = True
+        commission.date_generated = timezone.now()
+        commission.invoice = Invoice.get_open_invoice_for_author(author)
+        commission.save()
+        created.append(commission)
+    return created
+
+
+def withdraw_video_payment(video_id, author_id):
+    """Withdraw the payment item where this person is no longer credited with
+    any job on the video that they are to be paid for."""
+    if VideoContributor.objects.filter(
+        video_id=video_id, author_id=author_id, no_payment=False
+    ).exists():
+        return 0
+    return Commission.objects.filter(
+        video_id=video_id,
+        invoice__author_id=author_id,
+        sys_generated=True,
+        deleted=False,
+        fund__isnull=True,
+        commission_due=0,
+    ).update(deleted=True)
+
+
+@receiver(post_save, sender=Video)
+def video_saved(sender, instance, **kwargs):
+    create_video_payments(instance)
+
+
+@receiver(pre_save, sender=VideoContributor)
+def remember_video_contributor(sender, instance, **kwargs):
+    instance._previous_credit = (
+        sender.objects.filter(pk=instance.pk).values("video_id", "author_id").first()
+        if instance.pk else None
+    )
+
+
+@receiver(post_save, sender=VideoContributor)
+def video_contributor_saved(sender, instance, **kwargs):
+    # Contributors are saved after the video they belong to, and get added to
+    # videos that are already published, so each credit asks for itself.
+    previous = getattr(instance, "_previous_credit", None)
+    if previous and (previous["video_id"], previous["author_id"]) != (
+        instance.video_id, instance.author_id
+    ):
+        withdraw_video_payment(previous["video_id"], previous["author_id"])
+        old_video = Video.objects.filter(pk=previous["video_id"]).first()
+        if old_video:
+            create_video_payments(old_video)
+    if instance.no_payment:
+        withdraw_video_payment(instance.video_id, instance.author_id)
+    create_video_payments(instance.video)
+
+
+@receiver(post_delete, sender=VideoContributor)
+def video_contributor_deleted(sender, instance, **kwargs):
+    # Only where a credit has been taken off a video that is still there:
+    # deleting a whole video leaves its payments alone, with the video field
+    # set null.
+    if not Video.objects.filter(pk=instance.video_id).exists():
+        return
+    withdraw_video_payment(instance.video_id, instance.author_id)
+    create_video_payments(instance.video)

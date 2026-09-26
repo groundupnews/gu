@@ -35,6 +35,22 @@
     </li>
 {% endif %}
 
+{% if perms.newsroom.add_video %}
+    <li>
+        <a href="{% url 'newsroom:video.add' %}">
+            New video
+        </a>
+    </li>
+{% endif %}
+
+{% if perms.newsroom.change_video %}
+    <li>
+        <a href="{% url 'newsroom:video.manage' %}">
+            Videos
+        </a>
+    </li>
+{% endif %}
+
 {% if perms.letters.add_letter %}
     <li>
         <a href="{% url 'admin:letters_letter_changelist' %}">

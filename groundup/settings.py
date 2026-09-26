@@ -323,6 +323,19 @@ GRAPPELLI_INDEX_DASHBOARD = "groundup.dashboard.CustomIndexDashboard"
 
 GRAPPELLI_ADMIN_TITLE = "GroundUp Administration"
 
+NEWSROOM_VIDEO_COPYRIGHT = (
+    "<p>"
+    "&copy; " + str(datetime.date.today().year) + " GroundUp. "
+    "This video is <b>not</b> available under a Creative Commons licence. "
+    "It may be republished under the "
+    "<a href='https://groundup.org.za/licencing/detail/2/'>"
+    "GroundUp Republication Licence Version 1.0</a>. "
+    "Email <a href='mailto:info@groundup.org.za'>info@groundup.org.za</a> "
+    "to request permission to republish."
+    "</p>"
+)
+
+
 NEWSROOM_ARTICLE_COPYRIGHT = (
     "<p>"
     "&copy; " + str(datetime.date.today().year) + " GroundUp. "

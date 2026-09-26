@@ -2,7 +2,8 @@
 
   - BreadcrumbList  (https://developers.google.com/search/docs/appearance/structured-data/breadcrumb)
   - NewsArticle     (https://developers.google.com/search/docs/appearance/structured-data/article)
-  - Organization    (used site-wide and as the NewsArticle publisher)
+  - VideoObject     (https://developers.google.com/search/docs/appearance/structured-data/video)
+  - Organization    (used site-wide and as the NewsArticle/VideoObject publisher)
 
 All tags take the template context so they can resolve absolute URLs from the
 current request. JSON is escaped so it can never break out of the <script> block.
@@ -14,6 +15,8 @@ from django import template
 from django.templatetags.static import static
 from django.utils.html import strip_tags
 from django.utils.safestring import mark_safe
+
+from newsroom import settings as newsroom_settings
 
 register = template.Library()
 
@@ -174,3 +177,122 @@ def news_article_jsonld(context, article):
         data["articleSection"] = article.category.name
 
     return _ld_script(data)
+
+
+def _person(request, author):
+    return {
+        "@type": "Person",
+        "name": str(author),
+        "url": _abs(request, author.get_absolute_url()),
+    }
+
+
+def _video_object(context, video, include_context=True):
+    """VideoObject for one video. Chapters become Clip parts, which is what
+    Google reads for key moments in search results."""
+    request = context.get("request")
+    data = {}
+    if include_context:
+        data["@context"] = "https://schema.org"
+    page_url = _abs(request, video.get_absolute_url())
+    data.update(
+        {
+            "@type": "VideoObject",
+            "@id": page_url + "#video",
+            "name": strip_tags(video.title),
+            "url": page_url,
+            "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
+            "thumbnailUrl": _abs(request, video.thumbnail_url()),
+            "embedUrl": video.embed_url(),
+            "contentUrl": video.watch_url(),
+            "publisher": _publisher_ref(request),
+            "isFamilyFriendly": True,
+            "inLanguage": "en",
+        }
+    )
+    if video.summary:
+        data["description"] = strip_tags(video.summary)
+    if video.published:
+        data["uploadDate"] = video.published.isoformat()
+    if video.modified:
+        data["dateModified"] = video.modified.isoformat()
+    if video.duration_iso():
+        data["duration"] = video.duration_iso()
+    authors = list(video.authors.all())
+    contributors = list(video.contributors.all())
+    if not authors and not video.byline:
+        # Same fallback as the byline
+        authors = [c.author for c in contributors if "reporting" in c.role_list()]
+    if authors:
+        data["author"] = [_person(request, author) for author in authors]
+    elif video.byline:
+        data["author"] = {"@type": "Person", "name": video.byline}
+    if contributors:
+        data["contributor"] = [
+            {"@type": "Person", "name": str(contributor.author)}
+            for contributor in contributors
+        ]
+    data["license"] = newsroom_settings.VIDEO_LICENCE_URL
+    if video.category_id:
+        data["genre"] = video.category.name
+    topics = [topic.name for topic in video.topics.all()]
+    if topics:
+        data["keywords"] = ", ".join(topics)
+
+    chapters = list(video.chapters.all())
+    total = video.duration_seconds()
+    clips = []
+    for position, chapter in enumerate(chapters):
+        start = chapter.seconds()
+        if position + 1 < len(chapters):
+            end = chapters[position + 1].seconds()
+        else:
+            end = total
+        if end is None or end <= start:
+            continue
+        clips.append(
+            {
+                "@type": "Clip",
+                "name": chapter.description,
+                "startOffset": start,
+                "endOffset": end,
+                "url": _abs(request, video.get_absolute_url()) + "#t=" + str(start),
+            }
+        )
+    if clips:
+        data["hasPart"] = clips
+    return data
+
+
+@register.simple_tag(takes_context=True)
+def video_jsonld(context, video):
+    request = context.get("request")
+    if request is None or video is None:
+        return ""
+    return _ld_script(_video_object(context, video))
+
+
+@register.simple_tag(takes_context=True)
+def video_list_jsonld(context, videos, hero=None):
+    """ItemList for a videos index page, so each entry can surface on its own."""
+    request = context.get("request")
+    if request is None:
+        return ""
+    ordered = ([hero] if hero else []) + list(videos or [])
+    if not ordered:
+        return ""
+    items = [
+        {
+            "@type": "ListItem",
+            "position": position,
+            "item": _video_object(context, video, include_context=False),
+        }
+        for position, video in enumerate(ordered, start=1)
+    ]
+    return _ld_script(
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": items,
+        }
+    )

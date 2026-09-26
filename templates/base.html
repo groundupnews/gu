@@ -122,6 +122,7 @@
              {% include "newsroom/read_next.css" %}
              {% include "newsroom/about_us.css" %}
              {% include "newsroom/letters.css" %}
+             {% include "newsroom/videos.css" %}
             </style>
 
         {% endblock %}
@@ -171,6 +172,7 @@
 
             {% block javascript-includes %}
 	        {% include 'javascripts.html' %}
+                <script src="{% static 'newsroom/js/video_block.js' %}" defer></script>
             {% endblock %}
 
         {% endblock %}

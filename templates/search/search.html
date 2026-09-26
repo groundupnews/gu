@@ -49,12 +49,40 @@
         <div class="row">
             {% for article in page.object_list %}
                 <div class="col-xs-12
-                            {% if search_type == "article" or search_type == "both" %}
+                            {% if search_type == "article" or search_type == "video" or search_type == "both" %}
                             col-md-9
                             {% else %}
                             col-md-3
                             {% endif %}">
-                    {% if article.obj_type == 0 %}
+                    {% if article.obj_type == 2 %}
+                        <div class="container single-block">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-4">
+                                    <div class="summary-image">
+                                        <a href="{{ article.get_absolute_url }}">
+                                            {% include "newsroom/video_thumb.html" with video=article play="sm" %}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <h4>
+                                        <a href="{{ article.get_absolute_url }}">
+                                            {{ article.title }}
+                                        </a>
+                                    </h4>
+                                    <p>
+                                        {{article.published|date:"j F Y"}} | VIDEO{% if article.duration %} | {{ article.duration }}{% endif %}
+                                    </p>
+                                    <p>
+                                        {{article.get_byline}}
+                                    </p>
+                                    <p>
+                                        {% highlight article.summary with query %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif article.obj_type == 0 %}
                         <div class="container single-block">
                             <div class="row">
                                 <div class="col-xs-12 col-md-4">

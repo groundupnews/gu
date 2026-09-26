@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load seo_tags %}
+
+{% block title %}{% if category %}{{ category.name }}{% else %}Videos{% endif %} {{block.super}}{% endblock %}
+
+{% block meta_description_block %}
+    {% with desc=meta_description %}
+        <meta name="description" content="{{ desc|truncatechars:190 }}"/>
+        <meta property="og:description" content="{{ desc }}"/>
+    {% endwith %}
+{% endblock %}
+
+{% block seo_fields %}
+    {{block.super}}
+    <meta property="og:title" content="{% if category %}{{ category.name }}{% else %}Videos{% endif %} | GroundUp"/>
+    {% if page_obj.has_previous %}
+        <link rel="prev" href="?page={{ page_obj.previous_page_number }}"/>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <link rel="next" href="?page={{ page_obj.next_page_number }}"/>
+    {% endif %}
+    <link rel="alternate" type="application/rss+xml" title="GroundUp Videos"
+          href="{% url 'newsroom:video.rss' %}"/>
+    {% video_list_jsonld videos hero=hero %}
+{% endblock %}
+
+{% block content %}
+    <div class="container gu-videos">
+        {% include "seo/breadcrumbs.html" %}
+
+        <div class="gu-videos__head">
+            <div>
+                <h1 class="gu-videos__title">{% if category %}{{ category.name }}{% else %}Videos{% endif %}</h1>
+                {% if category.introduction %}
+                    <div class="gu-videos__intro">{{ category.introduction|safe }}</div>
+                {% else %}
+                    <p class="gu-videos__intro">{{ intro }}</p>
+                {% endif %}
+            </div>
+            {% if youtube_channel_url %}
+                <a class="gu-videos__subscribe" href="{{ youtube_channel_url }}"
+                   target="_blank" rel="noopener">
+                    {% include "insert_icon.html" with icon="icon-youtube" %}
+                    Subscribe on YouTube
+                </a>
+            {% endif %}
+        </div>
+
+        {% if categories %}
+            <nav class="gu-videos__filters" aria-label="Filter videos by category">
+                <a class="article__topic{% if not category %} article__topic--selected{% endif %}"
+                   href="{% url 'newsroom:video.list' %}">All</a>
+                {% for cat in categories %}
+                    <a class="article__topic{% if cat == category %} article__topic--selected{% endif %}"
+                       href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                {% endfor %}
+            </nav>
+        {% endif %}
+
+        {% if hero %}
+            {% include "newsroom/video_hero.html" with video=hero %}
+        {% endif %}
+
+        {% if videos %}
+            <div class="gu-video-grid">
+                {% for video in videos %}
+                    {% include "newsroom/video_card.html" with video=video %}
+                {% endfor %}
+            </div>
+        {% elif not hero %}
+            <p class="gu-videos__empty">No videos here yet. Try another category.</p>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+            <div class="gu-videos__more">
+                <a class="gu-videos__more-link" href="?page={{ page_obj.next_page_number }}">
+                    Load more videos
+                </a>
+            </div>
+        {% endif %}
+
+        {% if page_obj.paginator.num_pages > 1 %}
+            {% include 'paginator.html' %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block admin-area %}
+    {% if perms.newsroom.add_video %}
+        <div class="container">
+            <p>
+                <a class="btn btn-default" href="{% url 'newsroom:video.add' %}">Add a video</a>
+                <a class="btn btn-default" href="{% url 'newsroom:video.manage' %}">Manage videos</a>
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}

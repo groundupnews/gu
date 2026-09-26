@@ -13,6 +13,7 @@ _Related
 _Recommend
 _Wetell
 _Featured_Photos
+_Videos
 
 For Quick Links on the home page edit the ProfiledLinks block in the admin front.
 {% endcomment %}
@@ -126,6 +127,8 @@ For Quick Links on the home page edit the ProfiledLinks block in the admin front
             </section>
         {% elif b.name == "_Wetell" %}
             {% wetell %}
+        {% elif b.block_type == "videos" or b.name == "_Videos" %}
+            {% include 'newsroom/video_home_block.html' with home_videos=b.videos video_block=b %}
         {% elif b.name == "_Featured_Photos" %}
             {% if featured_front_page_photos and featured_front_page_photos|length > 0 %}
             <div id="featured-photos">

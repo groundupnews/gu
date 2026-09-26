@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Manage videos {{block.super}}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Videos</h1>
+                {% if perms.newsroom.add_video %}
+                    <p><a class="btn btn-default" href="{% url 'newsroom:video.add' %}">Add a video</a></p>
+                {% endif %}
+                <table class="gu-video-manage-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Length</th>
+                            <th>Credits</th>
+                            <th>Published</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for video in videos %}
+                            <tr>
+                                <td><a href="{{ video.get_absolute_url }}">{{ video.title }}</a></td>
+                                <td>{{ video.category|default_if_none:"—" }}</td>
+                                <td>{{ video.duration|default:"—" }}</td>
+                                <td>
+                                    {% if video.credit_count %}{{ video.credit_count }}{% else %}—{% endif %}
+                                    {% if perms.payment.change_commission and video.payment_count %}
+                                        / {{ video.payment_count }} billed
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if video.is_published %}
+                                        {{ video.published|date:"j F Y" }}
+                                    {% else %}
+                                        <span class="gu-video-unpublished">
+                                            {% if video.published %}Scheduled {{ video.published|date:"j F Y" }}{% else %}Not published{% endif %}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td><a href="{% url 'newsroom:video.update' video.slug %}">Edit</a></td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="6">No videos yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% include 'paginator.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

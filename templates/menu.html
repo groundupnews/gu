@@ -5,6 +5,7 @@
     
     <ul class="gu-nav__links">
         <li><a href="/">News</a></li>
+        <li><a href="{% url 'newsroom:video.list' %}">Videos</a></li>
         
         <li class="gu-nav__item--has-submenu">
              <button class="gu-nav__submenu-trigger" aria-expanded="false">
@@ -14,7 +15,6 @@
                 <li><a href="/category/Feature/">Features</a></li>
                 <li><a href="/category/opinion_and_analysis/">Opinion</a></li>
                 <li><a href="{% url 'newsroom:article.groundview' %}">Editorials</a></li>
-                <li><a href="/category/video/">Videos</a></li>
                 <li><a href="/category/photo-essay/">Photo Essays</a></li>
                 <li><a href="/courtcases/">Court Cases</a></li>
              </ul>

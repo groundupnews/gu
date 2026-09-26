@@ -1,3 +1,4 @@
+import datetime
 from decimal import *
 
 from django.contrib.auth.models import User
@@ -6,8 +7,11 @@ from django.db import IntegrityError
 from django.test import Client, TestCase
 from django.utils import timezone
 from django.urls import reverse
-from newsroom.models import Article, Author, Category, Topic
-from payment.models import Commission, Fund, Invoice, RateCard
+from newsroom.models import (Article, Author, Category, Topic, Video,
+                            VideoContributor)
+from payment.forms import CommissionForm
+from payment.models import (Commission, Fund, Invoice, RateCard,
+                            create_video_payments)
 
 
 class InvoiceTest(TestCase):
@@ -279,3 +283,352 @@ class InvoiceTest(TestCase):
         self.assertEqual(Commission.can_bill_allowance(author), True)
         Commission.create_allowance(author)
         self.assertEqual(Commission.can_bill_allowance(author), False)
+
+
+class VideoPaymentTest(TestCase):
+    """A video is billable in its own right: the people who make one are not
+    the authors of an article."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = Author.objects.create(
+            first_names="Ashraf", last_name="Hendricks",
+            email="ashraf@example.com", freelancer="f",
+        )
+        cls.fund = Fund.objects.create(name="Bertha|Video")
+        cls.video = Video.objects.create(
+            title="Municipal debt explained",
+            slug="municipal-debt-explained",
+            youtube_id="5RI7cF6A-8Q",
+            published=timezone.now(),
+        )
+        cls.staff = User.objects.create_superuser(
+            "boss", "boss@example.com", "abcde"
+        )
+
+    def make_payment(self):
+        commission = Commission.create_commission(self.author)
+        commission.video = self.video
+        commission.description = "Video contributor"
+        commission.notes = "Camera"
+        commission.commission_due = Decimal(1620.00)
+        commission.fund = self.fund
+        commission.save()
+        return commission
+
+    def test_a_payment_can_be_for_a_video(self):
+        commission = self.make_payment()
+        self.assertEqual(list(self.video.payments.all()), [commission])
+        self.assertEqual(commission.work(), self.video)
+        self.assertIn("Municipal debt explained", str(commission))
+        self.assertEqual(commission.estimate_payment()["total"], 0.00)
+
+    def test_deleting_a_video_keeps_the_payment(self):
+        commission = self.make_payment()
+        self.video.delete()
+        commission.refresh_from_db()
+        self.assertIsNone(commission.video)
+        self.assertEqual(commission.commission_due, Decimal("1620.0000"))
+
+    def test_the_video_is_named_on_the_invoice(self):
+        commission = self.make_payment()
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse("payments:invoice.detail",
+                    args=[self.author.pk, commission.invoice.invoice_num])
+        )
+        self.assertContains(response, "Municipal debt explained")
+        self.assertContains(response, self.video.get_absolute_url())
+        self.assertContains(response, "Article or video")
+
+    def test_the_new_payment_form_is_prefilled_from_a_video(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            "{}?author={}&video={}".format(
+                reverse("payments:commissions.detail.add"),
+                self.author.pk, self.video.pk)
+        )
+        self.assertEqual(response.status_code, 200)
+        fields = response.context["form"].fields
+        self.assertEqual(fields["video"].initial, self.video.pk)
+        self.assertEqual(fields["author"].initial, self.author.pk)
+        self.assertEqual(fields["description"].initial, "Video contributor")
+
+    def test_a_payment_is_for_an_article_or_a_video_but_not_both(self):
+        category = Category.objects.create(name="News", slug="news")
+        article = Article.objects.create(
+            title="Pyramid scheme collapse", slug="pyramid-scheme-collapse",
+            category=category, published=timezone.now(),
+        )
+        form = CommissionForm(data={
+            "author": str(self.author.pk),
+            "article": str(article.pk),
+            "video": str(self.video.pk),
+            "description": "Video contributor",
+            "commission_due": "1620.00",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("one article or one video", str(form.errors))
+
+
+class VideoPaymentAutomationTest(TestCase):
+    """Publishing a video raises the payment items for its credits"""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.reporter = Author.objects.create(
+            first_names="Barbara", last_name="Maregele",
+            email="barbara@example.com", freelancer="f",
+        )
+        cls.camera = Author.objects.create(
+            first_names="Ashraf", last_name="Hendricks",
+            email="ashraf@example.com", freelancer="f",
+        )
+        cls.unpaid = Author.objects.create(
+            first_names="Never", last_name="Paid",
+            email="never@example.com", freelancer="n",
+        )
+        cls.fund = Fund.objects.create(name="Bertha|Video")
+
+    def make_video(self, published=True):
+        return Video.objects.create(
+            title="Municipal debt explained",
+            slug="municipal-debt-explained",
+            youtube_id="5RI7cF6A-8Q",
+            published=timezone.now() if published else None,
+        )
+
+    def items_for(self, video, author):
+        return Commission.objects.filter(video=video, invoice__author=author)
+
+    def test_publishing_raises_one_item_per_person(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.reporter,
+                                        roles="reporting")
+        VideoContributor.objects.create(video=video, author=self.camera,
+                                        roles="camera")
+        items = Commission.objects.filter(video=video)
+        self.assertEqual(items.count(), 2)
+        item = self.items_for(video, self.camera).get()
+        self.assertEqual(item.description, "Video contributor")
+        self.assertEqual(item.notes, "Camera")
+        self.assertTrue(item.sys_generated)
+        self.assertEqual(item.invoice.author, self.camera)
+        self.assertEqual(item.invoice.status, "-")
+
+    def test_two_jobs_for_one_person_is_one_item_naming_both(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.camera,
+                                        roles="camera,editing")
+        item = self.items_for(video, self.camera).get()
+        self.assertEqual(item.notes, "Camera, Video editing")
+
+    def test_a_job_added_later_lands_on_the_item_already_there(self):
+        video = self.make_video()
+        credit = VideoContributor.objects.create(video=video,
+                                                 author=self.camera,
+                                                 roles="camera")
+        credit.roles = "camera,editing"
+        credit.save()
+        item = self.items_for(video, self.camera).get()
+        self.assertEqual(item.notes, "Camera, Video editing")
+
+    def test_nothing_is_raised_twice(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.reporter,
+                                        roles="reporting")
+        item = self.items_for(video, self.reporter).get()
+        item.commission_due = Decimal(1620.00)
+        item.save()
+        video.title = "Municipal debt explained, again"
+        video.save()
+        video.save()
+        self.assertEqual(self.items_for(video, self.reporter).count(), 1)
+        self.assertEqual(create_video_payments(video), [])
+        # The amount an editor typed is untouched.
+        self.assertEqual(
+            self.items_for(video, self.reporter).get().commission_due,
+            Decimal("1620.0000"),
+        )
+
+    def test_a_draft_raises_nothing_until_it_is_published(self):
+        video = self.make_video(published=False)
+        VideoContributor.objects.create(video=video, author=self.reporter,
+                                        roles="reporting")
+        self.assertEqual(Commission.objects.filter(video=video).count(), 0)
+        # A future date is not published either.
+        video.published = timezone.now() + datetime.timedelta(days=1)
+        video.save()
+        self.assertEqual(Commission.objects.filter(video=video).count(), 0)
+        video.published = timezone.now()
+        video.save()
+        self.assertEqual(Commission.objects.filter(video=video).count(), 1)
+
+    def test_a_credit_added_after_publication_is_paid(self):
+        video = self.make_video()
+        self.assertEqual(Commission.objects.filter(video=video).count(), 0)
+        VideoContributor.objects.create(video=video, author=self.camera,
+                                        roles="camera")
+        self.assertEqual(self.items_for(video, self.camera).count(), 1)
+
+    def test_someone_marked_do_not_pay_is_left_out(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.camera,
+                                        roles="camera", no_payment=True)
+        self.assertEqual(Commission.objects.filter(video=video).count(), 0)
+
+    def test_the_invoices_system_skips_anyone_it_never_pays(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.unpaid,
+                                        roles="presenting")
+        self.assertEqual(Commission.objects.filter(video=video).count(), 0)
+
+    def test_marking_do_not_pay_afterwards_withdraws_an_untouched_item(self):
+        video = self.make_video()
+        contributor = VideoContributor.objects.create(
+            video=video, author=self.camera, roles="camera")
+        contributor.no_payment = True
+        contributor.save()
+        item = Commission.objects.get(video=video)
+        self.assertTrue(item.deleted)
+        # And it does not come back on the next save of the video.
+        video.save()
+        self.assertEqual(Commission.objects.filter(video=video).count(), 1)
+
+    def test_one_person_marked_do_not_pay_leaves_the_others_paid(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.camera,
+                                        roles="camera,editing")
+        staffer = VideoContributor.objects.create(video=video,
+                                                  author=self.reporter,
+                                                  roles="reporting")
+        staffer.no_payment = True
+        staffer.save()
+        item = Commission.objects.get(video=video, deleted=False)
+        self.assertEqual(item.invoice.author, self.camera)
+        self.assertEqual(item.notes, "Camera, Video editing")
+
+    def test_a_priced_or_approved_item_is_never_withdrawn(self):
+        video = self.make_video()
+        contributor = VideoContributor.objects.create(
+            video=video, author=self.camera, roles="camera")
+        item = Commission.objects.get(video=video)
+        item.commission_due = Decimal(1620.00)
+        item.fund = self.fund
+        item.save()
+        contributor.no_payment = True
+        contributor.save()
+        item.refresh_from_db()
+        self.assertFalse(item.deleted)
+
+    def test_removing_a_credit_withdraws_an_untouched_item(self):
+        video = self.make_video()
+        contributor = VideoContributor.objects.create(
+            video=video, author=self.camera, roles="camera,editing")
+        VideoContributor.objects.create(
+            video=video, author=self.reporter, roles="reporting")
+        contributor.delete()
+        self.assertTrue(
+            Commission.objects.get(video=video,
+                                   invoice__author=self.camera).deleted)
+        # The other person on the video is untouched.
+        self.assertFalse(
+            Commission.objects.get(video=video,
+                                   invoice__author=self.reporter).deleted)
+
+    def test_deleting_the_video_leaves_the_payments_alone(self):
+        video = self.make_video()
+        VideoContributor.objects.create(video=video, author=self.camera,
+                                        roles="camera")
+        video.delete()
+        item = Commission.objects.get(invoice__author=self.camera)
+        self.assertIsNone(item.video)
+        self.assertFalse(item.deleted)
+
+
+    def test_reassigning_credit_withdraws_the_previous_unpriced_payment(self):
+        video = self.make_video()
+        credit = VideoContributor.objects.create(video=video, author=self.camera, roles="camera")
+        credit.author = self.reporter
+        credit.save()
+        self.assertTrue(self.items_for(video, self.camera).get().deleted)
+        self.assertFalse(self.items_for(video, self.reporter).get().deleted)
+
+    def test_reassigning_credit_preserves_a_priced_payment(self):
+        video = self.make_video()
+        credit = VideoContributor.objects.create(video=video, author=self.camera, roles="camera")
+        item = self.items_for(video, self.camera).get()
+        item.commission_due = Decimal("100")
+        item.save()
+        credit.author = self.reporter
+        credit.save()
+        item.refresh_from_db()
+        self.assertFalse(item.deleted)
+        self.assertEqual(item.commission_due, Decimal("100"))
+
+    def test_invoice_job_catches_scheduled_videos_without_another_save(self):
+        from unittest.mock import patch
+        from payment.management.commands.processinvoices import generate_commissions
+        video = self.make_video(published=False)
+        video.published = timezone.now() + datetime.timedelta(days=1)
+        video.save()
+        VideoContributor.objects.create(video=video, author=self.camera, roles="camera")
+        self.assertFalse(self.items_for(video, self.camera).exists())
+        with patch("django.utils.timezone.now", return_value=video.published + datetime.timedelta(seconds=1)):
+            self.assertEqual(generate_commissions(), 1)
+            self.assertEqual(generate_commissions(), 0)
+        self.assertEqual(self.items_for(video, self.camera).count(), 1)
+
+
+class EditorOwnInvoiceTest(TestCase):
+    """An editor can approve their own invoice as the author."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = Author.objects.create(
+            first_names="Ed", last_name="Itor", email="editor@example.com",
+            freelancer="f",
+        )
+        cls.editor = cls.author.user
+        cls.editor.is_staff = cls.editor.is_superuser = True
+        cls.editor.save()
+        cls.other = Author.objects.create(
+            first_names="Jo", last_name="Other", email="jo@example.com",
+            freelancer="f",
+        )
+
+    def invoice_for(self, author):
+        invoice = Invoice.create_invoice(author)
+        invoice.status = "0"
+        invoice.save()
+        return invoice
+
+    def post(self, invoice, button):
+        from payment.forms import InvoiceStaffForm
+        form = InvoiceStaffForm(instance=invoice)
+        data = {name: form[name].value() for name in form.fields
+                if form[name].value() is not None}
+        data.update({
+            button: "1",
+            "form-TOTAL_FORMS": "0", "form-INITIAL_FORMS": "0",
+            "form-MIN_NUM_FORMS": "0", "form-MAX_NUM_FORMS": "1000",
+        })
+        return self.client.post(invoice.get_absolute_url(), data)
+
+    def test_button_only_on_own_invoice(self):
+        self.client.force_login(self.editor)
+        own = self.invoice_for(self.author)
+        other = self.invoice_for(self.other)
+        self.assertContains(self.client.get(own.get_absolute_url()),
+                            "Approve as author")
+        self.assertNotContains(self.client.get(other.get_absolute_url()),
+                               "Approve as author")
+
+    def test_approving_as_author_is_not_editor_approval(self):
+        self.client.force_login(self.editor)
+        invoice = self.invoice_for(self.author)
+        self.post(invoice, "pay_button")
+        invoice.refresh_from_db()
+        self.assertEqual(invoice.status, "2")
+        self.assertIsNotNone(invoice.date_time_reporter_approved)
+        self.assertIsNone(invoice.date_time_editor_approved)

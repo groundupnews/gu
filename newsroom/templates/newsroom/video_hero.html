@@ -1,0 +1,30 @@
+<div class="gu-videos-hero">
+    <a class="gu-videos-hero__media" href="{{ video.get_absolute_url }}"
+       tabindex="-1" aria-hidden="true">
+        {% include "newsroom/video_thumb.html" with video=video play="lg" runtime=0 %}
+    </a>
+    <div class="gu-videos-hero__body">
+        <p class="gu-videos-hero__eyebrow">
+            {% if category_only %}
+                {% if video.category %}{{ video.category.card_label }}{% else %}Video{% endif %}
+            {% else %}
+                {% if video.promote %}Featured{% else %}Latest video{% endif %}
+                {% if video.category %} · {{ video.category.card_label }}{% endif %}
+            {% endif %}
+        </p>
+        <h2 class="gu-videos-hero__title">
+            <a href="{{ video.get_absolute_url }}">{{ video.title }}</a>
+        </h2>
+        {% if video.summary %}
+            <p class="gu-videos-hero__summary">{{ video.summary }}</p>
+        {% endif %}
+        <div class="gu-videos-hero__actions">
+            <a class="gu-videos-hero__watch" href="{{ video.get_absolute_url }}">
+                Watch{% if video.duration %} · {{ video.duration }}{% endif %}
+            </a>
+            <span class="gu-videos-hero__meta">
+                {{ video.published|date:"j F Y" }}
+            </span>
+        </div>
+    </div>
+</div>

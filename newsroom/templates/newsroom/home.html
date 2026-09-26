@@ -9,6 +9,13 @@
 
 	{% block content %}
 	<div class="container">
+		{% if pinned_video %}
+		<div class="row">
+			<div class="col-xs-12 gu-home-pinned-video">
+				{% include 'newsroom/video_hero.html' with video=pinned_video category_only=1 %}
+			</div>
+		</div>
+		{% endif %}
 		{% if page_obj.number == 1 %}
 		<div class="row">
 			<div class="col-xs-12">

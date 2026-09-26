@@ -413,14 +413,7 @@
                 </div>
             {% endif %}
             <span class="gu-actions">
-                <button class="gu-share-btn"
-                        data-title="{{ article.title|escapejs }}"
-                        data-url="{{ request.build_absolute_uri }}"
-                        style="background:none; border:none; padding:0 10px 0 0; margin:0; cursor:pointer; display:inline-flex; align-items:center; gap:4px; color:#4D4D4D; font-family:inherit; font-size:12px; line-height:1;"
-                        title="Share this article">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                    Share
-                </button>
+                {% include "share_button.html" with share_title=article.title %}
                 <a href="https://www.google.com/preferences/source?q=groundup.org.za"
                    target="_blank" rel="noopener"
                    style="display:inline-flex; align-items:center; gap:4px; border:1px solid #4D4D4D; color:#4D4D4D; font-size:12px; padding:4px 10px; text-decoration:none; white-space:nowrap;">
@@ -431,24 +424,6 @@
         </span>
 
     </div>
-    <script>
-    (function () {
-        document.querySelectorAll('.gu-share-btn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                if (navigator.share) {
-                    navigator.share({ title: btn.dataset.title, url: btn.dataset.url });
-                } else if (navigator.clipboard) {
-                    navigator.clipboard.writeText(btn.dataset.url).then(function () {
-                        var prev = btn.innerHTML;
-                        btn.textContent = 'Copied!';
-                        setTimeout(function () { btn.innerHTML = prev; }, 2000);
-                    });
-                }
-            });
-        });
-    })();
-    </script>
-
     {% with top_corrections=article.correction_set.all %}
         {% if top_corrections %}
             <div id="article__top_corrections">

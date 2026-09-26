@@ -26,3 +26,37 @@ SEARCH_CONFIG = getattr(settings, 'NEWSROOM_SEARCH_CONFIG', 'english')
 SEARCH_MAXLEN = getattr(settings, 'NEWSROOM_SEARCH_MAXLEN', 60)
 
 LOGO = getattr(settings, 'NEWSROOM_LOGO', 'newsroom/images/GroundUpLogo.png')
+
+VIDEOS_PER_PAGE = getattr(settings, 'NEWSROOM_VIDEOS_PER_PAGE', 12)
+VIDEOS_ON_HOME = getattr(settings, 'NEWSROOM_VIDEOS_ON_HOME', 4)
+YOUTUBE_CHANNEL_URL = getattr(settings, 'NEWSROOM_YOUTUBE_CHANNEL_URL',
+                              'https://www.youtube.com/@GroundUpNews')
+VIDEOS_INTRO = getattr(
+    settings, 'NEWSROOM_VIDEOS_INTRO',
+    'Every GroundUp video is free to watch.')
+
+VIDEO_DEFAULT_BYLINE = getattr(settings, 'NEWSROOM_VIDEO_DEFAULT_BYLINE',
+                               'GroundUp Video Team')
+
+VIDEO_LICENCE_URL = getattr(settings, 'NEWSROOM_VIDEO_LICENCE_URL',
+                            'https://groundup.org.za/licencing/detail/2/')
+VIDEO_COPYRIGHT = getattr(settings, 'NEWSROOM_VIDEO_COPYRIGHT', '')
+
+FOLLOW_LINKS = getattr(settings, 'NEWSROOM_FOLLOW_LINKS', [
+    {'name': 'YouTube', 'url': YOUTUBE_CHANNEL_URL, 'icon': 'icon-youtube'},
+    {'name': 'TikTok', 'url': 'https://www.tiktok.com/@groundup_news',
+     'icon': 'icon-tiktok'},
+    {'name': 'Instagram', 'url': 'https://www.instagram.com/groundup_news/',
+     'icon': 'icon-instagram'},
+    {'name': 'Facebook', 'url': 'https://www.facebook.com/GroundUpNews/',
+     'icon': 'icon-facebook'},
+    {'name': 'X', 'url': 'https://twitter.com/GroundUp_News',
+     'icon': 'icon-twitter'},
+    {'name': 'Bluesky', 'url': 'https://bsky.app/profile/groundup.org.za',
+     'icon': 'icon-bluesky'},
+    {'name': 'WhatsApp',
+     'url': 'https://whatsapp.com/channel/0029Vah4OJcK0IBgG4CUkz35',
+     'icon': 'icon-whatsapp'},
+    {'name': 'Newsletter', 'url': 'https://eepurl.com/Or2a9',
+     'icon': 'icon-mail'},
+])

@@ -14,11 +14,13 @@ from django.urls import reverse
 from filebrowser.settings import ADMIN_VERSIONS, VERSIONS
 from letters.admin import LetterInline
 from payment.admin import CommissionInline, InvoiceInline
+from payment.models import Commission
 from republisher.admin import RepublisherInline
 from socialmedia.admin import TweetInline
 from socialmedia.common import SCHEDULE_RESULTS
 
 from . import models, utils
+from .forms import VideoRolesField
 
 # Used to select sizes of images
 IMAGE_SIZE_CHOICES = [
@@ -419,6 +421,217 @@ admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.MostPopular)
 admin.site.register(models.Correction, CorrectionAdmin)
 admin.site.register(models.WetellBulletin, WetellAdmin)
+
+
+class VideoChapterInline(admin.TabularInline):
+    model = models.VideoChapter
+    extra = 4
+
+
+class VideoContributorInlineForm(forms.ModelForm):
+    roles = VideoRolesField(label="What they did")
+
+    class Meta:
+        model = models.VideoContributor
+        fields = "__all__"
+
+
+class VideoContributorInline(admin.TabularInline):
+    """The credits, and what each of them is paid. Publishing the video raises
+    the payment items; see payment.models.create_video_payments."""
+
+    model = models.VideoContributor
+    form = VideoContributorInlineForm
+    extra = 3
+    raw_id_fields = [
+        "author",
+    ]
+    autocomplete_lookup_fields = {
+        "fk": [
+            "author",
+        ],
+    }
+    fields = [
+        "author",
+        "roles",
+        "note",
+        "position",
+        "no_payment",
+        "payment",
+    ]
+    readonly_fields = [
+        "payment",
+    ]
+
+    def get_fields(self, request, obj=None):
+        fields = list(super().get_fields(request, obj))
+        if not request.user.has_perm("payment.change_commission"):
+            fields.remove("payment")
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        return [
+            field
+            for field in super().get_readonly_fields(request, obj)
+            if field in self.get_fields(request, obj)
+        ]
+
+    def payment(self, contributor):
+        """What has been raised for this person on this video, or a link to
+        raise it by hand."""
+        if contributor.pk is None or contributor.author_id is None:
+            return "Save to see payments"
+        if contributor.no_payment:
+            return "Not paid"
+        items = Commission.objects.filter(
+            video_id=contributor.video_id,
+            invoice__author_id=contributor.author_id,
+            deleted=False,
+        ).select_related("invoice", "invoice__author")
+        rows = [
+            '<a href="{}">{} {}</a>'.format(
+                reverse(
+                    "payments:invoice.detail",
+                    args=[item.invoice.author_id, item.invoice.invoice_num],
+                ),
+                item.commission_due,
+                item.invoice.get_status_display(),
+            )
+            for item in items
+        ]
+        if not rows:
+            rows.append(
+                '<a href="{}?author={}&amp;video={}" target="_blank">'
+                "Raise payment</a>".format(
+                    reverse("payments:commissions.detail.add"),
+                    contributor.author_id,
+                    contributor.video_id,
+                )
+            )
+        return mark_safe("<br />".join(rows))
+
+
+class VideoAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Video
+        fields = "__all__"
+        widgets = {
+            # gu-ckeditor is what ck_init_admin.js attaches the editor to
+            "body": forms.Textarea(attrs={"class": "gu-ckeditor", "rows": 20}),
+        }
+
+
+class VideoAdmin(admin.ModelAdmin):
+    form = VideoAdminForm
+    inlines = [
+        VideoContributorInline,
+        VideoChapterInline,
+    ]
+    list_display = [
+        "title",
+        "category",
+        "duration",
+        "published",
+        "promote",
+        "include_on_home",
+        "pin_to_home",
+    ]
+    list_filter = [
+        "category",
+        "promote",
+        "include_on_home",
+        "pin_to_home",
+    ]
+    date_hierarchy = "published"
+    ordering = ["-published"]
+    search_fields = ["title", "summary", "youtube_id"]
+    prepopulated_fields = {"slug": ("title",)}
+    raw_id_fields = [
+        "authors",
+        "topics",
+        "related_articles",
+    ]
+    autocomplete_lookup_fields = {
+        "m2m": [
+            "authors",
+            "topics",
+            "related_articles",
+        ],
+    }
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "title",
+                    "slug",
+                    "youtube_id",
+                    "duration",
+                    "category",
+                )
+            },
+        ),
+        (
+            "Words",
+            {"fields": ("summary", "body", "credits")},
+        ),
+        (
+            "Credit",
+            {"fields": ("authors", "byline")},
+        ),
+        (
+            "Thumbnail",
+            {
+                "classes": ("collapse",),
+                "description": "Only needed to override the thumbnail "
+                "YouTube generates.",
+                "fields": ("thumbnail", "thumbnail_alt"),
+            },
+        ),
+        (
+            "Links",
+            {"fields": ("topics", "related_articles")},
+        ),
+        (
+            "Publishing",
+            {
+                "fields": (
+                    "published",
+                    "promote",
+                    "include_on_home",
+                    "pin_to_home",
+                )
+            },
+        ),
+        (
+            "Copyright and licence",
+            {
+                "classes": ("collapse",),
+                "description": "Videos are not published under Creative "
+                "Commons. Only change this where a video carries a different "
+                "licence, for example because of third-party footage.",
+                "fields": ("copyright",),
+            },
+        ),
+    )
+
+    class Media:
+        js = [
+            "//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js",
+            "/static/newsroom/js/ck_styles.js?v=20260721",
+            "/static/newsroom/js/ck_init_admin.js?v=20260824",
+        ]
+
+
+class VideoCategoryAdmin(admin.ModelAdmin):
+    list_display = ["name", "label", "position", "count_videos"]
+    ordering = ["position", "name"]
+    prepopulated_fields = {"slug": ("name",)}
+    search_fields = ["name"]
+
+
+admin.site.register(models.Video, VideoAdmin)
+admin.site.register(models.VideoCategory, VideoCategoryAdmin)
 admin.site.register(models.FlatPageImage)
 
 

@@ -1,0 +1,11 @@
+{% comment %}
+A video in the main videos grid. Parameters: video.
+{% endcomment %}
+<a class="gu-video-card" href="{{ video.get_absolute_url }}">
+    {% include "newsroom/video_thumb.html" with video=video play="sm" %}
+    {% if video.category %}
+        <span class="gu-video-card__eyebrow">{{ video.category.card_label }}</span>
+    {% endif %}
+    <h3 class="gu-video-card__title">{{ video.title }}</h3>
+    <div class="gu-video-card__date">{{ video.published|date:"j F Y" }}</div>
+</a>

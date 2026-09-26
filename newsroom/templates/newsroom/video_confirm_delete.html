@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Delete video {{block.super}}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Delete this video?</h1>
+                <p>{{ object.title }}</p>
+                <p>This removes the page from GroundUp. The video itself stays on
+                    YouTube.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input class="btn btn-primary" type="submit" value="Delete">
+                    <a class="btn btn-default" href="{{ object.get_absolute_url }}">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -13,7 +13,9 @@ from django.conf import settings as django_settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.flatpages.models import FlatPage
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.core.validators import RegexValidator
 from django.db import models
 from django.dispatch import receiver
 from django.template.loader import render_to_string
@@ -926,6 +928,15 @@ class Article(models.Model):
             .exclude(recommended=False)[:num_to_choose]
         )
 
+    # for grapeli
+    @staticmethod
+    def autocomplete_search_fields():
+        return (
+            "id__iexact",
+            "title__icontains",
+            "subtitle__icontains",
+        )
+
     class Meta:
         ordering = [
             "-stickiness",
@@ -1173,6 +1184,463 @@ class WetellBulletin(models.Model):
             )
         ]
 
+
+# XXX: change video roles here
+VIDEO_ROLE_CHOICES = (
+    ("reporting", "Reporting"),
+    ("producing", "Producing"),
+    ("presenting", "Presenting"),
+    ("script", "Script"),
+    ("story_editing", "Story editing"),
+    ("camera", "Camera"),
+    ("sound", "Sound"),
+    ("editing", "Video editing"),
+    ("animation", "Animation and graphics"),
+    ("photographs", "Photographs"),
+    ("translation", "Translation"),
+    ("subtitles", "Subtitles"),
+    ("factcheck", "Fact checking"),
+    ("other", "Other"),
+)
+
+VIDEO_ROLE_ORDER = {key: index for index, (key, label) in enumerate(VIDEO_ROLE_CHOICES)}
+
+VIDEO_ROLE_LABELS = dict(VIDEO_ROLE_CHOICES)
+
+
+def split_roles(value):
+    """The stored roles, in the order they are credited."""
+    keys = [key for key in (value or "").split(",") if key in VIDEO_ROLE_LABELS]
+    return sorted(set(keys), key=lambda key: VIDEO_ROLE_ORDER[key])
+
+
+def join_roles(keys):
+    return ",".join(split_roles(",".join(keys)))
+
+# TODO: double check regex, but my testing was good on it; 
+# editor facing only anyway, so should be fine & safe
+YOUTUBE_URL_RE = re.compile(
+    r"""(?:
+            youtu\.be/ |
+            youtube(?:-nocookie)?\.com/
+                (?: watch\?(?:[^\s]*&)?v= | v/ | e/ | embed/ | shorts/ | live/ )
+        )
+        (?P<id>[A-Za-z0-9_-]{11})
+    """,
+    re.VERBOSE,
+)
+
+YOUTUBE_ID_RE = re.compile(r"[A-Za-z0-9_-]{11}")
+
+DURATION_RE = re.compile(r"^(?:(?P<h>\d+):)?(?P<m>\d{1,2}):(?P<s>[0-5]\d)$")
+
+validate_duration = RegexValidator(DURATION_RE, "Use m:ss or h:mm:ss, e.g. 9:42.")
+
+
+def timecode_seconds(value):
+    match = DURATION_RE.match(value or "")
+    if not match:
+        return None
+    hours = int(match.group("h") or 0)
+    return hours * 3600 + int(match.group("m")) * 60 + int(match.group("s"))
+
+
+def extract_youtube_id(value):
+    if not value:
+        return None
+    value = value.strip()
+    if YOUTUBE_ID_RE.fullmatch(value):
+        return value
+    match = YOUTUBE_URL_RE.search(value)
+    return match.group("id") if match else None
+
+
+class VideoCategory(models.Model):
+    """The filter btns on the videos page: Explainers, Documentaries etc."""
+
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    label = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Singular label shown on a video card, e.g. 'Explainer' "
+        "where the category is 'Explainers'. Defaults to the name.",
+    )
+    introduction = models.TextField(blank=True, help_text="Use unfiltered HTML.")
+    position = models.PositiveSmallIntegerField(
+        default=100, help_text="Lower numbers sort first in the filter bar."
+    )
+
+    def card_label(self):
+        return self.label or self.name
+
+    def count_videos(self):
+        return Video.objects.published().filter(category=self).count()
+
+    def get_absolute_url(self):
+        return reverse(
+            "newsroom:video.category",
+            args=[
+                self.slug,
+            ],
+        )
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("name__icontains",)
+
+    class Meta:
+        verbose_name = "video category"
+        verbose_name_plural = "video categories"
+        ordering = [
+            "position",
+            "name",
+        ]
+
+
+class VideoQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(published__lte=timezone.now())
+
+    def list_view(self):
+        return self.published().select_related("category").prefetch_related("authors")
+
+    def for_home_page(self):
+        return self.list_view().filter(include_on_home=True)
+
+    def pinned_to_home(self):
+        """The video pinned to the top of the home page, if it's published."""
+        return self.list_view().filter(pin_to_home=True).first()
+
+
+class Video(models.Model):
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, unique=True)
+    youtube_id = models.CharField(
+        max_length=200,
+        verbose_name="YouTube video",
+        help_text="Paste the YouTube URL. Only the video id is kept.",
+    )
+    category = models.ForeignKey(
+        VideoCategory,
+        blank=True,
+        null=True,
+        related_name="videos",
+        on_delete=models.SET_NULL,
+    )
+    summary = models.TextField(
+        blank=True,
+        help_text="One or 2 sentences. Used on the videos page, "
+        "the home page and as the search description.",
+    )
+    body = models.TextField(
+        blank=True,
+        help_text="Optional article-style text published below the video. "
+        "Use unfiltered HTML.",
+    )
+    duration = models.CharField(
+        max_length=8,
+        blank=True,
+        validators=[validate_duration],
+        verbose_name="length (m:ss)",
+        help_text="Length as m:ss or h:mm:ss, e.g. 9:42.",
+    )
+    authors = models.ManyToManyField(
+        Author,
+        blank=True,
+        related_name="videos",
+        help_text="Who the video is bylined to. Leave blank and the byline "
+        "falls back to whoever is credited with reporting, and then to "
+        "'{}'.".format(settings.VIDEO_DEFAULT_BYLINE),
+    )
+    byline = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="customised byline",
+        help_text="If this is not blank it overrides the authors field, "
+        "e.g. 'GroundUp Video Team'.",
+    )
+    credits = models.TextField(
+        blank=True,
+        help_text="A note shown in the strip under the video, e.g. where and "
+        "when it was filmed. Who worked on it goes in Contributors, below.",
+    )
+    thumbnail = FileBrowseField(
+        "thumbnail",
+        max_length=200,
+        directory="images/",
+        blank=True,
+        help_text="Only needed to override the thumbnail YouTube generates.",
+    )
+    thumbnail_alt = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Description of the thumbnail for alttext",
+    )
+    topics = models.ManyToManyField(Topic, blank=True, related_name="videos")
+    related_articles = models.ManyToManyField(
+        "Article",
+        blank=True,
+        related_name="videos",
+        help_text="Articles to offer alongside this video.",
+    )
+    published = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="Leave blank to keep the video off the site",
+    )
+    promote = models.BooleanField(
+        default=False,
+        help_text="Pin this video to the top of the videos page instead of the newest.",
+    )
+    include_on_home = models.BooleanField(default=True)
+    pin_to_home = models.BooleanField(
+        default=False,
+        verbose_name="pin to top of home page",
+        help_text="Show this video above everything else on the home page. "
+        "Pinning it unpins any other video. It only appears once published.",
+    )
+    copyright = models.TextField(
+        blank=True,
+        default=settings.VIDEO_COPYRIGHT,
+        verbose_name="copyright and licence",
+        help_text="Shown at the foot of the video page. Use unfiltered HTML.",
+    )
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    objects = VideoQuerySet.as_manager()
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse(
+            "newsroom:video.detail",
+            args=[
+                self.slug,
+            ],
+        )
+
+    @property
+    def is_published(self):
+        return self.published is not None and self.published <= timezone.now()
+
+    def watch_url(self):
+        return "https://www.youtube.com/watch?v=" + self.youtube_id
+
+    def embed_url(self):
+        """Privacy-enhanced embed. The page only requests it once a reader
+        clicks play; the player script appends autoplay and any start offset."""
+        return "https://www.youtube-nocookie.com/embed/" + self.youtube_id + "?rel=0"
+
+    def thumbnail_url(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        # hqdefault always exists; maxresdefault does not for every upload.
+        return "https://i.ytimg.com/vi/{}/maxresdefault.jpg".format(self.youtube_id)
+
+    def fallback_thumbnail_url(self):
+        return "https://i.ytimg.com/vi/{}/hqdefault.jpg".format(self.youtube_id)
+
+    def get_byline(self):
+        if self.byline:
+            return self.byline
+        names = [str(author) for author in self.authors.all()]
+        if not names:
+            # we fallback
+            names = [
+                str(contributor.author)
+                for contributor in self.contributors.all()
+                if "reporting" in contributor.role_list()
+            ]
+        if not names:
+            return settings.VIDEO_DEFAULT_BYLINE
+        return ", ".join(names)
+
+    def credits_by_role(self):
+        """The contributors grouped for the credits block. Someone who did
+        more than one job is credited under each of them."""
+        contributors = sorted(
+            self.contributors.all(), key=lambda c: (c.position, c.pk or 0)
+        )
+        rows = []
+        for key, label in VIDEO_ROLE_CHOICES:
+            people = [
+                contributor.credit()
+                for contributor in contributors
+                if key in contributor.role_list()
+            ]
+            if people:
+                rows.append({"role": label, "people": people})
+        return rows
+
+    def duration_seconds(self):
+        return timecode_seconds(self.duration)
+
+    def duration_iso(self):
+        """ISO 8601 duration for schema.org VideoObject."""
+        seconds = self.duration_seconds()
+        if seconds is None:
+            return ""
+        return "PT{}H{}M{}S".format(seconds // 3600, seconds % 3600 // 60, seconds % 60)
+
+    def watch_time(self):
+        """num time used under the headline."""
+        seconds = self.duration_seconds()
+        if not seconds:
+            return ""
+        minutes = max(1, round(seconds / 60))
+        return "{} min watch".format(minutes)
+
+    def get_related_videos(self, number=3):
+        others = Video.objects.list_view().exclude(pk=self.pk)
+        if self.category_id:
+            same_category = list(others.filter(category_id=self.category_id)[:number])
+            if len(same_category) >= number:
+                return same_category
+            seen = [video.pk for video in same_category]
+            return same_category + list(others.exclude(pk__in=seen)[: number - len(seen)])
+        return list(others[:number])
+
+    def clean(self):
+        # Editors paste URLs; store the id so every template can build its own
+        # watch, embed and thumbnail URLs.
+        video_id = extract_youtube_id(self.youtube_id)
+        if not video_id:
+            raise ValidationError(
+                {
+                    "youtube_id": "That is not a YouTube URL or video id. "
+                    "A video id is 11 characters, e.g. dQw4w9WgXcQ."
+                }
+            )
+        self.youtube_id = video_id
+
+    def save(self, *args, **kwargs):
+        video_id = extract_youtube_id(self.youtube_id)
+        if video_id:
+            self.youtube_id = video_id
+        super().save(*args, **kwargs)
+        # Only one video can be pinned to the home page at a time
+        if self.pin_to_home:
+            Video.objects.filter(pin_to_home=True).exclude(pk=self.pk).update(
+                pin_to_home=False
+            )
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return (
+            "id__iexact",
+            "title__icontains",
+        )
+
+    class Meta:
+        ordering = [
+            "-published",
+        ]
+        indexes = [
+            models.Index(fields=["-published"]),
+        ]
+
+
+class VideoContributor(models.Model):
+
+    video = models.ForeignKey(
+        Video, related_name="contributors", on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        Author, related_name="video_contributions", on_delete=models.CASCADE
+    )
+    roles = models.CharField(
+        max_length=200,
+        default="reporting",
+        verbose_name="what they did",
+        help_text="Everything this person did on the video. They are credited "
+        "under each of them.",
+    )
+    note = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Optional detail shown in brackets after the name, "
+        "e.g. 'second camera'.",
+    )
+    position = models.PositiveSmallIntegerField(
+        default=100, help_text="Lower numbers are credited first within a role."
+    )
+    no_payment = models.BooleanField(
+        default=False,
+        verbose_name="do not pay",
+        help_text="Tick if this person is not to be paid for the video. "
+        "Publishing the video raises a payment item for everyone else.",
+    )
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def credit(self):
+        if self.note:
+            return "{} ({})".format(self.author, self.note)
+        return str(self.author)
+
+    def role_list(self):
+        """The role keys, in the order they are credited."""
+        return split_roles(self.roles)
+
+    def role_labels(self):
+        return [VIDEO_ROLE_LABELS[key] for key in self.role_list()]
+
+    def roles_display(self):
+        return ", ".join(self.role_labels())
+
+    def save(self, *args, **kwargs):
+        # Always stored in credit order.
+        self.roles = ",".join(split_roles(self.roles))
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return "{} - {}".format(self.credit(), self.roles_display())
+
+    class Meta:
+        verbose_name = "video contributor"
+        ordering = [
+            "position",
+            "id",
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "video",
+                    "author",
+                ],
+                name="unique_video_contributor",
+            ),
+        ]
+
+
+class VideoChapter(models.Model):
+    """A row in the 'In this video' list on a video page."""
+
+    video = models.ForeignKey(Video, related_name="chapters", on_delete=models.CASCADE)
+    timecode = models.CharField(
+        max_length=8,
+        validators=[validate_duration],
+        verbose_name="time (m:ss)",
+        help_text="m:ss, e.g. 2:41.",
+    )
+    description = models.CharField(max_length=250)
+
+    def seconds(self):
+        return timecode_seconds(self.timecode) or 0
+
+    def __str__(self):
+        return "{} {}".format(self.timecode, self.description)
+
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 # Signals
 

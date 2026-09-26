@@ -176,6 +176,9 @@
                                 {% if item.article %}
                                     <br />
                                     {{ item.article.title }}
+                                {% elif item.video %}
+                                    <br />
+                                    {{ item.video.title }}
                                 {% endif %}
                                 {% if item.description %}
                                     ({{ item.description }})
