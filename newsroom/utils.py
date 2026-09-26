@@ -87,9 +87,6 @@ def replaceImgHeightWidthWithClass(soup):
                 if tag.has_attr("class"):
                     if "leave" in tag["class"]:
                         continue
-                if tag.has_attr("id"):
-                    if tag["id"] == "gu_counter":
-                        continue
                 del tag["style"]
             # This deals with TinyMCE's image insertion
             if tag.has_attr("height") and tag.has_attr("width"):
@@ -359,43 +356,6 @@ def get_first_image(html):
             return ""
     else:
         return ""
-
-
-def insertPixel(html, pk, slug):
-    # Not worth crashing for
-    soup = BeautifulSoup(html, "html.parser")
-    style = "height:1px; width:1px; display:none;"
-    img = soup.find("img", id="gu_counter")
-    if img is None:
-        paras = soup.find_all("p")
-        if len(paras) > 4:
-            url = (
-                "https://counter.groundup.org.za/pixels/"
-                + str(pk)
-                + "_"
-                + slug
-                + ".gif"
-            )
-            img = soup.new_tag(
-                "img",
-                src=url,
-                id="gu_counter",
-                alt="",
-                height="1",
-                width="1",
-                style=style,
-            )
-            img["class"] = "leave"
-            paras[4].append(img)
-    else:
-        img["height"] = "1"
-        img["width"] = "1"
-        img["style"] = style
-        img["class"] = "leave"
-        img["alt"] = ""
-    html = str(soup)
-
-    return html
 
 
 def get_first_caption(html):

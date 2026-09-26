@@ -1,21 +1,25 @@
+{% if republisher.message %}
 {{republisher.message|linebreaks}}
+{% else %}
+<p>Dear {{republisher.name}}</p>
+<p>Here is an article from GroundUp News you may wish to republish.</p>
+{% endif %}
 
+{% if note %}
 {{note|linebreaks}}
+{% endif %}
 
 <p>URL: {{url}}</p>
 
-{% if republisher.slug and republisher.ask_for_analytics %}
-    <p>
-        If possible, please put the following HTML onto the webpage. It will
-        count the number of views the article gets for GroundUp. We don't track
-        individual user information and all log files are deleted within 14
-        days.
-    </p>
-    <p>
-        &lt;img style=&quot;display:none; width:1px;&quot; alt=&quot;&quot; {{dmtag}}
-        src=&quot;https://counter.groundup.org.za/pixels/{{republisher.slug}}_{{article.published|date:"Y-m-d"}}_{{article.slug}}&quot; /&gt;
-    </p>
-{% endif %}
+<p>
+    If possible, please put the following HTML onto the webpage. It will
+    count the number of views the article gets for GroundUp. We don't track
+    individual user information.
+</p>
+
+<p>
+    {{article.counter_html}}
+</p>
 
 <p>
     Below is the article, but please go to the URL above to copy it because we
@@ -32,18 +36,15 @@
 
 {% if article.cached_primary_image %}
 
-    <p>Primary image:</p>
+<p>Primary image:</p>
 
-    <p>
-	<img src="{{article.cached_primary_image}}"
-	     alt="{{article.primary_image_alt}}"
-	     style="width:70%;"
-	/>
-    </p>
+<p>
+    <img src="{{article.cached_primary_image}}" alt="{{article.primary_image_alt}}" style="width:70%;" />
+</p>
 
-    <p>Primary image caption:
-	{{article.primary_image_caption|safe}}
-    </p>
+<p>Primary image caption:
+    {{article.primary_image_caption|safe}}
+</p>
 
 {% endif %}
 
@@ -52,11 +53,11 @@
 
 <div>{{article.body|safe}}</div>
 
-<hr/>
+<hr />
 
 <p>
     Originally published on <a href="{{url}}">
-    GroundUp</a>.
+        GroundUp</a>.
 </p>
 
 <p>
