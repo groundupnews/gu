@@ -203,7 +203,8 @@ class VideoForm(forms.ModelForm):
             'title', 'slug', 'youtube_id', 'category',
             'summary', 'body', 'duration', 'authors', 'byline', 'credits',
             'thumbnail', 'thumbnail_alt', 'topics', 'related_articles',
-            'published', 'promote', 'include_on_home', 'copyright',
+            'published', 'promote', 'include_on_home', 'pin_to_home',
+            'copyright',
         ]
         widgets = {
             'summary': forms.Textarea(attrs={'rows': 3}),

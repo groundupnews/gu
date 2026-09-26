@@ -1311,6 +1311,10 @@ class VideoQuerySet(models.QuerySet):
     def for_home_page(self):
         return self.list_view().filter(include_on_home=True)
 
+    def pinned_to_home(self):
+        """The video pinned to the top of the home page, if it's published."""
+        return self.list_view().filter(pin_to_home=True).first()
+
 
 class Video(models.Model):
     title = models.CharField(max_length=250)
@@ -1393,6 +1397,12 @@ class Video(models.Model):
         help_text="Pin this video to the top of the videos page instead of the newest.",
     )
     include_on_home = models.BooleanField(default=True)
+    pin_to_home = models.BooleanField(
+        default=False,
+        verbose_name="pin to top of home page",
+        help_text="Show this video above everything else on the home page. "
+        "Pinning it unpins any other video. It only appears once published.",
+    )
     copyright = models.TextField(
         blank=True,
         default=settings.VIDEO_COPYRIGHT,
@@ -1514,6 +1524,11 @@ class Video(models.Model):
         if video_id:
             self.youtube_id = video_id
         super().save(*args, **kwargs)
+        # Only one video can be pinned to the home page at a time
+        if self.pin_to_home:
+            Video.objects.filter(pin_to_home=True).exclude(pk=self.pk).update(
+                pin_to_home=False
+            )
 
     @staticmethod
     def autocomplete_search_fields():

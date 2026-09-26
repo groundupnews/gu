@@ -58,32 +58,7 @@
         {% endif %}
 
         {% if hero %}
-            <div class="gu-videos-hero">
-                <a class="gu-videos-hero__media" href="{{ hero.get_absolute_url }}"
-                   tabindex="-1" aria-hidden="true">
-                    {% include "newsroom/video_thumb.html" with video=hero play="lg" runtime=0 %}
-                </a>
-                <div class="gu-videos-hero__body">
-                    <p class="gu-videos-hero__eyebrow">
-                        {% if hero.promote %}Featured{% else %}Latest video{% endif %}
-                        {% if hero.category %} · {{ hero.category.card_label }}{% endif %}
-                    </p>
-                    <h2 class="gu-videos-hero__title">
-                        <a href="{{ hero.get_absolute_url }}">{{ hero.title }}</a>
-                    </h2>
-                    {% if hero.summary %}
-                        <p class="gu-videos-hero__summary">{{ hero.summary }}</p>
-                    {% endif %}
-                    <div class="gu-videos-hero__actions">
-                        <a class="gu-videos-hero__watch" href="{{ hero.get_absolute_url }}">
-                            Watch{% if hero.duration %} · {{ hero.duration }}{% endif %}
-                        </a>
-                        <span class="gu-videos-hero__meta">
-                            {{ hero.published|date:"j F Y" }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+            {% include "newsroom/video_hero.html" with video=hero %}
         {% endif %}
 
         {% if videos %}

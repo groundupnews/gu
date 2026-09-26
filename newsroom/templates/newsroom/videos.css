@@ -300,6 +300,12 @@ a:focus > .gu-video-thumb .gu-video-play span {
     font-variant-numeric: tabular-nums;
 }
 
+
+.gu-home-pinned-video .gu-videos-hero {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
 .gu-video-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
@@ -387,7 +393,9 @@ a:focus > .gu-video-thumb .gu-video-play span {
 }
 
 .gu-videos .gu-video-thumb img,
-.gu-videos .gu-video-play span {
+.gu-videos .gu-video-play span,
+.gu-home-pinned-video .gu-video-thumb img,
+.gu-home-pinned-video .gu-video-play span {
     transition: transform 0.25s ease, background-color 0.2s ease;
 }
 
@@ -929,6 +937,19 @@ a:focus > .gu-video-thumb .gu-video-play span {
         padding: 24px 26px 28px;
     }
 
+    .gu-home-pinned-video .gu-videos-hero {
+        gap: 14px;
+        padding: 16px 0 20px;
+    }
+
+    .gu-home-pinned-video .gu-videos-hero__body {
+        padding: 0;
+    }
+
+    .gu-home-pinned-video .gu-videos-hero__summary {
+        margin-bottom: 14px;
+    }
+
     .gu-video-readmore {
         columns: 1;
     }
@@ -987,7 +1008,9 @@ a:focus > .gu-video-thumb .gu-video-play span {
 
 @media (prefers-reduced-motion: reduce) {
     .gu-videos .gu-video-thumb img,
-    .gu-videos .gu-video-play span {
+    .gu-videos .gu-video-play span,
+    .gu-home-pinned-video .gu-video-thumb img,
+    .gu-home-pinned-video .gu-video-play span {
         transition: none;
     }
 

@@ -534,11 +534,13 @@ class VideoAdmin(admin.ModelAdmin):
         "published",
         "promote",
         "include_on_home",
+        "pin_to_home",
     ]
     list_filter = [
         "category",
         "promote",
         "include_on_home",
+        "pin_to_home",
     ]
     date_hierarchy = "published"
     ordering = ["-published"]
@@ -597,6 +599,7 @@ class VideoAdmin(admin.ModelAdmin):
                     "published",
                     "promote",
                     "include_on_home",
+                    "pin_to_home",
                 )
             },
         ),

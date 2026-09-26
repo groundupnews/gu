@@ -1248,6 +1248,54 @@ class VideoTest(TestCase):
         markup = render_to_string("blocks/blocks.html", context)
         self.assertNotIn('class="gu-video-block"', markup)
 
+    def test_only_one_video_is_pinned_to_the_home_page(self):
+        self.older.pin_to_home = True
+        self.older.save()
+        self.middle.pin_to_home = True
+        self.middle.save()
+        self.older.refresh_from_db()
+        self.assertFalse(self.older.pin_to_home)
+        self.assertEqual(Video.objects.pinned_to_home(), self.middle)
+
+    def test_the_home_page_has_no_pinned_video_until_one_is_pinned(self):
+        self.add_home_articles()
+        response = self.client.get(reverse("newsroom:home"))
+        self.assertIsNone(response.context.get("pinned_video"))
+        self.assertNotIn("gu-home-pinned-video", main_markup(response))
+
+    def test_a_pinned_video_sits_at_the_top_of_the_home_page(self):
+        self.add_home_articles()
+        block = Block.objects.create(
+            name="Watch the latest", block_type="videos",
+            custom_title="Watch the latest",
+        )
+        group = BlockGroup_Group.objects.create(name="Home_Top")
+        BlockGroup.objects.create(block=block, group=group, position=1)
+        self.older.pin_to_home = True
+        self.older.save()
+
+        response = self.client.get(reverse("newsroom:home"))
+        self.assertEqual(response.context["pinned_video"], self.older)
+        markup = main_markup(response)
+        self.assertIn("gu-home-pinned-video", markup)
+        self.assertLess(
+            markup.index("Municipal debt explained"), markup.index("Watch the latest")
+        )
+        self.assertLess(markup.index("Watch the latest"), markup.index("Article 0"))
+        # It isn't repeated in the videos rail
+        self.assertEqual(
+            response.context["topblocks"][0].videos, [self.newest, self.middle]
+        )
+        self.assertEqual(markup.count("Municipal debt explained"), 1)
+
+    def test_a_pinned_video_waits_until_it_is_published(self):
+        self.add_home_articles()
+        self.unpublished.pin_to_home = True
+        self.unpublished.save()
+        response = self.client.get(reverse("newsroom:home"))
+        self.assertIsNone(response.context.get("pinned_video"))
+        self.assertNotIn("Not ready yet", main_markup(response))
+
 
 
 @override_settings(

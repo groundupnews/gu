@@ -379,7 +379,11 @@ def get_blocks_in_context(context, group_name="Home", context_key="blocks"):
             count = block.num_articles if block.block_type == "videos" else None
             if count is None:
                 count = settings.VIDEOS_ON_HOME
-            block.videos = list(models.Video.objects.for_home_page()[:count])
+            videos = models.Video.objects.for_home_page()
+            # Don't repeat the video pinned above everything else
+            if context.get("pinned_video"):
+                videos = videos.exclude(pk=context["pinned_video"].pk)
+            block.videos = list(videos[:count])
             if block.name == "_Videos":
                 context["home_videos"] = block.videos
 
@@ -432,6 +436,8 @@ class HomePage(ArticleList):
 
     def get_context_data(self, **kwargs):
         context = super(HomePage, self).get_context_data(**kwargs)
+        if context["page_obj"].number == 1:
+            context["pinned_video"] = models.Video.objects.pinned_to_home()
         context = get_blocks_in_context(context, "Home_Top", "topblocks")
         context = get_blocks_in_context(context, "Home_0", "home_0")
         context = get_blocks_in_context(context, "Home_1", "home_1")
