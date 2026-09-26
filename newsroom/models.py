@@ -26,6 +26,7 @@ from filebrowser.fields import FileBrowseField
 from agony.models import QandA
 from licencing.models import Licence
 from filebrowser.base import FileObject
+from bs4 import BeautifulSoup
 
 from . import settings, utils
 
@@ -254,7 +255,9 @@ class Author(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["first_names", "last_name"], name="unique_first_names_last_name")
+            models.UniqueConstraint(
+                fields=["first_names", "last_name"], name="unique_first_names_last_name"
+            )
         ]
         ordering = [
             "last_name",
@@ -833,6 +836,31 @@ class Article(models.Model):
         for _ in range(40):
             self.secret_link += chr(random.randint(97, 122))
 
+    # Used by third-party republishers to count hits to GU articles
+    # The img parameter can eithe be None or a BeautifulSoup img object/tag
+    def counter_html(self, ident="e"):
+        return f'<img src="https://counter.groundup.org.za/pixels/{self.pk}_{ident}_{self.slug}.gif" alt="" width="1" height="1" loading="eager" decoding="async" fetchpriority="low" class="gu_counter leave skip-lazy no-lazy" data-no-lazy="1" data-skip-lazy data-pin-nopin="true" style="width:1px !important;height:1px !important;max-width:1px !important; display:inline !important;border:0;margin:0;padding:0;float:none;">'
+
+    def insert_pixel(self, html):
+        try:
+            soup = BeautifulSoup(html, "html.parser")
+            imgs = soup.find_all("img", class_="gu_counter")
+            if len(imgs) == 0:
+                imgs = soup.find_all("img", id="gu_counter")
+            if len(imgs) > 1:
+                for img in imgs[1:]:
+                    img.decompose()
+            if len(imgs) == 0:
+                paras = soup.find_all("p")
+                if len(paras) > 4:
+                    img_html = self.counter_html("a")
+                    fragment = BeautifulSoup(img_html, "html.parser")
+                    img = fragment.img
+                    paras[4].append(img)
+            return str(soup)
+        except:  # This should never crash save
+            return html
+
     def save(self, *args, **kwargs):
         if self.secret_link_view != "n" and self.secret_link == "":
             self.make_secret_link()
@@ -869,7 +897,7 @@ class Article(models.Model):
             self.body = utils.replaceBadHtmlWithGood(self.body)
         self.version = self.version + 1
         if self.pk:
-            self.body = utils.insertPixel(self.body, self.pk, self.slug)
+            self.body = self.insert_pixel(self.body)
 
         try:
             if not "sound" in self.audio_summary.name:
@@ -952,7 +980,9 @@ class UserEdit(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["article", "user"], name="unique_article_user")
+            models.UniqueConstraint(
+                fields=["article", "user"], name="unique_article_user"
+            )
         ]
         ordering = [
             "article__published",
@@ -1217,7 +1247,8 @@ def split_roles(value):
 def join_roles(keys):
     return ",".join(split_roles(",".join(keys)))
 
-# TODO: double check regex, but my testing was good on it; 
+
+# TODO: double check regex, but my testing was good on it;
 # editor facing only anyway, so should be fine & safe
 YOUTUBE_URL_RE = re.compile(
     r"""(?:
@@ -1503,7 +1534,9 @@ class Video(models.Model):
             if len(same_category) >= number:
                 return same_category
             seen = [video.pk for video in same_category]
-            return same_category + list(others.exclude(pk__in=seen)[: number - len(seen)])
+            return same_category + list(
+                others.exclude(pk__in=seen)[: number - len(seen)]
+            )
         return list(others[:number])
 
     def clean(self):
@@ -1547,7 +1580,6 @@ class Video(models.Model):
 
 
 class VideoContributor(models.Model):
-
     video = models.ForeignKey(
         Video, related_name="contributors", on_delete=models.CASCADE
     )
@@ -1641,6 +1673,7 @@ class VideoChapter(models.Model):
         ordering = [
             "id",
         ]
+
 
 # Signals
 

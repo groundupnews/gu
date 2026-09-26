@@ -1,4 +1,5 @@
 from decimal import Decimal
+from bs4 import BeautifulSoup
 import logging
 
 from django.urls import reverse
@@ -13,8 +14,7 @@ from django.dispatch import receiver
 from dateutil import relativedelta
 
 from filebrowser.fields import FileBrowseField
-from newsroom.models import (Article, Author, Video, VideoContributor,
-                             LEVEL_CHOICES)
+from newsroom.models import Article, Author, Video, VideoContributor, LEVEL_CHOICES
 from newsroom import utils
 
 INVOICE_STATUS_CHOICES = (
@@ -43,35 +43,33 @@ COMMISSION_DESCRIPTION_CHOICES = (
 )
 
 RATES = {
-    'primary_photo': 300.0,
-    'inside_photo': 150.0,
-    'opinion': 0.0,
-    'brief': 324.0,
-    'law': 918.0,
-    'news': 918.0,
-    'video': 1620.0,
-    'science': 1620.0,
-    'simple_feature': 1620.0,
-    'complex_feature': 2376.0
+    "primary_photo": 300.0,
+    "inside_photo": 150.0,
+    "opinion": 0.0,
+    "brief": 324.0,
+    "law": 918.0,
+    "news": 918.0,
+    "video": 1620.0,
+    "science": 1620.0,
+    "simple_feature": 1620.0,
+    "complex_feature": 2376.0,
 }
 
-BONUSES = {
-    'articles': 4,
-    'bonus': 500
-}
+BONUSES = {"articles": 4, "bonus": 500}
 
 
 LEVELS = {
-    'intern': 0.5,
-    'standard': 1,
-    'senior': 1.35,
-    'experienced': 1.7,
-    'exceptional': 2.2,
-    'exceptional_plus': 2.65
+    "intern": 0.5,
+    "standard": 1,
+    "senior": 1.35,
+    "experienced": 1.7,
+    "exceptional": 2.2,
+    "exceptional_plus": 2.65,
 }
 
 
 logger = logging.getLogger("groundup")
+
 
 class Fund(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -92,23 +90,40 @@ class Fund(models.Model):
 
     @staticmethod
     def get_ledger_funds():
-        funds = [(fund.pk, fund.name) for fund in Fund.objects.
-                 filter(ledger=True).filter(deprecated=False)]
+        funds = [
+            (fund.pk, fund.name)
+            for fund in Fund.objects.filter(ledger=True).filter(deprecated=False)
+        ]
         return funds
 
     @staticmethod
     def get_account_funds():
-        funds = [(fund.pk, fund.name) for fund in Fund.objects.
-                 filter(ledger=False).filter(deprecated=False)]
+        funds = [
+            (fund.pk, fund.name)
+            for fund in Fund.objects.filter(ledger=False).filter(deprecated=False)
+        ]
         return funds
 
-
     class Meta:
-        ordering = ['name', ]
+        ordering = [
+            "name",
+        ]
 
 
-EXTENSIONS = [".jpg", ".pdf", ".doc", ".docx", ".odt", ".xls", ".xlsx",
-              ".zip", ".JPG", ".PDF", ".DOC", ".DOCX"]
+EXTENSIONS = [
+    ".jpg",
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".odt",
+    ".xls",
+    ".xlsx",
+    ".zip",
+    ".JPG",
+    ".PDF",
+    ".DOC",
+    ".DOCX",
+]
 
 
 def set_corresponding_vals(fromobj, to):
@@ -127,6 +142,7 @@ def set_corresponding_vals(fromobj, to):
     to.vat = fromobj.vat
     to.level = fromobj.level
 
+
 class RateCard(models.Model):
     date_from = models.DateTimeField()
     primary_photo = models.FloatField(default=0.0)
@@ -143,12 +159,12 @@ class RateCard(models.Model):
     bonus_article = models.PositiveSmallIntegerField(default=4)
     bonus = models.FloatField(default=500.00)
     allowance = models.FloatField(default=0.0)
-    level_intern = models.FloatField(default=LEVELS['intern'])
-    level_standard = models.FloatField(default=LEVELS['standard'])
-    level_senior = models.FloatField(default=LEVELS['senior'])
-    level_experienced = models.FloatField(default=LEVELS['experienced'])
-    level_exceptional = models.FloatField(default=LEVELS['exceptional'])
-    level_exceptional_plus = models.FloatField(default=LEVELS['exceptional_plus'])
+    level_intern = models.FloatField(default=LEVELS["intern"])
+    level_standard = models.FloatField(default=LEVELS["standard"])
+    level_senior = models.FloatField(default=LEVELS["senior"])
+    level_experienced = models.FloatField(default=LEVELS["experienced"])
+    level_exceptional = models.FloatField(default=LEVELS["exceptional"])
+    level_exceptional_plus = models.FloatField(default=LEVELS["exceptional_plus"])
 
     def __str__(self):
         return str(self.date_from)
@@ -156,9 +172,10 @@ class RateCard(models.Model):
     @staticmethod
     def get_current_record():
         try:
-            #Is the ratecard being read in at this point?
-            return RateCard.objects.filter(date_from__lte=timezone.now()).\
-                latest('date_from')
+            # Is the ratecard being read in at this point?
+            return RateCard.objects.filter(date_from__lte=timezone.now()).latest(
+                "date_from"
+            )
         except:
             return None
 
@@ -166,28 +183,30 @@ class RateCard(models.Model):
     def populate_rates():
         ratecard = RateCard.get_current_record()
         if ratecard:
-            RATES['primary_photo'] = ratecard.primary_photo
-            RATES['inside_photo'] = ratecard.inside_photo
-            RATES['opinion'] = ratecard.opinion
-            RATES['brief'] = ratecard.brief
-            RATES['law'] = ratecard.law
-            RATES['news'] = ratecard.news
-            RATES['video'] = ratecard.video
-            RATES['science'] = ratecard.science
-            RATES['simple_feature'] = ratecard.simple_feature
-            RATES['complex_feature'] = ratecard.complex_feature
+            RATES["primary_photo"] = ratecard.primary_photo
+            RATES["inside_photo"] = ratecard.inside_photo
+            RATES["opinion"] = ratecard.opinion
+            RATES["brief"] = ratecard.brief
+            RATES["law"] = ratecard.law
+            RATES["news"] = ratecard.news
+            RATES["video"] = ratecard.video
+            RATES["science"] = ratecard.science
+            RATES["simple_feature"] = ratecard.simple_feature
+            RATES["complex_feature"] = ratecard.complex_feature
 
-            BONUSES['articles'] = ratecard.bonus_article
-            BONUSES['bonus'] = ratecard.bonus
-            LEVELS['intern'] =  ratecard.level_intern
-            LEVELS['standard'] = ratecard.level_standard
-            LEVELS['senior'] = ratecard.level_senior
-            LEVELS['experienced'] = ratecard.level_experienced
-            LEVELS['exceptional'] = ratecard.level_exceptional
-            LEVELS['exceptional_plus'] = ratecard.level_exceptional_plus
+            BONUSES["articles"] = ratecard.bonus_article
+            BONUSES["bonus"] = ratecard.bonus
+            LEVELS["intern"] = ratecard.level_intern
+            LEVELS["standard"] = ratecard.level_standard
+            LEVELS["senior"] = ratecard.level_senior
+            LEVELS["experienced"] = ratecard.level_experienced
+            LEVELS["exceptional"] = ratecard.level_exceptional
+            LEVELS["exceptional_plus"] = ratecard.level_exceptional_plus
 
     class Meta:
-        ordering = ["-date_from", ]
+        ordering = [
+            "-date_from",
+        ]
 
 
 class Invoice(models.Model):
@@ -195,95 +214,121 @@ class Invoice(models.Model):
     invoice_num = models.IntegerField(default=0)
 
     # Fields whose default values are taken from Author
-    identification = models.CharField(max_length=20, blank=True,
-                                      help_text="SA ID, passport or some form "
-                                      "of official identification")
-    dob = models.DateField(blank=True, null=True, verbose_name="date of birth",
-                           help_text="Required by SARS")
+    identification = models.CharField(
+        max_length=20,
+        blank=True,
+        help_text="SA ID, passport or some form of official identification",
+    )
+    dob = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="date of birth",
+        help_text="Required by SARS",
+    )
     invoicing_company = models.CharField(
-        blank=True, max_length=100,
-        help_text="Leave blank unless you invoice through a company")
-    address = models.TextField(blank=True,
-                               help_text="Required by SARS")
+        blank=True,
+        max_length=100,
+        help_text="Leave blank unless you invoice through a company",
+    )
+    address = models.TextField(blank=True, help_text="Required by SARS")
     bank_name = models.CharField(max_length=20, blank=True)
-    bank_account_number = models.CharField(max_length=20,
-                                           verbose_name="account",
-                                           blank=True)
-    bank_account_type = models.CharField(max_length=20,
-                                         verbose_name="account type",
-                                         default="CURRENT")
-    bank_branch_name = models.CharField(max_length=20, blank=True,
-                                        verbose_name="branch name",
-                                        help_text="Unnecessary for Capitec, "
-                                        "FNB, Standard, Nedbank and Absa")
-    bank_branch_code = models.CharField(max_length=20, blank=True,
-                                        verbose_name="branch code",
-                                        help_text="Unnecessary for Capitec, "
-                                        "FNB, Standard, Nedbank and Absa")
+    bank_account_number = models.CharField(
+        max_length=20, verbose_name="account", blank=True
+    )
+    bank_account_type = models.CharField(
+        max_length=20, verbose_name="account type", default="CURRENT"
+    )
+    bank_branch_name = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name="branch name",
+        help_text="Unnecessary for Capitec, FNB, Standard, Nedbank and Absa",
+    )
+    bank_branch_code = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name="branch code",
+        help_text="Unnecessary for Capitec, FNB, Standard, Nedbank and Absa",
+    )
 
-    swift_code = models.CharField(max_length=12, blank=True,
-                                  help_text="Only relevant for banks "
-                                  "outside SA")
-    iban = models.CharField(max_length=34, blank=True,
-                            help_text="Only relevant for banks outside SA")
-    tax_no = models.CharField(max_length=50, blank=True,
-                              verbose_name="tax number",
-                              help_text="Necessary for SARS.")
-    tax_percent = models.DecimalField(max_digits=2, decimal_places=0,
-                                      default=25,
-                                      verbose_name="PAYE %",
-                                      help_text="Unless you have "
-                                      "a tax directive "
-                                      "we have to deduct 25% PAYE")
-    vat = models.DecimalField(max_digits=2, decimal_places=0, default=0,
-                              verbose_name="VAT %",
-                              help_text="If you are VAT registered "
-                              "set this to 15 else leave at 0")
-    level = models.CharField(max_length=20, choices=LEVEL_CHOICES,
-                             default='standard')
+    swift_code = models.CharField(
+        max_length=12, blank=True, help_text="Only relevant for banks outside SA"
+    )
+    iban = models.CharField(
+        max_length=34, blank=True, help_text="Only relevant for banks outside SA"
+    )
+    tax_no = models.CharField(
+        max_length=50,
+        blank=True,
+        verbose_name="tax number",
+        help_text="Necessary for SARS.",
+    )
+    tax_percent = models.DecimalField(
+        max_digits=2,
+        decimal_places=0,
+        default=25,
+        verbose_name="PAYE %",
+        help_text="Unless you have a tax directive we have to deduct 25% PAYE",
+    )
+    vat = models.DecimalField(
+        max_digits=2,
+        decimal_places=0,
+        default=0,
+        verbose_name="VAT %",
+        help_text="If you are VAT registered set this to 15 else leave at 0",
+    )
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default="standard")
     ####
     # paid = models.BooleanField(default=False)
-    amount_paid = models.DecimalField(max_digits=10,
-                                      decimal_places=4, default=0.00,
-                                      verbose_name="amount")
-    tax_paid = models.DecimalField(max_digits=10,
-                                   decimal_places=4, default=0.00)
-    vat_paid = models.DecimalField(max_digits=10,
-                                   decimal_places=4, default=0.00)
-    invoice = FileBrowseField(max_length=200,
-                              directory="commissions/invoices/",
-                              blank=True, extensions=EXTENSIONS)
-    proof = FileBrowseField(max_length=200, directory="commissions/proofs/",
-                            blank=True, extensions=EXTENSIONS)
-    status = models.CharField(max_length=2, choices=INVOICE_STATUS_CHOICES,
-                              default="-")
+    amount_paid = models.DecimalField(
+        max_digits=10, decimal_places=4, default=0.00, verbose_name="amount"
+    )
+    tax_paid = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
+    vat_paid = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
+    invoice = FileBrowseField(
+        max_length=200,
+        directory="commissions/invoices/",
+        blank=True,
+        extensions=EXTENSIONS,
+    )
+    proof = FileBrowseField(
+        max_length=200,
+        directory="commissions/proofs/",
+        blank=True,
+        extensions=EXTENSIONS,
+    )
+    status = models.CharField(max_length=2, choices=INVOICE_STATUS_CHOICES, default="-")
     notes = models.TextField(blank=True)
-    transport_claim = models.TextField(blank=True, max_length=3000,
-                             help_text="Explain any transport claims  "
-                             "you would like to make. Email odometer photos or "
-                             "receipts to invoices@groundup.org.za.")
-    query = models.TextField(blank=True, max_length=3000,
-                             help_text="Explain your query "
-                             "here if you have one")
-    additional_emails = models.CharField(max_length=200, blank=True,
-                                         help_text="Additional emails to notify "
-                                         "separated by commas")
-    date_time_reporter_approved = models.DateTimeField(null=True, blank=True,
-                                                       editable=False)
-    date_time_editor_approved = models.DateTimeField(null=True, blank=True,
-                                                     editable=False)
-    date_time_processed = models.DateTimeField(null=True, blank=True,
-                                               editable=False)
-    date_notified_payment = models.DateTimeField(null=True, blank=True,
-                                                 editable=False)
+    transport_claim = models.TextField(
+        blank=True,
+        max_length=3000,
+        help_text="Explain any transport claims  "
+        "you would like to make. Email odometer photos or "
+        "receipts to invoices@groundup.org.za.",
+    )
+    query = models.TextField(
+        blank=True, max_length=3000, help_text="Explain your query here if you have one"
+    )
+    additional_emails = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Additional emails to notify separated by commas",
+    )
+    date_time_reporter_approved = models.DateTimeField(
+        null=True, blank=True, editable=False
+    )
+    date_time_editor_approved = models.DateTimeField(
+        null=True, blank=True, editable=False
+    )
+    date_time_processed = models.DateTimeField(null=True, blank=True, editable=False)
+    date_notified_payment = models.DateTimeField(null=True, blank=True, editable=False)
 
     # Requisition print fields
     requisition = models.BooleanField(default=False)
     requisition_number = models.CharField(blank=True, max_length=12)
     payment_method = models.CharField(blank=True, default="EFT", max_length=12)
     description = models.CharField(blank=True, max_length=200)
-    fund = models.ForeignKey(Fund, blank=True, null=True,
-                             on_delete=models.CASCADE)
+    fund = models.ForeignKey(Fund, blank=True, null=True, on_delete=models.CASCADE)
     vouchers_attached = models.BooleanField(default=True)
     prepared_by = models.CharField(max_length=100, blank=True)
     approved_by = models.CharField(max_length=100, blank=True)
@@ -294,13 +339,12 @@ class Invoice(models.Model):
 
     def calc_payment(self):
         if self.pk is None:
-            self.amount_paid = Decimal('0.0000')
-            self.vat_paid = Decimal('0.0000')
-            self.tax_paid = Decimal('0.0000')
-            return (self.amount_paid, self.vat_paid, self.tax_paid, Decimal('0.0000'))
-        
-        commissions = Commission.objects.for_authors().\
-                      filter(invoice=self)
+            self.amount_paid = Decimal("0.0000")
+            self.vat_paid = Decimal("0.0000")
+            self.tax_paid = Decimal("0.0000")
+            return (self.amount_paid, self.vat_paid, self.tax_paid, Decimal("0.0000"))
+
+        commissions = Commission.objects.for_authors().filter(invoice=self)
         total_uncorrected = Decimal(0.0000)
         total_paid = Decimal(0.0000)
         total_tax = Decimal(0.0000)
@@ -314,23 +358,39 @@ class Invoice(models.Model):
         self.amount_paid = total_paid
         self.vat_paid = total_vat
         self.tax_paid = total_tax
-        return (self.amount_paid, self.vat_paid,
-                self.tax_paid, total_uncorrected,)
+        return (
+            self.amount_paid,
+            self.vat_paid,
+            self.tax_paid,
+            total_uncorrected,
+        )
 
     def quick_calc_payment(self):
         if self.status >= "4":
-            return (self.amount_paid, self.vat_paid,
-                    self.tax_paid, self.amount_paid - self.vat_paid + self.tax_paid)
+            return (
+                self.amount_paid,
+                self.vat_paid,
+                self.tax_paid,
+                self.amount_paid - self.vat_paid + self.tax_paid,
+            )
         else:
             return self.calc_payment()
 
     def __str__(self):
-        return str(self.author.pk) + "-" + str(self.invoice_num) + " - " + \
-            str(self.author) + " - " + self.get_status_display()
+        return (
+            str(self.author.pk)
+            + "-"
+            + str(self.invoice_num)
+            + " - "
+            + str(self.author)
+            + " - "
+            + self.get_status_display()
+        )
 
     def get_absolute_url(self):
-        return reverse('payments:invoice.detail', args=[self.author.pk,
-                                                        self.invoice_num])
+        return reverse(
+            "payments:invoice.detail", args=[self.author.pk, self.invoice_num]
+        )
 
     def short_string(self):
         return str(self.author.pk) + "-" + str(self.invoice_num)
@@ -380,8 +440,9 @@ class Invoice(models.Model):
 
     @staticmethod
     def create_invoice(author, description=None):
-        max_invoice = Invoice.objects.filter(author=author).\
-                  aggregate(Max('invoice_num'))
+        max_invoice = Invoice.objects.filter(author=author).aggregate(
+            Max("invoice_num")
+        )
         if max_invoice["invoice_num__max"] is None:
             invoice_num = 1
         else:
@@ -397,8 +458,7 @@ class Invoice(models.Model):
 
     @staticmethod
     def get_open_invoice_for_author(author):
-        invoices = Invoice.objects.filter(author=author).\
-                                   filter(status__lte="0")
+        invoices = Invoice.objects.filter(author=author).filter(status__lte="0")
         if len(invoices) == 0:
             invoice = Invoice.create_invoice(author)
         else:
@@ -417,14 +477,18 @@ class Invoice(models.Model):
         from_invoice.save()
 
     class Meta:
-        ordering = ['status', '-modified', ]
+        ordering = [
+            "status",
+            "-modified",
+        ]
         constraints = [
-            models.UniqueConstraint(fields=['author', 'invoice_num'], name='unique_author_invoice_num')
+            models.UniqueConstraint(
+                fields=["author", "invoice_num"], name="unique_author_invoice_num"
+            )
         ]
 
 
 class CommissionQuerySet(models.QuerySet):
-
     def for_staff(self):
         return self.filter(deleted=False)
 
@@ -434,38 +498,46 @@ class CommissionQuerySet(models.QuerySet):
 
 # Should have been named "Payment" hence the verbose_name
 class Commission(models.Model):
-
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, blank=True, null=True,
-                                on_delete=models.CASCADE)
+    article = models.ForeignKey(
+        Article, blank=True, null=True, on_delete=models.CASCADE
+    )
     # Deleting a video must not delete what was paid for it, hence SET_NULL.
-    video = models.ForeignKey(Video, blank=True, null=True,
-                              related_name="payments",
-                              on_delete=models.SET_NULL)
-    description = models.CharField(max_length=100, blank=True,
-                                   verbose_name="secondary description",
-                                   default="Article author",
-                                   choices=COMMISSION_DESCRIPTION_CHOICES)
+    video = models.ForeignKey(
+        Video, blank=True, null=True, related_name="payments", on_delete=models.SET_NULL
+    )
+    description = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="secondary description",
+        default="Article author",
+        choices=COMMISSION_DESCRIPTION_CHOICES,
+    )
     notes = models.CharField(max_length=200, blank=True)
-    fund = models.ForeignKey(Fund, blank=True, null=True,
-                             verbose_name="ledger",
-                             on_delete=models.CASCADE,
-                             help_text="Selecting a Pastel ledger account "
-                             "approves the commission")
+    fund = models.ForeignKey(
+        Fund,
+        blank=True,
+        null=True,
+        verbose_name="ledger",
+        on_delete=models.CASCADE,
+        help_text="Selecting a Pastel ledger account approves the commission",
+    )
     sys_generated = models.BooleanField(default=False)
     date_generated = models.DateTimeField(blank=True, null=True)
     date_approved = models.DateField(blank=True, null=True)
     date_notified_approved = models.DateTimeField(blank=True, null=True)
-    commission_due = models.DecimalField(max_digits=10,
-                                         decimal_places=4, default=0.00,
-                                         verbose_name="amount")
+    commission_due = models.DecimalField(
+        max_digits=10, decimal_places=4, default=0.00, verbose_name="amount"
+    )
     allowance = models.BooleanField(default=False)
     taxable = models.BooleanField(default=True)
     vatable = models.BooleanField(default=True)
-    vat_amount = models.DecimalField(max_digits=10,
-                                     decimal_places=4, default=0.00,
-                                     help_text="Leave at 0 "
-                                     "for system to calculate.")
+    vat_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=4,
+        default=0.00,
+        help_text="Leave at 0 for system to calculate.",
+    )
     deleted = models.BooleanField(default=False)
     split = models.BooleanField(default=False)
 
@@ -475,8 +547,10 @@ class Commission(models.Model):
     objects = CommissionQuerySet.as_manager()
 
     def get_absolute_url(self):
-        return reverse('payments:invoice.detail',
-                       args=[self.invoice.author.pk, self.invoice.invoice_num])
+        return reverse(
+            "payments:invoice.detail",
+            args=[self.invoice.author.pk, self.invoice.invoice_num],
+        )
 
     def save(self, *args, **kwargs):
         if self.fund is not None and self.date_approved is None:
@@ -486,21 +560,31 @@ class Commission(models.Model):
     def estimate_bonus(self):
         RateCard.populate_rates()
 
-        if self.article and self.article.is_published() \
-           and self.article.author_01 == self.invoice.author \
-           and self.invoice.author.freelancer == "f" \
-           and self.invoice.author.bonus_off is False:
-            month_start = make_aware(timezone.datetime(self.article.published.year,
-                                            self.article.published.month, 1))
+        if (
+            self.article
+            and self.article.is_published()
+            and self.article.author_01 == self.invoice.author
+            and self.invoice.author.freelancer == "f"
+            and self.invoice.author.bonus_off is False
+        ):
+            month_start = make_aware(
+                timezone.datetime(
+                    self.article.published.year, self.article.published.month, 1
+                )
+            )
             publish_time = self.article.published
-            published_this_month = Article.objects.published().\
-                                   filter(published__gte=month_start).\
-                                   filter(published__lt=publish_time).\
-                                   filter(author_01=self.invoice.author).count() + 1
-            if published_this_month>=BONUSES['articles']:
-                    return BONUSES['bonus']
+            published_this_month = (
+                Article.objects.published()
+                .filter(published__gte=month_start)
+                .filter(published__lt=publish_time)
+                .filter(author_01=self.invoice.author)
+                .count()
+                + 1
+            )
+            if published_this_month >= BONUSES["articles"]:
+                return BONUSES["bonus"]
             else:
-                    return 0.00
+                return 0.00
         else:
             return 0.00
 
@@ -511,7 +595,7 @@ class Commission(models.Model):
         except:
             experience = 1.0
 
-        estimate['experience'] = experience
+        estimate["experience"] = experience
 
         if self.article.author_01 is None:
             shared = 1.0
@@ -526,7 +610,7 @@ class Commission(models.Model):
         else:
             shared = 5.0
 
-        estimate['shared'] = shared
+        estimate["shared"] = shared
 
         category_name = self.article.category.name.lower()
         if category_name in RATES:
@@ -534,36 +618,42 @@ class Commission(models.Model):
         else:
             article = RATES["news"]
 
-
         if category_name == "feature":
             if len(self.article.body.split(" ")) > 850:
                 article = RATES["complex_feature"]
             else:
                 article = RATES["simple_feature"]
 
-        estimate['article'] = article
+        estimate["article"] = article
 
         inside_primary_image = 0
         primary_photo = 0.0
 
-        if self.article.primary_image and \
-           (str(self.invoice.author).lower() in
-            self.article.primary_image_caption.lower()):
-            primary_photo = RATES['primary_photo']
+        if self.article.primary_image and (
+            str(self.invoice.author).lower()
+            in self.article.primary_image_caption.lower()
+        ):
+            primary_photo = RATES["primary_photo"]
         elif not self.article.primary_image:
             caption = utils.get_first_caption(self.article.body)
             if caption:
                 inside_primary_image = 1
                 if str(self.invoice.author).lower() in caption.lower():
-                    primary_photo = RATES['primary_photo']
+                    primary_photo = RATES["primary_photo"]
 
-        estimate['primary_photo'] = primary_photo
-
-        num_images = self.article.body.count("<img ") - inside_primary_image - \
-            self.article.body.count('id="gu_counter"') - \
-            self.article.body.count("id='gu_counter'")
-        estimate['inside_photos'] = num_images * RATES["inside_photo"]
-        estimate['bonus'] = self.estimate_bonus()
+        estimate["primary_photo"] = primary_photo
+        soup = BeautifulSoup(self.article.body, "html.parser")
+        num_images = (
+            sum(
+                1
+                for img in soup.find_all("img")
+                if img.get("id") != "gu_counter"
+                and "gu_counter" not in img.get("class", [])
+            )
+            - inside_primary_image
+        )
+        estimate["inside_photos"] = num_images * RATES["inside_photo"]
+        estimate["bonus"] = self.estimate_bonus()
 
         return estimate
 
@@ -575,7 +665,7 @@ class Commission(models.Model):
         except:
             experience = 1.0
 
-        estimate['experience'] = experience
+        estimate["experience"] = experience
 
         if self.article.category.name == "Brief":
             article = RATES["brief"]
@@ -586,19 +676,19 @@ class Commission(models.Model):
         else:
             article = RATES["news"]
 
-        estimate['article'] = article
-        estimate['bonus'] = self.estimate_bonus()
+        estimate["article"] = article
+        estimate["bonus"] = self.estimate_bonus()
 
         return estimate
 
     def estimate_payment_photographer(self, estimate):
-        estimate['primary_photo'] = RATES['primary_photo']
+        estimate["primary_photo"] = RATES["primary_photo"]
         num_images = self.article.body.count("<img ")
-        estimate['inside_photos'] = num_images * RATES["inside_photo"]
+        estimate["inside_photos"] = num_images * RATES["inside_photo"]
         return estimate
 
     def estimate_payment_tp(self, estimate):
-        estimate['shared'] = 1
+        estimate["shared"] = 1
         if not (self.article.author_01 and self.article.author_02):
             return estimate
         if self.invoice.author == self.article.author_01:
@@ -610,25 +700,25 @@ class Commission(models.Model):
 
     def estimate_payment(self):
         estimate = {
-            'article': 0.0,
-            'experience': 0.00,
-            'primary_photo': 0.00,
-            'inside_photos': 0.00,
-            'shared': 1.00,
-            'bonus': 0.00,
-            'total': 0.00
+            "article": 0.0,
+            "experience": 0.00,
+            "primary_photo": 0.00,
+            "inside_photos": 0.00,
+            "shared": 1.00,
+            "bonus": 0.00,
+            "total": 0.00,
         }
 
         # This code is not so important that it should ever crash the site
         try:
             if self.article and self.description == "Article author":
-
-                if self.article.author_01 == self.invoice.author or \
-                   self.article.author_02 == self.invoice.author or \
-                   self.article.author_03 == self.invoice.author or \
-                   self.article.author_04 == self.invoice.author or \
-                   self.article.author_05 == self.invoice.author:
-
+                if (
+                    self.article.author_01 == self.invoice.author
+                    or self.article.author_02 == self.invoice.author
+                    or self.article.author_03 == self.invoice.author
+                    or self.article.author_04 == self.invoice.author
+                    or self.article.author_05 == self.invoice.author
+                ):
                     if self.article.byline_style == "ST":
                         estimate = self.estimate_payment_st(estimate)
                     elif self.article.byline_style == "TP":
@@ -636,22 +726,21 @@ class Commission(models.Model):
         except Exception as e:
             logger.warning("Error calculating payment: " + str(e))
 
-        estimate['total'] = (estimate['article'] * estimate['experience'] +
-                             estimate['primary_photo'] +
-                             estimate['inside_photos']) / estimate['shared'] + \
-                             estimate['bonus']
+        estimate["total"] = (
+            estimate["article"] * estimate["experience"]
+            + estimate["primary_photo"]
+            + estimate["inside_photos"]
+        ) / estimate["shared"] + estimate["bonus"]
         return estimate
 
     def calc_payment(self):
         vat = Decimal(0.0000)
         if self.taxable:
-            tax = (self.invoice.tax_percent / Decimal(100.00)) * \
-                  self.commission_due
+            tax = (self.invoice.tax_percent / Decimal(100.00)) * self.commission_due
         else:
             tax = Decimal(0.0000)
         if self.vatable:
-                vat = (self.invoice.vat / Decimal(100.00)) * \
-                      self.commission_due
+            vat = (self.invoice.vat / Decimal(100.00)) * self.commission_due
         else:
             vat = Decimal(0.0000)
 
@@ -668,8 +757,7 @@ class Commission(models.Model):
     def __str__(self):
         work = self.work()
         if self.invoice is not None and work is not None:
-            return " ".join([str(self.pk), str(self.invoice.author),
-                             str(work)])
+            return " ".join([str(self.pk), str(self.invoice.author), str(work)])
         elif self.invoice is not None:
             return " ".join([str(self.pk), str(self.invoice.author)])
         elif work is not None:
@@ -683,10 +771,13 @@ class Commission(models.Model):
             now = timezone.datetime.now()
             month_start = timezone.datetime(now.year, now.month, 1)
             month_start = make_aware(month_start)
-            num_comms = Commission.objects.filter(invoice__author=author). \
-                filter(allowance=True). \
-                filter(deleted=False). \
-                filter(created__gte=month_start).count()
+            num_comms = (
+                Commission.objects.filter(invoice__author=author)
+                .filter(allowance=True)
+                .filter(deleted=False)
+                .filter(created__gte=month_start)
+                .count()
+            )
             if num_comms == 0:
                 return True
         return False
@@ -712,7 +803,10 @@ class Commission(models.Model):
         return commission
 
     class Meta:
-        ordering = ['invoice', 'created', ]
+        ordering = [
+            "invoice",
+            "created",
+        ]
         verbose_name = "payment item"
 
 
@@ -724,19 +818,19 @@ class PayeRequisition(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def get_absolute_url(self):
-        return reverse('payments:invoice.list')
+        return reverse("payments:invoice.list")
 
     @staticmethod
     def get_payee():
         try:
-            payee = PayeRequisition.objects.latest('date_to').payee
+            payee = PayeRequisition.objects.latest("date_to").payee
         except PayeRequisition.DoesNotExist:
             payee = Author.objects.get(pk=1)
         return payee
 
     def get_date_from(date_to=None):
         try:
-            date_from = PayeRequisition.objects.latest('date_to').date_to
+            date_from = PayeRequisition.objects.latest("date_to").date_to
         except PayeRequisition.DoesNotExist:
             if date_to:
                 date_from = date_to - relativedelta.relativedelta(months=1)
@@ -757,22 +851,26 @@ class PayeRequisition(models.Model):
             if date_from is None:
                 date_from = PayeRequisition.get_date_from(this.date_to)
 
-            invoices = Invoice.objects.filter(status='4'). \
-                exclude(tax_paid=Decimal(0.0000)).exclude(author__freelancer='n'). \
-                exclude(author__freelancer='c'). \
-                filter(date_time_processed__gte=date_from).\
-                filter(date_time_processed__lt=this.date_to). \
-                order_by('requisition_number')
+            invoices = (
+                Invoice.objects.filter(status="4")
+                .exclude(tax_paid=Decimal(0.0000))
+                .exclude(author__freelancer="n")
+                .exclude(author__freelancer="c")
+                .filter(date_time_processed__gte=date_from)
+                .filter(date_time_processed__lt=this.date_to)
+                .order_by("requisition_number")
+            )
 
             dic = {}
             for invoice in invoices:
                 if invoice.fund not in dic:
                     dic[invoice.fund] = []
-                desc = str(invoice.requisition_number) + \
-                    " - " + str(invoice.author)[0:88]
+                desc = (
+                    str(invoice.requisition_number) + " - " + str(invoice.author)[0:88]
+                )
                 dic[invoice.fund].append((desc, invoice.tax_paid))
             for fund, entries in dic.items():
-                invoice = Invoice.create_invoice(payee, 'PAYE')
+                invoice = Invoice.create_invoice(payee, "PAYE")
                 for entry in entries:
                     commission = Commission()
                     commission.invoice = invoice
@@ -809,15 +907,14 @@ def create_video_payments(video):
             continue
         # Deleted items count here: one an editor has thrown away must not
         # come back on the next save.
-        existing = Commission.objects.filter(video=video,
-                                             invoice__author=author)
+        existing = Commission.objects.filter(video=video, invoice__author=author)
         if existing.exists():
             # A job added to someone already on the video belongs on the item
             # that is already there, as long as nobody has priced or approved
             # it yet.
-            existing.filter(sys_generated=True, deleted=False,
-                            fund__isnull=True, commission_due=0).\
-                update(notes=video_payment_notes(video, author))
+            existing.filter(
+                sys_generated=True, deleted=False, fund__isnull=True, commission_due=0
+            ).update(notes=video_payment_notes(video, author))
             continue
         commission = Commission()
         commission.video = video
@@ -857,7 +954,8 @@ def video_saved(sender, instance, **kwargs):
 def remember_video_contributor(sender, instance, **kwargs):
     instance._previous_credit = (
         sender.objects.filter(pk=instance.pk).values("video_id", "author_id").first()
-        if instance.pk else None
+        if instance.pk
+        else None
     )
 
 
@@ -867,7 +965,8 @@ def video_contributor_saved(sender, instance, **kwargs):
     # videos that are already published, so each credit asks for itself.
     previous = getattr(instance, "_previous_credit", None)
     if previous and (previous["video_id"], previous["author_id"]) != (
-        instance.video_id, instance.author_id
+        instance.video_id,
+        instance.author_id,
     ):
         withdraw_video_payment(previous["video_id"], previous["author_id"])
         old_video = Video.objects.filter(pk=previous["video_id"]).first()
