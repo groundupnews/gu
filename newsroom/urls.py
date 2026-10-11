@@ -337,7 +337,7 @@ urlpatterns = [
         name="article.detail",
     ),
     path(
-        "news/<int:pk>/",
+        "newsbypk/<int:pk>/",
         views.news_redirect,
         name="news.redirect",
     ),

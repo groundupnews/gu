@@ -9,6 +9,7 @@ Disallow: /prev_gen/
 Disallow: /copy_article/
 Disallow: /article_print/
 Disallow: /commissions/
+Disallow: /newsbypk/
 
 # Standard rules for all other bots
 User-agent: *
@@ -19,5 +20,6 @@ Disallow: /prev_gen/
 Disallow: /copy_article/
 Disallow: /article_print/
 Disallow: /commissions/
+Disallow: /newsbypk/
 
 Sitemap: https://groundup.org.za/sitemap.xml
