@@ -1131,6 +1131,11 @@ def article_detail(request, slug):
         else:
             raise Http404
 
+def news_redirect(request, pk):
+    slug = get_object_or_404(
+        models.Article.objects.values_list("slug", flat=True), pk=pk
+    )
+    return redirect("newsroom:article.detail", slug=slug, permanent=True)
 
 @staff_member_required
 def article_new(request):

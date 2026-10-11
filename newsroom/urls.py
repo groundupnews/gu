@@ -329,12 +329,17 @@ urlpatterns = [
         r"^search/$", RedirectView.as_view(url="/advanced_search/", permanent=True)
     ),
     ###############################
-    re_path(
-        r"^article/(?P<slug>[-\w]+)/$",
+    path(
+        "article/<slug:slug>/",
         cache_except_staff(
             decorator=cache_page(settings.CACHE_PERIOD, key_prefix="article")
         )(views.article_detail),
         name="article.detail",
+    ),
+    path(
+        "news/<int:pk>/",
+        views.news_redirect,
+        name="news.redirect",
     ),
     re_path(r"^article_add/", views.article_new, name="article.add"),
     re_path(
