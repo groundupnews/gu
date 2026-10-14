@@ -5,9 +5,7 @@ import logging
 import requests
 from django.conf import settings
 from django.core.cache import cache
-from django.urls import reverse
-
-from target.models import Target
+from django.utils.dateparse import parse_datetime
 
 logger = logging.getLogger("django")
 
@@ -53,31 +51,15 @@ def remote_puzzles():
     return puzzles
 
 
-def local_target():
-    """The newest published Target
-
-    The letters are stored centre-first, which isn't the order they're
-    drawn in, so this puts the centre back in the middle.
-    """
-    target = Target.objects.published().order_by("-published").first()
-    if target is None:
-        return None
-    outer = list(target.letters[1:])
-    letters = outer[:4] + [target.letters[0]] + outer[4:]
-    return {
-        "available": True,
-        "url": reverse("target:latest"),
-        "title": "Target #%s" % target.number if target.number else "Target",
-        "cells": [
-            {"char": char.upper(), "centre": index == 4}
-            for index, char in enumerate(letters)
-        ],
-    }
-
+GAME_PATHS = {
+    "crossword": "/crossword/",
+    "groupup": "/groupup/",
+    "quiz": "/quizzes/",
+    "sudoku": "/sudoku/",
+    "target": "/target/",
+}
 
 # Placeholders (when the puzzles server is burning)
-ARCHIVE_PATHS = {"crossword": "/crossword/", "sudoku": "/sudoku/"}
-
 PLACEHOLDER_SIZE = 9
 
 PLACEHOLDER_BLOCKS = (
@@ -123,7 +105,6 @@ def _crossword_placeholder():
     ]
     return {
         "placeholder": True,
-        "url": _puzzles_site_url(ARCHIVE_PATHS["crossword"]),
         "num_rows": PLACEHOLDER_SIZE,
         "num_cols": PLACEHOLDER_SIZE,
         "grid": grid,
@@ -133,7 +114,6 @@ def _crossword_placeholder():
 def _sudoku_placeholder():
     return {
         "placeholder": True,
-        "url": _puzzles_site_url(ARCHIVE_PATHS["sudoku"]),
         "cells": [c if c != "." else "" for c in PLACEHOLDER_GIVENS],
     }
 
@@ -141,7 +121,6 @@ def _sudoku_placeholder():
 def _target_placeholder():
     return {
         "placeholder": True,
-        "url": reverse("target:list"),
         "title": "Target",
         "cells": [
             {"char": char, "centre": index == 4}
@@ -150,22 +129,27 @@ def _target_placeholder():
     }
 
 
-def _resolve(teaser, placeholder):
+def _resolve(name, teaser, placeholder):
     """The real teaser if we have one; generic if we don't."""
     if teaser and teaser.get("available"):
-        return teaser
-    return placeholder
+        teaser = dict(teaser)
+        teaser["published"] = parse_datetime(teaser.get("published") or "")
+    else:
+        teaser = placeholder
+    teaser["url"] = _puzzles_site_url(GAME_PATHS[name])
+    return teaser
 
 
 def puzzles_block_context():
     """Everything the GroundUp Puzzles block template renders."""
     puzzles = remote_puzzles()
     return {
-        "crossword": _resolve(puzzles.get("crossword"), _crossword_placeholder()),
-        "sudoku": _resolve(puzzles.get("sudoku"), _sudoku_placeholder()),
-        # Prefer Target from the API (TODO: remiove when we sort out target on puzzles)
-        "target": _resolve(
-            puzzles.get("target") or local_target(), _target_placeholder()
+        "crossword": _resolve(
+            "crossword", puzzles.get("crossword"), _crossword_placeholder()
         ),
+        "groupup": _resolve("groupup", puzzles.get("groupup"), {"placeholder": True}),
+        "quiz": _resolve("quiz", puzzles.get("quiz"), {"placeholder": True}),
+        "sudoku": _resolve("sudoku", puzzles.get("sudoku"), _sudoku_placeholder()),
+        "target": _resolve("target", puzzles.get("target"), _target_placeholder()),
         "puzzles_url": settings.PUZZLES_SITE_URL,
     }
