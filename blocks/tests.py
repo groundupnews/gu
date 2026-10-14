@@ -265,3 +265,72 @@ class PuzzlesBlockTests(TestCase):
         # A div, not an anchor: there's nothing to play yet.
         self.assertRegex(html, r'<div class="[^"]*gup-tile--soon')
         self.assertNotRegex(html, r'<a class="[^"]*gup-tile--soon')
+
+
+class DynamicBlockTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        from newsroom.models import Article, Category, Topic
+
+        cls.news = Category.objects.create(name="News", slug="news")
+        cls.charts = Category.objects.create(name="Charts", slug="charts")
+        cls.topic = Topic.objects.create(name="Housing", slug="housing")
+        for number in range(3):
+            article = Article.objects.create(
+                title="Housing story {}".format(number),
+                slug="housing-story-{}".format(number),
+                category=cls.news,
+                published=timezone.now() - timezone.timedelta(days=number),
+            )
+            article.topics.add(cls.topic)
+        Article.objects.create(
+            title="A chart", slug="a-chart", category=cls.charts,
+            published=timezone.now(),
+        )
+
+    def render(self, **fields):
+        from newsroom.views import parse_shortcodes
+
+        block = Block.objects.create(name=fields.pop("name", "Dynamic"), **fields)
+        return parse_shortcodes(block.html)
+
+    def test_topic_block_renders_as_a_rail(self):
+        html = self.render(block_type="topic", selected_topic=self.topic, num_articles=3)
+        self.assertIn('class="gu-dynamic-block"', html)
+        self.assertIn("data-rail-block", html)
+        self.assertIn("data-rail-controls", html)
+        self.assertEqual(html.count('class="gu-dynamic-block__card'), 3)
+        self.assertEqual(html.count("gu-dynamic-block__card--lead"), 1)
+        self.assertIn("<h2>Housing</h2>", html)
+        self.assertIn(self.topic.get_absolute_url(), html)
+
+    def test_display_options_apply_to_the_lead_and_the_rest(self):
+        html = self.render(
+            block_type="category", selected_category=self.news, num_articles=2,
+            custom_title="Latest news", show_date_featured=False,
+            show_category_standard=False,
+        )
+        self.assertIn("<h2>Latest news</h2>", html)
+        self.assertEqual(html.count("<time"), 1)
+        self.assertEqual(html.count("gu-dynamic-block__category"), 1)
+
+    def test_no_lead_card_when_first_article_is_not_featured(self):
+        html = self.render(
+            block_type="topic", selected_topic=self.topic, num_articles=3,
+            feature_first_article=False,
+        )
+        self.assertNotIn("gu-dynamic-block__card--lead", html)
+
+    def test_columns_wrap_instead_of_scrolling(self):
+        html = self.render(
+            block_type="topic", selected_topic=self.topic, num_articles=3,
+            display_in_columns=True,
+        )
+        self.assertIn("gu-dynamic-block--columns", html)
+        self.assertNotIn("data-rail-controls", html)
+
+    def test_chart_of_the_week_uses_the_same_block_in_columns(self):
+        html = self.render(block_type="chart_of_the_week", num_articles=1)
+        self.assertIn("gu-dynamic-block--columns", html)
+        self.assertIn("All charts", html)
+        self.assertIn("<h2>Charts</h2>", html)

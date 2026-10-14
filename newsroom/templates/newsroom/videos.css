@@ -710,36 +710,37 @@ a:focus > .gu-video-thumb .gu-video-play span {
 }
 
 /* homepage block - */
-.gu-video-block {
+.gu-video-block, .gu-dynamic-block {
     container-type: inline-size;
     border-top: 2px solid #151F22;
     padding: 14px 0 10px;
     margin: 10px 0;
 }
-.gu-video-block__header, .gu-video-block__actions {
+.gu-video-block__header, .gu-video-block__actions,
+.gu-dynamic-block__header, .gu-dynamic-block__actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
 }
-.gu-video-block__header { margin-bottom: 14px; flex-wrap: wrap; }
-.gu-video-block__header h2 {
+.gu-video-block__header, .gu-dynamic-block__header { margin-bottom: 14px; flex-wrap: wrap; }
+.gu-video-block__header h2, .gu-dynamic-block__header h2 {
     font-size: 24px;
     line-height: 1.2;
     font-weight: 700;
     margin: 0;
     color: #151F22;
 }
-.gu-video-block__all {
+.gu-video-block__all, .gu-dynamic-block__all {
     font-size: 13px;
     font-weight: 600;
     color: #151F22;
     white-space: nowrap;
 }
-.gu-video-block__all span { margin-left: 5px; }
-.gu-video-block__controls { display: flex; gap: 6px; }
-.gu-video-block__controls[hidden] { display: none; }
-.gu-video-block__controls button {
+.gu-video-block__all span, .gu-dynamic-block__all span { margin-left: 5px; }
+.gu-video-block__controls, .gu-dynamic-block__controls { display: flex; gap: 6px; }
+.gu-video-block__controls[hidden], .gu-dynamic-block__controls[hidden] { display: none; }
+.gu-video-block__controls button, .gu-dynamic-block__controls button {
     display: grid;
     place-items: center;
     width: 34px;
@@ -751,9 +752,11 @@ a:focus > .gu-video-thumb .gu-video-play span {
     font-size: 18px;
     cursor: pointer;
 }
-.gu-video-block__controls button:hover:not(:disabled) { background: #f0f3f4; }
-.gu-video-block__controls button:disabled { opacity: .35; cursor: default; }
-.gu-video-block__rail {
+.gu-video-block__controls button:hover:not(:disabled),
+.gu-dynamic-block__controls button:hover:not(:disabled) { background: #f0f3f4; }
+.gu-video-block__controls button:disabled,
+.gu-dynamic-block__controls button:disabled { opacity: .35; cursor: default; }
+.gu-video-block__rail, .gu-dynamic-block__rail {
     display: flex;
     gap: 18px;
     overflow-x: auto;
@@ -764,7 +767,7 @@ a:focus > .gu-video-thumb .gu-video-play span {
     padding: 4px 4px 12px;
     margin: -4px;
 }
-.gu-video-block__card {
+.gu-video-block__card, .gu-dynamic-block__card {
     flex: 0 0 min(260px, 82cqw);
     min-width: 0;
     scroll-snap-align: start;
@@ -772,19 +775,31 @@ a:focus > .gu-video-thumb .gu-video-play span {
     text-decoration: none;
 }
 .gu-video-block__card .gu-video-thumb { height: 146px; aspect-ratio: auto; border-radius: 3px; }
-.gu-video-block__card--lead {
+.gu-dynamic-block__image {
+    display: block;
+    width: 100%;
+    height: 146px;
+    object-fit: cover;
+    border-radius: 3px;
+    background-color: #f0f3f4;
+}
+.gu-video-block__card--lead, .gu-dynamic-block__card--lead {
     flex-basis: min(350px, 86cqw);
     background: #151F22;
     border-radius: 3px;
     color: #fff;
 }
-.gu-video-block__card:hover, .gu-video-block__card:focus { color: #151F22; text-decoration: none; }
-.gu-video-block__card--lead:hover, .gu-video-block__card--lead:focus { color: #fff; }
-.gu-video-block__card:hover h3, .gu-video-block__card:focus h3 { text-decoration: underline; }
-.gu-video-block :focus-visible { outline: 2px solid #0250bb; outline-offset: 2px; }
-.gu-video-block__body { padding: 10px 0 4px; }
-.gu-video-block__card--lead .gu-video-block__body { padding: 10px 12px; }
-.gu-video-block__category {
+.gu-video-block__card:hover, .gu-video-block__card:focus,
+.gu-dynamic-block__card:hover, .gu-dynamic-block__card:focus { color: #151F22; text-decoration: none; }
+.gu-video-block__card--lead:hover, .gu-video-block__card--lead:focus,
+.gu-dynamic-block__card--lead:hover, .gu-dynamic-block__card--lead:focus { color: #fff; }
+.gu-video-block__card:hover h3, .gu-video-block__card:focus h3,
+.gu-dynamic-block__card:hover h3, .gu-dynamic-block__card:focus h3 { text-decoration: underline; }
+.gu-video-block :focus-visible, .gu-dynamic-block :focus-visible { outline: 2px solid #0250bb; outline-offset: 2px; }
+.gu-video-block__body, .gu-dynamic-block__body { padding: 10px 0 4px; }
+.gu-video-block__card--lead .gu-video-block__body,
+.gu-dynamic-block__card--lead .gu-dynamic-block__body { padding: 10px 12px; }
+.gu-video-block__category, .gu-dynamic-block__category {
     display: block;
     font-size: 10px;
     font-weight: 600;
@@ -792,22 +807,38 @@ a:focus > .gu-video-thumb .gu-video-play span {
     letter-spacing: .08em;
     color: #0250bb;
 }
-.gu-video-block__card h3 {
+.gu-video-block__card h3, .gu-dynamic-block__card h3 {
     font-size: 17px;
     font-weight: 700;
     line-height: 1.3;
     margin: 5px 0 0;
 }
-.gu-video-block__summary {
+.gu-video-block__summary, .gu-dynamic-block__summary {
     font-size: 14px;
     line-height: 1.4;
     color: #4d4d4d;
     margin: 7px 0 0;
 }
-.gu-video-block__meta { display: block; font-size: 12px; color: #666; margin-top: 7px; }
-.gu-video-block__card--lead .gu-video-block__category { color: #75d7fa; }
+.gu-video-block__meta, .gu-dynamic-block__meta { display: block; font-size: 12px; color: #666; margin-top: 7px; }
+.gu-video-block__card--lead .gu-video-block__category,
+.gu-dynamic-block__card--lead .gu-dynamic-block__category { color: #75d7fa; }
 .gu-video-block__card--lead .gu-video-block__meta,
-.gu-video-block__card--lead .gu-video-block__summary { color: #d6d6da; }
+.gu-video-block__card--lead .gu-video-block__summary,
+.gu-dynamic-block__card--lead .gu-dynamic-block__meta,
+.gu-dynamic-block__card--lead .gu-dynamic-block__summary { color: #d6d6da; }
+.gu-dynamic-block__card--lead .gu-dynamic-block__image { border-radius: 3px 3px 0 0; }
+.gu-dynamic-block__byline + .gu-dynamic-block__meta { margin-top: 2px; }
+
+.gu-dynamic-block--columns .gu-dynamic-block__rail {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+    gap: 22px 18px;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+}
+.gu-dynamic-block--columns .gu-dynamic-block__card--lead { grid-column: 1 / -1; }
+.gu-dynamic-block--columns .gu-dynamic-block__card--lead .gu-dynamic-block__image { height: auto; aspect-ratio: 16 / 9; max-height: 360px; }
 
 .gu-video-form {
     max-width: 840px;
