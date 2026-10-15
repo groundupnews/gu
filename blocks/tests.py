@@ -356,6 +356,10 @@ class DynamicBlockTests(TestCase):
         self.assertEqual(html.count("<time"), 1)
         self.assertEqual(html.count("gu-dynamic-block__category"), 1)
 
+    def test_only_chart_images_are_cropped_from_the_top(self):
+        html = self.render(block_type="topic", selected_topic=self.topic, num_articles=3)
+        self.assertNotIn("gu-dynamic-block--charts", html)
+
     def test_no_lead_card_when_first_article_is_not_featured(self):
         html = self.render(
             block_type="topic", selected_topic=self.topic, num_articles=3,
@@ -371,8 +375,17 @@ class DynamicBlockTests(TestCase):
         self.assertIn("gu-dynamic-block--columns", html)
         self.assertNotIn("data-rail-controls", html)
 
-    def test_chart_of_the_week_uses_the_same_block_in_columns(self):
+    def test_chart_of_the_week_scrolls_like_the_rest(self):
         html = self.render(block_type="chart_of_the_week", num_articles=1)
-        self.assertIn("gu-dynamic-block--columns", html)
+        self.assertNotIn("gu-dynamic-block--columns", html)
+        self.assertIn("data-rail-controls", html)
+        self.assertIn("gu-dynamic-block--charts", html)
         self.assertIn("All charts", html)
         self.assertIn("<h2>Charts</h2>", html)
+
+    def test_chart_of_the_week_can_still_be_shown_in_columns(self):
+        html = self.render(
+            block_type="chart_of_the_week", num_articles=1, display_in_columns=True,
+        )
+        self.assertIn("gu-dynamic-block--columns", html)
+        self.assertNotIn("data-rail-controls", html)
