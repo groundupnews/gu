@@ -1,9 +1,10 @@
 (function () {
-    document.querySelectorAll('[data-video-block]').forEach(function (block) {
-        var rail = block.querySelector('.gu-video-block__rail');
-        var controls = block.querySelector('.gu-video-block__controls');
-        var previous = controls.querySelector('[data-video-direction="-1"]');
-        var next = controls.querySelector('[data-video-direction="1"]');
+    document.querySelectorAll('[data-rail-block]').forEach(function (block) {
+        var rail = block.querySelector('[data-rail]');
+        var controls = block.querySelector('[data-rail-controls]');
+        if (!rail || !controls) return;
+        var previous = controls.querySelector('[data-rail-direction="-1"]');
+        var next = controls.querySelector('[data-rail-direction="1"]');
         function update() {
             var end = rail.scrollWidth - rail.clientWidth;
             controls.hidden = end <= 1;
@@ -13,10 +14,10 @@
         controls.addEventListener('click', function (event) {
             var button = event.target.closest('button');
             if (!button || button.disabled) return;
-            var card = rail.querySelector('.gu-video-block__card');
+            var card = rail.firstElementChild;
             var step = card.getBoundingClientRect().width + parseFloat(getComputedStyle(rail).gap);
             rail.scrollBy({
-                left: Number(button.dataset.videoDirection) * step,
+                left: Number(button.dataset.railDirection) * step,
                 behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
             });
         });

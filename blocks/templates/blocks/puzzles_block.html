@@ -11,40 +11,59 @@ from blocks/puzzles.py.
         <a class="gup__all" href="{{ puzzles_url }}">All puzzles &rsaquo;</a>
     </header>
 
-    <a class="gup-card gup-hero gup-t-crossword" href="{{ crossword.url }}">
-        <div class="gup-hero__art">
-            <div class="gup-mini" style="--cols:{{ crossword.num_cols }}" aria-hidden="true">
-                {% for row in crossword.grid %}{% for cell in row %}<span{% if cell.block %} class="is-block"{% endif %}>{% if cell.number %}<b>{{ cell.number }}</b>{% endif %}</span>{% endfor %}{% endfor %}
+    <div class="gup-heroes">
+
+        <a class="gup-card gup-hero gup-t-crossword" href="{{ crossword.url }}">
+            <div class="gup-hero__art">
+                <div class="gup-mini" style="--cols:{{ crossword.num_cols }}" aria-hidden="true">
+                    {% for row in crossword.grid %}{% for cell in row %}<span{% if cell.block %} class="is-block"{% endif %}>{% if cell.number %}<b>{{ cell.number }}</b>{% endif %}</span>{% endfor %}{% endfor %}
+                </div>
             </div>
-        </div>
-        <div class="gup-hero__text">
-            <div class="gup-hero__tags">
-                <span class="gup-label">Crossword</span>
-                {% if not crossword.placeholder %}
-                <span class="gup-badge gup-badge--solid">New</span>
-                <span class="gup-badge">{{ crossword.num_cols }} &times; {{ crossword.num_rows }}</span>
-                {% endif %}
+            <div class="gup-hero__text">
+                <div class="gup-hero__tags">
+                    <span class="gup-label">Crossword</span>
+                    {% if crossword.published %}<span class="gup-badge gup-badge--solid">{{ crossword.published|date:"j M" }}</span>{% endif %}
+                    <span class="gup-badge">Thursdays</span>
+                </div>
+                <h4 class="gup-hero__name">{% if crossword.placeholder %}Cryptic(ish){% else %}{{ crossword.title|default:"Cryptic(ish)" }}{% endif %}</h4>
+                <p class="gup-hero__blurb">{% if crossword.placeholder %}Puns, general knowledge and clues from the news.{% else %}{% firstof crossword.short_description crossword.description|truncatewords:16 "Puns, general knowledge and clues from the news." %}{% endif %}</p>
+                <span class="gup-btn">Solve the crossword &rarr;</span>
             </div>
-            <h4 class="gup-hero__name">{% if crossword.placeholder %}Crosswords{% else %}{{ crossword.title }}{% endif %}</h4>
-            <p class="gup-hero__blurb">{% if crossword.placeholder %}A cryptic-ish grid with a South African twist.{% else %}{% firstof crossword.short_description crossword.description|truncatewords:22 "A cryptic-ish grid with a South African twist." %}{% endif %}</p>
-            <span class="gup-btn">{% if crossword.placeholder %}Browse the crosswords{% else %}Play the crossword{% endif %} &rarr;</span>
-        </div>
-    </a>
+        </a>
+
+        <a class="gup-card gup-hero gup-t-groupup" href="{{ groupup.url }}">
+            <div class="gup-hero__art">
+                <div class="gup-groups" aria-hidden="true">
+                    {% for _ in "0123456789abcdef" %}<span></span>{% endfor %}
+                </div>
+            </div>
+            <div class="gup-hero__text">
+                <div class="gup-hero__tags">
+                    <span class="gup-label">Word groups</span>
+                    <span class="gup-badge gup-badge--solid">New</span>
+                </div>
+                <h4 class="gup-hero__name">{% if groupup.placeholder %}GroupUp{% else %}{{ groupup.title|default:"GroupUp" }}{% endif %}</h4>
+                <p class="gup-hero__blurb">{% if groupup.placeholder %}Sixteen words hide four groups of four. Find them fast for a time bonus.{% else %}{% firstof groupup.description|truncatewords:16 "Sixteen words hide four groups of four. Find them fast for a time bonus." %}{% endif %}</p>
+                <span class="gup-btn">Play GroupUp &rarr;</span>
+            </div>
+        </a>
+
+    </div>
 
     <div class="gup-tiles">
 
         <a class="gup-card gup-tile gup-t-target" href="{{ target.url }}">
             <div class="gup-tile__art">
                 <div class="gup-letters" aria-hidden="true">
-                    {% for cell in target.cells %}<span{% if cell.centre %} class="is-centre"{% endif %}>{{ cell.char }}</span>{% endfor %}
+                    {% for cell in target.cells %}<span{% if cell.centre %} class="is-centre"{% endif %}>{{ cell.char|upper }}</span>{% endfor %}
                 </div>
             </div>
             <div class="gup-tile__body">
                 <h4 class="gup-tile__name">{{ target.title }}</h4>
-                <p class="gup-tile__blurb">Nine letters. How many words can you find?</p>
+                <p class="gup-tile__blurb">How many words can you make from nine letters?</p>
                 <div class="gup-tile__foot">
                     <span class="gup-badge">Mon &amp; Fri</span>
-                    <span class="gup-tile__play">{% if target.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
+                    <span class="gup-tile__play">Play &rsaquo;</span>
                 </div>
             </div>
         </a>
@@ -57,15 +76,15 @@ from blocks/puzzles.py.
             </div>
             <div class="gup-tile__body">
                 <h4 class="gup-tile__name">Sudoku</h4>
-                <p class="gup-tile__blurb">Fill every row, column and box with one to nine.</p>
+                <p class="gup-tile__blurb">Three new grids a day, from easy to hard.</p>
                 <div class="gup-tile__foot">
-                    <span class="gup-badge">{% if sudoku.placeholder %}Daily{% else %}{{ sudoku.difficulty|default:"Daily" }}{% endif %}</span>
-                    <span class="gup-tile__play">{% if sudoku.placeholder %}Browse{% else %}Play{% endif %} &rsaquo;</span>
+                    <span class="gup-badge">Daily</span>
+                    <span class="gup-tile__play">Play &rsaquo;</span>
                 </div>
             </div>
         </a>
 
-        <div class="gup-card gup-tile gup-tile--soon gup-t-quiz">
+        <a class="gup-card gup-tile gup-t-quiz" href="{{ quiz.url }}">
             <div class="gup-tile__art">
                 <div class="gup-quiz" aria-hidden="true">
                     <span></span><span></span><span class="is-picked"></span><span></span>
@@ -73,12 +92,13 @@ from blocks/puzzles.py.
             </div>
             <div class="gup-tile__body">
                 <h4 class="gup-tile__name">News Quiz</h4>
-                <p class="gup-tile__blurb">Questions on the week's news.</p>
+                <p class="gup-tile__blurb">How closely did you follow the week's news?</p>
                 <div class="gup-tile__foot">
-                    <span class="gup-badge gup-badge--quiet">Coming soon</span>
+                    <span class="gup-badge">Thursdays</span>
+                    <span class="gup-tile__play">Play &rsaquo;</span>
                 </div>
             </div>
-        </div>
+        </a>
 
     </div>
 </section>

@@ -1,0 +1,33 @@
+<section class="gu-dynamic-block{% if columns %} gu-dynamic-block--columns{% endif %}" data-rail-block aria-label="{{ title }}">
+    <header class="gu-dynamic-block__header">
+        <h2>{{ title }}</h2>
+        <div class="gu-dynamic-block__actions">
+            <a class="gu-dynamic-block__all" href="{{ url }}">{{ all_label }} <span aria-hidden="true">&#8594;</span></a>
+            {% if not columns %}
+                <div class="gu-dynamic-block__controls" data-rail-controls hidden>
+                    <button type="button" data-rail-direction="-1" aria-label="Previous articles"><span aria-hidden="true">&#8592;</span></button>
+                    <button type="button" data-rail-direction="1" aria-label="Next articles"><span aria-hidden="true">&#8594;</span></button>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+    <div class="gu-dynamic-block__rail" data-rail{% if not columns %} tabindex="0" role="region" aria-label="{{ title }}: scroll to browse"{% endif %}>
+        {% for card in cards %}
+            {% with article=card.article show=card.show %}
+                <a class="gu-dynamic-block__card{% if card.lead %} gu-dynamic-block__card--lead{% endif %}" href="{{ article.get_absolute_url }}">
+                    {% if article.cached_summary_image %}
+                        <img class="gu-dynamic-block__image" src="{{ article.cached_summary_image }}"
+                             alt="{{ article.summary_image_alt }}" loading="lazy" />
+                    {% endif %}
+                    <div class="gu-dynamic-block__body">
+                        {% if show.category and article.category %}<span class="gu-dynamic-block__category">{{ article.category }}</span>{% endif %}
+                        {% if show.title %}<h3>{{ article.title|safe }}</h3>{% endif %}
+                        {% if show.summary and article.cached_summary_text_no_html %}<p class="gu-dynamic-block__summary">{{ article.cached_summary_text_no_html|truncatewords:18 }}</p>{% endif %}
+                        {% if show.byline and article.cached_byline_no_links %}<span class="gu-dynamic-block__meta gu-dynamic-block__byline">{{ article.cached_byline_no_links|striptags|safe }}</span>{% endif %}
+                        {% if show.date %}<time class="gu-dynamic-block__meta" datetime="{{ article.published|date:'c' }}">{{ article.published|date:"j F Y" }}</time>{% endif %}
+                    </div>
+                </a>
+            {% endwith %}
+        {% endfor %}
+    </div>
+</section>

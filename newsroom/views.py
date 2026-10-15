@@ -119,104 +119,38 @@ def parse_shortcodes(content, exclude_article_ids=None):
 
         url = obj.get_absolute_url() if obj else "/category/charts/"
 
-        if kind == "chart_of_the_week":
-            return render_to_string(
-                "blocks/chart_of_the_week.html",
-                {
-                    "title": display_title,
-                    "url": url,
-                    "articles": articles,
-                    "feature_first": feature_first,
-                    "show_summary_featured": show_summary_featured,
-                    "show_summary_standard": show_summary_standard,
-                    "show_title_featured": show_title_featured,
-                    "show_title_standard": show_title_standard,
-                    "show_byline_featured": show_byline_featured,
-                    "show_byline_standard": show_byline_standard,
-                    "show_date_featured": show_date_featured,
-                    "show_date_standard": show_date_standard,
-                    "show_category_featured": show_category_featured,
-                    "show_category_standard": show_category_standard,
-                },
-            )
+        featured = {
+            "title": show_title_featured,
+            "summary": show_summary_featured,
+            "byline": show_byline_featured,
+            "date": show_date_featured,
+            "category": show_category_featured,
+        }
+        standard = {
+            "title": show_title_standard,
+            "summary": show_summary_standard,
+            "byline": show_byline_standard,
+            "date": show_date_standard,
+            "category": show_category_standard,
+        }
+        cards = [
+            {
+                "article": article,
+                "lead": feature_first and i == 0,
+                "show": featured if feature_first and i == 0 else standard,
+            }
+            for i, article in enumerate(articles)
+        ]
 
-        heading_html = render_to_string(
-            "blocks/shortcode_heading.html",
-            {"title": display_title, "url": url, "kind": kind},
-        )
-
-        content_html = ""
-
-        if feature_first:
-            first = articles[0]
-            rest = articles[1:]
-
-            content_html += render_to_string(
-                "blocks/article_summary_block.html",
-                {
-                    "article": first,
-                    "include_summary": "1" if show_summary_featured else "0",
-                    "include_title": "1" if show_title_featured else "0",
-                    "include_byline": "1" if show_byline_featured else "0",
-                    "include_date": "1" if show_date_featured else "0",
-                    "include_category": "1" if show_category_featured else "0",
-                    "include_image": "1",
-                    "block_variant": "featured",
-                },
-            )
-        else:
-            rest = articles
-
-        if display_in_columns and rest:
-            content_html += '<div class="row custom-block-grid">'
-            content_html += "".join(
-                '<div class="col-xs-12 col-sm-6">'
-                + render_to_string(
-                    "blocks/article_summary_block.html",
-                    {
-                        "article": a,
-                        "include_summary": "1" if show_summary_standard else "0",
-                        "include_title": "1" if show_title_standard else "0",
-                        "include_byline": "1" if show_byline_standard else "0",
-                        "include_date": "1" if show_date_standard else "0",
-                        "include_category": "1" if show_category_standard else "0",
-                        "include_image": "1",
-                        "block_variant": "compact",
-                    },
-                )
-                + "</div>"
-                for a in rest
-            )
-            content_html += '</div>'
-        else:
-            content_html += "".join(
-                render_to_string(
-                    "blocks/article_summary_block.html",
-                    {
-                        "article": a,
-                        "include_summary": "1" if show_summary_standard else "0",
-                        "include_title": "1" if show_title_standard else "0",
-                        "include_byline": "1" if show_byline_standard else "0",
-                        "include_date": "1" if show_date_standard else "0",
-                        "include_category": "1" if show_category_standard else "0",
-                        "include_image": "1",
-                        "block_variant": "compact",
-                    },
-                )
-                for a in rest
-            )
-
-        footer_html = render_to_string(
-            "blocks/shortcode_read_more.html",
-            {"url": url},
-        )
-
-        return (
-            '<section class="home-shortcode-block">'
-            f"{heading_html}"
-            f"{content_html}"
-            f"{footer_html}"
-            "</section>"
+        return render_to_string(
+            "blocks/dynamic_block.html",
+            {
+                "title": display_title,
+                "url": url,
+                "all_label": "All charts" if kind == "chart_of_the_week" else "See all",
+                "cards": cards,
+                "columns": display_in_columns or kind == "chart_of_the_week",
+            },
         )
 
     def get_bool_val(val, default=True):
@@ -325,7 +259,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
             "category",
         ),
         (
-            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
+            r"{{chart_of_the_week:(\d+)(?::([01]))?(?::([01]))?(?::([01]))?(?::([^}:]*))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?(?::([01]))?}}",
             "chart_of_the_week",
         ),
     ]
