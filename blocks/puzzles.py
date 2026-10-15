@@ -55,6 +55,7 @@ GAME_PATHS = {
     "crossword": "/crossword/",
     "groupup": "/groupup/",
     "quiz": "/quizzes/",
+    "streetwise": "/streetwise/",
     "sudoku": "/sudoku/",
     "target": "/target/",
 }
@@ -149,6 +150,9 @@ def puzzles_block_context():
         ),
         "groupup": _resolve("groupup", puzzles.get("groupup"), {"placeholder": True}),
         "quiz": _resolve("quiz", puzzles.get("quiz"), {"placeholder": True}),
+        "streetwise": _resolve(
+            "streetwise", puzzles.get("streetwise"), {"placeholder": True}
+        ),
         "sudoku": _resolve("sudoku", puzzles.get("sudoku"), _sudoku_placeholder()),
         "target": _resolve("target", puzzles.get("target"), _target_placeholder()),
         "puzzles_url": settings.PUZZLES_SITE_URL,

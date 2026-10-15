@@ -21,6 +21,7 @@
 .gup .gup-t-target    { --accent: #1f8a5b; --accent-deep: #19714a; --accent-soft: #e9f4ee; }
 .gup .gup-t-quiz      { --accent: #d4582f; --accent-deep: #b8461f; --accent-soft: #fcefe9; }
 .gup .gup-t-groupup   { --accent: #9b3d8f; --accent-deep: #7f2f75; --accent-soft: #f5e8f3; }
+.gup .gup-t-streetwise { --accent: #475569; --accent-deep: #334155; --accent-soft: #eef1f5; }
 
 /* section head */
 .gup .gup__head {
@@ -134,9 +135,10 @@
 }
 
 
+/* Two by two, or a row of four when they fit: never three and an orphan. */
 .gup .gup-tiles {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
 }
 
@@ -364,8 +366,31 @@
 .gup .gup-quiz span.is-picked { border-color: var(--accent); }
 .gup .gup-quiz span.is-picked::before { background: var(--accent); border-color: var(--accent); }
 
+/* a vote share, largest party first */
+.gup .gup-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 60px;
+}
+
+.gup .gup-bars span {
+    height: 9px;
+    background: #fff;
+    border: 1px solid var(--accent);
+}
+
+.gup .gup-bars span:nth-child(1) { width: 100%; background: var(--accent); }
+.gup .gup-bars span:nth-child(2) { width: 68%; }
+.gup .gup-bars span:nth-child(3) { width: 40%; }
+.gup .gup-bars span:nth-child(4) { width: 18%; }
+
 @supports (container-type: inline-size) {
     .gup { container-type: inline-size; }
+}
+
+@container (min-width: 940px) {
+    .gup .gup-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @container (max-width: 520px) {

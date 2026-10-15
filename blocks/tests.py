@@ -136,6 +136,14 @@ REMOTE = {
             "title": "News Quiz",
             "description": "",
         },
+        "streetwise": {
+            "available": True,
+            "url": "https://puzzles.groundup.org.za/streetwise/4/",
+            "archive_url": "https://puzzles.groundup.org.za/streetwise/archive/",
+            "title": "Streetwise #4",
+            "number": 4,
+            "published": "2026-10-15T06:00:00+02:00",
+        },
     }
 }
 
@@ -170,6 +178,7 @@ class PuzzlesBlockTests(TestCase):
             ("crossword", "/crossword/"),
             ("groupup", "/groupup/"),
             ("quiz", "/quizzes/"),
+            ("streetwise", "/streetwise/"),
             ("sudoku", "/sudoku/"),
             ("target", "/target/"),
         ]:
@@ -207,7 +216,7 @@ class PuzzlesBlockTests(TestCase):
     def test_an_unreachable_puzzles_site_falls_back_to_placeholders(self):
         with patch("blocks.puzzles.requests.get", side_effect=requests.Timeout):
             context = puzzles_block.puzzles_block_context()
-        for name in ("crossword", "groupup", "quiz", "sudoku", "target"):
+        for name in ("crossword", "groupup", "quiz", "streetwise", "sudoku", "target"):
             self.assertTrue(context[name]["placeholder"], name)
         html = render_to_string("blocks/puzzles_block.html", context)
         self.assertIn("Puzzles", html)
@@ -229,6 +238,9 @@ class PuzzlesBlockTests(TestCase):
         )
         self.assertEqual(
             context["quiz"]["url"], "https://puzzles.groundup.org.za/quizzes/"
+        )
+        self.assertEqual(
+            context["streetwise"]["url"], "https://puzzles.groundup.org.za/streetwise/"
         )
 
     def test_a_placeholder_claims_nothing_about_todays_puzzle(self):
@@ -252,7 +264,7 @@ class PuzzlesBlockTests(TestCase):
         payload = {"puzzles": {name: {"available": False} for name in REMOTE["puzzles"]}}
         with patch("blocks.puzzles.requests.get", return_value=FakeResponse(payload)):
             context = puzzles_block.puzzles_block_context()
-        for name in ("crossword", "groupup", "quiz", "sudoku", "target"):
+        for name in ("crossword", "groupup", "quiz", "streetwise", "sudoku", "target"):
             self.assertTrue(context[name]["placeholder"], name)
 
     def test_the_last_good_answer_covers_a_later_outage(self):
@@ -307,6 +319,19 @@ class PuzzlesBlockTests(TestCase):
             'href="https://puzzles.groundup.org.za/quizzes/">',
             html,
         )
+
+    def test_streetwise_has_a_tile_beside_the_other_puzzles(self):
+        with patch("blocks.puzzles.requests.get", return_value=FakeResponse(REMOTE)):
+            html = render_to_string(
+                "blocks/puzzles_block.html", puzzles_block.puzzles_block_context()
+            )
+        self.assertEqual(html.count('class="gup-card gup-tile '), 4)
+        self.assertIn(
+            '<a class="gup-card gup-tile gup-t-streetwise" '
+            'href="https://puzzles.groundup.org.za/streetwise/">',
+            html,
+        )
+        self.assertLess(html.index("<div class=\"gup-tiles\">"), html.index("gup-tile gup-t-streetwise"))
 
 
 class DynamicBlockTests(TestCase):
