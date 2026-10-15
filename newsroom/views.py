@@ -149,7 +149,8 @@ def parse_shortcodes(content, exclude_article_ids=None):
                 "url": url,
                 "all_label": "All charts" if kind == "chart_of_the_week" else "See all",
                 "cards": cards,
-                "columns": display_in_columns or kind == "chart_of_the_week",
+                "columns": display_in_columns,
+                "charts": kind == "chart_of_the_week",
             },
         )
 
@@ -176,7 +177,7 @@ def parse_shortcodes(content, exclude_article_ids=None):
             cat_feat_str = match.group(12)
             cat_std_str = match.group(13)
             exclude_duplicates_str = match.group(14)
-            display_in_columns_str = "0"
+            display_in_columns_str = match.group(15)
         else:
             # here its : 1=slug, 2=count, 3=featured, 4=sum_feat, 5=sum_std, 6=title, 7=title_feat, 8=title_std
             slug = match.group(1)

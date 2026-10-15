@@ -840,6 +840,9 @@ a:focus > .gu-video-thumb .gu-video-play span {
 .gu-dynamic-block--columns .gu-dynamic-block__card--lead { grid-column: 1 / -1; }
 .gu-dynamic-block--columns .gu-dynamic-block__card--lead .gu-dynamic-block__image { height: auto; aspect-ratio: 16 / 9; max-height: 360px; }
 
+/* A chart's heading is at its top, so crop from there. */
+.gu-dynamic-block--charts .gu-dynamic-block__image { object-position: top; }
+
 .gu-video-form {
     max-width: 840px;
 }
