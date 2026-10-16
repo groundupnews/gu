@@ -9,7 +9,8 @@ lands on a redirect.
 
 from django.conf import settings
 from django.urls import path, re_path
-from django.views.generic.base import RedirectView
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.generic.base import RedirectView, TemplateView
 
 app_name = "target"
 
@@ -24,7 +25,26 @@ def moved(new_path):
     )
 
 
+@xframe_options_exempt
+def export(request):
+    """Hand the visitor's saved Target words to the puzzles site.
+
+    Players' progress was stored in localStorage under this origin before
+    Target moved. The puzzles site frames this page (see the template) and
+    receives the words by postMessage. Remove once the migration is over.
+    """
+    response = TemplateView.as_view(
+        template_name="target/target_export.html",
+        extra_context={"PUZZLES_SITE_URL": PUZZLES_SITE_URL},
+    )(request)
+    response["Content-Security-Policy"] = (
+        "frame-ancestors " + PUZZLES_SITE_URL
+    )
+    return response
+
+
 urlpatterns = [
+    path("target/export/", export, name="export"),
     # The archive is the only address whose path changed on the new site.
     path("targets/", moved("/target/archive/"), name="list"),
     path("target/", moved("/target/"), name="latest"),

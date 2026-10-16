@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<script>
+ // Send every saved Target game to the page that framed us. The target
+ // origin is fixed, so no other site can receive the data.
+ var saved = {};
+ for (var i = 0; i < localStorage.length; i++) {
+     var key = localStorage.key(i);
+     if (key.indexOf("target-words-") == 0)
+         saved[key] = localStorage.getItem(key);
+ }
+ parent.postMessage({targetWords: saved}, "{{ PUZZLES_SITE_URL }}");
+</script>
