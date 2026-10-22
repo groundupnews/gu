@@ -122,7 +122,8 @@ def fixEditorSummary(soup):
     uls = list(set([item.parent for item in
                     [tag.parent for tag in
                      soup.find_all("div", "editor-summary")]
-                    if item.parent is not None]))
+                    if item.parent is not None
+                    and not isinstance(item.parent, BeautifulSoup)]))
     for ul in uls:
         divs = ul.find_all("div", "editor-summary")
         for div in divs:
