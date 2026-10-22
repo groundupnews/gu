@@ -128,6 +128,7 @@ def fixEditorSummary(soup):
                     tag.parent for tag in soup.find_all("div", "editor-summary")
                 ]
                 if item.parent is not None
+                and not isinstance(item.parent, BeautifulSoup)
             ]
         )
     )
