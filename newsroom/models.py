@@ -21,6 +21,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.html import strip_tags
 from filebrowser.fields import FileBrowseField
 from agony.models import QandA
@@ -866,6 +867,13 @@ class Article(models.Model):
             self.make_secret_link()
         self.cached_byline = self.calc_byline(True)
         self.cached_byline_no_links = self.calc_byline(False)
+
+        if (
+            not self.is_published()
+            and self.title is not None
+            and str(self.title).strip() != ""
+        ):
+            self.slug = slugify(self.title)
 
         try:
             self.cached_primary_image = self.calc_primary_image()

@@ -5,151 +5,152 @@
 {% load seo_tags %}
 
 {% block title %}
-    {{article.title|striptags|safe}}{{block.super}}
+{{article.title|striptags|safe}}{{block.super}}
 {% endblock %}
 
 {% block meta_description_block %}
-    {% with article.cached_summary_text_no_html as desc %}
-        {{block.super}}
-    {% endwith %}
+{% with article.cached_summary_text_no_html as desc %}
+{{block.super}}
+{% endwith %}
 {% endblock %}
 
 
 {% block seo_fields %}
-    {{block.super}}
-    {% comment %}Twitter Card{% endcomment %}
+{{block.super}}
+{% comment %}Twitter Card{% endcomment %}
 
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@GroundUp_News" />
-    <meta name="twitter:title" content="{{article.title}}" />
-    <meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@GroundUp_News" />
+<meta name="twitter:title" content="{{article.title}}" />
+<meta name="twitter:description" content="{{article.cached_summary_text_no_html}}" />
 
-    {% comment %}Facebook{% endcomment %}
+{% comment %}Facebook{% endcomment %}
 
-    <meta property="og:title" content="{{article.title}}"/>
-    <meta property="og:type" content="article"/>
+<meta property="og:title" content="{{article.title}}" />
+<meta property="og:type" content="article" />
 
-    {% comment %}Twitter and Facebook images{% endcomment %}
-    {% with image_url=article.cached_summary_image %}
-        {% if image_url %}
-            <meta property="og:image"
-                  content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
-            <meta name="twitter:image" content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}"/>
-            <meta name="twitter:image:alt" content="{{article.summary_image_alt}}" />
-        {% endif %}
-    {% endwith %}
+{% comment %}Twitter and Facebook images{% endcomment %}
+{% with image_url=article.cached_summary_image %}
+{% if image_url %}
+<meta property="og:image"
+    content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}" />
+<meta name="twitter:image"
+    content="{% if image_url.0 == '/' %}https://{{request.META.HTTP_HOST}}{% endif %}{{article.cached_summary_image|iriencode}}" />
+<meta name="twitter:image:alt" content="{{article.summary_image_alt}}" />
+{% endif %}
+{% endwith %}
 
-    <meta property="article:published_time" content="{{article.published|date:'c'}}"/>
-    <meta property="article:modified_time" content="{{article.modified|date:'c'}}"/>
-    <meta name="author" content="{{ article.cached_byline_no_links }}">
+<meta property="article:published_time" content="{{article.published|date:'c'}}" />
+<meta property="article:modified_time" content="{{article.modified|date:'c'}}" />
+<meta name="author" content="{{ article.cached_byline_no_links }}">
 
-    {% news_article_jsonld article %}
+{% news_article_jsonld article %}
 
 {% endblock %}
 
 
 {% block additional_head %}
-    {{block.super}}
-    {% if article.activate_slideshow %}
-        <link rel="stylesheet"
-	      href="{% static 'newsroom/css/pgwslider.min.css' %}">
-	</link>
-    {% endif %}
-    {% if can_edit %}
-        <script src="{% static 'newsroom/js/statistics.js' %}"></script>
-        <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
-        <script src="{% static 'newsroom/js/ck_styles.js' %}?v=20260721"></script>
-        <script src="{% static 'newsroom/js/ck_init.js' %}?v=20220211b"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    {% endif %}
-    {{article.additional_head_scripts|safe}}
+{{block.super}}
+{% if article.activate_slideshow %}
+<link rel="stylesheet" href="{% static 'newsroom/css/pgwslider.min.css' %}">
+</link>
+{% endif %}
+{% if can_edit %}
+<script src="{% static 'newsroom/js/statistics.js' %}"></script>
+<script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
+<script src="{% static 'newsroom/js/ck_styles.js' %}?v=20260721"></script>
+<script src="{% static 'newsroom/js/ck_init.js' %}?v=20220211b"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{% endif %}
+{{article.additional_head_scripts|safe}}
 
 {% endblock %}
 
 
 {% block admin-area %}
-    {% if request.user.is_staff and can_edit %}
-	<div id="admin-area">
-            {% include 'newsroom/edit_menu.html' %}
-            <div id="admin-user">
-		You: {{request.user}}
-            </div>
-            <div id="editing-article">
-            </div>
-            <div id="article__completion">
-                {% if article.author_01 %}
-                    &#10003;
-                {% else %}
-                    &#10060;
-                {% endif %} Authors<br />
-                {% with article.topics.count as item_count %}
-                    {% if item_count %}
-                        &#10003;
-                    {% else %}
-                        &#10060;
-                    {% endif %} Topics<br />
-                {% endwith %}
-                {% comment %}
-                {% with article.tweet_set.count as item_count %}
-                    {% if item_count %}
-                        &#10003;
-                    {% else %}
-                        &#10060;
-                    {% endif %} Tweets<br />
-                {% endwith %}
-                {% endcomment %}
-                {% with article.republisherarticle_set.count as item_count %}
-                    {% if item_count %}
-                        &#10003;
-                    {% else %}
-                        &#10060;
-                    {% endif %} Republishers<br />
-                {% endwith %}
-                {% if article.region and article.region.name != "(None)" %}
-                    &#10003;
-                {% else %}
-                    &#10060;
-                {% endif %} Region<br />
-            </div>
-            <div id="article__statistics">
-            </div>
-	</div>
-    {% endif %}
+{% if request.user.is_staff and can_edit %}
+<div id="admin-area">
+    {% include 'newsroom/edit_menu.html' %}
+    <div id="admin-user">
+        You: {{request.user}}
+    </div>
+    <div id="editing-article">
+    </div>
+    <div id="article__completion">
+        ID: {{article.pk}}<br />
+        {% if article.author_01 %}
+        &#10003;
+        {% else %}
+        &#10060;
+        {% endif %} Authors<br />
+        {% with article.topics.count as item_count %}
+        {% if item_count %}
+        &#10003;
+        {% else %}
+        &#10060;
+        {% endif %} Topics<br />
+        {% endwith %}
+        {% comment %}
+        {% with article.tweet_set.count as item_count %}
+        {% if item_count %}
+        &#10003;
+        {% else %}
+        &#10060;
+        {% endif %} Tweets<br />
+        {% endwith %}
+        {% endcomment %}
+        {% with article.republisherarticle_set.count as item_count %}
+        {% if item_count %}
+        &#10003;
+        {% else %}
+        &#10060;
+        {% endif %} Republishers<br />
+        {% endwith %}
+        {% if article.region and article.region.name != "(None)" %}
+        &#10003;
+        {% else %}
+        &#10060;
+        {% endif %} Region<br />
+    </div>
+    <div id="article__statistics">
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 
 {% block content %}
 
-    <div class="container">
-        <div class="row">
-            <article id="article-category-{{article.category.slug}}" class="article">
-	        {% block article %}
-	            {% include "newsroom/article_block.html" %}
-	        {% endblock %}
-            </article>
-        </div>
-        {% comment %}
-            {% include 'newsroom/social_media.html' %}
-        {% endcomment %}
-
+<div class="container">
+    <div class="row">
+        <article id="article-category-{{article.category.slug}}" class="article">
+            {% block article %}
+            {% include "newsroom/article_block.html" %}
+            {% endblock %}
+        </article>
     </div>
+    {% comment %}
+    {% include 'newsroom/social_media.html' %}
+    {% endcomment %}
+
+</div>
 {% endblock %}
 
 {% block javascript-includes %}
 
-  {{block.super}}
+{{block.super}}
 
-  {{article.additional_body_scripts|safe}}
+{{article.additional_body_scripts|safe}}
 
-  <script>
-   {% include "newsroom/article_detail.js" %}
-  </script>
-  {% if article.activate_slideshow %}
-    <script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
-    <script>{% include 'newsroom/article_slider.js' %}</script>
-  {% endif %}
+<script>
+    {% include "newsroom/article_detail.js" %}
+</script>
+{% if article.activate_slideshow %}
+<script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
+<script>{% include 'newsroom/article_slider.js' %}</script>
+{% endif %}
 
-  {% if can_edit %}
-      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  {% endif %}
+{% if can_edit %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{% endif %}
 {% endblock %}
