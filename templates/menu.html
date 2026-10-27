@@ -2,48 +2,47 @@
 
 <nav class="gu-nav" role="navigation">
     <input type="checkbox" id="gu-menu-toggle" class="gu-menu-checkbox">
-    
+
     <ul class="gu-nav__links">
         <li><a href="/">News</a></li>
         <li><a href="{% url 'newsroom:video.list' %}">Videos</a></li>
-        
+
         <li class="gu-nav__item--has-submenu">
-             <button class="gu-nav__submenu-trigger" aria-expanded="false">
+            <button class="gu-nav__submenu-trigger" aria-expanded="false">
                 Sections <span class="gu-caret">▼</span>
-             </button>
-             <ul class="gu-nav__submenu">
+            </button>
+            <ul class="gu-nav__submenu">
                 <li><a href="/category/Feature/">Features</a></li>
                 <li><a href="/category/opinion_and_analysis/">Opinion</a></li>
                 <li><a href="{% url 'newsroom:article.groundview' %}">Editorials</a></li>
                 <li><a href="/category/photo-essay/">Photo Essays</a></li>
                 <li><a href="/courtcases/">Court Cases</a></li>
-             </ul>
+            </ul>
         </li>
 
         <li class="gu-nav__item--has-submenu">
-             <button class="gu-nav__submenu-trigger" aria-expanded="false">
+            <button class="gu-nav__submenu-trigger" aria-expanded="false">
                 Guides <span class="gu-caret">▼</span>
-             </button>
-             <ul class="gu-nav__submenu">
+            </button>
+            <ul class="gu-nav__submenu">
                 <li><a href="/article/everything-you-need-know-about-social-grants_820/">Social Grants</a></li>
                 <li><a href="/article/everything-you-need-know-about-government-housing/">Housing</a></li>
                 <li><a href="/qanda/">Q&A</a></li>
-             </ul>
+            </ul>
         </li>
 
         <li class="gu-nav__item--has-submenu">
-             <button class="gu-nav__submenu-trigger" aria-expanded="false">
+            <button class="gu-nav__submenu-trigger" aria-expanded="false">
                 More <span class="gu-caret">▼</span>
-             </button>
-             <ul class="gu-nav__submenu">
+            </button>
+            <ul class="gu-nav__submenu">
                 <li><a href="/about/">About Us</a></li>
                 <li><a href="/imagegallery/">Gallery</a></li>
                 <li><a href="/correction/list/">Corrections</a></li>
                 <li><a href="/topic/">Topics</a></li>
                 <li><a href="/author/">Authors</a></li>
-                <li><a href="{% url 'target:latest' %}">Target</a></li>
-                <li><a href="/sudoku/latest">Sudoku</a></li>
-             </ul>
+                <li><a href="https://puzzles.groundup.org.za/">Puzzles</a></li>
+            </ul>
         </li>
 
         {% if request.user.is_staff %}
@@ -56,7 +55,7 @@
             </ul>
         </li>
         {% elif request.user.is_authenticated %}
-         <li><a href="{% url 'newsroom:user.profile' %}">Account</a></li>
+        <li><a href="{% url 'newsroom:user.profile' %}">Account</a></li>
         {% endif %}
     </ul>
 
@@ -64,7 +63,9 @@
         <a href="{% url 'make_payment' %}" class="gu-btn-donate">Donate</a>
         <button id="toggle-search" class="gu-search-trigger" aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                    d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </button>
         <label for="gu-menu-toggle" class="gu-menu-icon" aria-label="Toggle menu" tabindex="0" role="button">
@@ -76,22 +77,22 @@
 </nav>
 
 {% block search %}
-    <div id="gu-search-overlay">
-        {% include "search/searchform.html" %}
-    </div>
+<div id="gu-search-overlay">
+    {% include "search/searchform.html" %}
+</div>
 {% endblock %}
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var searchToggle = document.getElementById("toggle-search");
         var searchOverlay = document.getElementById("gu-search-overlay");
-        
+
         var menuIcon = document.querySelector('.gu-menu-icon');
         var menuCheckbox = document.getElementById('gu-menu-toggle');
         var navLinks = document.querySelector('.gu-nav__links');
 
         if (menuIcon && menuCheckbox) {
-            menuIcon.addEventListener('keydown', function(e) {
+            menuIcon.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     menuCheckbox.checked = !menuCheckbox.checked;
@@ -100,12 +101,12 @@
                 }
             });
 
-            menuCheckbox.addEventListener('change', function() {
+            menuCheckbox.addEventListener('change', function () {
                 if (this.checked) {
                     if (window.innerWidth >= 992) {
                         var firstItem = navLinks.querySelector('a, button');
                         if (firstItem) {
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 firstItem.focus();
                             }, 10);
                         }
@@ -118,14 +119,14 @@
 
         // closes the menues when tabbing out of the navigation area
         if (navLinks) {
-            navLinks.addEventListener('focusout', function(e) {
+            navLinks.addEventListener('focusout', function (e) {
                 if (window.innerWidth >= 992 && (!e.relatedTarget || !navLinks.contains(e.relatedTarget))) {
                     if (menuCheckbox && menuCheckbox.checked) {
                         menuCheckbox.checked = false;
                     }
 
                     // Close all submenus
-                    document.querySelectorAll('.gu-nav__submenu-trigger[aria-expanded="true"]').forEach(function(trigger) {
+                    document.querySelectorAll('.gu-nav__submenu-trigger[aria-expanded="true"]').forEach(function (trigger) {
                         trigger.setAttribute('aria-expanded', 'false');
                         trigger.classList.remove('expanded');
                         if (trigger.nextElementSibling) {
@@ -137,7 +138,7 @@
         }
 
         if (searchToggle && searchOverlay) {
-            searchToggle.addEventListener("click", function(e) {
+            searchToggle.addEventListener("click", function (e) {
                 e.preventDefault();
                 searchOverlay.classList.toggle("open");
                 if (searchOverlay.classList.contains("open")) {
@@ -148,9 +149,9 @@
         }
 
         var submenuTriggers = document.querySelectorAll('.gu-nav__submenu-trigger');
-        submenuTriggers.forEach(function(trigger) {
-            
-            trigger.addEventListener('click', function(e) {
+        submenuTriggers.forEach(function (trigger) {
+
+            trigger.addEventListener('click', function (e) {
                 if (window.innerWidth < 992) {
                     e.preventDefault();
                     toggleSubmenu(this);
@@ -158,7 +159,7 @@
             });
 
             //keyboard navigation handinling (Enter/Space toggles)
-            trigger.addEventListener('keydown', function(e) {
+            trigger.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     toggleSubmenu(this);
@@ -167,27 +168,27 @@
         });
 
         function toggleSubmenu(trigger) {
-             var submenu = trigger.nextElementSibling;
-             if (submenu && submenu.classList.contains('gu-nav__submenu')) {
-                 var isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+            var submenu = trigger.nextElementSibling;
+            if (submenu && submenu.classList.contains('gu-nav__submenu')) {
+                var isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-                 if (!isExpanded) {
-                     // close other open submenus
-                     document.querySelectorAll('.gu-nav__submenu-trigger').forEach(function(otherTrigger) {
-                         if (otherTrigger !== trigger && otherTrigger.getAttribute('aria-expanded') === 'true') {
-                             otherTrigger.setAttribute('aria-expanded', 'false');
-                             otherTrigger.classList.remove('expanded');
-                             if (otherTrigger.nextElementSibling) {
-                                 otherTrigger.nextElementSibling.classList.remove('expanded');
-                             }
-                         }
-                     });
-                 }
+                if (!isExpanded) {
+                    // close other open submenus
+                    document.querySelectorAll('.gu-nav__submenu-trigger').forEach(function (otherTrigger) {
+                        if (otherTrigger !== trigger && otherTrigger.getAttribute('aria-expanded') === 'true') {
+                            otherTrigger.setAttribute('aria-expanded', 'false');
+                            otherTrigger.classList.remove('expanded');
+                            if (otherTrigger.nextElementSibling) {
+                                otherTrigger.nextElementSibling.classList.remove('expanded');
+                            }
+                        }
+                    });
+                }
 
-                 trigger.setAttribute('aria-expanded', !isExpanded);
-                 trigger.classList.toggle('expanded');
-                 submenu.classList.toggle('expanded');
-             }
+                trigger.setAttribute('aria-expanded', !isExpanded);
+                trigger.classList.toggle('expanded');
+                submenu.classList.toggle('expanded');
+            }
         }
     });
 </script>
