@@ -203,8 +203,7 @@ class PuzzlesBlockTests(TestCase):
             )
         self.assertEqual(html.count('class="gup-card gup-hero '), 2)
         self.assertIn("GroupUp #3", html)
-        self.assertIn("Play GroupUp", html)
-        self.assertLess(html.index("gup-heroes"), html.index("gup-tiles"))
+        self.assertLess(html.index("gup-hero gup-t-groupup"), html.index('class="gup-card gup-tile '))
 
     def test_the_crossword_shows_the_day_it_came_out(self):
         with patch("blocks.puzzles.requests.get", return_value=FakeResponse(REMOTE)):
@@ -331,7 +330,18 @@ class PuzzlesBlockTests(TestCase):
             'href="https://puzzles.groundup.org.za/streetwise/">',
             html,
         )
-        self.assertLess(html.index("<div class=\"gup-tiles\">"), html.index("gup-tile gup-t-streetwise"))
+        self.assertLess(html.index("gup-tile gup-t-quiz"), html.index("gup-tile gup-t-streetwise"))
+
+    def test_the_puzzles_scroll_in_one_rail(self):
+        with patch("blocks.puzzles.requests.get", return_value=FakeResponse(REMOTE)):
+            html = render_to_string(
+                "blocks/puzzles_block.html", puzzles_block.puzzles_block_context()
+            )
+        self.assertIn("data-rail-block", html)
+        self.assertIn("data-rail-controls", html)
+        self.assertEqual(html.count("data-rail "), 1)
+        rail = html[html.index('class="gup-rail"'):]
+        self.assertEqual(rail.count('class="gup-card '), 6)
 
 
 class DynamicBlockTests(TestCase):

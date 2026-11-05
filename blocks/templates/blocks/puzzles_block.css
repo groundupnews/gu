@@ -58,112 +58,107 @@
 .gup .gup__all:hover,
 .gup .gup__all:focus { text-decoration: underline; }
 
-/* the cards*/
+.gup .gup__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.gup .gup__controls { display: flex; gap: 6px; }
+.gup .gup__controls[hidden] { display: none; }
+
+.gup .gup__controls button {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid #d6d6da;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--gup-ink);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.gup .gup__controls button:hover:not(:disabled) { background: #f0f3f4; }
+.gup .gup__controls button:disabled { opacity: .35; cursor: default; }
+
+.gup .gup-rail {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: #b8bec1 transparent;
+    padding: 4px 4px 12px;
+    margin: -4px;
+}
+
+.gup .gup-rail:focus-visible,
+.gup .gup__controls button:focus-visible { outline: 2px solid var(--gup-link); outline-offset: 2px; }
+
+
+
+.gup .gup-rail > .gup-card {
+    flex: 1 0 152px;
+    max-width: 240px;
+    scroll-snap-align: start;
+}
 
 .gup .gup-card {
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
     min-width: 0;
     border: 1px solid var(--gup-rule);
-    border-left: 4px solid var(--accent);
+    border-top: 3px solid var(--accent);
+    border-radius: 3px;
     background: #fff;
     color: inherit;
     text-decoration: none;
+    overflow: hidden;
 }
 
 .gup a.gup-card:hover,
 .gup a.gup-card:focus {
     border-color: var(--accent);
+    color: inherit;
     text-decoration: none;
 }
 
-/* featured puzzle! */
-.gup .gup-heroes {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 12px;
-    margin: 0 0 12px;
-}
+.gup a.gup-card:hover .gup-card__name,
+.gup a.gup-card:focus .gup-card__name { text-decoration: underline; }
 
-.gup .gup-hero__art {
-    flex: 0 0 148px;
+.gup .gup-card__art {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 14px;
-    background: var(--accent-soft);
-}
-
-.gup .gup-hero__text {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 14px 16px;
-}
-
-.gup .gup-hero__tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 6px;
-}
-
-.gup .gup-hero__name {
-    margin: 0 0 4px;
-    padding: 0;
-    font-family: inherit;
-    font-size: 20px;
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -.4px;
-    text-transform: none;
-    color: var(--gup-ink);
-}
-
-.gup .gup-hero__blurb {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    margin: 0 0 10px;
-    font-size: 14px;
-    line-height: 1.4;
-    color: var(--gup-muted);
-}
-
-
-/* Two by two, or a row of four when they fit: never three and an orphan. */
-.gup .gup-tiles {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.gup .gup-tile__art {
-    flex: 0 0 84px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 92px;
     padding: 10px;
     background: var(--accent-soft);
 }
 
-.gup .gup-tile__body {
+.gup .gup-card__body {
     flex: 1;
-    min-width: 0;
     display: flex;
     flex-direction: column;
-    padding: 10px 12px;
+    padding: 10px 12px 12px;
 }
 
-.gup .gup-tile__name {
-    margin: 0 0 2px;
+.gup .gup-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    margin-bottom: 4px;
+}
+
+.gup .gup-card__name {
+    margin: 0 0 4px;
     padding: 0;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.2;
     font-weight: 700;
     letter-spacing: -.2px;
@@ -171,23 +166,19 @@
     color: var(--gup-ink);
 }
 
-.gup .gup-tile__blurb {
+.gup .gup-card__blurb {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
     margin: 0 0 8px;
     font-size: 13px;
-    line-height: 1.3;
+    line-height: 1.35;
     color: var(--gup-muted);
 }
 
-.gup .gup-tile__foot {
+.gup .gup-card__play {
     margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-}
-
-.gup .gup-tile__play {
     font-size: 13px;
     font-weight: 700;
     color: var(--accent-deep);
@@ -221,27 +212,11 @@
     color: #fff;
 }
 
-.gup .gup-btn {
-    display: inline-block;
-    margin-top: auto;
-    padding: 7px 14px;
-    background: var(--accent);
-    border: none;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.2;
-    text-decoration: none;
-}
-
-.gup .gup-hero:hover .gup-btn,
-.gup .gup-hero:focus .gup-btn { filter: brightness(.92); }
-
 .gup .gup-mini {
     display: grid;
     grid-template-columns: repeat(var(--cols, 13), 1fr);
     gap: 1px;
-    width: min(100%, 112px);
+    width: 70px;
     min-width: 0;
     background: var(--gup-ink);
     border: 2px solid var(--gup-ink);
@@ -258,12 +233,12 @@
 
 .gup .gup-groups {
     display: grid;
-    grid-template-columns: repeat(4, 23px);
-    gap: 5px;
+    grid-template-columns: repeat(4, 14px);
+    gap: 4px;
 }
 
 .gup .gup-groups span {
-    height: 23px;
+    height: 14px;
     background: #fff;
     border: 1px solid var(--accent);
 }
@@ -385,25 +360,10 @@
 .gup .gup-bars span:nth-child(3) { width: 40%; }
 .gup .gup-bars span:nth-child(4) { width: 18%; }
 
-@supports (container-type: inline-size) {
-    .gup { container-type: inline-size; }
-}
-
-@container (min-width: 940px) {
-    .gup .gup-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
-@container (max-width: 520px) {
-    .gup .gup-heroes,
-    .gup .gup-tiles { grid-template-columns: 1fr; gap: 10px; }
-
-    .gup .gup-hero__art { flex-basis: 108px; padding: 12px; }
-    .gup .gup-mini { width: min(100%, 84px); }
-    .gup .gup-groups { grid-template-columns: repeat(4, 17px); gap: 4px; }
-    .gup .gup-groups span { height: 17px; }
-    .gup .gup-hero__text { padding: 12px 14px; }
-    .gup .gup-hero__name { font-size: 18px; }
-    .gup .gup-hero__blurb { font-size: 13px; }
-
-    .gup .gup-tile__art { flex-basis: 72px; padding: 8px; }
+@media (max-width: 520px) {
+    .gup .gup__controls { display: none; }
+    .gup .gup__title { font-size: 21px; }
+    .gup .gup-rail > .gup-card { flex-basis: 140px; }
+    .gup .gup-card__art { height: 80px; }
+    .gup .gup-card__name { font-size: 15px; }
 }
