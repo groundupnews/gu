@@ -262,16 +262,15 @@ class ArticleTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_duplicate_save(self):
+        # Published articles keep whatever slug they are given, so the
+        # database's unique constraint must still reject a duplicate.
         a = Article()
-        a.title = "Test article 1"
+        a.title = "Some other title"
         a.category = Category.objects.get(name__iexact="news")
         a.slug = "test-article-1"
-        shouldHaveFailed = True
-        try:
+        a.published = timezone.now()
+        with self.assertRaises(IntegrityError):
             a.save()
-        except IntegrityError:
-            shouldHaveFailed = False
-        self.assertEqual(shouldHaveFailed, False)
 
     def test_published(self):
         num_published = Article.objects.published().count()
@@ -557,6 +556,36 @@ class ArticleDetailTest(TestCase):
 
     def test_article_topics(self):
         self.assertIn(self.topic, self.article.topics.all())
+
+    def test_slug_is_made_unique_for_unpublished_duplicate_title(self):
+        published = Article.objects.create(
+            title="Same headline", category=self.category
+        )
+        published.publish_now()
+        draft = Article.objects.create(title="Same headline", category=self.category)
+        self.assertEqual(published.slug, "same-headline")
+        self.assertEqual(draft.slug, "same-headline-2")
+        draft.save()
+        self.assertEqual(draft.slug, "same-headline-2")
+
+    def test_slug_strips_html_from_title(self):
+        article = Article.objects.create(
+            title="<em>Hamlet</em> review &amp; more", category=self.category
+        )
+        self.assertEqual(article.slug, "hamlet-review-more")
+
+    def test_slug_is_truncated_to_field_length(self):
+        article = Article.objects.create(title="word " * 100, category=self.category)
+        self.assertLessEqual(len(article.slug), 200)
+        twin = Article.objects.create(title="word " * 100, category=self.category)
+        self.assertLessEqual(len(twin.slug), 200)
+        self.assertTrue(twin.slug.endswith("-2"))
+
+    def test_published_article_slug_is_not_changed(self):
+        self.article.publish_now()
+        self.article.title = "A new headline"
+        self.article.save()
+        self.assertEqual(self.article.slug, "test-article")
 
     def _make_user(self, username, is_staff):
         user = User.objects.create_user(username, f"{username}@example.com", "abcde")

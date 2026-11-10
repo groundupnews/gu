@@ -1,4 +1,5 @@
 import datetime
+import html
 import logging
 import traceback
 import secrets
@@ -853,6 +854,24 @@ class Article(models.Model):
         except:  # This should never crash save
             return html
 
+    def make_slug_from_title(self):
+        """Slug from the title with HTML removed, cut to fit the field and
+        made unique by adding -2, -3, ... if another article already has it.
+        Returns None if the title gives an empty slug."""
+        max_length = self._meta.get_field("slug").max_length
+        base = slugify(html.unescape(strip_tags(str(self.title))))
+        base = base[:max_length].strip("-")
+        if not base:
+            return None
+        others = Article.objects.exclude(pk=self.pk)
+        slug = base
+        n = 2
+        while others.filter(slug=slug).exists():
+            suffix = f"-{n}"
+            slug = base[: max_length - len(suffix)].rstrip("-") + suffix
+            n += 1
+        return slug
+
     def save(self, *args, **kwargs):
         if self.secret_link_view != "n" and self.secret_link == "":
             self.make_secret_link()
@@ -864,7 +883,9 @@ class Article(models.Model):
             and self.title is not None
             and str(self.title).strip() != ""
         ):
-            self.slug = slugify(self.title)
+            slug = self.make_slug_from_title()
+            if slug:
+                self.slug = slug
 
         try:
             self.cached_primary_image = self.calc_primary_image()
