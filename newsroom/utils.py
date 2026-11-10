@@ -349,6 +349,11 @@ def get_edit_lock_msg(user):
 # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
 
 
+def pasted_image_messages(article):
+    """Warnings about pasted images that couldn't be stored."""
+    return list(getattr(article, "pasted_image_problems", ()))
+
+
 def slug_clash_message(article):
     """Warning to show an editor when article's slug had -2 etc. added,
     or None if there was no clash."""

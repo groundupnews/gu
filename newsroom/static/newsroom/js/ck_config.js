@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
     ];
 
 
-    config.extraPlugins = 'find,sourcearea,indentblock,wordcount';
+    config.extraPlugins = 'find,sourcearea,indentblock,wordcount,uploadimage';
     config.removePlugins =
         'contextmenu,liststyle,tabletools,tableselection,exportpdf';
 
@@ -39,5 +39,11 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.allowedContent = true;
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
+    // Pasted images (e.g. from Word or Google Docs) are uploaded and
+    // stored as files instead of being embedded in the article.
+    config.uploadUrl = '/article_image_upload/';
+    config.fileTools_requestHeaders = {
+        'X-CSRFToken': (document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/) || [])[1]
+    };
     config.versionCheck = false;
 };

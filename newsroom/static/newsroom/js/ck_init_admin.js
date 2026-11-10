@@ -11,13 +11,13 @@ $(document).ready(function() {
     function ckeditor_switch() {
 	if ($("#id_use_editor").prop('checked')) {
 	    CKEDITOR.replace( 'id_body', {
-		customConfig: '/static/newsroom/js/ck_config.js?v=20220203'
+		customConfig: '/static/newsroom/js/ck_config.js?v=20261110'
 	    });
 	    CKEDITOR.replace( 'id_summary_text', {
-		customConfig: '/static/newsroom/js/ck_config.js?v=20220203'
+		customConfig: '/static/newsroom/js/ck_config.js?v=20261110'
 	    });
 	    CKEDITOR.replace( 'id_copyright', {
-		customConfig: '/static/newsroom/js/ck_config.js?v=20220203'
+		customConfig: '/static/newsroom/js/ck_config.js?v=20261110'
 	    });
 	} else {
 	    for(name in CKEDITOR.instances)
@@ -42,7 +42,7 @@ $(document).ready(function() {
         id_editor = '#' + textarea_editors[i];
         if ($(id_editor).length) {
             CKEDITOR.replace(textarea_editors[i], {
-	        customConfig: '/static/newsroom/js/ck_config.js?v=20220203'
+	        customConfig: '/static/newsroom/js/ck_config.js?v=20261110'
 	    });
         }
     }
@@ -50,7 +50,7 @@ $(document).ready(function() {
     $("textarea.gu-ckeditor").each(function () {
         if (this.id && !CKEDITOR.instances[this.id]) {
             CKEDITOR.replace(this.id, {
-                customConfig: '/static/newsroom/js/ck_config.js?v=20220203'
+                customConfig: '/static/newsroom/js/ck_config.js?v=20261110'
             });
         }
     });

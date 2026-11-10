@@ -357,6 +357,11 @@ urlpatterns = [
         views.check_concurrent_edit,
         name="article.concurrent_check",
     ),
+    path(
+        "article_image_upload/",
+        views.article_image_upload,
+        name="article.image_upload",
+    ),
     re_path(r"^author/$", views.AuthorList.as_view(), name="author.list"),
     re_path(
         r"^author/([0-9]+)/$",
