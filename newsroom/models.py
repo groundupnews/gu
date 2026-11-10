@@ -30,7 +30,7 @@ from licencing.models import Licence
 from filebrowser.base import FileObject
 from bs4 import BeautifulSoup
 
-from . import settings, utils
+from . import pasted_images, settings, utils
 
 
 logger = logging.getLogger("django")
@@ -879,7 +879,27 @@ class Article(models.Model):
             self.slug_clash = others.filter(slug=base).first()
         return slug
 
+    # Set by save() when pasted images couldn't be stored; not stored in
+    # the database. Kept across the several saves of one request so that
+    # warnings aren't lost and failed downloads aren't retried.
+    pasted_image_problems = ()
+    _pasted_image_failed = ()
+
+    def store_pasted_images(self):
+        new_body, problems, failed = pasted_images.process_html(
+            self.body, skip_srcs=self._pasted_image_failed
+        )
+        if new_body is not None:
+            self.body = new_body
+        self._pasted_image_failed = self._pasted_image_failed + tuple(failed)
+        for problem in problems:
+            if problem not in self.pasted_image_problems:
+                self.pasted_image_problems = self.pasted_image_problems + (
+                    problem,
+                )
+
     def save(self, *args, **kwargs):
+        self.store_pasted_images()
         if self.secret_link_view != "n" and self.secret_link == "":
             self.make_secret_link()
         self.cached_byline = self.calc_byline(True)

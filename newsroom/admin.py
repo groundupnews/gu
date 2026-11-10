@@ -290,6 +290,8 @@ class ArticleAdmin(admin.ModelAdmin):
         clash_msg = utils.slug_clash_message(obj)
         if clash_msg:
             self.message_user(request, clash_msg, level=messages.WARNING)
+        for msg in utils.pasted_image_messages(obj):
+            self.message_user(request, msg, level=messages.WARNING)
 
     class Media:
         css = {"all": ("/static/newsroom/css/admin_enhance.css",)}

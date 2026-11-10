@@ -20,7 +20,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.removeButtons = 'ExportPdf,NewPage,Preview,Print,Templates,Save,Cut,Copy,Paste,PasteText,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,PageBreak,About,Scayt';
 
-    config.extraPlugins = 'find,sourcedialog,indentblock,youtube';
+    config.extraPlugins = 'find,sourcedialog,indentblock,youtube,uploadimage';
     config.removePlugins =
         'contextmenu,liststyle,tabletools,tableselection,exportpdf';
     config.stylesSet = 'gu_styles';
@@ -34,5 +34,11 @@ CKEDITOR.editorConfig = function( config ) {
     config.allowedContent = true;
     config.contentsCss = '/static/newsroom/css/ckeditor_styles.css';
     config.youtube_responsive = true;
+    // Pasted images (e.g. from Word or Google Docs) are uploaded and
+    // stored as files instead of being embedded in the article.
+    config.uploadUrl = '/article_image_upload/';
+    config.fileTools_requestHeaders = {
+        'X-CSRFToken': (document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/) || [])[1]
+    };
     config.versionCheck = false;
 };

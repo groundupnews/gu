@@ -25,7 +25,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import strip_tags
 from django.views import generic
-from django.views.decorators.http import last_modified
+from django.views.decorators.http import last_modified, require_POST
 from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -37,7 +37,7 @@ from letters.settings import DAYS_AGO
 from agony.models import QandA
 from pgsearch.utils import searchArticlesAndPhotos
 
-from . import models, settings, utils
+from . import models, pasted_images, settings, utils
 from .forms import (
     ArticleForm,
     ArticleNewForm,
@@ -903,6 +903,8 @@ def article_post(request, slug):
         clash_msg = utils.slug_clash_message(article)
         if clash_msg:
             messages.add_message(request, messages.WARNING, clash_msg)
+        for msg in utils.pasted_image_messages(article):
+            messages.add_message(request, messages.WARNING, msg)
         return HttpResponseRedirect(
             reverse("newsroom:article.detail", args=(article.slug,))
         )
@@ -1071,6 +1073,31 @@ def article_detail(request, slug):
             )
         else:
             raise Http404
+
+@require_POST
+def article_image_upload(request):
+    """Upload address for CKEditor's uploadimage plugin (pasted images)."""
+
+    def error(message, status):
+        return JsonResponse(
+            {"uploaded": 0, "error": {"message": message}}, status=status
+        )
+
+    if not request.user.is_staff:
+        return error("You are not allowed to upload images.", 403)
+    upload = request.FILES.get("upload")
+    if upload is None:
+        return error("No image was received.", 400)
+    if upload.size > pasted_images.MAX_BYTES:
+        return error("The image is larger than 10 MB.", 400)
+    try:
+        url = pasted_images.store_image(upload.read())
+    except pasted_images.ImageError as e:
+        return error(f"The image could not be stored because {e}.", 400)
+    return JsonResponse(
+        {"uploaded": 1, "fileName": url.rsplit("/", 1)[-1], "url": url}
+    )
+
 
 def news_redirect(request, pk):
     slug = get_object_or_404(

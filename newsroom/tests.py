@@ -2500,3 +2500,198 @@ class ImageVersionTest(TestCase):
                 "/media/uploads/test/odd.png.jpg",
             ],
         )
+
+
+class PastedImageTest(TestCase):
+    """Images pasted into the editor are stored as files, never embedded
+    (newsroom/pasted_images.py)."""
+
+    VERSION_SRC = (
+        r'src="/media/_versions/images/pasted/\d{4}/\d{2}/'
+        r'pasted-[0-9a-f]{8}_extra_large\.jpg"'
+    )
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.category = Category.objects.create(name="Pasted", slug="pasted")
+
+    def setUp(self):
+        import shutil
+        import tempfile
+
+        self.media_root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.media_root, ignore_errors=True)
+        override = override_settings(MEDIA_ROOT=self.media_root)
+        override.enable()
+        self.addCleanup(override.disable)
+
+    @staticmethod
+    def image_bytes(fmt="PNG", size=(400, 300), color=(200, 30, 30, 255), mode="RGBA"):
+        import io
+
+        from PIL import Image
+
+        out = io.BytesIO()
+        Image.new(mode, size, color).save(out, fmt)
+        return out.getvalue()
+
+    def data_uri(self, data, mime="image/png"):
+        import base64
+
+        return f"data:{mime};base64," + base64.b64encode(data).decode()
+
+    def stored_originals(self):
+        import glob
+
+        return glob.glob(
+            os.path.join(self.media_root, "uploads/images/pasted/*/*/pasted-*.jpg")
+        )
+
+    def open_only_original(self):
+        from PIL import Image
+
+        files = self.stored_originals()
+        self.assertEqual(len(files), 1)
+        return Image.open(files[0])
+
+    def make_article(self, body):
+        return Article.objects.create(
+            title="Pasted images", category=self.category, body=body
+        )
+
+    def fake_response(self, status=200, content_type="image/png", body=b"", location=None):
+        from unittest.mock import MagicMock
+
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.__exit__.return_value = False
+        response.is_redirect = location is not None
+        response.status_code = status
+        response.headers = {"Content-Type": content_type}
+        if location:
+            response.headers["Location"] = location
+        response.iter_content.return_value = [body]
+        return response
+
+    def test_embedded_image_is_stored_as_jpeg(self):
+        article = self.make_article(
+            f'<p>Text</p><p><img src="{self.data_uri(self.image_bytes())}" '
+            'width="400" height="300"></p>'
+        )
+        self.assertNotIn("data:image", article.body)
+        self.assertRegex(article.body, self.VERSION_SRC)
+        self.assertNotIn('width="400"', article.body)
+        with self.open_only_original() as im:
+            self.assertEqual(im.format, "JPEG")
+        self.assertEqual(utils.pasted_image_messages(article), [])
+
+    def test_transparency_becomes_white(self):
+        transparent = self.image_bytes(color=(0, 0, 0, 0))
+        self.make_article(f'<img src="{self.data_uri(transparent)}">')
+        with self.open_only_original() as im:
+            r, g, b = im.convert("RGB").getpixel((10, 10))
+            self.assertTrue(min(r, g, b) > 245)
+
+    def test_wide_image_is_capped(self):
+        wide = self.image_bytes(fmt="JPEG", size=(3000, 1000), mode="RGB", color=(1, 2, 3))
+        self.make_article(f'<img src="{self.data_uri(wide, "image/jpeg")}">')
+        with self.open_only_original() as im:
+            self.assertEqual(im.size, (2000, 667))
+
+    def test_corrupt_embedded_image_is_removed_with_warning(self):
+        article = self.make_article(
+            '<p>Before</p><img src="data:image/png;base64,bm90IGFuIGltYWdl"><p>After</p>'
+        )
+        self.assertNotIn("<img", article.body)
+        self.assertIn("After", article.body)
+        messages_ = utils.pasted_image_messages(article)
+        self.assertEqual(len(messages_), 1)
+        self.assertIn("was removed", messages_[0])
+
+    def test_google_image_is_downloaded(self):
+        from unittest.mock import patch
+
+        src = "https://lh7-rt.googleusercontent.com/docsz/abc123"
+        response = self.fake_response(body=self.image_bytes())
+        with patch("newsroom.pasted_images.requests.get", return_value=response) as get:
+            article = self.make_article(f'<img src="{src}">')
+        get.assert_called_once()
+        self.assertFalse(get.call_args.kwargs["allow_redirects"])
+        self.assertNotIn("googleusercontent", article.body)
+        self.assertRegex(article.body, self.VERSION_SRC)
+
+    def test_google_failure_keeps_link_and_warns_once(self):
+        from unittest.mock import patch
+
+        src = "https://lh3.googleusercontent.com/failing"
+        response = self.fake_response(status=403)
+        with patch("newsroom.pasted_images.requests.get", return_value=response) as get:
+            article = self.make_article(f'<img src="{src}">')
+            article.save()  # a second save in the same request: no retry
+        self.assertEqual(get.call_count, 1)
+        self.assertIn(src, article.body)
+        messages_ = utils.pasted_image_messages(article)
+        self.assertEqual(len(messages_), 1)
+        self.assertIn("error 403", messages_[0])
+
+    def test_google_redirect_elsewhere_is_refused(self):
+        from unittest.mock import patch
+
+        src = "https://lh3.googleusercontent.com/redirects"
+        response = self.fake_response(location="http://169.254.169.254/latest")
+        with patch("newsroom.pasted_images.requests.get", return_value=response) as get:
+            article = self.make_article(f'<img src="{src}">')
+        self.assertEqual(get.call_count, 1)
+        self.assertIn(src, article.body)
+        self.assertIn("another site", utils.pasted_image_messages(article)[0])
+
+    def test_other_remote_images_are_left_alone(self):
+        from unittest.mock import patch
+
+        src = "https://images.example.org/picture.jpg"
+        with patch("newsroom.pasted_images.requests.get") as get:
+            article = self.make_article(f'<img src="{src}">')
+        get.assert_not_called()
+        self.assertIn(src, article.body)
+        self.assertEqual(utils.pasted_image_messages(article), [])
+
+    def test_local_file_images_warn(self):
+        article = self.make_article('<img src="file:///C:/Users/x/image001.png">')
+        self.assertIn("own computer", utils.pasted_image_messages(article)[0])
+
+    def _user(self, username, is_staff):
+        user = User.objects.create_user(username, f"{username}@example.com", "abcde")
+        user.is_staff = is_staff
+        user.save()
+        return user
+
+    def upload(self, data, name="pasted.png"):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+
+        return self.client.post(
+            reverse("newsroom:article.image_upload"),
+            {"upload": SimpleUploadedFile(name, data, content_type="image/png")},
+        )
+
+    def test_staff_upload_returns_ckeditor_json(self):
+        self.client.force_login(self._user("uploader", is_staff=True))
+        response = self.upload(self.image_bytes())
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["uploaded"], 1)
+        self.assertRegex(f'src="{data["url"]}"', self.VERSION_SRC)
+        self.assertTrue(data["url"].endswith(data["fileName"]))
+        self.assertEqual(len(self.stored_originals()), 1)
+
+    def test_non_staff_upload_is_forbidden(self):
+        self.client.force_login(self._user("notstaffup", is_staff=False))
+        response = self.upload(self.image_bytes())
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json()["uploaded"], 0)
+        self.assertEqual(self.stored_originals(), [])
+
+    def test_upload_rejects_non_image(self):
+        self.client.force_login(self._user("uploader2", is_staff=True))
+        response = self.upload(b"this is not an image", name="notes.txt")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["uploaded"], 0)
