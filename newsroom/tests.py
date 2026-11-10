@@ -577,9 +577,13 @@ class ArticleDetailTest(TestCase):
         self.assertEqual(article.slug, "hamlet-review-more")
 
     def test_slug_is_truncated_to_field_length(self):
-        article = Article.objects.create(title="word " * 100, category=self.category)
+        # 245-character title (fits the 250 limit) whose slug would be 244
+        # characters, over the slug field's 200.
+        title = "word " * 49
+        article = Article.objects.create(title=title, category=self.category)
         self.assertLessEqual(len(article.slug), 200)
-        twin = Article.objects.create(title="word " * 100, category=self.category)
+        self.assertEqual(len(article.slug), 199)  # cut at 200, trailing "-" dropped
+        twin = Article.objects.create(title=title, category=self.category)
         self.assertLessEqual(len(twin.slug), 200)
         self.assertTrue(twin.slug.endswith("-2"))
 
