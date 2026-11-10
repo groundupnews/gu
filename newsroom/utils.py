@@ -11,6 +11,8 @@ import html
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.utils import timezone
+from django.utils.html import format_html, strip_tags
 
 # from newsroom.settings import ADVERT_CODE
 from newsroom.settings import SUPPORT_US_IMAGES
@@ -340,6 +342,29 @@ def get_edit_lock_msg(user):
 
 # Used to generate random passwords. Source:
 # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+
+
+def slug_clash_message(article):
+    """Warning to show an editor when article's slug had -2 etc. added,
+    or None if there was no clash."""
+    clash = getattr(article, "slug_clash", None)
+    if clash is None:
+        return None
+    if clash.is_published():
+        d = timezone.localtime(clash.published)
+        status = f"published {d.day} {d:%b %Y}"
+    else:
+        status = "unpublished"
+    return format_html(
+        'Another article already uses the slug "{}": <a href="{}">{}</a> ({}). '
+        "This article's address has been set to \"{}\". If this is a "
+        "different story, consider changing the headline.",
+        clash.slug,
+        clash.get_absolute_url(),
+        strip_tags(clash.title),
+        status,
+        article.slug,
+    )
 
 
 def generate_pwd(size=12, chars=string.ascii_letters + string.digits):

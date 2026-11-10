@@ -33,6 +33,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 from django.contrib.flatpages.models import FlatPage
+from django.contrib.messages import get_messages
 from django.urls import reverse
 
 
@@ -586,6 +587,75 @@ class ArticleDetailTest(TestCase):
         self.article.title = "A new headline"
         self.article.save()
         self.assertEqual(self.article.slug, "test-article")
+
+    def test_slug_clash_is_recorded(self):
+        published = Article.objects.create(
+            title="Clash headline", category=self.category
+        )
+        published.publish_now()
+        draft = Article.objects.create(title="Clash headline", category=self.category)
+        self.assertEqual(draft.slug_clash, published)
+        other = Article.objects.create(
+            title="A different headline", category=self.category
+        )
+        self.assertIsNone(other.slug_clash)
+        self.assertIsNone(utils.slug_clash_message(other))
+
+    def test_slug_clash_message(self):
+        published = Article.objects.create(
+            title="<em>Clash</em> headline", category=self.category
+        )
+        published.publish_now()
+        draft = Article.objects.create(
+            title="Clash headline", category=self.category
+        )
+        msg = utils.slug_clash_message(draft)
+        self.assertIn('Another article already uses the slug "clash-headline"', msg)
+        self.assertIn(f'<a href="{published.get_absolute_url()}">', msg)
+        self.assertIn('set to "clash-headline-2"', msg)
+        self.assertIn("published ", msg)
+        self.assertNotIn("<em>", msg)
+
+    def test_new_article_form_warns_of_slug_clash(self):
+        # The new-article form leaves category at the model default (pk 4).
+        Category.objects.get_or_create(
+            pk=4, defaults={"name": "News", "slug": "news"}
+        )
+        Article.objects.create(title="Clash headline", category=self.category)
+        user = User.objects.create_user("adder", "adder@example.com", "abcde")
+        user.is_staff = True
+        user.user_permissions.add(Permission.objects.get(name="Can add article"))
+        user.save()
+        self.client.force_login(user)
+        response = self.client.post(
+            reverse("newsroom:article.add"),
+            {"title": "Clash headline", "slug": "some-typed-slug"},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("clash-headline-2", response["Location"])
+        msgs = [str(m) for m in get_messages(response.wsgi_request)]
+        self.assertTrue(
+            any("Another article already uses the slug" in m for m in msgs)
+        )
+
+    def test_admin_save_warns_of_slug_clash(self):
+        from unittest.mock import patch
+        from django.contrib import admin as django_admin
+        from django.contrib import messages as django_messages
+        from django.test import RequestFactory
+        from newsroom.admin import ArticleAdmin
+
+        Article.objects.create(title="Clash headline", category=self.category)
+        model_admin = ArticleAdmin(Article, django_admin.site)
+        request = RequestFactory().post("/admin/")
+        request.user = User.objects.create_superuser("boss", "boss@example.com", "x")
+        draft = Article(title="Clash headline", category=self.category)
+        with patch.object(ArticleAdmin, "message_user") as message_user:
+            model_admin.save_model(request, draft, None, False)
+        message_user.assert_called_once()
+        args, kwargs = message_user.call_args
+        self.assertIn("Another article already uses the slug", args[1])
+        self.assertEqual(kwargs["level"], django_messages.WARNING)
 
     def _make_user(self, username, is_staff):
         user = User.objects.create_user(username, f"{username}@example.com", "abcde")

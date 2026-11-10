@@ -1,7 +1,7 @@
 import re
 
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.core.exceptions import ValidationError
@@ -287,6 +287,9 @@ class ArticleAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.save()
+        clash_msg = utils.slug_clash_message(obj)
+        if clash_msg:
+            self.message_user(request, clash_msg, level=messages.WARNING)
 
     class Media:
         css = {"all": ("/static/newsroom/css/admin_enhance.css",)}

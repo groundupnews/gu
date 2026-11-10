@@ -854,10 +854,15 @@ class Article(models.Model):
         except:  # This should never crash save
             return html
 
+    # Set by make_slug_from_title when -2, -3, ... had to be added: the
+    # article that already has the plain slug. Not stored in the database.
+    slug_clash = None
+
     def make_slug_from_title(self):
         """Slug from the title with HTML removed, cut to fit the field and
         made unique by adding -2, -3, ... if another article already has it.
         Returns None if the title gives an empty slug."""
+        self.slug_clash = None
         max_length = self._meta.get_field("slug").max_length
         base = slugify(html.unescape(strip_tags(str(self.title))))
         base = base[:max_length].strip("-")
@@ -870,6 +875,8 @@ class Article(models.Model):
             suffix = f"-{n}"
             slug = base[: max_length - len(suffix)].rstrip("-") + suffix
             n += 1
+        if slug != base:
+            self.slug_clash = others.filter(slug=base).first()
         return slug
 
     def save(self, *args, **kwargs):

@@ -900,6 +900,9 @@ def article_post(request, slug):
             messages.add_message(request, messages.INFO, "Normal width article.")
         else:
             messages.add_message(request, messages.INFO, "Changes saved.")
+        clash_msg = utils.slug_clash_message(article)
+        if clash_msg:
+            messages.add_message(request, messages.WARNING, clash_msg)
         return HttpResponseRedirect(
             reverse("newsroom:article.detail", args=(article.slug,))
         )
@@ -1082,6 +1085,9 @@ def article_new(request):
         if request.user.has_perm("newsroom.add_article"):
             if form.is_valid():
                 article = form.save()
+                clash_msg = utils.slug_clash_message(article)
+                if clash_msg:
+                    messages.add_message(request, messages.WARNING, clash_msg)
                 return HttpResponseRedirect(
                     reverse("newsroom:article.detail", args=(article.slug,)) + "?edit=y"
                 )
