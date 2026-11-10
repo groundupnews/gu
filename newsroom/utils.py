@@ -265,7 +265,12 @@ def linkImages(soup):
                 eBegin = url.find("_huge")
                 eEnd = eBegin + huge_len
 
-            urlnew = url[:vBegin] + "uploads/" + url[vEnd:eBegin] + url[eEnd:]
+            rest = url[eEnd:]
+            # JPEG versions of PNGs are named photo_extra_large.png.jpg;
+            # the original is photo.png.
+            if rest.lower().startswith(".png.jpg"):
+                rest = rest[:4]
+            urlnew = url[:vBegin] + "uploads/" + url[vEnd:eBegin] + rest
             if img.parent.name == "a":
                 img.parent["href"] = urlnew
                 img.parent["class"] = "bigger-image"

@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import re
 from decimal import *
 
@@ -2413,3 +2414,89 @@ class VideoQATest(TestCase):
         self.assertIn("Watch", markup)
         self.assertNotIn("Watch ·", markup)
         self.assertNotIn("gu-video-duration", markup)
+
+
+class ImageVersionTest(TestCase):
+    """PNG versions: opaque PNGs get JPEG versions, transparent ones get
+    256-colour PNG versions (newsroom/image_versions.py)."""
+
+    def setUp(self):
+        import shutil
+        import tempfile
+
+        from PIL import Image
+
+        self.media_root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.media_root, ignore_errors=True)
+        override = override_settings(MEDIA_ROOT=self.media_root)
+        override.enable()
+        self.addCleanup(override.disable)
+        folder = os.path.join(self.media_root, "uploads", "test")
+        os.makedirs(folder)
+        Image.new("RGBA", (1200, 800), (200, 100, 50, 255)).save(
+            os.path.join(folder, "opaque.png")
+        )
+        transparent = Image.new("RGBA", (1200, 800), (0, 0, 0, 0))
+        transparent.paste((10, 200, 30, 255), (100, 100, 1100, 700))
+        transparent.save(os.path.join(folder, "transparent.png"))
+        Image.new("RGB", (1200, 800), (1, 2, 3)).save(
+            os.path.join(folder, "photo.jpg")
+        )
+
+    def file_object(self, name):
+        from filebrowser.base import FileObject
+
+        return FileObject("uploads/test/" + name)
+
+    def open_version(self, version):
+        from PIL import Image
+
+        return Image.open(os.path.join(self.media_root, version.path))
+
+    def test_opaque_png_gets_jpeg_versions(self):
+        original = self.file_object("opaque.png")
+        self.assertEqual(original.version_name("large"), "opaque_large.png.jpg")
+        version = original.version_generate("large")
+        self.assertTrue(version.path.endswith("opaque_large.png.jpg"))
+        with self.open_version(version) as im:
+            self.assertEqual(im.format, "JPEG")
+            self.assertEqual(im.width, 680)
+
+    def test_transparent_png_gets_256_colour_png_versions(self):
+        from newsroom.image_versions import has_transparency
+
+        original = self.file_object("transparent.png")
+        self.assertEqual(original.version_name("large"), "transparent_large.png")
+        version = original.version_generate("large")
+        with self.open_version(version) as im:
+            self.assertEqual(im.format, "PNG")
+            self.assertEqual(im.mode, "P")
+            self.assertTrue(has_transparency(im))
+
+    def test_jpeg_versions_unchanged(self):
+        self.assertEqual(
+            self.file_object("photo.jpg").version_name("large"), "photo_large.jpg"
+        )
+
+    def test_original_name_from_jpeg_version_of_png(self):
+        version = self.file_object("opaque.png").version_generate("large")
+        self.assertEqual(version.original_filename, "opaque.png")
+        jpeg_version = self.file_object("photo.jpg").version_generate("large")
+        self.assertEqual(jpeg_version.original_filename, "photo.jpg")
+
+    def test_link_images_points_to_png_original(self):
+        html = (
+            '<p><img src="/media/_versions/test/opaque_huge.png.jpg"></p>'
+            '<p><img src="/media/_versions/test/photo_extra_large.jpg"></p>'
+            '<p><img src="/media/_versions/test/odd.png_huge.jpg"></p>'
+        )
+        soup = utils.linkImages(bs(html, "html.parser"))
+        links = [a["href"] for a in soup.find_all("a")]
+        self.assertEqual(
+            links,
+            [
+                "/media/uploads/test/opaque.png",
+                "/media/uploads/test/photo.jpg",
+                "/media/uploads/test/odd.png.jpg",
+            ],
+        )

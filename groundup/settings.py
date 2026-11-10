@@ -281,6 +281,14 @@ FILEBROWSER_CONVERT_FILENAME = True
 
 FILEBROWSER_OVERWRITE_EXISTING = False
 
+# Opaque PNGs get JPEG versions; transparent ones get 256-colour PNG
+# versions. See newsroom/image_versions.py.
+FILEBROWSER_VERSION_NAMER = "newsroom.image_versions.PngToJpegNamer"
+FILEBROWSER_VERSION_PROCESSORS = [
+    "filebrowser.utils.scale_and_crop",  # filebrowser's default
+    "newsroom.image_versions.quantize_transparent",
+]
+
 FILEBROWSER_VERSIONS = {
     "admin_thumbnail": {
         "verbose_name": "Admin Thumbnail",
