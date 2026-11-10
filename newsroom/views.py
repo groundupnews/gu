@@ -704,6 +704,7 @@ def check_concurrent_edit(request):
     if (
         request.method == "POST"
         and request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.user.is_staff
         and request.user.has_perm("newsroom.change_article")
     ):
         pk = int(request.POST["pk"])
@@ -809,7 +810,9 @@ Nevertheless, some refactoring needed here.
 
 
 def article_post(request, slug):
-    if request.user.has_perm("newsroom.change_article") == False:
+    if not (
+        request.user.is_staff and request.user.has_perm("newsroom.change_article")
+    ):
         return HttpResponseForbidden()
     article = get_object_or_404(models.Article, slug=slug)
     version = article.version

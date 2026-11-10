@@ -558,6 +558,46 @@ class ArticleDetailTest(TestCase):
     def test_article_topics(self):
         self.assertIn(self.topic, self.article.topics.all())
 
+    def _make_user(self, username, is_staff):
+        user = User.objects.create_user(username, f"{username}@example.com", "abcde")
+        user.is_staff = is_staff
+        user.user_permissions.add(Permission.objects.get(name="Can change article"))
+        user.save()
+        return user
+
+    def test_non_staff_with_change_permission_cannot_post_edit(self):
+        self.client.force_login(self._make_user("notstaff", is_staff=False))
+        response = self.client.post(
+            self.article.get_absolute_url(), {"title": "Hacked title"}
+        )
+        self.assertEqual(response.status_code, 403)
+        self.article.refresh_from_db()
+        self.assertEqual(self.article.title, "Test Article")
+
+    def test_anonymous_cannot_post_edit(self):
+        response = self.client.post(
+            self.article.get_absolute_url(), {"title": "Hacked title"}
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_non_staff_cannot_use_concurrent_edit_check(self):
+        self.client.force_login(self._make_user("notstaff2", is_staff=False))
+        response = self.client.post(
+            reverse("newsroom:article.concurrent_check"),
+            {"pk": self.article.pk, "version": 0, "changed": "false"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_staff_can_use_concurrent_edit_check(self):
+        self.client.force_login(self._make_user("staffed", is_staff=True))
+        response = self.client.post(
+            reverse("newsroom:article.concurrent_check"),
+            {"pk": self.article.pk, "version": 0, "changed": "false"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+        self.assertEqual(response.status_code, 200)
+
 
 class CategoryTest(TestCase):
     def test_category_creation(self):
