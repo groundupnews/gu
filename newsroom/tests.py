@@ -369,6 +369,18 @@ class ArticleTest(TestCase):
         response = client.get("/preview/" + article.secret_link + "/")
         self.assertEqual(response.status_code, 200)
 
+    def test_secret_link_is_secure_token(self):
+        links = []
+        for slug in ["test-article-1", "test-article-2"]:
+            article = Article.objects.get(slug=slug)
+            article.secret_link = ""
+            article.secret_link_view = "r"
+            article.save()
+            self.assertEqual(len(article.secret_link), 43)
+            self.assertRegex(article.secret_link, r"^[A-Za-z0-9_-]+$")
+            links.append(article.secret_link)
+        self.assertNotEqual(links[0], links[1])
+
     def test_search(self):
         articles = searchArticlesAndPhotos("cow dog")
         self.assertEqual(len(articles), 1)

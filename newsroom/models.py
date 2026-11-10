@@ -1,7 +1,7 @@
 import datetime
 import logging
 import traceback
-import random
+import secrets
 import shutil
 import os
 import re
@@ -825,17 +825,8 @@ class Article(models.Model):
         return True
 
     def make_secret_link(self):
-        t = timezone.now()
-        self.secret_link = (
-            str(t.year)
-            + str(t.month)
-            + str(t.day)
-            + str(t.hour)
-            + str(t.minute)
-            + str(t.second)
-        )
-        for _ in range(40):
-            self.secret_link += chr(random.randint(97, 122))
+        # Cryptographically secure, URL-safe token (43 characters).
+        self.secret_link = secrets.token_urlsafe(32)
 
     # Used by third-party republishers to count hits to GU articles
     # The img parameter can eithe be None or a BeautifulSoup img object/tag
