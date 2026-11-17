@@ -16,8 +16,7 @@ def validate_email_list(email_string_list):
 
 class Republisher(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    email_addresses = models.CharField(
-        max_length=250,
+    email_addresses = models.TextField(
         validators=[
             validate_email_list,
         ],
@@ -64,5 +63,7 @@ class RepublisherArticle(models.Model):
             "republisher",
         ]
         constraints = [
-            models.UniqueConstraint(fields=["article", "republisher"], name="unique_article_republisher")
+            models.UniqueConstraint(
+                fields=["article", "republisher"], name="unique_article_republisher"
+            )
         ]
