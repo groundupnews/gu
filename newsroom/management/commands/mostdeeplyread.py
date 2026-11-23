@@ -25,8 +25,8 @@ def get_most_visited_pages():
         "filter_limit": str(num_entries),
         "filter_sort_column": "nb_uniq_visitors",
         "idSite": str(site_id),
-        "date": "today",
-        "period": "week",
+        "date": "last7",
+        "period": "range",
         "format": "json",
     }
     query = urlencode(url_dict)
