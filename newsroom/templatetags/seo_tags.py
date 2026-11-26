@@ -10,6 +10,7 @@ current request. JSON is escaped so it can never break out of the <script> block
 """
 
 import json
+import re
 
 from django import template
 from django.templatetags.static import static
@@ -296,3 +297,37 @@ def video_list_jsonld(context, videos, hero=None):
             "itemListElement": items,
         }
     )
+
+
+# Landing-page flatpages (flatpages/landing.html) carry their own <head> tags
+# (description, Open Graph, JSON-LD) at the top of the content, inside
+# <template data-landing-head>. A <template> is inert, so the page still renders
+# safely if it is ever switched to another flatpage template.
+LANDING_HEAD_RE = re.compile(
+    r"<template\s+data-landing-head[^>]*>(.*?)</template>\s*", re.S | re.I
+)
+
+
+@register.simple_tag(takes_context=True)
+def landing_head(context, content):
+    """The head tags from a landing flatpage. __PAGE_URL__ and __SITE_URL__ become
+    this page's and the site's absolute URLs, so the same content works on any host."""
+    match = LANDING_HEAD_RE.search(content or "")
+    if not match:
+        return ""
+    request = context.get("request")
+    page_url = _abs(request, request.path) if request else ""
+    site_url = _abs(request, "/").rstrip("/") if request else ""
+    head = match.group(1).replace("__PAGE_URL__", page_url).replace("__SITE_URL__", site_url)
+    return mark_safe(head)
+
+
+@register.filter
+def without_landing_head(content):
+    """The flatpage content minus its head block."""
+    return mark_safe(LANDING_HEAD_RE.sub("", content or "", count=1))
+
+
+@register.filter
+def has_landing_head(content):
+    return bool(LANDING_HEAD_RE.search(content or ""))

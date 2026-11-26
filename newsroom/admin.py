@@ -652,6 +652,7 @@ class CustomFlatPageForm(forms.ModelForm):
             ("flatpages/default.html", "Default template"),
             ("flatpages/raw-html.html", "Raw HTML"),
             ("flatpages/header_image.html", "Header Image"),
+            ("flatpages/landing.html", "Landing page (head tags from content)"),
         ],
         required=False,
         label=_("Template"),

@@ -452,6 +452,33 @@ class ArticleTest(TestCase):
         response = client.get("/about/")
         self.assertEqual(response.status_code, 200)
 
+    def test_landing_flatpage_head(self):
+        f = FlatPage.objects.create(
+            url="/landing-test/",
+            title="Landing test",
+            template_name="flatpages/landing.html",
+            content=(
+                '<template data-landing-head><meta name="description" content="Landing description">'
+                '<script type="application/ld+json">{"url": "__PAGE_URL__", "publisher": "__SITE_URL__/#publisher"}</script>'
+                "</template><p>Landing body</p>"
+            ),
+        )
+        f.sites.add(Site.objects.all()[0])
+        response = Client().get("/landing-test/")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        head = html[: html.index("</head>")]
+        # head tags move into <head>, with the placeholders filled in
+        self.assertIn('<meta name="description" content="Landing description">', head)
+        self.assertIn('"url": "http://testserver/landing-test/"', head)
+        self.assertIn('"publisher": "http://testserver/#publisher"', head)
+        # the site-wide default description is replaced, not duplicated
+        self.assertEqual(head.count('name="description"'), 1)
+        # the body keeps the content but not the head block
+        body = html[html.index("</head>") :]
+        self.assertIn("<p>Landing body</p>", body)
+        self.assertNotIn("data-landing-head", body)
+
     def add_corrections(self, articles):
         j = 0
         for a in articles:
