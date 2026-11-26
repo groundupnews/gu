@@ -297,7 +297,7 @@ class ArticleAdmin(admin.ModelAdmin):
         css = {"all": ("/static/newsroom/css/admin_enhance.css",)}
         js = [
             "//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js",
-            "/static/newsroom/js/ck_styles.js?v=20260721",
+            "/static/newsroom/js/ck_styles.js?v=20261127",
             "/static/newsroom/js/ck_init_admin.js?v=20220203",
             "/static/newsroom/js/statistics.js?v=20220203",
             "/static/newsroom/js/admin_enhance.js?v=20220203",
@@ -623,7 +623,7 @@ class VideoAdmin(admin.ModelAdmin):
     class Media:
         js = [
             "//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js",
-            "/static/newsroom/js/ck_styles.js?v=20260721",
+            "/static/newsroom/js/ck_styles.js?v=20261127",
             "/static/newsroom/js/ck_init_admin.js?v=20260824",
         ]
 
@@ -684,7 +684,7 @@ class FlatPageAdmin(FlatPageAdmin):
         css = {"all": ("/static/newsroom/css/admin_enhance.css",)}
         js = [
             "//cdn.ckeditor.com/4.14.0/standard-all/ckeditor.js",
-            "/static/newsroom/js/ck_styles.js?v=20260721",
+            "/static/newsroom/js/ck_styles.js?v=20261127",
             "/static/newsroom/js/ck_init_admin.js",
         ]
 
