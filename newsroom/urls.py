@@ -401,6 +401,11 @@ urlpatterns = [
         cache_page(settings.CACHE_PERIOD)(api.most_deeply_read),
         name="api.most_deeply_read",
     ),
+    path(
+        "api/articles/<int:year>/<int:month>/",
+        cache_page(settings.CACHE_PERIOD)(api.articles_by_month),
+        name="api.articles_by_month",
+    ),
     ####################################
     # Redirect /content/ to /article
     re_path(

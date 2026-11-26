@@ -1058,6 +1058,74 @@ class MostReadApiIntegrationTest(TestCase):
         self.assertEqual(deep_data["count"], 0)
 
 
+@DISABLE_CACHE
+class ArticlesByMonthApiTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        category = Category()
+        category.name = "News"
+        category.slug = "news"
+        category.save()
+        tz = timezone.get_current_timezone()
+
+        def make(slug, published):
+            article = Article()
+            article.title = slug
+            article.body = "<p>Test body.</p>"
+            article.slug = slug
+            article.category = category
+            article.published = published
+            article.save()
+            return article
+
+        cls.second = make(
+            "march-second", datetime.datetime(2025, 3, 20, 9, 0, tzinfo=tz)
+        )
+        cls.first = make(
+            "march-first", datetime.datetime(2025, 3, 1, 0, 30, tzinfo=tz)
+        )
+        make("april", datetime.datetime(2025, 4, 1, 0, 0, tzinfo=tz))
+        make("february", datetime.datetime(2025, 2, 28, 23, 59, tzinfo=tz))
+        make("unpublished", None)
+        make("scheduled", timezone.now() + datetime.timedelta(days=60))
+
+    def get(self, year, month):
+        return self.client.get(
+            reverse("newsroom:api.articles_by_month", args=[year, month])
+        )
+
+    def test_endpoint_path(self):
+        self.assertEqual(
+            reverse("newsroom:api.articles_by_month", args=[2025, 3]),
+            "/api/articles/2025/3/",
+        )
+
+    def test_returns_only_that_month_oldest_first(self):
+        data = self.get(2025, 3).json()
+        self.assertEqual(data["count"], 2)
+        self.assertEqual(
+            [a["pk"] for a in data["articles"]], [self.first.pk, self.second.pk]
+        )
+        entry = data["articles"][0]
+        self.assertEqual(set(entry), {"pk", "url", "published"})
+        self.assertTrue(entry["url"].endswith(self.first.get_absolute_url()))
+        self.assertEqual(
+            datetime.datetime.fromisoformat(entry["published"]), self.first.published
+        )
+
+    def test_excludes_unpublished_and_scheduled(self):
+        future = timezone.localtime(timezone.now() + datetime.timedelta(days=60))
+        data = self.get(future.year, future.month).json()
+        self.assertEqual(data["count"], 0)
+
+    def test_empty_month(self):
+        self.assertEqual(self.get(1999, 1).json(), {"count": 0, "articles": []})
+
+    def test_invalid_month(self):
+        self.assertEqual(self.get(2025, 13).status_code, 400)
+        self.assertEqual(self.get(2025, 0).status_code, 400)
+
+
 class YouTubeIdTest(TestCase):
     def test_extract_from_the_urls_editors_paste(self):
         cases = [
