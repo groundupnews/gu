@@ -2,6 +2,7 @@ import datetime
 import logging
 import json
 import re
+from urllib.parse import unquote, urlparse
 
 from blocks.models import Group
 from bs4 import BeautifulSoup
@@ -26,6 +27,9 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from django.views import generic
 from django.views.decorators.http import last_modified, require_POST
+from django.views.decorators.cache import cache_control
+from django.core.files.storage import default_storage
+from filebrowser.base import FileObject
 from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -1073,6 +1077,33 @@ def article_detail(request, slug):
             )
         else:
             raise Http404
+
+ENLARGED_VERSION = "enlarged"
+ENLARGEABLE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".webp")
+
+
+@cache_control(public=True, max_age=60 * 60 * 24 * 30)
+def enlarged_image(request):
+    """Redirect to a 1600px copy of an upload, made on first request."""
+    path = unquote(urlparse(request.GET.get("src", "")).path)
+    prefix = django_settings.MEDIA_URL + django_settings.FILEBROWSER_DIRECTORY
+    if (
+        not path.startswith(prefix)
+        or ".." in path.split("/")
+        or not path.lower().endswith(ENLARGEABLE_EXTENSIONS)
+    ):
+        raise Http404
+    relative = path[len(django_settings.MEDIA_URL) :]
+    if not default_storage.exists(relative):
+        raise Http404
+    original = FileObject(relative)
+    try:
+        url = original.version_generate(ENLARGED_VERSION).url
+    except Exception:
+        logger.exception("Could not make enlarged version of %s", relative)
+        url = original.url
+    return HttpResponseRedirect(url)
+
 
 @require_POST
 def article_image_upload(request):

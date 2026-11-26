@@ -145,6 +145,9 @@
 <script>
     {% include "newsroom/article_detail.js" %}
 </script>
+{% if not can_edit %}
+<script src="{% static 'newsroom/js/image_viewer.js' %}?v=20261127" defer></script>
+{% endif %}
 {% if article.activate_slideshow %}
 <script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
 <script>{% include 'newsroom/article_slider.js' %}</script>

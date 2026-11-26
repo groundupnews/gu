@@ -574,39 +574,166 @@ article figure, article p.caption {
 .bigger-image {
     position: relative;
     display: inline-block;
-    width: 100%;
+    max-width: 100%;
 }
 
-.bigger-image:after {
+.bigger-image img {
+    vertical-align: bottom;
+}
+
+/* always visible, phones can't hover */
+.bigger-image::after {
     content: '';
     position: absolute;
-    top: 10px;
     right: 10px;
-    width: 28px;
-    height: 28px;
-    background: rgba(0,0,0,0.5);
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.2s;
+    bottom: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(21, 31, 34, 0.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/%3E%3C/svg%3E") center / 18px no-repeat;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+    transition: background-color 0.15s, transform 0.15s;
 }
 
-.bigger-image:before {
-    content: '';
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 16px;
-    height: 16px;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='-3 -3 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' d='M23 8.75V1.5l-.5-.5h-7.25v1.25l4.5.6L14 8.575 15.4 10l5.75-5.725.6 4.475zm-22 6.5v7.25l.475.5h7.25v-1.25l-4.475-.6 5.725-5.775L8.6 14l-5.775 5.725-.575-4.475z'/%3E%3C/svg%3E");
-    background-size: contain;
-    z-index: 1; 
-    opacity: 0;
-    transition: opacity 0.2s;
+.bigger-image:hover::after,
+.bigger-image:focus-visible::after {
+    background-color: rgba(21, 31, 34, 0.92);
+    transform: scale(1.08);
 }
 
-.bigger-image:hover:after,
-.bigger-image:hover:before {
-    opacity: 1;
+.bigger-image:focus-visible {
+    outline: 3px solid #00B1F0;
+    outline-offset: 3px;
+}
+
+/* image viewer, see image_viewer.js */
+.gu-viewer-open {
+    overflow: hidden;
+}
+
+.gu-viewer {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(12, 18, 20, 0.96);
+    color: #FFFFFF;
+    font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.gu-viewer[open] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.gu-viewer::backdrop {
+    background: rgba(12, 18, 20, 0.96);
+}
+
+.gu-viewer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 12px 10px 16px;
+}
+
+.gu-viewer__original {
+    font-size: 14px;
+    color: #D6DEE0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.gu-viewer__original:hover,
+.gu-viewer__original:focus {
+    color: #FFFFFF;
+}
+
+.gu-viewer__close {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.gu-viewer__close:hover {
+    background: rgba(255, 255, 255, 0.24);
+}
+
+.gu-viewer__close svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+}
+
+.gu-viewer a:focus-visible,
+.gu-viewer button:focus-visible {
+    outline: 3px solid #00B1F0;
+    outline-offset: 2px;
+}
+
+.gu-viewer__stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    padding: 0 12px;
+}
+
+.gu-viewer__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    touch-action: pinch-zoom;
+    transition: filter 0.2s;
+}
+
+.gu-viewer.is-loading .gu-viewer__img {
+    filter: blur(1px);
+}
+
+.gu-viewer__caption {
+    max-width: 70ch;
+    margin: 0 auto;
+    padding: 12px 16px 20px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #D6DEE0;
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .gu-viewer[open] {
+        animation: gu-viewer-in 0.18s ease-out;
+    }
+}
+
+@keyframes gu-viewer-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bigger-image::after,
+    .gu-viewer__img {
+        transition: none;
+    }
 }
 
 {% if article.undistracted_layout %}
@@ -701,6 +828,19 @@ article figure, article p.caption {
     .bigger-image img {
         width: 100%;
         height: auto;
+    }
+
+    /* stretch the link instead of the img so the button lands in the corner */
+    .article p .bigger-image {
+        width: 127%;
+        max-width: none;
+        margin-left: -100px;
+        margin-right: -100px;
+    }
+    .article p .bigger-image img {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
     }
 
 }
