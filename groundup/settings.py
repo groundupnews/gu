@@ -313,6 +313,8 @@ FILEBROWSER_VERSIONS = {
         "opts": "",
     },
     "huge": {"verbose_name": "Huge", "width": 882, "height": "", "opts": ""},
+    # for the image viewer, made on first request. not in the admin
+    "enlarged": {"verbose_name": "Enlarged", "width": 1600, "height": "", "opts": ""},
 }
 
 FILEBROWSER_ADMIN_VERSIONS = [

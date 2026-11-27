@@ -358,6 +358,11 @@ urlpatterns = [
         name="article.concurrent_check",
     ),
     path(
+        "image/enlarged/",
+        views.enlarged_image,
+        name="image.enlarged",
+    ),
+    path(
         "article_image_upload/",
         views.article_image_upload,
         name="article.image_upload",

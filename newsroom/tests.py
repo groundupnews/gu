@@ -452,6 +452,33 @@ class ArticleTest(TestCase):
         response = client.get("/about/")
         self.assertEqual(response.status_code, 200)
 
+    def test_landing_flatpage_head(self):
+        f = FlatPage.objects.create(
+            url="/landing-test/",
+            title="Landing test",
+            template_name="flatpages/landing.html",
+            content=(
+                '<template data-landing-head><meta name="description" content="Landing description">'
+                '<script type="application/ld+json">{"url": "__PAGE_URL__", "publisher": "__SITE_URL__/#publisher"}</script>'
+                "</template><p>Landing body</p>"
+            ),
+        )
+        f.sites.add(Site.objects.all()[0])
+        response = Client().get("/landing-test/")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        head = html[: html.index("</head>")]
+        # head tags move into <head>, with the placeholders filled in
+        self.assertIn('<meta name="description" content="Landing description">', head)
+        self.assertIn('"url": "http://testserver/landing-test/"', head)
+        self.assertIn('"publisher": "http://testserver/#publisher"', head)
+        # the site-wide default description is replaced, not duplicated
+        self.assertEqual(head.count('name="description"'), 1)
+        # the body keeps the content but not the head block
+        body = html[html.index("</head>") :]
+        self.assertIn("<p>Landing body</p>", body)
+        self.assertNotIn("data-landing-head", body)
+
     def add_corrections(self, articles):
         j = 0
         for a in articles:
@@ -2767,3 +2794,70 @@ class PastedImageTest(TestCase):
         response = self.upload(b"this is not an image", name="notes.txt")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["uploaded"], 0)
+
+
+class EnlargedImageTest(TestCase):
+    def setUp(self):
+        import shutil
+        import tempfile
+
+        from PIL import Image
+
+        self.media_root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.media_root, ignore_errors=True)
+        override = override_settings(MEDIA_ROOT=self.media_root)
+        override.enable()
+        self.addCleanup(override.disable)
+        folder = os.path.join(self.media_root, "uploads", "test folder")
+        os.makedirs(folder)
+        Image.new("RGB", (4000, 3000), (1, 2, 3)).save(
+            os.path.join(folder, "big photo.jpg")
+        )
+        Image.new("RGB", (900, 600), (1, 2, 3)).save(
+            os.path.join(folder, "small.jpg")
+        )
+
+    def get(self, src):
+        return Client().get("/image/enlarged/", {"src": src})
+
+    def test_redirects_to_screen_sized_version(self):
+        from PIL import Image
+
+        response = self.get("/media/uploads/test%20folder/big%20photo.jpg")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("_versions/", response["Location"])
+        self.assertIn("big%20photo_enlarged.jpg", response["Location"])
+        self.assertIn("max-age", response["Cache-Control"])
+        version = os.path.join(
+            self.media_root, "_versions", "test folder", "big photo_enlarged.jpg"
+        )
+        with Image.open(version) as im:
+            self.assertEqual(im.size, (1600, 1200))
+
+    def test_never_upscales(self):
+        from PIL import Image
+
+        self.get("/media/uploads/test%20folder/small.jpg")
+        version = os.path.join(
+            self.media_root, "_versions", "test folder", "small_enlarged.jpg"
+        )
+        with Image.open(version) as im:
+            self.assertEqual(im.size, (900, 600))
+
+    def test_accepts_absolute_urls(self):
+        response = self.get(
+            "https://groundup.org.za/media/uploads/test%20folder/small.jpg"
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_rejects_paths_outside_uploads(self):
+        for src in [
+            "/media/uploads/../secret.jpg",
+            "/media/_versions/test/small_huge.jpg",
+            "/etc/passwd",
+            "/media/uploads/test%20folder/notes.txt",
+            "/media/uploads/test%20folder/missing.jpg",
+            "",
+        ]:
+            with self.subTest(src=src):
+                self.assertEqual(self.get(src).status_code, 404)

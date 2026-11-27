@@ -58,7 +58,7 @@
 {% if can_edit %}
 <script src="{% static 'newsroom/js/statistics.js' %}"></script>
 <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
-<script src="{% static 'newsroom/js/ck_styles.js' %}?v=20260721"></script>
+<script src="{% static 'newsroom/js/ck_styles.js' %}?v=20261127"></script>
 <script src="{% static 'newsroom/js/ck_init.js' %}?v=20220211b"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endif %}
@@ -145,6 +145,9 @@
 <script>
     {% include "newsroom/article_detail.js" %}
 </script>
+{% if not can_edit %}
+<script src="{% static 'newsroom/js/image_viewer.js' %}?v=20261127" defer></script>
+{% endif %}
 {% if article.activate_slideshow %}
 <script src={% static 'newsroom/js/pgwslider.min.js' %}></script>
 <script>{% include 'newsroom/article_slider.js' %}</script>

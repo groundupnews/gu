@@ -1,94 +1,118 @@
 {% load static %}
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-4">
-                <h4>Copyright</h4>
-                <p>&#169; 2012-{% now "Y" %} GroundUp.</p>
-                <p>See copyright notice on articles for terms.</p>
+<footer class="gu-footer">
+    <div class="gu-footer__layer gu-footer__layer--top">
+        <div class="container gu-footer__intro">
+            <div>
+                <h2 class="gu-footer__title">News that matters. Free to read.</h2>
+                <p class="gu-footer__lede">
+                    GroundUp is a South African non-profit news agency that publishes
+                    human-rights focused, public interest journalism.
+                </p>
+            </div>
+            <div class="gu-footer__actions">
+                <a class="gu-footer__donate" href="{% url 'make_payment' %}">Donate to GroundUp</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="gu-footer__layer gu-footer__layer--mid">
+        <nav class="container gu-footer__nav" aria-label="Footer">
+            <div>
+                <h2 class="gu-footer__heading">Read</h2>
+                <ul class="gu-footer__links">
+                    <li><a href="/category/Feature/">Features</a></li>
+                    <li><a href="/category/opinion_and_analysis/">Opinion</a></li>
+                    <li><a href="/category/photo-essay/">Photo essays</a></li>
+                    <li><a href="{% url 'newsroom:video.list' %}">Videos</a></li>
+                    <li><a href="https://puzzles.groundup.org.za/">Puzzles</a></li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="gu-footer__heading">Guides</h2>
+                <ul class="gu-footer__links">
+                    <li><a href="/grants/">Social grants</a></li>
+                    <li><a href="/housing/">Housing</a></li>
+                    <li><a href="/qanda/">Q&amp;A</a></li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="gu-footer__heading">About us</h2>
+                <ul class="gu-footer__links">
+                    <li><a href="/about/">About GroundUp</a></li>
+                    <li><a href="/journalists/">Who we are</a></li>
+                    <li><a href="/funders/">Funding and finances</a></li>
+                    <li><a href="/copyright/">Republish our articles</a></li>
+                    <li><a href="/correction/list/">Corrections</a></li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="gu-footer__heading">Follow us</h2>
+                <ul class="gu-footer__social">
+                    <li><a href="https://whatsapp.com/channel/0029Vah4OJcK0IBgG4CUkz35" aria-label="WhatsApp channel" title="WhatsApp channel">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.3 14.8l-.3-.2-2.6.7.7-2.5-.2-.4A8 8 0 0 1 12 4z"/><path d="M8.6 7.5c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5l.9 2.1c.1.2.1.4 0 .6l-.5.7c-.1.2-.2.3 0 .6.4.8 1.1 1.6 1.9 2.2.6.5 1.2.8 1.6 1 .3.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l2 1c.2.1.4.2.4.4 0 .3 0 1-.4 1.6-.4.5-1.4 1-2.2 1-.7 0-1.6-.2-3.4-1-2.2-1-3.7-3.3-3.8-3.5-.1-.2-1-1.4-1-2.6s.6-1.9.9-2.2z"/></svg>
+                    </a></li>
+                    <li><a href="https://www.facebook.com/GroundUpNews/" aria-label="Facebook" title="Facebook">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H7v4h2v8h4v-8h3l1-4h-4V9c0-.6.4-1 1-1z"/></svg>
+                    </a></li>
+                    <li><a href="https://www.instagram.com/groundup_news/" aria-label="Instagram" title="Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.8a4.2 4.2 0 1 0 0 8.4 4.2 4.2 0 0 0 0-8.4zm0 2a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm5.4-4.4a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/></svg>
+                    </a></li>
+                    <li><a href="https://www.tiktok.com/@groundup_news" aria-label="TikTok" title="TikTok">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16.7 2h-3.3v13a2.7 2.7 0 1 1-2.7-2.7c.28 0 .55.04.8.12V9.1a6 6 0 1 0 5.2 5.94V8.4a6.5 6.5 0 0 0 3.8 1.2V6.3a3.7 3.7 0 0 1-3.8-3.6z"/></svg>
+                    </a></li>
+                    <li><a href="https://bsky.app/profile/groundup.org.za" aria-label="Bluesky" title="Bluesky">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 10.8C10.9 8.7 8 4.75 5.2 2.8 2.57.94 1.56 1.27.9 1.57.14 1.9 0 3.08 0 3.77c0 .69.38 5.65.62 6.48.82 2.73 3.72 3.66 6.39 3.36.13-.02.27-.04.41-.06-3.91.58-7.39 2-2.83 7.08 5.01 5.19 6.87-1.11 7.82-4.31.95 3.2 2.05 9.27 7.73 4.31 4.27-4.31 1.17-6.5-2.74-7.08.14.02.28.04.41.06 2.67.3 5.57-.63 6.39-3.36.24-.83.62-5.79.62-6.48 0-.69-.14-1.87-.9-2.2-.66-.3-1.67-.63-4.3 1.23C16.05 4.75 13.09 8.7 12 10.8z"/></svg>
+                    </a></li>
+                    <li><a href="https://www.youtube.com/c/GroundUpNews" aria-label="YouTube" title="YouTube">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2C.5 9.1.5 12 .5 12s0 2.9.5 4.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.8.5-4.8s0-2.9-.5-4.8zM9.8 15.1V8.9l5.7 3.1-5.7 3.1z"/></svg>
+                    </a></li>
+                    <li><a href="/feeds/" aria-label="RSS feeds" title="RSS feeds">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="5.5" cy="18.5" r="2.5"/><path d="M3 9.5v3a8.5 8.5 0 0 1 8.5 8.5h3A11.5 11.5 0 0 0 3 9.5zm0-6v3A14.5 14.5 0 0 1 17.5 21h3A17.5 17.5 0 0 0 3 3.5z"/></svg>
+                    </a></li>
+                </ul>
+                <ul class="gu-footer__links">
+                    <li><a href="https://eepurl.com/Or2a9">Weekly newsletter</a></li>
+                    <li><a href="https://www.google.com/preferences/source?q=https://groundup.org.za/">Follow on Google News</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="gu-footer__layer gu-footer__layer--base">
+        <div class="container gu-footer__base">
+            <div class="gu-footer__contact">
+                <h2 class="gu-footer__heading">Contact us</h2>
+                <p>Please email story pitches and questions rather than phoning.</p>
+                <p>
+                    <a href="mailto:info@groundup.org.za">info@groundup.org.za</a><br />
+                    <a href="tel:+27217889163">+27 (0) 21 788 9163</a>
+                </p>
+                <address>
+                    2nd Floor, Ridge House, Belmont Office Park,<br />
+                    Bridge Road, Rondebosch, 7700
+                </address>
+            </div>
+            <div class="gu-footer__press">
+                <img src="{% static 'newsroom/images/PRESS-COUNCIL-LOGOS-FA-FAIR-FC.png' %}"
+                     alt="Press Council: FAIR" width="79" height="56" loading="lazy" />
                 <p>
                     GroundUp is a member of the <a href="https://presscouncil.org.za/">Press Council</a>
                     and strives to abide by the
                     <a href="https://presscouncil.org.za/press-code/#thepresscode">Press Code</a>.
-                    <br />
-                    <img src="{% static  'newsroom/images/PRESS-COUNCIL-LOGOS-FA-FAIR-FC.png' %}"
-                        alt="Press Council Logo" />
                 </p>
             </div>
-            <div class="col-sm-12 col-md-4">
-                <h4>Useful links</h4>
-                <ul class="footer-menu">
-                    <li>
-                        <a href="/about/">About</a>
-                    </li>
-                    <li>
-                        <a href="/privacy/">Privacy</a>
-                    </li>
-
-                    <li>
-                        <a href="/ai-policy/">AI policy</a>
-                    </li>
-
-                    <li>
-                        <a href="https://puzzles.groundup.org.za/">Puzzles</a>
-                    </li>
-
-                    <li>
-                        <a href="/funders/">Finances</a>
-                    </li>
-
-                    <li>
-                        <a href="https://eepurl.com/Or2a9">Sign up for our weekly newsletter</a>
-                    </li>
-                    <li>
-                        <a href="/feeds/">RSS feeds</a>
-                    </li>
-                    <li>
-                        <a href="https://www.google.com/preferences/source?q=https://groundup.org.za/">Follow us on
-                            Google News</a>
-                    </li>
-                    <li>
-                        <a href="https://www.tiktok.com/@groundup_news">Follow us on TikTok</a>
-                    </li>
-                    <li>
-                        <a href="https://www.facebook.com/GroundUpNews/">Follow us on Facebook</a>
-                    </li>
-                    <li>
-                        <a href="https://bsky.app/profile/groundup.org.za">Follow us on Bluesky</a>
-                    </li>
-                    <li>
-                        <a href="https://www.instagram.com/groundup_news/">Follow us on Instagram</a>
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/c/GroundUpNews">Subscribe to our Youtube channel</a>
-                    </li>
-                    <li>
-                        <a href="https://whatsapp.com/channel/0029Vah4OJcK0IBgG4CUkz35">Join our WhatsApp channel</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-sm-12 col-md-4">
-                <div class="contact">
-                    <h4 class="footer-contact__header">Contact us</h4>
-                    <p>
-                        Please email, do not phone, with story pitches and questions.
-                        <br />
-                        <a class="footer-contact-link" href="mailto:info@groundup.org.za">info@groundup.org.za</a>
-                        <br />
-                        <a class="footer-contact-link" href="tel:+27217889163">+27 (0) 21 788 9163</a>
-                    </p>
-                    <address>
-                        <p>
-                            Address:<br />
-                            2nd Floor, Ridge House<br />
-                            Belmont Office Park<br />
-                            Bridge Road<br />
-                            Rondebosch<br />
-                            7700
-                        </p>
-                    </address>
-                </div>
-            </div>
+        </div>
+        <div class="container gu-footer__colophon">
+            <a class="gu-footer__home" href="{% url 'newsroom:home' %}">
+                <img class="gu-footer__logo" src="{% static 'newsroom/images/Logo_white.png' %}"
+                     alt="GroundUp home" width="120" height="24" loading="lazy" />
+            </a>
+            <p>&copy; 2012&ndash;{% now "Y" %} GroundUp. See the copyright notice on each article for terms.</p>
+            <p class="gu-footer__policies">
+                <a href="/privacy/">Privacy</a>
+                <a href="/ai-policy/">AI policy</a>
+                <a href="/ethics_and_style/">Ethics and style guide</a>
+            </p>
         </div>
     </div>
 </footer>
